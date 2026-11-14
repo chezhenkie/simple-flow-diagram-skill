@@ -198,13 +198,13 @@ Rules:
 
 ## 10. Diagram body
 
-Copy the page shell from `demo.html`: page tokens, top bar, theme script, bar script and print rules. The block below is one section body to place inside `<main>`.
+Copy the page shell from `demo.html`: page tokens, top bar, theme script, bar script and print rules. The block below is one section body to place inside `<main>`. It uses the demo `d1` slot, which carries L2/D3; change the section class and the meta label together when you pick another pair.
 
 ```html
 <section class="diagram d1">
   <div class="head">
     <h2>main path: start to finish</h2>
-    <span class="meta">L1 / D1</span>
+    <span class="meta">L2 / D3</span>
   </div>
   <p class="note">The rule that drives the diagram, in one or two sentences.</p>
   <svg viewBox="0 0 1040 268" role="img" aria-label="Start and work cards with one side channel">
