@@ -351,6 +351,8 @@ check("docs/bar-dark.png" in rd and "docs/bar-light.png" in rd
       and "docs/bar-print-friendly.png" in rd, "readme bar closeups")
 check("docs/demo-dark.png" in rd and "docs/demo-print-friendly.png" in rd, "readme demo states")
 check("https://chezhenkie.github.io/simple-flow-diagram-skill/" in rd, "readme live demo link")
+check("<table>" in rd and "Click here to open the live, GitHub-hosted demo page" in rd,
+      "readme live demo box")
 check("~/.agents/skills" in rd and "~/.pi/agent/skills" in rd
       and "~/.omp/agent/skills" in rd and ".opencode/skills" in rd, "readme agent install paths")
 check("<skills-dir>" in rd, "readme install placeholder")
