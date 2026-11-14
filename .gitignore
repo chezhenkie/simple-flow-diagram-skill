@@ -1,6 +1,8 @@
 # scratch runs: validation scripts, screenshots, exports
 scratch/
 .tmp/
+# test artifacts
+tests/.artifacts/
 # logs
 *.log
 # OS noise

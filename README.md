@@ -2,9 +2,14 @@
 
 Flow diagrams as one standalone HTML file. One vertical main path, optional side channels, muted palette pairs, a fixed top bar, light and dark themes and a print theme. No external CSS, fonts, scripts or images. The file opens from `file://`.
 
-![Demo page in light mode](docs/demo-light.png)
+## Samples
 
-Light mode. Three diagrams on three palette pairs, one shared page background.
+Click a sample to open the full-size PNG.
+
+| Light | Dark | Print friendly |
+|:---:|:---:|:---:|
+| [<img src="docs/demo-light.png" width="280" alt="Demo page in light mode">](docs/demo-light.png) | [<img src="docs/demo-dark.png" width="280" alt="Demo page in dark mode">](docs/demo-dark.png) | [<img src="docs/demo-print-friendly.png" width="280" alt="Demo page with print friendly on">](docs/demo-print-friendly.png) |
+| Three flows, one page background | Same layout, dark palette pairs | White page, print palette |
 
 ## Page controls
 
@@ -14,29 +19,17 @@ Two controls sit at the top right. Both are native buttons and work with Tab, En
 
 The mode switch selects light or dark. The page starts from the OS preference and follows OS changes until the switch is clicked.
 
-![Top bar in dark mode](docs/bar-dark.png)
+<img src="docs/bar-dark.png" width="560" alt="Top bar in dark mode">
 
 Dark mode: moon selected, print off.
 
-![Top bar in light mode](docs/bar-light.png)
+<img src="docs/bar-light.png" width="560" alt="Top bar in light mode">
 
 Light mode: sun selected, print off.
 
-![Top bar with print friendly on](docs/bar-print-friendly.png)
+<img src="docs/bar-print-friendly.png" width="560" alt="Top bar with print friendly on">
 
 Print friendly on: the print control fills, the light/dark selection stays unchanged.
-
-## Demo states
-
-The same page in dark mode and in the print theme.
-
-![Demo page in dark mode](docs/demo-dark.png)
-
-Dark mode: each section uses its dark pair; the layout is unchanged.
-
-![Demo page with print friendly on](docs/demo-print-friendly.png)
-
-Print friendly on: white page, the print palette on every diagram, light grey section pills with black text.
 
 ## Files
 
@@ -47,6 +40,7 @@ Print friendly on: white page, the print palette on every diagram, light grey se
 | `demo.html` | Filled reference page with three diagrams |
 | `references/style-manual.md` | Grid, type scale, card anatomy, connectors, validation |
 | `references/palettes.html` | Palette catalog for both modes and print |
+| `tests/` | Static and bar behavior checks |
 | `CHANGELOG.md` | Version history |
 
 ## Install
@@ -62,6 +56,16 @@ OpenCode project skills: `.opencode/skills/simple-flow-diagram-skill`
 Ask for a flow diagram in this style. The agent reads `SKILL.md`, copies `template.html`, fills the page copy and inserts one section per diagram. The diagram body in `references/style-manual.md` section 10 is the starting block.
 
 Example request: `Draw the request path as a flow diagram in the house style.`
+
+## Check
+
+Run from the repo root:
+
+```sh
+python tests/check.py
+```
+
+The script validates ASCII and LF endings, palette tokens, SVG geometry, template and demo parity, and the bar state machine. Python 3 and Node are required.
 
 ## Limits
 

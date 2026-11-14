@@ -8,6 +8,7 @@
 
 * Added `template.html`: page shell with the top bar, token blocks, print rules and a marked diagram slot, no diagram content.
 * Added `README.md` and `docs/` screenshots: demo page in light, dark and print states, plus closeups of both page controls.
+* Moved the validator and bar harness to `tests/`; run `python tests/check.py` from the repo root.
 * Top bar uses the page background with no divider; controls sit directly on the page.
 * Skill workflow and style manual start from the template; `demo.html` remains the filled reference page.
 
