@@ -1,27 +1,28 @@
 # Flow diagram style manual
 
-Specsheet for hand-written, single-file flow diagrams. One vertical main path, optional side blocks, muted palette, light and dark from the OS preference, no dependencies.
+Specsheet for hand-written, single-file flow diagrams with a small top bar for light/dark and print themes. One vertical main path, optional side blocks, muted palette, no external dependencies.
 
 ## 1. File contract
 
 - One `.html` file per topic, named `<topic>-flow.html`.
 - UTF-8, printable ASCII only. No typographic quotes, dashes, arrows or bullets.
-- No JavaScript, no external CSS, fonts, images or icon sets. Must open from `file://`.
-- Light and dark themes from `prefers-color-scheme`.
+- Inline scripts limited to the top bar and its initial mode. No external CSS, fonts, images or icon sets. Must open from `file://`.
+- Light and dark themes from the top bar switch, initial state from `prefers-color-scheme`. The print theme is a separate toggle.
 - One `<main>` wrapper, max width 1080 px, centered.
-- One `<h1>`, one `.sub`, one or two `<section>` blocks, one `<footer>`.
+- One `<h1>`, one `.sub`, one or more `<section>` blocks, one `<footer>`.
 - SVG scales with the page; no fixed pixel width or height attributes.
 
 ## 2. Page order
 
 ```
+div#tb          fixed 24px bar: print toggle, light/dark switch
 h1              page title, 22px
 p.sub           one sentence naming the whole path, 13px
 section
   h2            pill label, "subject: outcome"
   p.note        one or two sentences with the driving rule
   svg           the diagram, viewBox 0 0 1040 H
-section         optional second diagram, same shape
+section         optional further diagrams, same shape
 footer          shared infrastructure or invariant, 1-2 sentences
 ```
 
@@ -29,19 +30,22 @@ footer          shared infrastructure or invariant, 1-2 sentences
 
 | token | light | dark | use |
 |---|---|---|---|
-| `--bg` | `#dfe4ee` | `#161b24` | page background |
+| `--bg` | `#dfe4ee` | `#161b24` | page background (`--page-bg`) |
 | `--card` | `#fdfdfd` | `#262626` | card and tag fill |
 | `--ink` | `#14181c` | `#e6ebef` | titles |
 | `--muted` | `#546374` | `#93a2b3` | descriptions, captions, footer, connectors |
 | `--line` | `#c9c9c9` | `#424242` | borders |
 | `--accent` | `#0f766e` | `#4fd1c5` | focus border, action arrow |
-| `--mint` | `#46755c` | `#46755c` | section pill only |
+| `--mint` | `#46755c` | `#46755c` | section pill (`--page-mint`) |
 
 Rules:
 
 - Accent marks the focus card and the active edge of the path. Keep accent connectors to one or two per diagram.
-- Mint is fixed across themes. The pill keeps white text.
+- Mint is fixed across screen themes; print uses a black pill with white text.
 - All SVG fills and strokes use classes backed by `var(--...)`, never hardcoded colors, so the dark theme follows without a second stylesheet.
+- One common page background per page, set by the mode, not by the individual diagram palettes. Diagram sections carry no page tint; the catalog `--bg` and `--mint` rows map to the page tokens `--page-bg` and `--page-mint`.
+- Light mode uses light palettes only; dark mode uses dark palettes only, also when several diagrams share a page. Mix pairs for contrast: L1/D1, L2/D3, L3/D2, L4/D5.
+- Print mode overrides every diagram with the P0 tokens and a white page. It is independent of the light/dark switch and restores the previous mode when switched off.
 
 ## 4. Type scale
 
@@ -54,7 +58,7 @@ Rules:
 | `.t` | 14.5 | 600 | card title |
 | `.d` | 12.5 | 400 | card description |
 | `.cap` | 11.5 | 400 | arrow caption |
-| `.side` | 11.5 | 400 | side card text, tag text |
+| `.side` | 11.5 | 400 | tag and branch labels |
 | footer | 12 | 400 | page footer |
 
 Body font stack: `"Segoe UI", system-ui, -apple-system, sans-serif`, 15px/1.45. Width budgets below leave at least 10 percent headroom for wider fallback fonts. A size change invalidates the budgets; re-measure before writing.
@@ -88,8 +92,9 @@ Examples: six main cards put the last top at 570, the tag at 668 and the viewBox
 
 Card baselines:
 
-- 70-high card: title `y+30`, description `y+50`. One description line only.
-- 90/100-high side card: title `y+26`, lines `y+44`, `y+59`, `y+74`.
+- 70-high main card: title `y+30`, one description line at `y+50`.
+- 70-high side card: title `y+26`, up to two description lines at `y+44` and `y+59`.
+- 90/100-high side card: title `y+26`, up to three description lines at `y+44`, `y+59`, `y+74`.
 - Tag text: `y+17`.
 
 Do not change the 108 pitch per card. If a card needs more text, cut the text or split the step. If the diagram needs more than seven cards, split it into two sections.
@@ -100,7 +105,7 @@ A card is a `<rect class="card">` or `<rect class="focus">` with `rx="3"`, plus:
 
 - `.t`: 1 to 4 words, sentence case, name of the actor or stage. No verbs in title case, no punctuation.
 - `.d`: concrete mechanism. Use the real flags, endpoints, file names, frame sizes, buffer counts. No marketing, no restatement of the title, no trailing period.
-- Main cards carry one description line. Side cards carry two or three.
+- Main cards carry one description line. Side cards carry up to two lines on a 70-high card and up to three on a 90/100-high card.
 - `focus` marks the component that does the work or coordinates the branch. One per diagram.
 
 Text limits, measured at the sizes above:
@@ -190,113 +195,47 @@ Rules:
 - Plain technical English. No sales words, no slogans, no "not X but Y" contrasts, no meta commentary.
 - Keys and literal input render in straight single quotes: 's', '0', 'ready'.
 
-## 10. Full skeleton
+## 10. Diagram body
+
+Copy the page shell from `demo.html`: page tokens, top bar, theme script, bar script and print rules. The block below is one section body to place inside `<main>`.
 
 ```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>topic flow</title>
-<style>
-  :root {
-    --bg: #dfe4ee;
-    --card: #fdfdfd;
-    --ink: #14181c;
-    --muted: #546374;
-    --line: #c9c9c9;
-    --accent: #0f766e;
-    --mint: #46755c;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #161b24;
-      --card: #262626;
-      --ink: #e6ebef;
-      --muted: #93a2b3;
-      --line: #424242;
-      --accent: #4fd1c5;
-    }
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--ink);
-    font: 15px/1.45 "Segoe UI", system-ui, -apple-system, sans-serif;
-  }
-  main { max-width: 1080px; margin: 0 auto; padding: 36px 20px 60px; }
-  h1 { font-size: 22px; margin: 0 0 4px; letter-spacing: 0.2px; }
-  .sub { color: var(--muted); font-size: 13px; margin: 0 0 32px; }
-  section { margin: 0 0 42px; }
-  h2 { display: inline-flex; align-items: center; height: 28px; padding: 0 12px;
-       font-size: 16px; margin: 0 0 10px; background: var(--mint); color: #fff;
-       border: 1px solid #335742; border-radius: 3px; }
-  section + section h2 { margin-top: 8px; }
-  .note { color: var(--muted); font-size: 13px; margin: 0 0 16px; }
-  svg { display: block; width: 100%; height: auto; }
-  .card { fill: var(--card); stroke: var(--line); stroke-width: 1.2; }
-  .focus { fill: var(--card); stroke: var(--accent); stroke-width: 1.4; }
-  .t { fill: var(--ink); font-size: 14.5px; font-weight: 600; }
-  .d { fill: var(--muted); font-size: 12.5px; }
-  .cap { fill: var(--muted); font-size: 11.5px; }
-  .side { fill: var(--muted); font-size: 11.5px; }
-  .arrow { stroke: var(--muted); stroke-width: 1.4; fill: none; }
-  .arrow-a { stroke: var(--accent); stroke-width: 1.6; fill: none; }
-  .dash { stroke: var(--muted); stroke-width: 1.2; fill: none; stroke-dasharray: 5 4; }
-  .tag { fill: var(--card); stroke: var(--line); stroke-width: 1; }
-  footer { color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); padding-top: 12px; }
-</style>
-</head>
-<body>
-<main>
+<section>
+  <h2>main path: start to finish</h2>
+  <p class="note">The rule that drives the diagram, in one or two sentences.</p>
+  <svg viewBox="0 0 1040 268" role="img" aria-label="Start and work cards with one side channel">
+    <defs>
+      <marker id="flowHead" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
+      </marker>
+      <marker id="flowHeadA" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
+      </marker>
+    </defs>
 
-  <h1>topic flow</h1>
-  <p class="sub">One sentence naming the path and the process that owns it.</p>
+    <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
+    <text class="t" x="318" y="60">Start</text>
+    <text class="d" x="318" y="80">what arrives, and from where</text>
 
-  <section>
-    <h2>main path: start to finish</h2>
-    <p class="note">The rule that drives the diagram, in one or two sentences.</p>
-    <svg viewBox="0 0 1040 268" role="img" aria-label="Start and work cards with one side channel">
-      <defs>
-        <marker id="flowHead" viewBox="0 0 10 10" refX="9" refY="5"
-                markerWidth="7" markerHeight="7" orient="auto">
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
-        </marker>
-        <marker id="flowHeadA" viewBox="0 0 10 10" refX="9" refY="5"
-                markerWidth="7" markerHeight="7" orient="auto">
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
-        </marker>
-      </defs>
+    <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
+    <text class="t" x="318" y="168">Work</text>
+    <text class="d" x="318" y="188">the mechanism: flags, files, endpoints</text>
 
-      <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
-      <text class="t" x="318" y="60">Start</text>
-      <text class="d" x="318" y="80">what arrives, and from where</text>
+    <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#flowHeadA)"/>
+    <text class="cap" x="549" y="118">condition or payload</text>
 
-      <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
-      <text class="t" x="318" y="168">Work</text>
-      <text class="d" x="318" y="188">the mechanism: flags, files, endpoints</text>
+    <rect class="card" x="40" y="138" width="210" height="70" rx="3"/>
+    <text class="t" x="56" y="164">Side note</text>
+    <text class="d" x="56" y="182">an optional channel,</text>
+    <text class="d" x="56" y="197">kept to two lines</text>
+    <path class="dash" d="M 250 173 H 290" marker-end="url(#flowHead)"/>
 
-      <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#flowHeadA)"/>
-      <text class="cap" x="549" y="118">condition or payload</text>
-
-      <rect class="card" x="40" y="138" width="210" height="70" rx="3"/>
-      <text class="t" x="56" y="164">Side note</text>
-      <text class="d" x="56" y="182">an optional channel,</text>
-      <text class="d" x="56" y="197">kept to two lines</text>
-      <path class="dash" d="M 250 173 H 290" marker-end="url(#flowHead)"/>
-
-      <rect class="tag" x="300" y="236" width="470" height="26" rx="3"/>
-      <text class="side" x="318" y="253">the invariant stated in one line</text>
-    </svg>
-  </section>
-
-  <footer>What both paths share, or the guarantee that always holds.</footer>
-
-</main>
-</body>
-</html>
+    <rect class="tag" x="300" y="236" width="470" height="26" rx="3"/>
+    <text class="side" x="318" y="253">the invariant stated in one line</text>
+  </svg>
+</section>
 ```
 
 ## 11. Validation
@@ -320,7 +259,9 @@ print("ok", len(svgs), "svg", len(raw), "bytes")
 
 Visual checks:
 
-- Open the file at 100 percent zoom. Toggle the OS or browser color scheme and confirm both themes.
+- Open the file at 100 percent zoom. Toggle the bar switch and confirm both themes, then toggle print mode and confirm the print preview.
+- Operate both bar controls with the keyboard and confirm the focus ring and state change.
+- Confirm the bar is hidden in the print preview and every diagram renders in P0.
 - Narrow the window to 800 px. The SVG scales; no text may touch a border or another card.
 - Confirm no caption crosses x=790 and no side text crosses its card edge.
 - Confirm one accent card and one accent arrow per diagram.
@@ -341,3 +282,42 @@ Visual checks:
 - [ ] `role="img"` and a full `aria-label` on each SVG.
 - [ ] Light and dark checked in a browser.
 - [ ] Python validation passes.
+- [ ] Top bar present: 24 px, print toggle then mode switch, keyboard operable.
+- [ ] Every diagram uses a palette from the active family; one common background per page.
+- [ ] Print toggle forces P0 and hides the bar in the print preview.
+- [ ] Inline scripts limited to the bar; no external files.
+
+## 13. Top bar and modes
+
+`demo.html` is the reference implementation. Copy its bar, token blocks and scripts; do not invent a second control style.
+
+Bar:
+
+- Fixed, 24 px high, right aligned, 10 px UI font, 1 px bottom border.
+- Print toggle: 27 x 18 px, printer icon, `aria-pressed`. Active fill uses the bar ink.
+- Mode switch: 44 x 20 px, moon left and sun right, 16 px thumb, `aria-checked` true in light mode.
+- Both controls are native `<button>` elements, so Enter and Space work without key handlers.
+- Labels: `aria-label` and `title` on both; no visible text inside the bar.
+
+State:
+
+- `html[data-theme="light"]` or `html[data-theme="dark"]` selects the common page background and the diagram family.
+- `html[data-print="on"]` forces P0 on every diagram and a white page. It does not change `data-theme`.
+- Initial mode comes from `prefers-color-scheme`; OS changes are followed until the user toggles. No storage.
+
+Token scope:
+
+- Page tokens live on `:root` and the theme blocks: `--page-bg`, `--page-ink`, `--page-muted`, `--page-line`, `--page-mint`, plus the bar and thumb tokens.
+- Diagram tokens live on each section: `--card`, `--ink`, `--muted`, `--line`, `--accent`, set per family under the theme selector.
+- The print override comes after the scoped theme blocks, so it wins at equal specificity.
+
+Scripts:
+
+- One inline script in the head sets the initial `data-theme` before paint.
+- One inline script before `</body>` wires both buttons and follows OS changes until the user toggles.
+
+Print:
+
+- `@page` margin 12 mm, exact color adjust, `break-inside: avoid` per section.
+- `@media print` hides the bar, removes the page cap and repeats the P0 override, so paper output is print-themed even when the toggle was never clicked.
+- Print mode on screen keeps the bar visible; only the print preview hides it.

@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0
+
+### New features
+
+#### All platforms
+
+* Added a fixed 24 px top bar with a light/dark switch and a separate print theme toggle.
+* Multi-diagram pages share one page background and may mix palette pairs; dark mode uses dark palettes only and light mode light palettes only.
+* Added `demo.html` as the reference shell with three diagrams, both modes and the print theme.
+* Skill and style manual updated: inline bar scripts, no external assets, print override rules.
+
 ## 0.2.0
 
 ### New features
