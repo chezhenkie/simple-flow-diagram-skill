@@ -351,7 +351,7 @@ check("docs/bar-dark.png" in rd and "docs/bar-light.png" in rd
       and "docs/bar-print-friendly.png" in rd, "readme bar closeups")
 check("docs/demo-dark.png" in rd and "docs/demo-print-friendly.png" in rd, "readme demo states")
 check("https://chezhenkie.github.io/simple-flow-diagram-skill/" in rd, "readme live demo link")
-check("<table>" in rd and "Click here to open the live, GitHub-hosted demo page" in rd,
+check("<table>" in rd and "CLICK HERE TO OPEN THE LIVE, GITHUB-HOSTED DEMO PAGE" in rd,
       "readme live demo box")
 check("@simple-flow-diagram-skill" in rd and "$simple-flow-diagram-skill" in rd
       and rd.count("/skill:simple-flow-diagram-skill") == 2, "readme skill invocations")
