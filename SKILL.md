@@ -13,7 +13,7 @@ Produce one self-contained `.html` page per flow diagram, or one page with sever
 1. Read `references/style-manual.md` before writing. Copy the page shell from `demo.html`.
 2. Choose a light/dark pair per diagram from the palette catalog: L1/D1, L2/D3, L3/D2, L4/D5. Mix pairs on one page for contrast.
 3. Keep the top bar and its inline script. Two controls only: print toggle, then light/dark switch.
-4. Write the page in this order: top bar, h1, p.sub, one or more sections (h2 pill, p.note, svg), footer. Use the diagram body in manual section 10.
+4. Write the page in this order: top bar, h1, p.sub, one or more sections (head with h2 pill, p.note, svg), footer. Use the diagram body in manual section 10.
 5. Keep the grid: viewBox `0 0 1040 H`, main column x=300 width=470, card top `30 + 108n`, card height 70, arrow 28, caption x=549 at y+88, tag at last card top + 98, viewBox height tag + 32.
 6. Fill text within the budgets: main description 65 characters, side description 28 or 26, card title 24, caption 42, tag line 78.
 7. Mark one focus card and at most two accent connectors per diagram. Solid for the main path, dash for side channels.

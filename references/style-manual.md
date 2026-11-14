@@ -19,7 +19,7 @@ div#tb          fixed 24px bar: print toggle, light/dark switch
 h1              page title, 22px
 p.sub           one sentence naming the whole path, 13px
 section
-  h2            pill label, "subject: outcome"
+  div.head      h2 pill plus optional palette pair label
   p.note        one or two sentences with the driving rule
   svg           the diagram, viewBox 0 0 1040 H
 section         optional further diagrams, same shape
@@ -54,6 +54,7 @@ Rules:
 | h1 | 22 | 400 | page title |
 | `.sub` | 13 | 400 | page subtitle |
 | h2 | 16 | 400 | section pill, white on mint |
+| `.meta` | 11 | 400 | palette pair label beside the pill |
 | `.note` | 13 | 400 | instruction above the diagram |
 | `.t` | 14.5 | 600 | card title |
 | `.d` | 12.5 | 400 | card description |
@@ -200,8 +201,11 @@ Rules:
 Copy the page shell from `demo.html`: page tokens, top bar, theme script, bar script and print rules. The block below is one section body to place inside `<main>`.
 
 ```html
-<section>
-  <h2>main path: start to finish</h2>
+<section class="diagram d1">
+  <div class="head">
+    <h2>main path: start to finish</h2>
+    <span class="meta">L1 / D1</span>
+  </div>
   <p class="note">The rule that drives the diagram, in one or two sentences.</p>
   <svg viewBox="0 0 1040 268" role="img" aria-label="Start and work cards with one side channel">
     <defs>
