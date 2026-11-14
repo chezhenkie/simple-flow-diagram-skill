@@ -351,6 +351,8 @@ check("docs/bar-dark.png" in rd and "docs/bar-light.png" in rd
 check("docs/demo-dark.png" in rd and "docs/demo-print-friendly.png" in rd, "readme demo states")
 check("~/.agents/skills" in rd and "~/.pi/agent/skills" in rd
       and "~/.omp/agent/skills" in rd and ".opencode/skills" in rd, "readme agent install paths")
+check("<skills-dir>" in rd, "readme install placeholder")
+check("Windows" not in rd and "PowerShell" not in rd and "%USERPROFILE%" not in rd, "readme no os specifics")
 
 # Script syntax and behavior
 artifacts = os.path.join("tests", ".artifacts")
