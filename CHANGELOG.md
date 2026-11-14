@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0
+
+### New features
+
+#### All platforms
+
+* Packaged as an agent skill: root `SKILL.md` with name, description and license frontmatter, workflow and hard rules.
+* Style manual and palette sheet moved to `references/` and linked one level deep from the skill file.
+
 ## 0.1.0
 
 ### New features
