@@ -19,15 +19,15 @@ Two controls sit at the top right. Both are native buttons and work with Tab, En
 
 The mode switch selects light or dark. The page starts from the OS preference and follows OS changes until the switch is clicked.
 
-<img src="docs/bar-dark.png" width="560" alt="Top bar in dark mode">
+<img src="docs/bar-dark.png" width="244" alt="Top bar in dark mode">
 
 Dark mode: moon selected, print off.
 
-<img src="docs/bar-light.png" width="560" alt="Top bar in light mode">
+<img src="docs/bar-light.png" width="244" alt="Top bar in light mode">
 
 Light mode: sun selected, print off.
 
-<img src="docs/bar-print-friendly.png" width="560" alt="Top bar with print friendly on">
+<img src="docs/bar-print-friendly.png" width="244" alt="Top bar with print friendly on">
 
 Print friendly on: the print control fills, the light/dark selection stays unchanged.
 
