@@ -37,8 +37,8 @@ def one_hex(css, name):
     return m.group(1).lower() if m else None
 
 
-files = ["README.md", "SKILL.md", "template.html", "demo.html", "CHANGELOG.md", "LICENSE",
-         "references/style-manual.md", "references/palettes.html",
+files = ["README.md", "SKILL.md", "template.html", "demo.html", "docs/index.html",
+         "CHANGELOG.md", "LICENSE", "references/style-manual.md", "references/palettes.html",
          "tests/check.py", "tests/harness.js"]
 for f in files:
     b = read(f)
@@ -57,6 +57,7 @@ rd = text("README.md")
 check(demo.count("<h1") == 1, "demo one h1")
 check(demo.count('<p class="sub">') == 1, "demo one sub")
 check(demo.count("<footer") == 1, "demo one footer")
+check(text("docs/index.html") == demo, "pages demo matches demo")
 check(re.search(r'<html[^>]*data-theme="light"[^>]*data-print="off"', demo[:200]),
       "demo initial state attributes")
 
@@ -349,6 +350,7 @@ check(rd.count('width="244"') == 3, "readme closeup sizes")
 check("docs/bar-dark.png" in rd and "docs/bar-light.png" in rd
       and "docs/bar-print-friendly.png" in rd, "readme bar closeups")
 check("docs/demo-dark.png" in rd and "docs/demo-print-friendly.png" in rd, "readme demo states")
+check("https://chezhenkie.github.io/simple-flow-diagram-skill/" in rd, "readme live demo link")
 check("~/.agents/skills" in rd and "~/.pi/agent/skills" in rd
       and "~/.omp/agent/skills" in rd and ".opencode/skills" in rd, "readme agent install paths")
 check("<skills-dir>" in rd, "readme install placeholder")

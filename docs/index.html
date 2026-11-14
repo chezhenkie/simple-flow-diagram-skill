@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-print="off">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>flow diagram board</title>
+<script>
+  (function () {
+    var d = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', d ? 'dark' : 'light');
+  })();
+</script>
+<style>
+  :root {
+    color-scheme: light;
+    --page-bg: #dfe4ee;
+    --page-ink: #14181c;
+    --page-muted: #546374;
+    --page-line: #c9c9c9;
+    --page-mint: #46755c;
+    --tb-ink: #546374;
+    --tb-line: #c9c9c9;
+    --thumb: #cbcbcb;
+    --thumb-line: #888888;
+  }
+  html[data-theme="dark"] {
+    color-scheme: dark;
+    --page-bg: #161b24;
+    --page-ink: #e6ebef;
+    --page-muted: #93a2b3;
+    --page-line: #424242;
+    --tb-ink: #93a2b3;
+    --tb-line: #2a3444;
+    --thumb: #2e2e2e;
+    --thumb-line: #777777;
+  }
+  html[data-print="on"] {
+    --page-bg: #ffffff;
+    --page-ink: #000000;
+    --page-muted: #333333;
+    --page-line: #9a9a9a;
+    --page-mint: #e6e6e6;
+    --tb-ink: #333333;
+    --tb-line: #9a9a9a;
+    --thumb: #cbcbcb;
+    --thumb-line: #888888;
+  }
+  html[data-print="on"] h2 { background: #e6e6e6; color: #000000; border-color: #000000; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page-bg);
+    color: var(--page-ink);
+    font: 15px/1.45 "Segoe UI", system-ui, -apple-system, sans-serif;
+    transition: background .25s, color .25s;
+  }
+  main { max-width: 1080px; margin: 0 auto; padding: 46px 20px 60px; }
+  h1 { font-size: 22px; font-weight: 400; margin: 0 0 4px; letter-spacing: 0.2px; }
+  .sub { color: var(--page-muted); font-size: 13px; margin: 0 0 32px; }
+  section { margin: 0 0 42px; }
+  .head { display: flex; align-items: center; margin: 0 0 10px; }
+  h2 {
+    display: inline-flex; align-items: center; height: 28px; padding: 0 12px 4px;
+    font-size: 16px; font-weight: 400; margin: 0; background: var(--page-mint);
+    color: #ffffff; border: 1px solid #335742; border-radius: 3px;
+  }
+  .note { color: var(--page-muted); font-size: 13px; margin: 0 0 16px; }
+  svg { display: block; width: 100%; height: auto; }
+  .card { fill: var(--card); stroke: var(--line); stroke-width: 1.2; }
+  .focus { fill: var(--card); stroke: var(--accent); stroke-width: 1.4; }
+  .t { fill: var(--ink); font-size: 14.5px; font-weight: 600; }
+  .d { fill: var(--muted); font-size: 12.5px; }
+  .cap { fill: var(--muted); font-size: 11.5px; }
+  .side { fill: var(--muted); font-size: 11.5px; }
+  .arrow { stroke: var(--muted); stroke-width: 1.4; fill: none; }
+  .arrow-a { stroke: var(--accent); stroke-width: 1.6; fill: none; }
+  .dash { stroke: var(--muted); stroke-width: 1.2; fill: none; stroke-dasharray: 5 4; }
+  .tag { fill: var(--card); stroke: var(--line); stroke-width: 1; }
+  .card, .focus, .tag { transition: fill .25s, stroke .25s; }
+  .t, .d, .cap, .side { transition: fill .25s; }
+  footer {
+    color: var(--page-muted); font-size: 12px;
+    border-top: 1px solid var(--page-line); padding-top: 12px;
+  }
+
+  .diagram { --card: #fdfdfd; --ink: #14181c; --muted: #546374; --line: #c9c9c9; --accent: #0f766e; }
+  html[data-theme="light"] .d1 { --card: #fffdf8; --ink: #1c1917; --muted: #6b6257; --line: #d3c9b8; --accent: #9a5b26; }
+  html[data-theme="dark"] .d1 { --card: #271f2d; --ink: #ece4f1; --muted: #a294ab; --line: #40344a; --accent: #d29bea; }
+  html[data-theme="light"] .d2 { --card: #fcfdfa; --ink: #16201a; --muted: #566356; --line: #c8d3c3; --accent: #2f6b46; }
+  html[data-theme="dark"] .d2 { --card: #1e2823; --ink: #e3ece6; --muted: #8fa89a; --line: #35453c; --accent: #6fd6a0; }
+  html[data-theme="light"] .d3 { --card: #ffffff; --ink: #101010; --muted: #5a5a5a; --line: #c6c6c6; --accent: #1f5f8b; }
+  html[data-theme="dark"] .d3 { --card: #24262a; --ink: #e7e9ec; --muted: #9fa5ab; --line: #3c3f44; --accent: #8ab6e0; }
+  html[data-print="on"] .diagram { --card: #ffffff; --ink: #000000; --muted: #333333; --line: #9a9a9a; --accent: #000000; }
+
+  #tb {
+    position: fixed; top: 0; left: 0; right: 0; height: 24px; z-index: 10;
+    display: flex; align-items: center; justify-content: flex-end; gap: 7px;
+    padding: 0 10px; background: var(--page-bg); color: var(--tb-ink);
+    font: 10px/1 "Segoe UI", system-ui, -apple-system, sans-serif;
+    user-select: none; transition: background .25s, color .25s;
+  }
+  .s { width: 1px; height: 12px; background: var(--tb-line); }
+  .tb-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+    height: 18px; padding: 0 6px; cursor: pointer;
+    color: inherit; background: transparent;
+    border: 1px solid var(--tb-line); border-radius: 2px;
+    white-space: nowrap;
+  }
+  .tb-btn svg { width: 13px; height: 13px; }
+  .tb-btn.on { background: var(--tb-ink); color: var(--page-bg); border-color: var(--tb-ink); }
+  .toggle {
+    position: relative; width: 44px; height: 20px; padding: 0; cursor: pointer;
+    background: transparent; border: 0; color: inherit;
+  }
+  .toggle-thumb {
+    position: absolute; top: 2px; left: 5px; width: 16px; height: 16px;
+    border-radius: 2px; background: var(--thumb); border: 1px solid var(--thumb-line);
+    transition: transform .25s cubic-bezier(.4, 0, .2, 1), background .25s, border-color .25s;
+  }
+  .toggle.on .toggle-thumb { transform: translateX(17px); }
+  .toggle svg {
+    position: absolute; top: 50%; width: 12px; height: 12px;
+    transform: translateY(-50%); pointer-events: none;
+    transition: opacity .25s;
+  }
+  .toggle .ico-l { left: 7px; opacity: 1; }
+  .toggle .ico-r { right: 8px; opacity: 0.45; }
+  .toggle.on .ico-l { opacity: 0.45; }
+  .toggle.on .ico-r { opacity: 1; }
+  .tb-btn:focus-visible, .toggle:focus-visible { outline: 2px solid var(--tb-ink); outline-offset: 2px; }
+
+  @media print {
+    @page { margin: 12mm; }
+    #tb { display: none; }
+    main { max-width: none; padding: 0; }
+    body { background: #ffffff; color: #000000; }
+    :root { --page-mint: #e6e6e6; }
+    html h2 { color: #000000; border-color: #000000; }
+    h1, .sub, .note, footer { color: #000000; }
+    footer { border-top-color: #9a9a9a; }
+    html[data-theme] .diagram { --card: #ffffff; --ink: #000000; --muted: #333333; --line: #9a9a9a; --accent: #000000; }
+    section { break-inside: avoid; margin-bottom: 24px; }
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<div id="tb" role="group" aria-label="Page controls">
+  <button class="tb-btn" id="print" type="button" aria-pressed="false" aria-label="Print friendly" title="Print friendly">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M6 9V3h12v6"/>
+      <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+      <rect x="6" y="14" width="12" height="8" rx="1"/>
+    </svg>
+    <span>print friendly</span>
+  </button>
+  <span class="s" aria-hidden="true"></span>
+  <button class="toggle on" id="mode" type="button" role="switch" aria-checked="true" aria-label="Light mode" title="Light or dark mode">
+    <span class="toggle-thumb" aria-hidden="true"></span>
+    <svg class="ico-l" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+    <svg class="ico-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+  </button>
+</div>
+
+<main>
+
+  <h1>flow diagram board</h1>
+  <p class="sub">Three flows, three palette pairs, one shared background. The bar switches light/dark and the print theme.</p>
+
+  <section class="diagram d1">
+    <div class="head">
+      <h2>request path: client to row</h2>
+    </div>
+    <p class="note">Cache reads sit on the left lane; a miss falls through to the store card.</p>
+    <svg viewBox="0 0 1040 376" role="img" aria-label="Request path: request, handler focus, store cards, cache side channel, tag line">
+      <defs>
+        <marker id="rqHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
+        </marker>
+        <marker id="rqHeadA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
+        </marker>
+      </defs>
+
+      <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
+      <text class="t" x="318" y="60">Request</text>
+      <text class="d" x="318" y="80">GET /v1/items, bearer token checked</text>
+
+      <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#rqHeadA)"/>
+      <text class="cap" x="549" y="118">route match</text>
+
+      <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
+      <text class="t" x="318" y="168">Handler</text>
+      <text class="d" x="318" y="188">validate, query pool, render json</text>
+
+      <rect class="card" x="40" y="138" width="210" height="70" rx="3"/>
+      <text class="t" x="56" y="164">Cache</text>
+      <text class="d" x="56" y="182">redis, 60 s ttl</text>
+      <text class="d" x="56" y="197">misses fall through</text>
+      <path class="dash" d="M 250 173 H 290" marker-end="url(#rqHead)"/>
+
+      <line class="arrow" x1="535" y1="208" x2="535" y2="236" marker-end="url(#rqHead)"/>
+      <text class="cap" x="549" y="226">row set</text>
+
+      <rect class="card" x="300" y="246" width="470" height="70" rx="3"/>
+      <text class="t" x="318" y="276">Store</text>
+      <text class="d" x="318" y="296">postgres pool, 8 conns, 3 s timeout</text>
+
+      <rect class="tag" x="300" y="344" width="470" height="26" rx="3"/>
+      <text class="side" x="318" y="361">one request ends in one response: 200 or 4xx</text>
+    </svg>
+  </section>
+
+  <section class="diagram d2">
+    <div class="head">
+      <h2>video path: url to file</h2>
+    </div>
+    <p class="note">Audio leaves the main path before mux; the video path never waits on it.</p>
+    <svg viewBox="0 0 1040 376" role="img" aria-label="Video path: fetch, transcode focus, mux cards, audio side channel, tag line">
+      <defs>
+        <marker id="vidHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
+        </marker>
+        <marker id="vidHeadA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
+        </marker>
+      </defs>
+
+      <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
+      <text class="t" x="318" y="60">Fetch</text>
+      <text class="d" x="318" y="80">input url, format select 1080p</text>
+
+      <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#vidHeadA)"/>
+      <text class="cap" x="549" y="118">job queued</text>
+
+      <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
+      <text class="t" x="318" y="168">Transcode</text>
+      <text class="d" x="318" y="188">ffmpeg, h264, 6 threads</text>
+
+      <rect class="card" x="40" y="138" width="210" height="70" rx="3"/>
+      <text class="t" x="56" y="164">Audio out</text>
+      <text class="d" x="56" y="182">aac, 128 kbit/s</text>
+      <text class="d" x="56" y="197">no video stream</text>
+      <path class="dash" d="M 300 173 H 254" marker-end="url(#vidHead)"/>
+
+      <line class="arrow" x1="535" y1="208" x2="535" y2="236" marker-end="url(#vidHead)"/>
+      <text class="cap" x="549" y="226">h264 + aac</text>
+
+      <rect class="card" x="300" y="246" width="470" height="70" rx="3"/>
+      <text class="t" x="318" y="276">Mux</text>
+      <text class="d" x="318" y="296">aac + mp4, faststart flag</text>
+
+      <rect class="tag" x="300" y="344" width="470" height="26" rx="3"/>
+      <text class="side" x="318" y="361">one run ends in one file or a non-zero exit</text>
+    </svg>
+  </section>
+
+  <section class="diagram d3">
+    <div class="head">
+      <h2>docs path: draft to page</h2>
+    </div>
+    <p class="note">Review holds the draft until both comments resolve; publish reads only the reviewed file.</p>
+    <svg viewBox="0 0 1040 376" role="img" aria-label="Docs path: draft, review focus, publish cards, shared spec side channel, tag line">
+      <defs>
+        <marker id="docHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
+        </marker>
+        <marker id="docHeadA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
+        </marker>
+      </defs>
+
+      <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
+      <text class="t" x="318" y="60">Draft</text>
+      <text class="d" x="318" y="80">one markdown file, ascii only</text>
+
+      <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#docHeadA)"/>
+      <text class="cap" x="549" y="118">review requested</text>
+
+      <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
+      <text class="t" x="318" y="168">Review</text>
+      <text class="d" x="318" y="188">two reviewers, comments resolved</text>
+
+      <rect class="card" x="800" y="138" width="220" height="70" rx="3"/>
+      <text class="t" x="816" y="164">Shared spec</text>
+      <text class="d" x="816" y="182">seven tokens per mode</text>
+      <text class="d" x="816" y="197">one page background</text>
+      <path class="dash" d="M 800 173 H 780" marker-end="url(#docHead)"/>
+
+      <line class="arrow" x1="535" y1="208" x2="535" y2="236" marker-end="url(#docHead)"/>
+      <text class="cap" x="549" y="226">both resolved</text>
+
+      <rect class="card" x="300" y="246" width="470" height="70" rx="3"/>
+      <text class="t" x="318" y="276">Publish</text>
+      <text class="d" x="318" y="296">static html, one file, no assets</text>
+
+      <rect class="tag" x="300" y="344" width="470" height="26" rx="3"/>
+      <text class="side" x="318" y="361">one draft ends in one page or a blocked review</text>
+    </svg>
+  </section>
+
+  <footer>The page background follows the mode, not the diagram palette. Each section keeps its own light/dark pair; the print theme overrides all of them.</footer>
+
+</main>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var modeBtn = document.getElementById('mode');
+    var printBtn = document.getElementById('print');
+    var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+    var manual = false;
+    var savedMode = null;
+
+    function isDark() { return root.getAttribute('data-theme') === 'dark'; }
+    function setMode(dark) {
+      root.setAttribute('data-theme', dark ? 'dark' : 'light');
+      modeBtn.setAttribute('aria-checked', String(!dark));
+      modeBtn.classList.toggle('on', !dark);
+    }
+    function isPrint() { return root.getAttribute('data-print') === 'on'; }
+    function setPrint(on) {
+      if (on && savedMode === null) savedMode = isDark() ? 'dark' : 'light';
+      root.setAttribute('data-print', on ? 'on' : 'off');
+      printBtn.setAttribute('aria-pressed', String(on));
+      printBtn.classList.toggle('on', on);
+      if (!on && savedMode !== null) {
+        setMode(savedMode === 'dark');
+        savedMode = null;
+      }
+    }
+
+    modeBtn.addEventListener('click', function () {
+      manual = true;
+      setMode(!isDark());
+    });
+    printBtn.addEventListener('click', function () {
+      setPrint(!isPrint());
+    });
+
+    if (mq) {
+      setMode(mq.matches);
+      var onChange = function (e) { if (!manual) setMode(e.matches); };
+      if (mq.addEventListener) mq.addEventListener('change', onChange);
+      else if (mq.addListener) mq.addListener(onChange);
+    }
+  })();
+</script>
+</body>
+</html>

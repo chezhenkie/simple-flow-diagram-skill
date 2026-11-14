@@ -11,6 +11,8 @@ Click a sample to open the full-size PNG.
 | [<img src="docs/demo-light.png" width="280" alt="Demo page in light mode">](docs/demo-light.png) | [<img src="docs/demo-dark.png" width="280" alt="Demo page in dark mode">](docs/demo-dark.png) | [<img src="docs/demo-print-friendly.png" width="280" alt="Demo page with print friendly on">](docs/demo-print-friendly.png) |
 | Three flows, one page background | Same layout, dark palette pairs | White page, print palette |
 
+**[Open the live demo](https://chezhenkie.github.io/simple-flow-diagram-skill/)**
+
 ## Page controls
 
 Two controls sit at the top right. Both are native buttons and work with Tab, Enter and Space.
