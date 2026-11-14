@@ -1,6 +1,6 @@
 # Simple flow diagram
 
-Flow diagrams as one standalone HTML file. One vertical main path, optional side channels, muted palette pairs, a fixed top bar, light and dark themes and a print theme. No external CSS, fonts, scripts or images. The file opens from `file://`.
+An agent skill that turns a process into a flow diagram on a single HTML page. Open the file in any browser: one main path from start to finish, optional branches on the side, and a top bar for light, dark and print views. No setup, external files or network access.
 
 ## Samples
 
@@ -45,11 +45,32 @@ Print friendly on: the print control fills, the light/dark selection stays uncha
 
 ## Install
 
-Copy or clone the repository into an agent skills directory as `simple-flow-diagram-skill`. The folder name must match the skill name.
+Clone the repository into the skills folder for your agent. Keep the folder name `simple-flow-diagram-skill`; it must match the `name` in `SKILL.md`.
 
-OpenCode global skills: `~/.config/opencode/skills/simple-flow-diagram-skill`
+```sh
+# OpenCode
+git clone https://github.com/chezhenkie/simple-flow-diagram-skill.git ~/.config/opencode/skills/simple-flow-diagram-skill
 
-OpenCode project skills: `.opencode/skills/simple-flow-diagram-skill`
+# Codex
+git clone https://github.com/chezhenkie/simple-flow-diagram-skill.git ~/.agents/skills/simple-flow-diagram-skill
+
+# Pi
+git clone https://github.com/chezhenkie/simple-flow-diagram-skill.git ~/.pi/agent/skills/simple-flow-diagram-skill
+
+# OMP
+git clone https://github.com/chezhenkie/simple-flow-diagram-skill.git ~/.omp/agent/skills/simple-flow-diagram-skill
+```
+
+Project-level installs use the same folder name under the project root:
+
+| Agent | Project path |
+|---|---|
+| OpenCode | `.opencode/skills/simple-flow-diagram-skill` |
+| Codex | `.agents/skills/simple-flow-diagram-skill` |
+| Pi | `.pi/skills/simple-flow-diagram-skill` |
+| OMP | `.omp/skills/simple-flow-diagram-skill` |
+
+In PowerShell use `$HOME`, in cmd use `%USERPROFILE%`. Codex scans `.agents/skills` from the current folder up to the repository root. Pi and OMP scan one level under `skills/`. Restart the agent if the skill does not appear.
 
 ## Use
 
