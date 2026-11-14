@@ -72,6 +72,17 @@ Codex scans `.agents/skills` from the current folder up to the repository root. 
 
 Ask for a flow diagram in this style. The agent reads `SKILL.md`, copies `template.html`, fills the page copy and inserts one section per diagram. The diagram body in `references/style-manual.md` section 10 is the starting block.
 
+### Call the skill
+
+| Agent | Invocation |
+|---|---|
+| OpenCode | `@simple-flow-diagram-skill` |
+| Codex | `$simple-flow-diagram-skill` |
+| Pi | `/skill:simple-flow-diagram-skill` |
+| OMP | `/skill:simple-flow-diagram-skill` |
+
+Codex also lists installed skills with `/skills`.
+
 Example request: `Draw the request path as a flow diagram in the house style.`
 
 ## Check
