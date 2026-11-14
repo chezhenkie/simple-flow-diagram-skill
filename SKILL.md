@@ -23,14 +23,14 @@ Produce one self-contained `.html` page per flow diagram, or one page with sever
 
 - One common page background per page, set by the mode. Diagrams do not carry their own page tint.
 - Light mode uses light palettes only; dark mode uses dark palettes only, also when several diagrams share a page.
-- Print is a separate toggle. It forces every diagram to the P0 tokens and a white page, then restores the previous mode when switched off. It does not change the light/dark selection.
+- Print is a separate toggle. It forces every diagram to the P0 tokens and a white page, then restores the previous mode when switched off. It does not change the light/dark selection. The P0 pill is light grey with black text.
 
 ## Hard rules
 
 - ASCII only. Straight quotes, hyphen for dash, no arrows, bullets or other Unicode.
 - One `h1`, one `.sub`, one footer per page.
 - Inline scripts are limited to the top bar and its initial mode. No external JavaScript, CSS, fonts, images or icon sets. Must open from `file://`.
-- Top bar: fixed, 24 px high, right aligned, print toggle then mode switch, native buttons, keyboard operable, labeled.
+- Top bar: fixed, 24 px high, right aligned, print toggle labelled `print friendly`, then mode switch, native buttons, keyboard operable, labeled.
 - Colors only through `var(--...)`. Diagram tokens are scoped per section; the print override comes last.
 - Marker ids unique per page, prefixed by section. Pair each line class with the matching arrowhead.
 - `--muted` drives text and plain connectors, `--line` drives borders, `--accent` the focus card and active edge, `--mint` the section pill.

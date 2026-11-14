@@ -41,14 +41,14 @@
     --page-ink: #000000;
     --page-muted: #333333;
     --page-line: #9a9a9a;
-    --page-mint: #000000;
+    --page-mint: #e6e6e6;
     --tb-bg: #ffffff;
     --tb-ink: #333333;
     --tb-line: #9a9a9a;
     --thumb: #cbcbcb;
     --thumb-line: #888888;
   }
-  html[data-print="on"] h2 { border-color: #000000; }
+  html[data-print="on"] h2 { background: #e6e6e6; color: #000000; border-color: #000000; }
   * { box-sizing: border-box; }
   body {
     margin: 0;
@@ -106,10 +106,11 @@
   }
   .s { width: 1px; height: 12px; background: var(--tb-line); }
   .tb-btn {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 27px; height: 18px; padding: 0; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+    height: 18px; padding: 0 6px; cursor: pointer;
     color: inherit; background: transparent;
     border: 1px solid var(--tb-line); border-radius: 2px;
+    white-space: nowrap;
   }
   .tb-btn svg { width: 13px; height: 13px; }
   .tb-btn.on { background: var(--tb-ink); color: var(--tb-bg); border-color: var(--tb-ink); }
@@ -139,8 +140,8 @@
     #tb { display: none; }
     main { max-width: none; padding: 0; }
     body { background: #ffffff; color: #000000; }
-    :root { --page-mint: #000000; }
-    html h2 { border-color: #000000; }
+    :root { --page-mint: #e6e6e6; }
+    html h2 { color: #000000; border-color: #000000; }
     h1, .sub, .note, .meta, footer { color: #000000; }
     footer { border-top-color: #9a9a9a; }
     html[data-theme] .diagram { --card: #ffffff; --ink: #000000; --muted: #333333; --line: #9a9a9a; --accent: #000000; }
@@ -152,12 +153,13 @@
 <body>
 
 <div id="tb" role="group" aria-label="Page controls">
-  <button class="tb-btn" id="print" type="button" aria-pressed="false" aria-label="Print theme" title="Print theme">
+  <button class="tb-btn" id="print" type="button" aria-pressed="false" aria-label="Print friendly" title="Print friendly">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M6 9V3h12v6"/>
       <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
       <rect x="6" y="14" width="12" height="8" rx="1"/>
     </svg>
+    <span>print friendly</span>
   </button>
   <span class="s" aria-hidden="true"></span>
   <button class="toggle on" id="mode" type="button" role="switch" aria-checked="true" aria-label="Light mode" title="Light or dark mode">

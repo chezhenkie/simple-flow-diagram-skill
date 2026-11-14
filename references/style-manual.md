@@ -41,7 +41,7 @@ footer          shared infrastructure or invariant, 1-2 sentences
 Rules:
 
 - Accent marks the focus card and the active edge of the path. Keep accent connectors to one or two per diagram.
-- Mint is fixed across screen themes; print uses a black pill with white text.
+- Mint is fixed across screen themes; print uses a light grey pill with black text and a black border.
 - All SVG fills and strokes use classes backed by `var(--...)`, never hardcoded colors, so the dark theme follows without a second stylesheet.
 - One common page background per page, set by the mode, not by the individual diagram palettes. Diagram sections carry no page tint; the catalog `--bg` and `--mint` rows map to the page tokens `--page-bg` and `--page-mint`.
 - Light mode uses light palettes only; dark mode uses dark palettes only, also when several diagrams share a page. Mix pairs for contrast: L1/D1, L2/D3, L3/D2, L4/D5.
@@ -53,7 +53,7 @@ Rules:
 |---|---|---|---|
 | h1 | 22 | 400 | page title |
 | `.sub` | 13 | 400 | page subtitle |
-| h2 | 16 | 400 | section pill, white on mint |
+| h2 | 16 | 400 | section pill, white on mint (black on light grey in print) |
 | `.meta` | 11 | 400 | palette pair label beside the pill |
 | `.note` | 13 | 400 | instruction above the diagram |
 | `.t` | 14.5 | 600 | card title |
@@ -286,7 +286,7 @@ Visual checks:
 - [ ] `role="img"` and a full `aria-label` on each SVG.
 - [ ] Light and dark checked in a browser.
 - [ ] Python validation passes.
-- [ ] Top bar present: 24 px, print toggle then mode switch, keyboard operable.
+- [ ] Top bar present: 24 px, print toggle labelled `print friendly`, then mode switch, keyboard operable.
 - [ ] Every diagram uses a palette from the active family; one common background per page.
 - [ ] Print toggle forces P0 and hides the bar in the print preview.
 - [ ] Inline scripts limited to the bar; no external files.
@@ -298,10 +298,10 @@ Visual checks:
 Bar:
 
 - Fixed, 24 px high, right aligned, 10 px UI font, 1 px bottom border.
-- Print toggle: 27 x 18 px, printer icon, `aria-pressed`. Active fill uses the bar ink.
+- Print toggle: auto width, 18 px high, printer icon plus the label `print friendly`, `aria-pressed`. Active fill uses the bar ink.
 - Mode switch: 44 x 20 px, moon left and sun right, 16 px thumb, `aria-checked` true in light mode.
 - Both controls are native `<button>` elements, so Enter and Space work without key handlers.
-- Labels: `aria-label` and `title` on both; no visible text inside the bar.
+- Labels: the print toggle shows `print friendly`; the mode switch has no visible text. Both carry `aria-label` and `title`.
 
 State:
 
@@ -323,5 +323,5 @@ Scripts:
 Print:
 
 - `@page` margin 12 mm, exact color adjust, `break-inside: avoid` per section.
-- `@media print` hides the bar, removes the page cap and repeats the P0 override, so paper output is print-themed even when the toggle was never clicked.
+- `@media print` hides the bar, removes the page cap and repeats the P0 override, so paper output is print-themed even when the toggle was never clicked. The P0 pill is light grey with black text and a black border.
 - Print mode on screen keeps the bar visible; only the print preview hides it.
