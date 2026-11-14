@@ -2,7 +2,7 @@
 scratch/
 .tmp/
 # test artifacts
-tests/.artifacts/
+tools/.artifacts/
 # logs
 *.log
 # OS noise

@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.5.0
+
+### New features
+
+#### All platforms
+
+* Moved the skill payload to `agent-skill/`: `SKILL.md`, `template.html`, `demo.html` and `references/`.
+* Moved the validator and bar harness to `tools/`; run `python tools/check.py`.
+* Added the public GitHub Pages demo and linked it from the README.
+* Added per-agent install and invocation instructions for OpenCode, Codex, Pi and OMP.
+
 ## 0.4.0
 
 ### New features

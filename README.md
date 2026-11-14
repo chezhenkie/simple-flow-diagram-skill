@@ -41,17 +41,22 @@ Print friendly on: the print control fills, the light/dark selection stays uncha
 
 | File | Purpose |
 |---|---|
-| `SKILL.md` | Agent entry point, workflow and hard rules |
-| `template.html` | Page shell to copy; marked diagram slot |
-| `demo.html` | Filled reference page with three diagrams |
-| `references/style-manual.md` | Grid, type scale, card anatomy, connectors, validation |
-| `references/palettes.html` | Palette catalog for both modes and print |
-| `tests/` | Static and bar behavior checks |
+| `agent-skill/SKILL.md` | Agent entry point, workflow and hard rules |
+| `agent-skill/template.html` | Page shell to copy; marked diagram slot |
+| `agent-skill/demo.html` | Filled reference page with three diagrams |
+| `agent-skill/references/style-manual.md` | Grid, type scale, card anatomy, connectors, validation |
+| `agent-skill/references/palettes.html` | Palette catalog for both modes and print |
+| `tools/` | Static and bar behavior checks |
+| `docs/` | Screenshots and the GitHub Pages entry |
 | `CHANGELOG.md` | Version history |
 
 ## Install
 
-Clone the repository into the skills folder for your agent. Keep the folder name `simple-flow-diagram-skill`; it must match the `name` in `SKILL.md`. `~` is your home directory. If your shell does not expand it, use the full path.
+The skill payload is in `agent-skill/`. Clone the repository, then copy that folder into the skills folder for your agent and name the copy `simple-flow-diagram-skill`. The folder name must match the `name` in `SKILL.md`.
+
+```sh
+git clone https://github.com/chezhenkie/simple-flow-diagram-skill.git
+```
 
 | Agent | All projects | One project |
 |---|---|---|
@@ -60,17 +65,13 @@ Clone the repository into the skills folder for your agent. Keep the folder name
 | Pi | `~/.pi/agent/skills` | `.pi/skills` |
 | OMP | `~/.omp/agent/skills` | `.omp/skills` |
 
-Replace `<skills-dir>` with the path for your agent and scope:
-
-```sh
-git clone https://github.com/chezhenkie/simple-flow-diagram-skill.git "<skills-dir>/simple-flow-diagram-skill"
-```
+Copy `simple-flow-diagram-skill/agent-skill` to the path from the table as `simple-flow-diagram-skill`. `~` is your home directory. If your shell does not expand it, use the full path.
 
 Codex scans `.agents/skills` from the current folder up to the repository root. Pi and OMP scan one level under `skills/`. Restart the agent if the skill does not appear.
 
 ## Use
 
-Ask for a flow diagram in this style. The agent reads `SKILL.md`, copies `template.html`, fills the page copy and inserts one section per diagram. The diagram body in `references/style-manual.md` section 10 is the starting block.
+Ask for a flow diagram in this style. The agent reads `agent-skill/SKILL.md`, copies `agent-skill/template.html`, fills the page copy and inserts one section per diagram. The diagram body in `agent-skill/references/style-manual.md` section 10 is the starting block.
 
 ### Call the skill
 
@@ -90,7 +91,7 @@ Example request: `Draw the request path as a flow diagram in the house style.`
 Run from the repo root:
 
 ```sh
-python tests/check.py
+python tools/check.py
 ```
 
 The script validates ASCII and LF endings, palette tokens, SVG geometry, template and demo parity, and the bar state machine. Python 3 and Node are required.

@@ -37,20 +37,21 @@ def one_hex(css, name):
     return m.group(1).lower() if m else None
 
 
-files = ["README.md", "SKILL.md", "template.html", "demo.html", "docs/index.html",
-         "CHANGELOG.md", "LICENSE", "references/style-manual.md", "references/palettes.html",
-         "tests/check.py", "tests/harness.js"]
+files = ["README.md", "agent-skill/SKILL.md", "agent-skill/template.html",
+         "agent-skill/demo.html", "docs/index.html", "CHANGELOG.md", "LICENSE",
+         "agent-skill/references/style-manual.md", "agent-skill/references/palettes.html",
+         "tools/check.py", "tools/harness.js"]
 for f in files:
     b = read(f)
     check(all(x <= 126 and (x >= 32 or x in (9, 10)) for x in b), f + " ascii")
     check(b"\r" not in b, f + " lf only")
 
-demo = text("demo.html")
-tpl = text("template.html")
-skill = text("SKILL.md")
-man = text("references/style-manual.md")
+demo = text("agent-skill/demo.html")
+tpl = text("agent-skill/template.html")
+skill = text("agent-skill/SKILL.md")
+man = text("agent-skill/references/style-manual.md")
 cl = text("CHANGELOG.md")
-cat = text("references/palettes.html")
+cat = text("agent-skill/references/palettes.html")
 rd = text("README.md")
 
 # Page structure
@@ -298,7 +299,7 @@ check(lines[1].startswith("name: simple-flow-diagram-skill"), "skill name")
 desc_m = re.search(r'description:\s*"(.*)"', skill)
 check(desc_m is not None and 1 <= len(desc_m.group(1)) <= 1024, "skill description length")
 for link in re.findall(r"\]\(([^)]+)\)", skill):
-    check(os.path.isfile(link), "skill link " + link)
+    check(os.path.isfile(os.path.join("agent-skill", link)), "skill link " + link)
 check("demo.html" in skill and "template.html" in skill and "references/style-manual.md" in skill,
       "skill file map")
 low = skill.lower()
@@ -335,7 +336,7 @@ check(man.count("```") % 2 == 0, "manual fences balanced")
 
 # Changelog
 versions = re.findall(r"^## (\d+\.\d+\.\d+)$", cl, re.M)
-check(versions == ["0.4.0", "0.3.0", "0.2.0", "0.1.0"], "changelog versions newest first")
+check(versions == ["0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"], "changelog versions newest first")
 check(not re.search(r"\b(19|20)\d\d\b", cl), "changelog no dates")
 check(not re.search(r"\bv\d+\.\d+", cl), "changelog bare versions")
 check("inline bar scripts" in cl, "changelog script wording")
@@ -357,11 +358,11 @@ check("@simple-flow-diagram-skill" in rd and "$simple-flow-diagram-skill" in rd
       and rd.count("/skill:simple-flow-diagram-skill") == 2, "readme skill invocations")
 check("~/.agents/skills" in rd and "~/.pi/agent/skills" in rd
       and "~/.omp/agent/skills" in rd and ".opencode/skills" in rd, "readme agent install paths")
-check("<skills-dir>" in rd, "readme install placeholder")
+check("simple-flow-diagram-skill/agent-skill" in rd, "readme install payload")
 check("Windows" not in rd and "PowerShell" not in rd and "%USERPROFILE%" not in rd, "readme no os specifics")
 
 # Script syntax and behavior
-artifacts = os.path.join("tests", ".artifacts")
+artifacts = os.path.join("tools", ".artifacts")
 os.makedirs(artifacts, exist_ok=True)
 for old in os.listdir(artifacts):
     if re.match(r"s\d\.js$", old):
@@ -380,7 +381,7 @@ if node:
         check(r.returncode == 0, "script %d syntax" % i)
         if r.returncode != 0:
             print(r.stderr.strip()[:300])
-    hp = os.path.join("tests", "harness.js")
+    hp = os.path.join("tools", "harness.js")
     r = subprocess.run([node, hp], capture_output=True, text=True)
     check(r.returncode == 0, "bar behavior harness")
     if r.returncode != 0:
