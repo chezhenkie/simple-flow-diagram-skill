@@ -61,13 +61,12 @@
   h1 { font-size: 22px; font-weight: 400; margin: 0 0 4px; letter-spacing: 0.2px; }
   .sub { color: var(--page-muted); font-size: 13px; margin: 0 0 32px; }
   section { margin: 0 0 42px; }
-  .head { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; }
+  .head { display: flex; align-items: center; margin: 0 0 10px; }
   h2 {
     display: inline-flex; align-items: center; height: 28px; padding: 0 12px 4px;
     font-size: 16px; font-weight: 400; margin: 0; background: var(--page-mint);
     color: #ffffff; border: 1px solid #335742; border-radius: 3px;
   }
-  .meta { margin-left: auto; color: var(--page-muted); font-size: 11px; letter-spacing: 0.3px; }
   .note { color: var(--page-muted); font-size: 13px; margin: 0 0 16px; }
   svg { display: block; width: 100%; height: auto; }
   .card { fill: var(--card); stroke: var(--line); stroke-width: 1.2; }
@@ -142,7 +141,7 @@
     body { background: #ffffff; color: #000000; }
     :root { --page-mint: #e6e6e6; }
     html h2 { color: #000000; border-color: #000000; }
-    h1, .sub, .note, .meta, footer { color: #000000; }
+    h1, .sub, .note, footer { color: #000000; }
     footer { border-top-color: #9a9a9a; }
     html[data-theme] .diagram { --card: #ffffff; --ink: #000000; --muted: #333333; --line: #9a9a9a; --accent: #000000; }
     section { break-inside: avoid; margin-bottom: 24px; }
@@ -185,7 +184,6 @@
   <section class="diagram d1">
     <div class="head">
       <h2>request path: client to row</h2>
-      <span class="meta">L2 / D3</span>
     </div>
     <p class="note">Cache reads sit on the left lane; a miss falls through to the store card.</p>
     <svg viewBox="0 0 1040 376" role="img" aria-label="Request path: request, handler focus, store cards, cache side channel, tag line">
@@ -230,7 +228,6 @@
   <section class="diagram d2">
     <div class="head">
       <h2>video path: url to file</h2>
-      <span class="meta">L3 / D2</span>
     </div>
     <p class="note">Audio leaves the main path before mux; the video path never waits on it.</p>
     <svg viewBox="0 0 1040 376" role="img" aria-label="Video path: fetch, transcode focus, mux cards, audio side channel, tag line">
@@ -275,7 +272,6 @@
   <section class="diagram d3">
     <div class="head">
       <h2>docs path: draft to page</h2>
-      <span class="meta">L4 / D5</span>
     </div>
     <p class="note">Review holds the draft until both comments resolve; publish reads only the reviewed file.</p>
     <svg viewBox="0 0 1040 376" role="img" aria-label="Docs path: draft, review focus, publish cards, shared spec side channel, tag line">
