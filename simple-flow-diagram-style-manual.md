@@ -1,8 +1,6 @@
 # Flow diagram style manual
 
-Specsheet for hand-written, single-file flow diagrams in the ntfy/ytdlp page style. One vertical main path, optional side blocks, muted palette, light and dark from the OS preference, no dependencies.
-
-Reference pages: `ntfy-flow.html`, `ytdlp-cli-flow.html`.
+Specsheet for hand-written, single-file flow diagrams. One vertical main path, optional side blocks, muted palette, light and dark from the OS preference, no dependencies.
 
 ## 1. File contract
 
@@ -31,11 +29,11 @@ footer          shared infrastructure or invariant, 1-2 sentences
 
 | token | light | dark | use |
 |---|---|---|---|
-| `--bg` | `#d8e4f5` | `#0f1a2b` | page background |
+| `--bg` | `#dfe4ee` | `#161b24` | page background |
 | `--card` | `#fdfdfd` | `#262626` | card and tag fill |
 | `--ink` | `#14181c` | `#e6ebef` | titles |
-| `--muted` | `#546374` | `#93a2b3` | descriptions, captions, footer |
-| `--line` | `#c9c9c9` | `#424242` | borders, solid connectors |
+| `--muted` | `#546374` | `#93a2b3` | descriptions, captions, footer, connectors |
+| `--line` | `#c9c9c9` | `#424242` | borders |
 | `--accent` | `#0f766e` | `#4fd1c5` | focus border, action arrow |
 | `--mint` | `#46755c` | `#46755c` | section pill only |
 
@@ -127,9 +125,9 @@ Solid arrows connect consecutive main cards. Caption states the condition, proto
 <text class="cap" x="549" y="118">first http(s) link wins</text>
 ```
 
-- `arrow`: 1.4 stroke, `--line`.
+- `arrow`: 1.4 stroke, `--muted`.
 - `arrow-a`: 1.6 stroke, `--accent`, marks the action into or out of the focus card. One or two per diagram.
-- `dash`: 1.2 stroke, 5 4 dasharray, `--line`. Optional channels and alternate branches only.
+- `dash`: 1.2 stroke, 5 4 dasharray, `--muted`. Optional channels and alternate branches only.
 - Line and arrowhead are separate objects. The color of the marker path lives in `<defs>` and does not follow the line class, so pair them explicitly: `arrow` with the plain marker, `arrow-a` with the accent marker.
 - Marker ids must be unique per page. Prefix by section: `vidHead`, `sumHead`.
 
@@ -139,7 +137,7 @@ Marker definition, once per color per diagram:
 <defs>
   <marker id="flowHead" viewBox="0 0 10 10" refX="9" refY="5"
           markerWidth="7" markerHeight="7" orient="auto">
-    <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--line)"/>
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
   </marker>
   <marker id="flowHeadA" viewBox="0 0 10 10" refX="9" refY="5"
           markerWidth="7" markerHeight="7" orient="auto">
@@ -203,7 +201,7 @@ Rules:
 <title>topic flow</title>
 <style>
   :root {
-    --bg: #d8e4f5;
+    --bg: #dfe4ee;
     --card: #fdfdfd;
     --ink: #14181c;
     --muted: #546374;
@@ -213,7 +211,7 @@ Rules:
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #0f1a2b;
+      --bg: #161b24;
       --card: #262626;
       --ink: #e6ebef;
       --muted: #93a2b3;
@@ -244,9 +242,9 @@ Rules:
   .d { fill: var(--muted); font-size: 12.5px; }
   .cap { fill: var(--muted); font-size: 11.5px; }
   .side { fill: var(--muted); font-size: 11.5px; }
-  .arrow { stroke: var(--line); stroke-width: 1.4; fill: none; }
+  .arrow { stroke: var(--muted); stroke-width: 1.4; fill: none; }
   .arrow-a { stroke: var(--accent); stroke-width: 1.6; fill: none; }
-  .dash { stroke: var(--line); stroke-width: 1.2; fill: none; stroke-dasharray: 5 4; }
+  .dash { stroke: var(--muted); stroke-width: 1.2; fill: none; stroke-dasharray: 5 4; }
   .tag { fill: var(--card); stroke: var(--line); stroke-width: 1; }
   footer { color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); padding-top: 12px; }
 </style>
@@ -264,7 +262,7 @@ Rules:
       <defs>
         <marker id="flowHead" viewBox="0 0 10 10" refX="9" refY="5"
                 markerWidth="7" markerHeight="7" orient="auto">
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--line)"/>
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
         </marker>
         <marker id="flowHeadA" viewBox="0 0 10 10" refX="9" refY="5"
                 markerWidth="7" markerHeight="7" orient="auto">
