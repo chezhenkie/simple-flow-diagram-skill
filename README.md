@@ -13,7 +13,7 @@ Click a sample to open the full-size PNG.
 
 <table>
   <tr>
-    <td><h3><a href="https://chezhenkie.github.io/simple-flow-diagram-skill/">CLICK HERE TO OPEN THE LIVE, GITHUB-HOSTED DEMO PAGE</a></h3></td>
+    <td><a href="https://chezhenkie.github.io/simple-flow-diagram-skill/">CLICK HERE TO OPEN THE LIVE, GITHUB-HOSTED DEMO PAGE</a></td>
   </tr>
 </table>
 
