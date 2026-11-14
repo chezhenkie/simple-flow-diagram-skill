@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.0
+
+### New features
+
+#### All platforms
+
+* Added `template.html`: page shell with the top bar, token blocks, print rules and a marked diagram slot, no diagram content.
+* Added `README.md` and `docs/` screenshots: demo page in light, dark and print states, plus closeups of both page controls.
+* Top bar uses the page background with no divider; controls sit directly on the page.
+* Skill workflow and style manual start from the template; `demo.html` remains the filled reference page.
+
 ## 0.3.0
 
 ### New features

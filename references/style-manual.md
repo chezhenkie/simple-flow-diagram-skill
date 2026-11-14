@@ -4,7 +4,7 @@ Specsheet for hand-written, single-file flow diagrams with a small top bar for l
 
 ## 1. File contract
 
-- One `.html` file per topic, named `<topic>-flow.html`.
+- One `.html` file per topic, named `<topic>-flow.html`, copied from `template.html`.
 - UTF-8, printable ASCII only. No typographic quotes, dashes, arrows or bullets.
 - Inline scripts limited to the top bar and its initial mode. No external CSS, fonts, images or icon sets. Must open from `file://`.
 - Light and dark themes from the top bar switch, initial state from `prefers-color-scheme`. The print theme is a separate toggle.
@@ -197,7 +197,7 @@ Rules:
 
 ## 10. Diagram body
 
-Copy the page shell from `demo.html`: page tokens, top bar, theme script, bar script and print rules. The block below is one section body to place inside `<main>`. It uses the demo `d1` slot, which carries L2/D3; change the section class when you pick another pair.
+Copy the page shell from `template.html`: page tokens, top bar, theme script, bar script and print rules. The block below is one section body to place at the template's diagram slot; repeat it for each diagram. It uses the demo `d1` slot, which carries L2/D3; change the section class when you pick another pair.
 
 ```html
 <section class="diagram d1">
@@ -295,7 +295,7 @@ Visual checks:
 
 Bar:
 
-- Fixed, 24 px high, right aligned, 10 px UI font, 1 px bottom border.
+- Fixed, 24 px high, right aligned, 10 px UI font. Fill is `var(--page-bg)` with no bottom divider, so the controls sit directly on the page.
 - Print toggle: auto width, 18 px high, printer icon plus the label `print friendly`, `aria-pressed`. Active fill uses the bar ink.
 - Mode switch: 44 x 20 px, moon left and sun right, 16 px thumb, `aria-checked` true in light mode.
 - Both controls are native `<button>` elements, so Enter and Space work without key handlers.
