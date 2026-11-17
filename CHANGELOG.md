@@ -7,6 +7,7 @@
 #### All platforms
 
 * Readability is the first theme rule. The nine themes were retuned for contrast in light, dark and print, and the theme set was checked in the browser.
+* The section title is an outline in every theme and in print: transparent fill, a 2 px accent border and page ink text, so no theme dominates the page with a filled block. The README intro states the palette work and the light theme handling.
 * Pill text is black or white by measured contrast: vercel and cursor take black, tokyonight and orng keep white.
 * Light theme inks darkened: vercel `#B81F1F` (4.99:1), tokyonight `#2655C2` (5.14:1), orng `#A63D1A` (4.91:1).
 * Nightowl outline `#9B6FD0` and accent `#27A65C`; solarized muted text `#8FA5AA`.
