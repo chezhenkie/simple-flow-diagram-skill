@@ -57,7 +57,7 @@ Rules:
 |---|---|---|---|
 | h1 | 22 | 400 | page title |
 | `.sub` | 13 | 400 | page subtitle |
-| h2 | 16 | 600 | section pill, accent fill with contrast text (grey on black in print) |
+| h2 | 16 | 600 | section pill, accent fill with contrast text (black on light grey in print) |
 | `.note` | 13 | 400 | instruction above the diagram |
 | `.t` | 14.5 | 600 | card title |
 | `.d` | 12.5 | 400 | card description |
@@ -342,7 +342,7 @@ Visual checks:
 - Confirm a split row: two arrows land on the card centres, each caption sits in its own half, and no connector meets an inner edge.
 - Confirm each loopback leaves and enters a main card at a free mark, never on a side stub, and that no loop connector starts under a side box.
 - Confirm round loop dots read apart from side dashes (5 4).
-- Confirm one accent card and one accent arrow per diagram.
+- Confirm one focus card and at most two accent connectors per diagram.
 - Confirm every marker id referenced by a line exists, and ids are unique across the page.
 
 ## 12. Checklist
@@ -377,7 +377,7 @@ Bar:
 - Print toggle: auto width, 18 px high, printer icon plus the label `print friendly`, `aria-pressed`. Active fill uses the bar ink.
 - Mode switch: 44 x 20 px, moon left and sun right, 16 px thumb, `aria-checked` true in light mode.
 - Dark theme and light theme: text label plus a solid downward caret, 18 px high, same border as the print toggle, 68 px minimum width, each with a foldout below it. No icons.
-- A foldout lists the five theme names for its mode, one row per name, `role="menu"` with `menuitemradio` rows and the current theme marked `aria-checked`. Picking a name applies it and switches to that mode.
+- A foldout lists the theme names for its mode, one row per name, `role="menu"` with `menuitemradio` rows and the current theme marked `aria-checked`. Picking a name applies it and switches to that mode.
 - All controls are native `<button>` elements, so Enter and Space work without key handlers. Escape closes a foldout, and so does a click outside it.
 
 State:
@@ -385,7 +385,7 @@ State:
 - `html[data-theme="light"]` or `html[data-theme="dark"]` selects the mode, and with it which theme list applies.
 - Each mode remembers its own theme. The mode switch flips between the two picks.
 - `html[data-print="on"]` forces the print tokens on a white page. It does not change `data-theme`; switching it off restores the mode that was active before.
-- Initial mode comes from `prefers-color-scheme`; OS changes are followed until the user toggles. No storage.
+- Initial mode comes from `prefers-color-scheme`; OS changes are followed until the mode switch is used. No storage.
 
 Token scope:
 
