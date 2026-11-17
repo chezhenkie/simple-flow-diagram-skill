@@ -1,6 +1,6 @@
 ---
 name: simple-flow-diagram-skill
-description: "Build a flow diagram as one standalone HTML page: one vertical main path, optional side channels, and a fixed top bar with twelve themes, light/dark switching and a print view already wired up. Built for speed and token efficiency: the template carries every repeated decision, so the agent writes only the cards and captions in one pass, and output stays consistent and short. Use when asked for a process flow, request path, pipeline, decision flow, state or lifecycle flow, or to restyle an existing flow diagram to this style."
+description: "Build a flow diagram as one standalone HTML page: one vertical main path, optional side channels, and a fixed top bar with ten themes, light/dark switching and a print view already wired up. Built for speed and token efficiency: the template carries every repeated decision, so the agent writes only the cards and captions in one pass, and output stays consistent and short. Use when asked for a process flow, request path, pipeline, decision flow, state or lifecycle flow, or to restyle an existing flow diagram to this style."
 license: MIT
 ---
 
@@ -12,7 +12,7 @@ One self-contained `.html` page per topic, or one page with several diagrams. St
 
 - Minimal token use. Copy the shell, the theme table and the scripts; write only the page copy and the diagram cards.
 - Speed. One pass, no colour or layout decisions, no second draft.
-- Consistency. The same grid and the same twelve themes on every run, from any model.
+- Consistency. The same grid and the same ten themes on every run, from any model.
 
 Do not choose colors or restyle controls; the page follows whichever theme the reader picks.
 
@@ -31,7 +31,7 @@ The full contract lives in [references/style-manual.md](references/style-manual.
 ## Themes and modes
 
 - One theme covers the page and every diagram on it. Sections carry no class, no token block and no color of their own.
-- The reader picks the theme: six dark names and six light names in the two foldouts, each mode remembering its own pick.
+- The reader picks the theme: five dark names and five light names in the two foldouts, each mode remembering its own pick.
 - The mode switch chooses light or dark and starts from the OS preference. Print is a separate toggle with fixed values.
 - Never hardcode a fill or stroke outside the template's classes and `var(--...)` tokens.
 

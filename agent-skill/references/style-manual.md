@@ -41,7 +41,7 @@ The page carries one theme, and every diagram on it follows that theme. A theme 
 | `line` | card and tag borders, bar lines |
 | `accent` | section pill, focus border, action arrow |
 
-Twelve themes ship in the template, six per mode. Dark: `ayu`, `catppuccin`, `github`, `nightowl`, `solarized`, `vercel`. Light: `cursor`, `monokai`, `orng`, `synthwave84`, `tokyonight`, `vercel`.
+Ten themes ship in the template, five per mode. Dark: `ayu`, `github`, `nightowl`, `solarized`, `monochrome`. Light: `cursor`, `monokai`, `orng`, `tokyonight`, `vercel`.
 
 Rules:
 
@@ -304,7 +304,7 @@ Bar:
 - Print toggle: auto width, 18 px high, printer icon plus the label `print friendly`, `aria-pressed`. Active fill uses the bar ink.
 - Mode switch: 44 x 20 px, moon left and sun right, 16 px thumb, `aria-checked` true in light mode.
 - Dark theme and light theme: text label plus a solid downward caret, 18 px high, same border as the print toggle, 68 px minimum width, each with a foldout below it. No icons.
-- A foldout lists the six theme names for its mode, one row per name, `role="menu"` with `menuitemradio` rows and the current theme marked `aria-checked`. Picking a name applies it and switches to that mode.
+- A foldout lists the five theme names for its mode, one row per name, `role="menu"` with `menuitemradio` rows and the current theme marked `aria-checked`. Picking a name applies it and switches to that mode.
 - All controls are native `<button>` elements, so Enter and Space work without key handlers. Escape closes a foldout, and so does a click outside it.
 
 State:

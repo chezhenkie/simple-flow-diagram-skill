@@ -179,10 +179,10 @@ if raw:
     except Exception:
         themes = {}
 check(set(themes) == {"dark", "light"}, "theme table has two modes")
-DARK = ["ayu", "catppuccin", "github", "nightowl", "solarized", "vercel"]
-LIGHT = ["cursor", "monokai", "orng", "synthwave84", "tokyonight", "vercel"]
-check(list(themes.get("dark", {})) == DARK, "six dark themes in order")
-check(list(themes.get("light", {})) == LIGHT, "six light themes in order")
+DARK = ["ayu", "github", "nightowl", "solarized", "monochrome"]
+LIGHT = ["cursor", "monokai", "orng", "tokyonight", "vercel"]
+check(list(themes.get("dark", {})) == DARK, "five dark themes in order")
+check(list(themes.get("light", {})) == LIGHT, "five light themes in order")
 for mode in ("dark", "light"):
     for name, t in themes.get(mode, {}).items():
         check(sorted(t) == ["accent", "bg", "card", "ink", "line", "muted"],
@@ -347,7 +347,7 @@ check("token efficiency" in low and "minimal token use" in low and "speed." in l
       "skill goals")
 check("## Goals" in skill, "skill goals section")
 check("no external javascript" in low and "no javascript" not in low, "skill script rule")
-check("six dark names and six light names" in low, "skill theme count")
+check("five dark names and five light names" in low, "skill theme count")
 check("print toggle labelled `print friendly`" in low, "skill print label")
 check("dark theme` and `light theme` foldouts" in low or "`dark theme` and `light theme`" in low,
       "skill foldout labels")

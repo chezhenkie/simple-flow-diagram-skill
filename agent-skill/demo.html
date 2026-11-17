@@ -17,15 +17,15 @@
     --page-bg: #FCFCFC;
     --page-ink: #141414;
     --page-muted: #5F5F5F;
-    --page-line: #EBEBEB;
+    --page-line: #D4D4D4;
     --card: #F3F3F3;
     --ink: #141414;
     --muted: #5F5F5F;
-    --line: #EBEBEB;
+    --line: #D4D4D4;
     --accent: #6F9BA6;
     --pill-ink: #FFFFFF;
     --tb-ink: #5F5F5F;
-    --tb-line: #EBEBEB;
+    --tb-line: #D4D4D4;
     --thumb: #cbcbcb;
     --thumb-line: #888888;
   }
@@ -202,7 +202,7 @@
 
 <main>
   <h1>flow diagram board</h1>
-  <p class="sub">Three flows, one theme. The bar switches mode, picks a theme and turns on the print theme.</p>
+  <p class="sub">Three flow diagrams on one page. The bar switches mode, picks a theme and turns on the print theme.</p>
 
   <!-- Diagram slot: insert one section per diagram. -->
 
@@ -323,7 +323,7 @@
             <rect class="card" x="800" y="138" width="220" height="70" rx="3"/>
             <text class="t" x="816" y="164">Shared spec</text>
             <text class="d" x="816" y="182">one theme per page</text>
-            <text class="d" x="816" y="197">twelve in the bar</text>
+            <text class="d" x="816" y="197">ten in the bar</text>
             <path class="dash" d="M 800 173 H 780" marker-end="url(#docHead)"/>
       
             <line class="arrow" x1="535" y1="208" x2="535" y2="236" marker-end="url(#docHead)"/>
@@ -354,17 +354,15 @@
     var THEMES = {
       dark: {
         ayu:        { bg: '#0B0E14', card: '#0F131A', ink: '#BFBDB6', muted: '#565B66', line: '#6C7380', accent: '#E6B450' },
-        catppuccin: { bg: '#1E1E2E', card: '#181825', ink: '#CDD6F4', muted: '#9399B2', line: '#313244', accent: '#F5C2E7' },
         github:     { bg: '#0D1117', card: '#010409', ink: '#C9D1D9', muted: '#8B949E', line: '#30363D', accent: '#39C5CF' },
         nightowl:   { bg: '#011627', card: '#0B253A', ink: '#D6DEEB', muted: '#5F7E97', line: '#5F7E97', accent: '#C792EA' },
         solarized:  { bg: '#002B36', card: '#073642', ink: '#839496', muted: '#586E75', line: '#073642', accent: '#2AA198' },
-        vercel:     { bg: '#000000', card: '#1A1A1A', ink: '#EDEDED', muted: '#878787', line: '#1F1F1F', accent: '#8E4EC6' }
+        monochrome: { bg: '#000000', card: '#1A1A1A', ink: '#EDEDED', muted: '#878787', line: '#1F1F1F', accent: '#FFFFFF' }
       },
       light: {
-        cursor:      { bg: '#FCFCFC', card: '#F3F3F3', ink: '#141414', muted: '#5F5F5F', line: '#EBEBEB', accent: '#6F9BA6' },
+        cursor:      { bg: '#FCFCFC', card: '#F3F3F3', ink: '#141414', muted: '#5F5F5F', line: '#D4D4D4', accent: '#6F9BA6' },
         monokai:     { bg: '#FAFAFA', card: '#F0F0F0', ink: '#272822', muted: '#75715E', line: '#D0D0D0', accent: '#A6E22E' },
         orng:        { bg: '#FFFFFF', card: '#FFF7F1', ink: '#1A1A1A', muted: '#8A8A8A', line: '#EC5B2B', accent: '#C94D24' },
-        synthwave84: { bg: '#FAFAFA', card: '#F5F5F5', ink: '#262335', muted: '#5C5C8A', line: '#E0E0E0', accent: '#9C27B0' },
         tokyonight:  { bg: '#E1E2E7', card: '#D5D6DB', ink: '#3760BF', muted: '#8990A3', line: '#737A8C', accent: '#B15C00' },
         vercel:      { bg: '#FFFFFF', card: '#FAFAFA', ink: '#171717', muted: '#666666', line: '#EAEAEA', accent: '#8E4EC6' }
       }

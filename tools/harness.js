@@ -90,8 +90,8 @@ function names(el) {
   return el.children.map(function (c) { return c.textContent; }).join(',');
 }
 
-var DARK = 'ayu,catppuccin,github,nightowl,solarized,vercel';
-var LIGHT = 'cursor,monokai,orng,synthwave84,tokyonight,vercel';
+var DARK = 'ayu,github,nightowl,solarized,monochrome';
+var LIGHT = 'cursor,monokai,orng,tokyonight,vercel';
 
 var c = makeContext(false);
 run(c);
@@ -118,10 +118,10 @@ c.darkBtn.click();
 ok(c.darkMenu.classList.contains('open') === false, 'dark menu closes');
 
 c.darkBtn.click();
-c.darkMenu.children[2].click();
+c.darkMenu.children[1].click();
 ok(c.root.getAttribute('data-theme') === 'dark', 'pick github switches to dark');
 ok(c.bg() === '#0D1117', 'github background applied');
-ok(c.darkMenu.children[2].getAttribute('aria-checked') === 'true', 'github marked');
+ok(c.darkMenu.children[1].getAttribute('aria-checked') === 'true', 'github marked');
 ok(c.darkMenu.children[0].getAttribute('aria-checked') === 'false', 'ayu unmarked');
 ok(c.darkMenu.classList.contains('open') === false, 'menu closes after pick');
 ok(c.darkBtn.getAttribute('aria-expanded') === 'false', 'button collapsed after pick');
@@ -129,7 +129,7 @@ ok(c.darkBtn.getAttribute('aria-expanded') === 'false', 'button collapsed after 
 c.mode.click();
 ok(c.bg() === '#FCFCFC', 'mode switch returns to cursor');
 c.lightBtn.click();
-c.lightMenu.children[5].click();
+c.lightMenu.children[4].click();
 ok(c.bg() === '#FFFFFF', 'vercel light background applied');
 c.mode.click();
 ok(c.bg() === '#0D1117', 'github remembered across mode switch');
