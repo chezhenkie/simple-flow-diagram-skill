@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.7.0
+
+### New features
+
+#### All platforms
+
+* Ten themes, retuned for contrast and ordered by mode. Dark: github, monochrome, ayu, nightowl, solarized. Light: tokyonight, vercel, cursor, monokai, orng.
+* Defaults are github for dark and tokyonight for light. The page opens in light mode on tokyonight.
+* Removed catppuccin and synthwave84. Dark vercel becomes monochrome.
+* Style manual moved to `agent-skill/style-manual.md`, beside `SKILL.md`. `references/` is gone.
+* `SKILL.md` saves new pages to the workspace root unless the project rules name another folder, and asks before deleting a diagram the user has seen.
+* README gains a Themes section naming all ten themes and a cost and speed section. Install instructions are OS neutral.
+* Added `tools/README.md`. The checker and bar harness cover the new theme table, the defaults and the print tokens: 321 checks.
+* Bar controls polished: wider print toggle with visible label, raised button text, per-mode switch thumb colors.
+* Regenerated all six screenshots from the current files.
+
 ## 0.6.0
 
 ### New features
