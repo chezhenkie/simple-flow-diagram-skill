@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.1.0
+
+### New features
+
+#### All platforms
+
+* All 70-high cards share one text grid: title at `y+26`, description lines at `y+44` and `y+59`. Main, focus and split cards now carry two description lines like side cards, with no taller box, and titles align across the main column and the side lanes.
+* Text budgets apply per line: 65 characters on a main line, 28 on a split line, 28 or 26 on a side line. A 90/100-high side card takes a third line at `y+74`.
+* The checker accepts the shared baselines and two-line cards: 370 checks.
+* Checks moved to `testing-tools/`; run `python testing-tools/check.py`.
+* README sample shots are recropped to the first two sections and the bar closeups display at 400 px.
+
 ## 1.0.0
 
 ### New features
