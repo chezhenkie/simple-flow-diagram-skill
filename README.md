@@ -2,6 +2,10 @@
 
 An agent skill that turns a process into a flow diagram on one HTML page, built for minimal token use and fast generation. Layout, ten themes, the light and dark switch and the print view live in the template, so the agent writes the cards and the captions and nothing else. Any model can place boxes and arrows; the point here is a consistent result at the smallest possible cost.
 
+## Themes
+
+Ten themes ship in the template, five per mode. Dark: github, monochrome, ayu, nightowl, solarized. Light: tokyonight, vercel, cursor, monokai, orng. The page opens on github or tokyonight from the OS preference, and the two foldouts switch names, each mode keeping its own pick. Every color on the page comes from the chosen theme, so a diagram carries no palette of its own.
+
 ## Cost and speed
 
 - Token use: the page shell, the theme table, the bar script and the print rules are copied as they are. New text per page is the title, the subtitle, the diagrams and the footer; a one-diagram page is a few hundred tokens.
