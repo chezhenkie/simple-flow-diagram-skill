@@ -102,6 +102,11 @@
   .tb-btn svg { width: 13px; height: 13px; }
   .tb-btn.on { background: var(--tb-ink); color: var(--page-bg); border-color: var(--tb-ink); }
   .tb-btn.fold { min-width: 68px; }
+  .tb-btn.fold::after {
+    content: ""; width: 0; height: 0; margin-left: 4px;
+    border-left: 3px solid transparent; border-right: 3px solid transparent;
+    border-top: 4px solid currentColor;
+  }
   .group { position: relative; display: inline-flex; }
   .menu {
     display: none; position: absolute; top: 21px; right: 0; z-index: 20;
@@ -255,7 +260,7 @@
       var vars = {
         '--page-bg': t.bg, '--page-ink': t.ink, '--page-muted': t.muted, '--page-line': t.line,
         '--card': t.card, '--ink': t.ink, '--muted': t.muted, '--line': t.line,
-        '--accent': t.accent, '--pill-ink': inkOn(t.accent),
+        '--accent': t.accent, '--pill-ink': root.getAttribute('data-theme') === 'light' ? '#FFFFFF' : inkOn(t.accent),
         '--tb-ink': t.muted, '--tb-line': t.line
       };
       for (var k in vars) root.style.setProperty(k, vars[k]);
@@ -266,7 +271,8 @@
         '--page-bg': '#FFFFFF', '--page-ink': '#000000', '--page-muted': '#333333',
         '--page-line': '#9A9A9A', '--card': '#FFFFFF', '--ink': '#000000',
         '--muted': '#333333', '--line': '#9A9A9A', '--accent': '#000000',
-        '--pill-ink': '#000000', '--tb-ink': '#333333', '--tb-line': '#9A9A9A'
+        '--pill-ink': '#000000', '--tb-ink': '#333333', '--tb-line': '#9A9A9A',
+        '--thumb': '#CBCBCB', '--thumb-line': '#888888'
       };
       for (var k in vars) root.style.setProperty(k, vars[k]);
     }

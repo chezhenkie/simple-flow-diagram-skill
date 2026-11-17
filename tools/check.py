@@ -115,6 +115,8 @@ check(re.search(r"\.tb-btn\s*\{[^}]*height:\s*18px", demo) is not None
       and re.search(r"\.tb-btn\s*\{[^}]*gap:\s*4px", demo) is not None, "bar button size")
 check(re.search(r"\.tb-btn\.fold\s*\{\s*min-width:\s*68px;\s*\}", demo) is not None,
       "theme buttons equal width")
+check(re.search(r"\.tb-btn\.fold::after\s*\{[^}]*border-top:\s*4px solid currentColor", demo)
+      is not None, "theme button caret")
 check(re.search(r"\.menu\s*\{[^}]*position:\s*absolute", demo) is not None, "menu overlay")
 check(re.search(r"\.menu\s*\{[^}]*top:\s*21px", demo) is not None, "menu below bar")
 check(re.search(r"\.menu\.open\s*\{\s*display:\s*flex;\s*\}", demo) is not None, "menu open state")
@@ -210,6 +212,9 @@ for fn in ("function applyTheme", "function applyPrint", "function buildMenu",
            "function setMode", "function setPrint"):
     check(fn in script, "bar script has " + fn[9:])
 check("--pill-ink" in script and "inkOn(t.accent)" in script, "pill ink derived")
+check("=== 'light' ? '#FFFFFF'" in script, "light pill ink white")
+check("'--thumb': '#CBCBCB'" in script and "'--thumb-line': '#888888'" in script,
+      "print resets switch thumb")
 check("menuitemradio" in script, "menu rows are menuitemradio")
 check("prefers-color-scheme" in scripts[0] and "prefers-color-scheme" in script, "os preference read")
 check("if (!manual)" in script, "os follow until manual")

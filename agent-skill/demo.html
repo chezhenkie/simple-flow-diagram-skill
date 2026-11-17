@@ -102,6 +102,11 @@
   .tb-btn svg { width: 13px; height: 13px; }
   .tb-btn.on { background: var(--tb-ink); color: var(--page-bg); border-color: var(--tb-ink); }
   .tb-btn.fold { min-width: 68px; }
+  .tb-btn.fold::after {
+    content: ""; width: 0; height: 0; margin-left: 4px;
+    border-left: 3px solid transparent; border-right: 3px solid transparent;
+    border-top: 4px solid currentColor;
+  }
   .group { position: relative; display: inline-flex; }
   .menu {
     display: none; position: absolute; top: 21px; right: 0; z-index: 20;
@@ -202,136 +207,136 @@
   <!-- Diagram slot: insert one section per diagram. -->
 
   <section>
-        <div class="head">
-          <h2>request path: client to row</h2>
-        </div>
-        <p class="note">Cache reads sit on the left lane; a miss falls through to the store card.</p>
-        <svg viewBox="0 0 1040 376" role="img" aria-label="Request path: request, handler focus, store cards, cache side channel, tag line">
-          <defs>
-            <marker id="rqHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
-            </marker>
-            <marker id="rqHeadA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
-            </marker>
-          </defs>
-    
-          <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
-          <text class="t" x="318" y="60">Request</text>
-          <text class="d" x="318" y="80">GET /v1/items, bearer token checked</text>
-    
-          <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#rqHeadA)"/>
-          <text class="cap" x="549" y="118">route match</text>
-    
-          <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
-          <text class="t" x="318" y="168">Handler</text>
-          <text class="d" x="318" y="188">validate, query pool, render json</text>
-    
-          <rect class="card" x="40" y="138" width="210" height="70" rx="3"/>
-          <text class="t" x="56" y="164">Cache</text>
-          <text class="d" x="56" y="182">redis, 60 s ttl</text>
-          <text class="d" x="56" y="197">misses fall through</text>
-          <path class="dash" d="M 250 173 H 290" marker-end="url(#rqHead)"/>
-    
-          <line class="arrow" x1="535" y1="208" x2="535" y2="236" marker-end="url(#rqHead)"/>
-          <text class="cap" x="549" y="226">row set</text>
-    
-          <rect class="card" x="300" y="246" width="470" height="70" rx="3"/>
-          <text class="t" x="318" y="276">Store</text>
-          <text class="d" x="318" y="296">postgres pool, 8 conns, 3 s timeout</text>
-    
-          <rect class="tag" x="300" y="344" width="470" height="26" rx="3"/>
-          <text class="side" x="318" y="361">one request ends in one response: 200 or 4xx</text>
-        </svg>
-      </section>
+          <div class="head">
+            <h2>request path: client to row</h2>
+          </div>
+          <p class="note">Cache reads sit on the left lane; a miss falls through to the store card.</p>
+          <svg viewBox="0 0 1040 376" role="img" aria-label="Request path: request, handler focus, store cards, cache side channel, tag line">
+            <defs>
+              <marker id="rqHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
+              </marker>
+              <marker id="rqHeadA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
+              </marker>
+            </defs>
+      
+            <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
+            <text class="t" x="318" y="60">Request</text>
+            <text class="d" x="318" y="80">GET /v1/items, bearer token checked</text>
+      
+            <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#rqHeadA)"/>
+            <text class="cap" x="549" y="118">route match</text>
+      
+            <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
+            <text class="t" x="318" y="168">Handler</text>
+            <text class="d" x="318" y="188">validate, query pool, render json</text>
+      
+            <rect class="card" x="40" y="138" width="210" height="70" rx="3"/>
+            <text class="t" x="56" y="164">Cache</text>
+            <text class="d" x="56" y="182">redis, 60 s ttl</text>
+            <text class="d" x="56" y="197">misses fall through</text>
+            <path class="dash" d="M 250 173 H 290" marker-end="url(#rqHead)"/>
+      
+            <line class="arrow" x1="535" y1="208" x2="535" y2="236" marker-end="url(#rqHead)"/>
+            <text class="cap" x="549" y="226">row set</text>
+      
+            <rect class="card" x="300" y="246" width="470" height="70" rx="3"/>
+            <text class="t" x="318" y="276">Store</text>
+            <text class="d" x="318" y="296">postgres pool, 8 conns, 3 s timeout</text>
+      
+            <rect class="tag" x="300" y="344" width="470" height="26" rx="3"/>
+            <text class="side" x="318" y="361">one request ends in one response: 200 or 4xx</text>
+          </svg>
+        </section>
 
   <section>
-        <div class="head">
-          <h2>video path: url to file</h2>
-        </div>
-        <p class="note">Audio leaves the main path before mux; the video path never waits on it.</p>
-        <svg viewBox="0 0 1040 376" role="img" aria-label="Video path: fetch, transcode focus, mux cards, audio side channel, tag line">
-          <defs>
-            <marker id="vidHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
-            </marker>
-            <marker id="vidHeadA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
-            </marker>
-          </defs>
-    
-          <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
-          <text class="t" x="318" y="60">Fetch</text>
-          <text class="d" x="318" y="80">input url, format select 1080p</text>
-    
-          <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#vidHeadA)"/>
-          <text class="cap" x="549" y="118">job queued</text>
-    
-          <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
-          <text class="t" x="318" y="168">Transcode</text>
-          <text class="d" x="318" y="188">ffmpeg, h264, 6 threads</text>
-    
-          <rect class="card" x="40" y="138" width="210" height="70" rx="3"/>
-          <text class="t" x="56" y="164">Audio out</text>
-          <text class="d" x="56" y="182">aac, 128 kbit/s</text>
-          <text class="d" x="56" y="197">no video stream</text>
-          <path class="dash" d="M 300 173 H 254" marker-end="url(#vidHead)"/>
-    
-          <line class="arrow" x1="535" y1="208" x2="535" y2="236" marker-end="url(#vidHead)"/>
-          <text class="cap" x="549" y="226">h264 + aac</text>
-    
-          <rect class="card" x="300" y="246" width="470" height="70" rx="3"/>
-          <text class="t" x="318" y="276">Mux</text>
-          <text class="d" x="318" y="296">aac + mp4, faststart flag</text>
-    
-          <rect class="tag" x="300" y="344" width="470" height="26" rx="3"/>
-          <text class="side" x="318" y="361">one run ends in one file or a non-zero exit</text>
-        </svg>
-      </section>
+          <div class="head">
+            <h2>video path: url to file</h2>
+          </div>
+          <p class="note">Audio leaves the main path before mux; the video path never waits on it.</p>
+          <svg viewBox="0 0 1040 376" role="img" aria-label="Video path: fetch, transcode focus, mux cards, audio side channel, tag line">
+            <defs>
+              <marker id="vidHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
+              </marker>
+              <marker id="vidHeadA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
+              </marker>
+            </defs>
+      
+            <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
+            <text class="t" x="318" y="60">Fetch</text>
+            <text class="d" x="318" y="80">input url, format select 1080p</text>
+      
+            <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#vidHeadA)"/>
+            <text class="cap" x="549" y="118">job queued</text>
+      
+            <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
+            <text class="t" x="318" y="168">Transcode</text>
+            <text class="d" x="318" y="188">ffmpeg, h264, 6 threads</text>
+      
+            <rect class="card" x="40" y="138" width="210" height="70" rx="3"/>
+            <text class="t" x="56" y="164">Audio out</text>
+            <text class="d" x="56" y="182">aac, 128 kbit/s</text>
+            <text class="d" x="56" y="197">no video stream</text>
+            <path class="dash" d="M 300 173 H 254" marker-end="url(#vidHead)"/>
+      
+            <line class="arrow" x1="535" y1="208" x2="535" y2="236" marker-end="url(#vidHead)"/>
+            <text class="cap" x="549" y="226">h264 + aac</text>
+      
+            <rect class="card" x="300" y="246" width="470" height="70" rx="3"/>
+            <text class="t" x="318" y="276">Mux</text>
+            <text class="d" x="318" y="296">aac + mp4, faststart flag</text>
+      
+            <rect class="tag" x="300" y="344" width="470" height="26" rx="3"/>
+            <text class="side" x="318" y="361">one run ends in one file or a non-zero exit</text>
+          </svg>
+        </section>
 
   <section>
-        <div class="head">
-          <h2>docs path: draft to page</h2>
-        </div>
-        <p class="note">Review holds the draft until both comments resolve; publish reads only the reviewed file.</p>
-        <svg viewBox="0 0 1040 376" role="img" aria-label="Docs path: draft, review focus, publish cards, shared spec side channel, tag line">
-          <defs>
-            <marker id="docHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
-            </marker>
-            <marker id="docHeadA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
-            </marker>
-          </defs>
-    
-          <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
-          <text class="t" x="318" y="60">Draft</text>
-          <text class="d" x="318" y="80">one markdown file, ascii only</text>
-    
-          <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#docHeadA)"/>
-          <text class="cap" x="549" y="118">review requested</text>
-    
-          <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
-          <text class="t" x="318" y="168">Review</text>
-          <text class="d" x="318" y="188">two reviewers, comments resolved</text>
-    
-          <rect class="card" x="800" y="138" width="220" height="70" rx="3"/>
-          <text class="t" x="816" y="164">Shared spec</text>
-          <text class="d" x="816" y="182">one theme per page</text>
-          <text class="d" x="816" y="197">twelve in the bar</text>
-          <path class="dash" d="M 800 173 H 780" marker-end="url(#docHead)"/>
-    
-          <line class="arrow" x1="535" y1="208" x2="535" y2="236" marker-end="url(#docHead)"/>
-          <text class="cap" x="549" y="226">both resolved</text>
-    
-          <rect class="card" x="300" y="246" width="470" height="70" rx="3"/>
-          <text class="t" x="318" y="276">Publish</text>
-          <text class="d" x="318" y="296">static html, one file, no assets</text>
-    
-          <rect class="tag" x="300" y="344" width="470" height="26" rx="3"/>
-          <text class="side" x="318" y="361">one draft ends in one page or a blocked review</text>
-        </svg>
-      </section>
+          <div class="head">
+            <h2>docs path: draft to page</h2>
+          </div>
+          <p class="note">Review holds the draft until both comments resolve; publish reads only the reviewed file.</p>
+          <svg viewBox="0 0 1040 376" role="img" aria-label="Docs path: draft, review focus, publish cards, shared spec side channel, tag line">
+            <defs>
+              <marker id="docHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
+              </marker>
+              <marker id="docHeadA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
+              </marker>
+            </defs>
+      
+            <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
+            <text class="t" x="318" y="60">Draft</text>
+            <text class="d" x="318" y="80">one markdown file, ascii only</text>
+      
+            <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#docHeadA)"/>
+            <text class="cap" x="549" y="118">review requested</text>
+      
+            <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
+            <text class="t" x="318" y="168">Review</text>
+            <text class="d" x="318" y="188">two reviewers, comments resolved</text>
+      
+            <rect class="card" x="800" y="138" width="220" height="70" rx="3"/>
+            <text class="t" x="816" y="164">Shared spec</text>
+            <text class="d" x="816" y="182">one theme per page</text>
+            <text class="d" x="816" y="197">twelve in the bar</text>
+            <path class="dash" d="M 800 173 H 780" marker-end="url(#docHead)"/>
+      
+            <line class="arrow" x1="535" y1="208" x2="535" y2="236" marker-end="url(#docHead)"/>
+            <text class="cap" x="549" y="226">both resolved</text>
+      
+            <rect class="card" x="300" y="246" width="470" height="70" rx="3"/>
+            <text class="t" x="318" y="276">Publish</text>
+            <text class="d" x="318" y="296">static html, one file, no assets</text>
+      
+            <rect class="tag" x="300" y="344" width="470" height="26" rx="3"/>
+            <text class="side" x="318" y="361">one draft ends in one page or a blocked review</text>
+          </svg>
+        </section>
 
   <footer>One theme colours the page and every diagram on it. The print theme overrides it.</footer>
 
@@ -384,7 +389,7 @@
       var vars = {
         '--page-bg': t.bg, '--page-ink': t.ink, '--page-muted': t.muted, '--page-line': t.line,
         '--card': t.card, '--ink': t.ink, '--muted': t.muted, '--line': t.line,
-        '--accent': t.accent, '--pill-ink': inkOn(t.accent),
+        '--accent': t.accent, '--pill-ink': root.getAttribute('data-theme') === 'light' ? '#FFFFFF' : inkOn(t.accent),
         '--tb-ink': t.muted, '--tb-line': t.line
       };
       for (var k in vars) root.style.setProperty(k, vars[k]);
@@ -395,7 +400,8 @@
         '--page-bg': '#FFFFFF', '--page-ink': '#000000', '--page-muted': '#333333',
         '--page-line': '#9A9A9A', '--card': '#FFFFFF', '--ink': '#000000',
         '--muted': '#333333', '--line': '#9A9A9A', '--accent': '#000000',
-        '--pill-ink': '#000000', '--tb-ink': '#333333', '--tb-line': '#9A9A9A'
+        '--pill-ink': '#000000', '--tb-ink': '#333333', '--tb-line': '#9A9A9A',
+        '--thumb': '#CBCBCB', '--thumb-line': '#888888'
       };
       for (var k in vars) root.style.setProperty(k, vars[k]);
     }
