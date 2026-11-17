@@ -1,10 +1,10 @@
 # Simple flow diagram
 
-An agent skill that turns a process into a flow diagram on one HTML page, built for minimal token use and fast generation. Layout, ten themes, the light and dark switch and the print view live in the template, so the agent writes the cards and the captions and nothing else. Any model can place boxes and arrows; the point here is a consistent result at the smallest possible cost.
+An agent skill that turns a process into a flow diagram on one HTML page, built for minimal token use and fast generation. Layout, nine themes, the light and dark switch and the print view live in the template, so the agent writes the cards and the captions and nothing else. Any model can place boxes and arrows; the point here is a consistent result at the smallest possible cost.
 
 ## Themes
 
-Ten themes ship in the template, five per mode. Dark: github, monochrome, ayu, nightowl, solarized. Light: tokyonight, vercel, cursor, monokai, orng. The page opens on github or tokyonight from the OS preference, and the two foldouts switch names, each mode keeping its own pick. Every color on the page comes from the chosen theme, so a diagram carries no palette of its own.
+Nine themes ship in the template: five dark and four light. Dark: github, monochrome, ayu, nightowl, solarized. Light: tokyonight, vercel, cursor, orng. The page opens on github or tokyonight from the OS preference, and the two foldouts switch names, each mode keeping its own pick. Every color on the page comes from the chosen theme, so a diagram carries no palette of its own.
 
 ## Cost and speed
 
@@ -36,7 +36,7 @@ Four controls sit at the top right. All are native buttons and work with Tab, En
 
 The mode switch selects light or dark. The page starts from the OS preference and follows OS changes until the switch is clicked.
 
-`dark theme` and `light theme` open a foldout with five names each. Dark: github, monochrome, ayu, nightowl, solarized. Light: tokyonight, vercel, cursor, monokai, orng. Picking a name applies it to the page and every diagram on it, and switches to that mode. Each mode keeps its own pick, so the switch flips between the two.
+`dark theme` and `light theme` open a foldout with five dark names or four light names. Dark: github, monochrome, ayu, nightowl, solarized. Light: tokyonight, vercel, cursor, orng. Picking a name applies it to the page and every diagram on it, and switches to that mode. Each mode keeps its own pick, so the switch flips between the two.
 
 <img src="docs/bar-dark.png" width="244" alt="Top bar in dark mode">
 

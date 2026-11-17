@@ -91,7 +91,7 @@ function names(el) {
 }
 
 var DARK = 'github,monochrome,ayu,nightowl,solarized';
-var LIGHT = 'tokyonight,vercel,cursor,monokai,orng';
+var LIGHT = 'tokyonight,vercel,cursor,orng';
 
 var c = makeContext(false);
 run(c);

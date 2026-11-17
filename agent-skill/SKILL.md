@@ -1,6 +1,6 @@
 ---
 name: simple-flow-diagram-skill
-description: "Build a flow diagram as one standalone HTML page: one vertical main path, optional side channels, and a fixed top bar with ten themes, light/dark switching and a print view already wired up. Built for speed and token efficiency: the template carries every repeated decision, so the agent writes only the cards and captions in one pass, and output stays consistent and short. Use when asked for a process flow, request path, pipeline, decision flow, state or lifecycle flow, or to restyle an existing flow diagram to this style."
+description: "Build a flow diagram as one standalone HTML page: one vertical main path, optional side channels, and a fixed top bar with nine themes, light/dark switching and a print view already wired up. Built for speed and token efficiency: the template carries every repeated decision, so the agent writes only the cards and captions in one pass, and output stays consistent and short. Use when asked for a process flow, request path, pipeline, decision flow, state or lifecycle flow, or to restyle an existing flow diagram to this style."
 license: MIT
 ---
 
@@ -12,7 +12,7 @@ One self-contained `.html` page per topic, or one page with several diagrams. St
 
 - Minimal token use. Copy the shell, the theme table and the scripts; write only the page copy and the diagram cards.
 - Speed. One pass, no colour or layout decisions, no second draft.
-- Consistency. The same grid and the same ten themes on every run, from any model.
+- Consistency. The same grid and the same nine themes on every run, from any model.
 
 Do not choose colors or restyle controls; the page follows whichever theme the reader picks.
 
@@ -25,8 +25,8 @@ The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.
 3. Write the page in this order: top bar, h1, p.sub, one or more sections (head with h2 pill, p.note, svg), footer. Use the diagram body in manual section 10.
 4. Keep the grid: viewBox `0 0 1040 H`, main column x=300 width=470, card top `30 + 108n`, card height 70, arrow 28, caption x=549 at y+88, tag at last card top + 98, viewBox height tag + 32.
 5. Fill text within the budgets: main description 65 characters, side description 28 or 26, card title 24, caption 42, tag line 78.
-6. Mark one focus card and at most two accent connectors per diagram. Solid for the main path, dash for side channels.
-7. Run the section 11 validator, then check both modes, both theme foldouts and the print preview at 100 percent and at 800 px width.
+6. Mark one focus card and at most two accent connectors per diagram. Solid for the main path, dashed for side channels, dotted for returns.
+7. Run the section 11 validator, then check both modes, both theme foldouts and the print preview at 100 percent and at 800 px width. Open the page in the local browser when it is done; if it is already open from an earlier pass, do not open another window or tab, and let the user refresh.
 8. After the user has viewed the page, ask whether the diagram file can be deleted. Do not delete it unasked.
 
 ## Themes and modes
@@ -44,6 +44,7 @@ The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.
 - Top bar: fixed, 24 px high, right aligned, page background fill, no divider. Print toggle labelled `print friendly`, mode switch, then the `dark theme` and `light theme` foldouts. Native buttons, keyboard operable, labeled.
 - Colors only through `var(--...)`. Tokens live on `:root`; the print override comes last.
 - Marker ids unique per page, prefixed by section. Pair each line class with the matching arrowhead.
+- Open a finished page in the local browser. If it is already open from an earlier pass, do not open another window or tab; the user refreshes.
 
 ## Files
 

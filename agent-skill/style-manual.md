@@ -41,7 +41,7 @@ The page carries one theme, and every diagram on it follows that theme. A theme 
 | `line` | card and tag borders, bar lines |
 | `accent` | section pill, focus border, action arrow |
 
-Ten themes ship in the template, five per mode. Dark: `github`, `monochrome`, `ayu`, `nightowl`, `solarized`. Light: `tokyonight`, `vercel`, `cursor`, `monokai`, `orng`.
+Nine themes ship in the template: five dark and four light. Dark: `github`, `monochrome`, `ayu`, `nightowl`, `solarized`. Light: `tokyonight`, `vercel`, `cursor`, `orng`.
 
 Rules:
 
@@ -144,10 +144,14 @@ Solid arrows connect consecutive main cards. Caption states the condition, proto
 <text class="cap" x="549" y="118">first http(s) link wins</text>
 ```
 
-- `arrow`: 1.4 stroke, `--muted`.
-- `arrow-a`: 1.6 stroke, `--accent`, marks the action into or out of the focus card. One or two per diagram.
-- `dash`: 1.2 stroke, 5 4 dasharray, `--muted`. Optional channels and alternate branches only.
-- `loop`: 1.2 stroke, 2 4 dasharray, `--muted`. Return edges only. Solid is the main path, 5 4 dash is a side channel, 2 4 dot is a return.
+Three line styles: solid, dashed and dotted. A solid line is the main path, a dashed line is a side channel or alternate branch, a dotted line is a return.
+
+| class | look | use |
+|---|---|---|
+| `arrow` | solid, 1.4, `--muted` | main path between cards |
+| `arrow-a` | solid, 1.6, `--accent` | action into or out of the focus card, one or two per diagram |
+| `dash` | dashed, 5 bar with a 4 gap, 1.2, `--muted` | side channel or alternate branch |
+| `loop` | dotted, round 1.6, 6 apart, `--muted` | return edge |
 - Line and arrowhead are separate objects. The color of the marker path lives in `<defs>` and does not follow the line class, so pair them explicitly: `arrow` with the plain marker, `arrow-a` with the accent marker.
 - Marker ids must be unique per page. Prefix by section: `vidHead`, `sumHead`.
 
@@ -193,24 +197,24 @@ Fallback that rejoins a lower card:
 <text class="side" x="845" y="596">sound only</text>
 ```
 
-Loopback, a later card feeding an earlier one. Four lanes per side, 8 px inside the side box edge and 12 px apart: left 242, 230, 218, 206; right 808, 820, 832, 844. The spine runs under the side box band.
+Loopback, a later card feeding an earlier one. Four lanes per side, 24 px inside the side box edge and 20 px apart: left 226, 206, 186, 166; right 824, 844, 864, 884. The spine runs under the side box band.
 
 ```html
-<path class="loop" d="M 300 266 H 242 V 80 H 300" marker-end="url(#flowHead)"/>
+<path class="loop" d="M 300 266 H 226 V 80 H 300" marker-end="url(#flowHead)"/>
 ```
 
 That is card 3 (top 246) back to card 1 (top 30): out of the lower card at `hi` 266, up lane 1, into the upper card at `lo` 80. The spine covers only the rows between the cards and disappears under a side box if one sits on them.
 
 Rules:
 
-- Dash means optional, alternate or side channel. Solid means the main path.
+- A dashed line means optional, alternate or side channel, a dotted line means a return, and a solid line is the main path.
 - Route around cards, never across them. A loop spine is the one line that may pass under a side box, and only by paint order.
 - A side card sits on the row it touches, or 20 px lower if it is 90-100 high.
 - No crossing lines. If two branches would cross, move one side block to the other lane or reorder the rows.
 - Labels stay at least 10 px from a card border.
 - A loopback runs upward only. A forward jump is an alternate branch and stays `dash`.
 - Lane 1 carries the shortest span, lane 2 the next, and so on. Spans must be nested or disjoint, never partly overlapping, so loop spines never cross each other.
-- A loopback joins main cards only. It leaves the lower card at `hi` and enters the upper card at `lo`; `mid` belongs to side stubs on that edge.
+- A loopback joins main cards only. By default it leaves the lower card at `hi` and enters the upper card at `lo`. `mid` belongs to a side stub on that edge, so a loop stays off `mid` where a stub exists. Two connectors on one edge take different marks.
 - The two rows a loopback joins must be free of a side box on that side, otherwise the connector starts under the box. A box on one side rules that side out; use the other side when its rows are free too. A spine may pass at most one side box.
 - Write the loop path before the first card rect, so the spine passes under the boxes.
 - One loopback per lane, so at most four per side. More than two per diagram usually reads better as two sections.
@@ -297,8 +301,8 @@ Visual checks:
 - Confirm the bar is hidden in the print preview and every diagram renders in the print tokens.
 - Narrow the window to 800 px. The SVG scales; no text may touch a border or another card.
 - Confirm no caption crosses x=790 and no side text crosses its card edge.
-- Confirm each loopback leaves and enters a main card at `hi` or `lo`, never `mid`, and that no loop connector starts under a side box.
-- Confirm loop dots (2 4) read apart from side dashes (5 4).
+- Confirm each loopback leaves and enters a main card at a free mark, never on a side stub, and that no loop connector starts under a side box.
+- Confirm round loop dots read apart from side dashes (5 4).
 - Confirm one accent card and one accent arrow per diagram.
 - Confirm every marker id referenced by a line exists, and ids are unique across the page.
 
@@ -313,7 +317,7 @@ Visual checks:
 - [ ] Tag at last card top + 98, viewBox height = tag y + 32.
 - [ ] Descriptions carry real flags, files and limits.
 - [ ] One focus card, at most two accent connectors, dash only for side channels.
-- [ ] Loopbacks use a lane (242/230/218/206 left, 808/820/832/844 right), enter and leave at hi or lo, and the path sits before the cards.
+- [ ] Loopbacks use a lane (226/206/186/166 left, 824/844/864/884 right), enter and leave at a free mark, and the path sits before the cards.
 - [ ] Return edges use `loop`, side channels use `dash`.
 - [ ] Marker ids unique, fills set in `defs`.
 - [ ] `role="img"` and a full `aria-label` on each SVG.

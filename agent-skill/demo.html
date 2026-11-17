@@ -75,7 +75,7 @@
   .arrow { stroke: var(--muted); stroke-width: 1.4; fill: none; }
   .arrow-a { stroke: var(--accent); stroke-width: 1.6; fill: none; }
   .dash { stroke: var(--muted); stroke-width: 1.2; fill: none; stroke-dasharray: 5 4; }
-  .loop { stroke: var(--muted); stroke-width: 1.2; fill: none; stroke-dasharray: 2 4; }
+  .loop { stroke: var(--muted); stroke-width: 1.6; fill: none; stroke-dasharray: 0.1 6; stroke-linecap: round; }
   .tag { fill: var(--card); stroke: var(--line); stroke-width: 1; }
   .card, .focus, .tag { transition: fill .25s, stroke .25s; }
   .t, .d, .cap, .side { transition: fill .25s; }
@@ -222,8 +222,8 @@
               </marker>
             </defs>
       
-            <path class="loop" d="M 300 266 H 242 V 80 H 300" marker-end="url(#rqHead)"/>
-            <text class="side" x="248" y="126">on 5xx</text>
+            <path class="loop" d="M 300 266 H 226 V 80 H 300" marker-end="url(#rqHead)"/>
+            <text class="side" x="232" y="126">on 5xx</text>
 
             <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
             <text class="t" x="318" y="60">Request</text>
@@ -258,8 +258,8 @@
           <div class="head">
             <h2>video path: url to file</h2>
           </div>
-          <p class="note">Audio leaves the main path before mux; the video path never waits on it.</p>
-          <svg viewBox="0 0 1040 376" role="img" aria-label="Video path: fetch, transcode focus, mux cards, audio side channel, tag line">
+          <p class="note">Audio leaves the main path before mux; the video path never waits on it. A mux failure retries transcode once, then refetches the source.</p>
+          <svg viewBox="0 0 1040 376" role="img" aria-label="Video path: fetch, transcode focus, mux cards, audio side channel, two returns on the right, tag line">
             <defs>
               <marker id="vidHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
                 <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
@@ -269,6 +269,9 @@
               </marker>
             </defs>
       
+            <path class="arrow" d="M 770 266 H 824 V 188 H 770" marker-end="url(#vidHead)"/>
+            <path class="loop" d="M 770 296 H 844 V 80 H 770" marker-end="url(#vidHead)"/>
+
             <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
             <text class="t" x="318" y="60">Fetch</text>
             <text class="d" x="318" y="80">input url, format select 1080p</text>
@@ -327,7 +330,7 @@
             <rect class="card" x="800" y="138" width="220" height="70" rx="3"/>
             <text class="t" x="816" y="164">Shared spec</text>
             <text class="d" x="816" y="182">one theme per page</text>
-            <text class="d" x="816" y="197">ten in the bar</text>
+            <text class="d" x="816" y="197">nine in the bar</text>
             <path class="dash" d="M 800 173 H 780" marker-end="url(#docHead)"/>
       
             <line class="arrow" x1="535" y1="208" x2="535" y2="236" marker-end="url(#docHead)"/>
@@ -367,7 +370,6 @@
         tokyonight:  { bg: '#E1E2E7', card: '#D5D6DB', ink: '#3369E6', muted: '#5A6377', line: '#737A8C', accent: '#B15C00' },
         vercel:      { bg: '#E1E2E7', card: '#FFFFFF', ink: '#CC2424', muted: '#333333', line: '#333333', accent: '#FFB224' },
         cursor:      { bg: '#E1E2E7', card: '#F3F3F3', ink: '#2C5960', muted: '#58696D', line: '#7E979C', accent: '#50ADC5' },
-        monokai:     { bg: '#E1E2E7', card: '#F0F0F0', ink: '#333333', muted: '#5F634B', line: '#939A76', accent: '#AE81FF' },
         orng:        { bg: '#E1E2E7', card: '#FFF7F1', ink: '#C94D24', muted: '#333333', line: '#C2765A', accent: '#C94D24' }
       }
     };
