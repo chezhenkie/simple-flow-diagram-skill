@@ -336,8 +336,13 @@ for n, body in enumerate(sections):
           tag + " captions at the arrow rows")
 
     desc = {}
-    for r in mains:
-        desc[(int(r.get("x")) + 18, int(r.get("y")) + 50)] = 65 if int(r.get("width")) == 470 else 28
+    for r in mains + sides:
+        x, y = int(r.get("x")), int(r.get("y"))
+        w, h = int(r.get("width")), int(r.get("height"))
+        pad = 16 if w in (210, 220) else 18
+        lim = {470: 65, 210: 26, 220: 28, 222: 28}[w]
+        for dy in (44, 59) + ((74,) if h >= 90 else ()):
+            desc[(x + pad, y + dy)] = lim
 
     for t in texts:
         s = t.text or ""
@@ -346,9 +351,7 @@ for n, body in enumerate(sections):
             check(len(s) <= 24, tag + " title budget " + repr(s))
         elif c == "d":
             x, y = t.get("x"), t.get("y")
-            lim = {"56": 26, "816": 28}.get(x)
-            if lim is None and x and y:
-                lim = desc.get((int(x), int(y)))
+            lim = desc.get((int(x), int(y))) if x and y else None
             check(lim is not None and len(s) <= lim, tag + " desc budget " + repr(s))
         elif c == "cap":
             lim = {"549": 42, "425": 18, "673": 18}.get(t.get("x"))
@@ -420,7 +423,7 @@ check("Escape closes a foldout" in man, "manual escape close")
 check("Each mode remembers its own theme" in man, "manual mode memory")
 check("The agent does not pick, mix or author colors" in man, "manual color rule")
 check("| `.meta` |" not in man, "manual no meta type")
-check("70-high side card" in man, "manual side baselines")
+check("70-high card: title" in man and "90/100-high side card" in man, "manual card baselines")
 check(man.count("```") % 2 == 0, "manual fences balanced")
 for name in DARK + LIGHT:
     if name != "vercel":

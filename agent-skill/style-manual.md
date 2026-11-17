@@ -112,8 +112,7 @@ A 70-high card puts the marks at 20, 35 and 50. A 90-high side box at 20, 45 and
 
 Card baselines:
 
-- 70-high main card: title `y+30`, one description line at `y+50`.
-- 70-high side card: title `y+26`, up to two description lines at `y+44` and `y+59`.
+- 70-high card: title `y+26`, up to two description lines at `y+44` and `y+59`.
 - 90/100-high side card: title `y+26`, up to three description lines at `y+44`, `y+59`, `y+74`.
 - Tag text: `y+17`.
 
@@ -125,10 +124,10 @@ A card is a `<rect class="card">` or `<rect class="focus">` with `rx="3"`, plus:
 
 - `.t`: 1 to 4 words, sentence case, name of the actor or stage. No verbs in title case, no punctuation.
 - `.d`: concrete mechanism. Use the real flags, endpoints, file names, frame sizes, buffer counts. No marketing, no restatement of the title, no trailing period.
-- Main cards carry one description line. Side cards carry up to two lines on a 70-high card and up to three on a 90/100-high card.
+- A 70-high card carries up to two description lines. A 90/100-high side card carries up to three.
 - `focus` marks the component that does the work or coordinates the branch. One per diagram.
 
-Text limits, measured at the sizes above:
+Text limits, measured at the sizes above and applied per line:
 
 | element | usable px | practical characters | budget |
 |---|---|---|---|
@@ -250,7 +249,7 @@ Two arrows leave the parent bottom at the card centres, 411 and 659, and enter t
 Split rules:
 
 - The single column stays the default. Use a split only where a decision produces two named outcomes, and make the decision card the focus.
-- A split is a branch, not a parallel path: both children leave the same row, and each is a normal card with a title and one description line.
+- A split is a branch, not a parallel path: both children leave the same row, and each is a normal card with a title and up to two description lines.
 - Both children take 28 characters of description, the same 186 px usable width as a 220 side card. Text sits at 318 and 566.
 - Captions sit at 425 and 673 and take 18 characters, so each ends clear of the other and inside x=790.
 - The inner edges at 522 and 548 carry no connector. A loop attaches to a split card at its outer edge, x=300 or x=770, at a free mark.
@@ -289,12 +288,12 @@ Copy the page shell from `template.html`: theme tokens, top bar, theme script, b
     </defs>
 
     <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
-    <text class="t" x="318" y="60">Start</text>
-    <text class="d" x="318" y="80">what arrives, and from where</text>
+    <text class="t" x="318" y="56">Start</text>
+    <text class="d" x="318" y="74">what arrives, and from where</text>
 
     <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
-    <text class="t" x="318" y="168">Work</text>
-    <text class="d" x="318" y="188">the mechanism: flags, files, endpoints</text>
+    <text class="t" x="318" y="164">Work</text>
+    <text class="d" x="318" y="182">the mechanism: flags, files, endpoints</text>
 
     <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#flowHeadA)"/>
     <text class="cap" x="549" y="118">condition or payload</text>
@@ -352,7 +351,7 @@ Visual checks:
 - [ ] One h1, one sub, one footer.
 - [ ] h2 pill reads `subject: outcome`.
 - [ ] Main column at x=300, width 470, or a split row of two 222 cards at x=300 and x=548; pitch 108, height 70.
-- [ ] Card title at +30, description at +50 for 70-high cards.
+- [ ] Card title at +26, description lines at +44 and +59.
 - [ ] Arrow 28 long, caption at y+88, x=549, or x=425 and x=673 on a split row.
 - [ ] Tag at last card top + 98, viewBox height = tag y + 32.
 - [ ] Descriptions carry real flags, files and limits.

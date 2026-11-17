@@ -24,7 +24,7 @@ The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.
 2. Keep the page shell as it is: head script, token block, top bar, bar script and print rules. Change only the page copy and the diagram bodies.
 3. Write the page in this order: top bar, h1, p.sub, one or more sections (head with h2 pill, p.note, svg), footer. Use the diagram body in manual section 10.
 4. Keep the grid: viewBox `0 0 1040 H`, main column x=300 width=470, card top `30 + 108n`, card height 70, arrow 28, caption x=549 at y+88, tag at last card top + 98, viewBox height tag + 32. A decision may fork into two 222 cards at x=300 and x=548, with arrows at 411 and 659 and captions at 425 and 673.
-5. Fill text within the budgets: main description 65 characters, split and side description 28 or 26, card title 24, caption 42 or 18 on a split, tag line 78.
+5. Fill text within the budgets: 65 characters per main line, 28 or 26 per split or side line, card title 24, caption 42 or 18 on a split, tag line 78. A 70-high card takes two lines, a 90/100-high side card three.
 6. Mark one focus card and at most two accent connectors per diagram. Solid for the main path, dashed for side channels, dotted for returns.
 7. Run the section 11 validator, then check both modes, both theme foldouts and the print preview at 100 percent and at 800 px width. Open the page in the local browser when it is done; if it is already open from an earlier pass, do not open another window or tab, and let the user refresh.
 8. After the user has viewed the page, ask whether the diagram file can be deleted. Do not delete it unasked.

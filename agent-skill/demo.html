@@ -226,15 +226,15 @@
             <text class="side" x="232" y="126">on 5xx</text>
 
             <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="60">Request</text>
-            <text class="d" x="318" y="80">GET /v1/items, bearer token checked</text>
+            <text class="t" x="318" y="56">Request</text>
+            <text class="d" x="318" y="74">GET /v1/items, bearer token checked</text>
       
             <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#rqHeadA)"/>
             <text class="cap" x="549" y="118">route match</text>
       
             <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="168">Handler</text>
-            <text class="d" x="318" y="188">validate, query pool, render json</text>
+            <text class="t" x="318" y="164">Handler</text>
+            <text class="d" x="318" y="182">validate, query pool, render json</text>
       
             <rect class="card" x="40" y="138" width="210" height="70" rx="3"/>
             <text class="t" x="56" y="164">Cache</text>
@@ -246,8 +246,8 @@
             <text class="cap" x="549" y="226">row set</text>
       
             <rect class="card" x="300" y="246" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="276">Store</text>
-            <text class="d" x="318" y="296">postgres pool, 8 conns, 3 s timeout</text>
+            <text class="t" x="318" y="272">Store</text>
+            <text class="d" x="318" y="290">postgres pool, 8 conns, 3 s timeout</text>
       
             <rect class="tag" x="300" y="344" width="470" height="26" rx="3"/>
             <text class="side" x="318" y="361">one request ends in one response: 200 or 4xx</text>
@@ -270,15 +270,15 @@
             </defs>
 
             <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="60">Source</text>
-            <text class="d" x="318" y="80">one repo, one lockfile, five crates</text>
+            <text class="t" x="318" y="56">Source</text>
+            <text class="d" x="318" y="74">one repo, one lockfile, five crates</text>
 
             <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#pkgHeadA)"/>
             <text class="cap" x="549" y="118">target list</text>
 
             <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="168">Build</text>
-            <text class="d" x="318" y="188">cargo build, release, two targets</text>
+            <text class="t" x="318" y="164">Build</text>
+            <text class="d" x="318" y="182">cargo build, release, two targets</text>
 
             <line class="arrow" x1="411" y1="208" x2="411" y2="236" marker-end="url(#pkgHead)"/>
             <text class="cap" x="425" y="226">musl target</text>
@@ -286,12 +286,12 @@
             <text class="cap" x="673" y="226">msvc target</text>
 
             <rect class="card" x="300" y="246" width="222" height="70" rx="3"/>
-            <text class="t" x="318" y="276">Linux</text>
-            <text class="d" x="318" y="296">x86_64-unknown-linux-musl</text>
+            <text class="t" x="318" y="272">Linux</text>
+            <text class="d" x="318" y="290">x86_64-unknown-linux-musl</text>
 
             <rect class="card" x="548" y="246" width="222" height="70" rx="3"/>
-            <text class="t" x="566" y="276">Windows</text>
-            <text class="d" x="566" y="296">x86_64-pc-windows-msvc</text>
+            <text class="t" x="566" y="272">Windows</text>
+            <text class="d" x="566" y="290">x86_64-pc-windows-msvc</text>
 
             <rect class="tag" x="300" y="344" width="470" height="26" rx="3"/>
             <text class="side" x="318" y="361">one source ends in one binary per target</text>
@@ -317,15 +317,15 @@
             <path class="loop" d="M 770 296 H 844 V 80 H 770" marker-end="url(#vidHead)"/>
 
             <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="60">Fetch</text>
-            <text class="d" x="318" y="80">input url, format select 1080p</text>
+            <text class="t" x="318" y="56">Fetch</text>
+            <text class="d" x="318" y="74">input url, format select 1080p</text>
       
             <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#vidHeadA)"/>
             <text class="cap" x="549" y="118">job queued</text>
       
             <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="168">Transcode</text>
-            <text class="d" x="318" y="188">ffmpeg, h264, 6 threads</text>
+            <text class="t" x="318" y="164">Transcode</text>
+            <text class="d" x="318" y="182">ffmpeg, h264, 6 threads</text>
       
             <rect class="card" x="40" y="138" width="210" height="70" rx="3"/>
             <text class="t" x="56" y="164">Audio out</text>
@@ -337,8 +337,8 @@
             <text class="cap" x="549" y="226">h264 + aac</text>
       
             <rect class="card" x="300" y="246" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="276">Mux</text>
-            <text class="d" x="318" y="296">aac + mp4, faststart flag</text>
+            <text class="t" x="318" y="272">Mux</text>
+            <text class="d" x="318" y="290">aac + mp4, faststart flag</text>
       
             <rect class="tag" x="300" y="344" width="470" height="26" rx="3"/>
             <text class="side" x="318" y="361">one run ends in one file or a non-zero exit</text>
@@ -364,15 +364,15 @@
             <text class="side" x="232" y="126">rejected</text>
 
             <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="60">Draft</text>
-            <text class="d" x="318" y="80">one markdown file, ascii only</text>
+            <text class="t" x="318" y="56">Draft</text>
+            <text class="d" x="318" y="74">one markdown file, ascii only</text>
       
             <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#docHeadA)"/>
             <text class="cap" x="549" y="118">review requested</text>
       
             <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="168">Review</text>
-            <text class="d" x="318" y="188">two reviewers, comments resolved</text>
+            <text class="t" x="318" y="164">Review</text>
+            <text class="d" x="318" y="182">two reviewers, comments resolved</text>
       
             <rect class="card" x="800" y="138" width="220" height="70" rx="3"/>
             <text class="t" x="816" y="164">Shared spec</text>
@@ -384,8 +384,8 @@
             <text class="cap" x="549" y="226">both resolved</text>
       
             <rect class="card" x="300" y="246" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="276">Publish</text>
-            <text class="d" x="318" y="296">static html, one file, no assets</text>
+            <text class="t" x="318" y="272">Publish</text>
+            <text class="d" x="318" y="290">static html, one file, no assets</text>
       
             <rect class="tag" x="300" y="344" width="470" height="26" rx="3"/>
             <text class="side" x="318" y="361">one draft ends in one page or another review round</text>
