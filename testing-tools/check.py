@@ -37,7 +37,7 @@ def one_hex(css, name):
 
 
 files = ["README.md", "agent-skill/SKILL.md", "agent-skill/template.html",
-         "agent-skill/demo.html", "docs/index.html", "CHANGELOG.md", "LICENSE",
+         "agent-skill/demo.html", "agent-skill/validate.py", "docs/index.html", "CHANGELOG.md", "LICENSE",
          "agent-skill/style-manual.md", "testing-tools/check.py", "testing-tools/harness.js", "testing-tools/README.md"]
 for f in files:
     b = read(f)
@@ -429,9 +429,30 @@ for name in DARK + LIGHT:
     if name != "vercel":
         check("`" + name + "`" in man, "manual names " + name)
 
+# Page validator
+check("python validate.py" in man, "manual validator command")
+check("xml.etree.ElementTree" not in man, "manual inline validator removed")
+check("800 px" not in man.lower() and "800 px" not in low, "no 800 px check")
+check("validate.py" in skill, "skill names the validator")
+check("460 checks" in man, "manual validator count")
+r = subprocess.run([sys.executable, "agent-skill/validate.py", "agent-skill/demo.html"],
+                   capture_output=True, text=True)
+check(r.returncode == 0, "validator passes on demo")
+vm = re.search(r"checks: (\d+) failures: 0", r.stdout)
+check(vm is not None and int(vm.group(1)) >= 400, "validator check count")
+if vm:
+    check(int(vm.group(1)) == 460, "validator count matches the manual")
+broken = "testing-tools/.artifacts/broken.html"
+os.makedirs("testing-tools/.artifacts", exist_ok=True)
+open(broken, "w", encoding="ascii", newline="\n").write(
+    demo.replace('<rect class="card" x="300" y="246" width="470" height="70" rx="3"/>',
+                 '<rect class="card" x="300" y="250" width="470" height="70" rx="3"/>', 1))
+r = subprocess.run([sys.executable, "agent-skill/validate.py", broken], capture_output=True, text=True)
+check(r.returncode == 1 and "main row 3 at 246" in r.stdout, "validator catches an off-grid card")
+
 # Changelog
 versions = re.findall(r"^## (\d+\.\d+\.\d+)$", cl, re.M)
-check(versions == ["1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
+check(versions == ["1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
       "changelog versions newest first")
 check(not re.search(r"\b(19|20)\d\d\b", cl), "changelog no dates")
 check(not re.search(r"\bv\d+\.\d+", cl), "changelog bare versions")

@@ -96,6 +96,7 @@ Example request: `Draw the request path as a flow diagram in the house style.`
 | `agent-skill/template.html` | Page shell to copy; marked diagram slot |
 | `agent-skill/demo.html` | Filled reference page with four diagrams |
 | `agent-skill/style-manual.md` | Theme rules, grid, type scale, card anatomy, connectors, validation |
+| `agent-skill/validate.py` | Page validator, run on the finished page |
 | `testing-tools/` | Static and bar behavior checks |
 | `docs/` | Screenshots and the GitHub Pages entry |
 | `CHANGELOG.md` | Version history |

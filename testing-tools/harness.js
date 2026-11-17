@@ -70,11 +70,19 @@ function makeContext(osDark) {
   };
 }
 
+function pageScripts() {
+  var html = fs.readFileSync(path.join(__dirname, '..', 'agent-skill', 'demo.html'), 'utf8');
+  var out = [], re = /<script>([\s\S]*?)<\/script>/g, m;
+  while ((m = re.exec(html))) out.push(m[1]);
+  if (out.length !== 2) throw new Error('expected two inline scripts, found ' + out.length);
+  return out;
+}
+
+var code = pageScripts().join('\n');
+
 function run(ctx) {
   global.window = ctx.window;
   global.document = ctx.document;
-  var code = fs.readFileSync(path.join(__dirname, '.artifacts', 's0.js'), 'utf8') + '\n' +
-             fs.readFileSync(path.join(__dirname, '.artifacts', 's1.js'), 'utf8');
   (0, eval)(code);
 }
 

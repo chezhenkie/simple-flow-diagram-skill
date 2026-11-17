@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.3.0
+
+### New features
+
+#### All platforms
+
+* Page validator: `python validate.py <topic>-flow.html` ships in the payload and checks the file shape, the shell copy, the bar, the section structure, the grid, arrows and captions, text budgets, tag and height, connectors, lanes and marker ids. The demo page passes 460 checks with exit code 0.
+* Contract decisions reach the manual and the skill: side boxes fixed at 210 and 220, optional tag with a no-tag height of last card top + 102, up to seven main cards excluding the tag and side boxes, zero to two accent connectors, the loopback label convention, and a 360 px bar check in place of the 800 px window step.
+* The skill names the validator in step 7 and reads only the diagram slot and manual sections 5 to 10, so a page costs no more tokens than before.
+* Manual section 11 is the validator description; the inline Python block is gone.
+* The bar harness reads both inline scripts from `demo.html`, so a fresh clone runs it without `check.py`.
+* The checker runs the validator on the demo, compares its count with the manual and requires a failure on an off-grid card: 381 checks.
+
 ## 1.2.0
 
 ### New features

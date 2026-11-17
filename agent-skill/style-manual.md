@@ -76,7 +76,7 @@ All coordinates are integers in a `1040 x H` viewBox.
 | main column | 300 | 470 | center line at 535 |
 | split card, left | 300 | 222 | text at 318 |
 | split card, right | 548 | 222 | text at 566 |
-| side card, left | 40 | 210 | text at x+16 |
+| side card, left | 40 | 210 | text at x+16, 10 px left margin |
 | side card, right | 800 | 220 | text at x+16, 20 px right margin |
 | main text | 318 | to 752 | card padding 18 |
 | caption lane | 549 | to 790 | 14 px right of the spine |
@@ -92,13 +92,13 @@ split row       two 222 cards at x 300 and x 548, 26 gap
 gap between     38
 arrow between   y+70 to y+98 (28 long)
 caption         y+88 (x 549)
-tag             last card top + 98
-viewBox height  tag y + 32
+tag             last card top + 98, optional
+viewBox height  tag y + 32, or last card top + 102 without a tag
 ```
 
 A split row replaces the main card on that row; the parent above and any merged card below stay 470 wide.
 
-Examples: six main cards put the last top at 570, the tag at 668 and the viewBox height at 700. Two cards give a tag at 236 and a 268-high viewBox.
+Examples: six main cards put the last top at 570, the tag at 668 and the viewBox height at 700. Two cards give a tag at 236 and a 268-high viewBox; the same two cards without a tag end at 232.
 
 Side marks are measured from a card or side box top, where `h` is the height:
 
@@ -116,7 +116,7 @@ Card baselines:
 - 90/100-high side card: title `y+26`, up to three description lines at `y+44`, `y+59`, `y+74`.
 - Tag text: `y+17`.
 
-Do not change the 108 pitch per card. If a card needs more text, cut the text or split the step. If the diagram needs more than seven cards, split it into two sections.
+Do not change the 108 pitch per card. If a card needs more text, cut the text or split the step. A diagram carries up to seven main cards; the tag and the side boxes do not count toward that limit. If the path needs more than seven main cards, split it into two sections.
 
 ## 6. Card anatomy
 
@@ -156,7 +156,7 @@ Three line styles: solid, dashed and dotted. A solid line is the main path, a da
 | class | look | use |
 |---|---|---|
 | `arrow` | solid, 1.4, `--muted` | main path between cards |
-| `arrow-a` | solid, 1.6, `--accent` | action into or out of the focus card, one or two per diagram |
+| `arrow-a` | solid, 1.6, `--accent` | action into or out of the focus card, zero to two per diagram |
 | `dash` | dashed, 5 bar with a 4 gap, 1.2, `--muted` | side channel or alternate branch |
 | `loop` | dotted, round 1.6, 6 apart, `--muted` | return edge |
 - Line and arrowhead are separate objects. The color of the marker path lives in `<defs>` and does not follow the line class, so pair them explicitly: `arrow` with the plain marker, `arrow-a` with the accent marker.
@@ -225,7 +225,7 @@ Rules:
 - The two rows a loopback joins must be free of a side box on that side, otherwise the connector starts under the box. A box on one side rules that side out; use the other side when its rows are free too. A spine may pass at most one side box.
 - Write the loop path before the first card rect, so the spine passes under the boxes.
 - One loopback per lane, so at most four per side. More than two per diagram usually reads better as two sections.
-- A loopback label is optional. If used, keep it to 12 characters in a free row gap, 6 px from the spine, never over a card.
+- A loopback label is optional. If used, it names the returning payload or condition in up to 12 characters, sits in the row gap nearest the arrowhead, 6 px from the spine, and never over a card.
 
 Split row, a decision card forking into two cards on the next row:
 
@@ -314,30 +314,32 @@ For a decision, replace one row with a split row: two 222 cards at x=300 and x=5
 
 ## 11. Validation
 
-Run before delivery:
+Run the validator before delivery:
 
-```python
-import re, sys, xml.etree.ElementTree as ET
-
-path = sys.argv[1]
-raw = open(path, "rb").read()
-bad = [i for i, b in enumerate(raw) if b > 126 or (b < 32 and b not in (9, 10, 13))]
-assert not bad, bad[:10]
-text = raw.decode("ascii")
-svgs = re.findall(r"<svg.*?</svg>", text, re.S)
-assert svgs, "no svg found"
-for svg in svgs:
-    ET.fromstring(svg)
-print("ok", len(svgs), "svg", len(raw), "bytes")
+```
+python validate.py <topic>-flow.html
 ```
 
-Visual checks:
+It reads the page and `template.html` beside it, then prints one line per failure and a final count. Exit code 1 means the page is not ready. It covers:
+
+- File shape: ASCII, LF endings, one h1, one subtitle, one footer, one main, two inline scripts, no external files or network URLs.
+- Shell: the style block and both scripts are byte-equal to `template.html`, so an edited shell fails.
+- Page: the bar controls in order, the mode switch as a switch, two menus, five dark and four light theme names, the six tokens, the default picks.
+- Sections: head block, `subject: outcome` title, note, one svg, `role="img"` and an aria-label.
+- Geometry: 1040-wide viewBox, main rows at `30 + 108n` up to seven, 70-high cards, 222 split cards at 300 and 548, side boxes at 210 and 220, one focus card.
+- Arrows and captions: one spine arrow over each row gap at 535 or 411 and 659, a caption on the lane at y+88, caption budgets.
+- Text: title at y+26, description lines at y+44, +59 and +74, the per-line budgets, one title per card, tag text at y+17.
+- Tag and height: tag at last card top + 98 with a `tag + 32` viewBox, or the no-tag height of the last top + 102.
+- Connectors: zero to two accent connectors, loops on a lane, upward, leaving and entering at side marks, unique marker ids, every marker defined.
+- Colors: no hex or rgb fill or stroke in the markup.
+
+The demo page passes 460 checks. Checks that the validator cannot make, because they need eyes, follow below.
 
 - Open the file at 100 percent zoom. Switch between light and dark, open both theme foldouts and pick one theme from each. Every diagram must follow the theme, with no diagram keeping its own colors.
 - Toggle print mode and confirm the print preview: white page, outlined pills, print cards.
 - Operate both bar controls with the keyboard and confirm the focus ring and state change.
 - Confirm the bar is hidden in the print preview and every diagram renders in the print tokens.
-- Narrow the window to 800 px. The SVG scales; no text may touch a border or another card.
+- If a width check is needed, shrink the window until the bar is 360 px wide and confirm the four controls still fit on one line.
 - Confirm no caption crosses x=790 and no side text crosses its card edge.
 - Confirm a split row: two arrows land on the card centres, each caption sits in its own half, and no connector meets an inner edge.
 - Confirm each loopback leaves and enters a main card at a free mark, never on a side stub, and that no loop connector starts under a side box.
@@ -353,15 +355,17 @@ Visual checks:
 - [ ] Main column at x=300, width 470, or a split row of two 222 cards at x=300 and x=548; pitch 108, height 70.
 - [ ] Card title at +26, description lines at +44 and +59.
 - [ ] Arrow 28 long, caption at y+88, x=549, or x=425 and x=673 on a split row.
-- [ ] Tag at last card top + 98, viewBox height = tag y + 32.
+- [ ] Tag optional at last card top + 98; viewBox height = tag y + 32, or last card top + 102 without a tag.
+- [ ] Up to seven main cards; tag and side boxes do not count.
+- [ ] Side boxes fixed: 210 wide at x=40, 220 wide at x=800.
 - [ ] Descriptions carry real flags, files and limits.
-- [ ] One focus card, at most two accent connectors, dash only for side channels.
+- [ ] One focus card, zero to two accent connectors, dash only for side channels.
 - [ ] Loopbacks use a lane (226/206/186/166 left, 824/844/864/884 right), enter and leave at a free mark, and the path sits before the cards.
 - [ ] Return edges use `loop`, side channels use `dash`.
 - [ ] Marker ids unique, fills set in `defs`.
 - [ ] `role="img"` and a full `aria-label` on each SVG.
 - [ ] Light and dark checked in a browser.
-- [ ] Python validation passes.
+- [ ] `python validate.py <topic>-flow.html` exits 0.
 - [ ] Top bar present: 24 px, print toggle, mode switch, dark theme and light theme foldouts, keyboard operable.
 - [ ] One theme for the page; no section class, no per-diagram colors.
 - [ ] Print toggle forces the print tokens and hides the bar in the print preview.
