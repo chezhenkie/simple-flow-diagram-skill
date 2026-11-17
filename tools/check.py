@@ -213,8 +213,8 @@ for fn in ("function applyTheme", "function applyPrint", "function buildMenu",
     check(fn in script, "bar script has " + fn[9:])
 check("--pill-ink" in script and "inkOn(t.accent)" in script, "pill ink derived")
 check("=== 'light' ? '#FFFFFF'" in script, "light pill ink white")
-check("'--thumb': '#CBCBCB'" in script and "'--thumb-line': '#888888'" in script,
-      "print resets switch thumb")
+check("'--thumb': mode === 'dark' ? '#2E2E2E' : '#CBCBCB'" in script,
+      "theme sets switch thumb per mode")
 check("menuitemradio" in script, "menu rows are menuitemradio")
 check("prefers-color-scheme" in scripts[0] and "prefers-color-scheme" in script, "os preference read")
 check("if (!manual)" in script, "os follow until manual")

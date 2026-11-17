@@ -145,6 +145,8 @@ ok(c.root.style.props['--muted'] === '#333333', 'print muted token');
 c.print.click();
 ok(c.root.getAttribute('data-print') === 'off', 'print off');
 ok(c.bg() === '#0D1117', 'print off restores github');
+ok(c.root.style.props['--thumb'] === '#2E2E2E', 'print off restores dark thumb');
+ok(c.root.style.props['--thumb-line'] === '#777777', 'print off restores dark thumb line');
 ok(c.print.getAttribute('aria-pressed') === 'false', 'print aria off');
 
 c.darkBtn.click();

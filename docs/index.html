@@ -94,7 +94,7 @@
   .s { width: 1px; height: 12px; background: var(--tb-line); }
   .tb-btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 4px;
-    height: 18px; padding: 0 6px 2px; cursor: pointer;
+    height: 18px; padding: 0 6px 3px; cursor: pointer;
     color: inherit; background: transparent;
     border: 1px solid var(--tb-line); border-radius: 2px;
     white-space: nowrap;
@@ -390,7 +390,9 @@
         '--page-bg': t.bg, '--page-ink': t.ink, '--page-muted': t.muted, '--page-line': t.line,
         '--card': t.card, '--ink': t.ink, '--muted': t.muted, '--line': t.line,
         '--accent': t.accent, '--pill-ink': root.getAttribute('data-theme') === 'light' ? '#FFFFFF' : inkOn(t.accent),
-        '--tb-ink': t.muted, '--tb-line': t.line
+        '--tb-ink': t.muted, '--tb-line': t.line,
+        '--thumb': mode === 'dark' ? '#2E2E2E' : '#CBCBCB',
+        '--thumb-line': mode === 'dark' ? '#777777' : '#888888'
       };
       for (var k in vars) root.style.setProperty(k, vars[k]);
     }
