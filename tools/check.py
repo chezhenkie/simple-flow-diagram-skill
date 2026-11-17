@@ -145,6 +145,8 @@ check("background: #ffffff !important" in pblock and "color: #000000 !important"
       "print white page")
 check("h2 { background: #e6e6e6 !important; color: #000000 !important; border-color: #000000 !important; }"
       in pblock, "print pill in media")
+check(".loop { stroke: var(--muted); stroke-width: 1.2; fill: none; stroke-dasharray: 2 4; }" in demo,
+      "loop line style")
 check('html[data-print="on"] h2 { background: #e6e6e6 !important; color: #000000 !important;'
       ' border-color: #000000 !important; }' in demo, "print toggle pill style")
 check(".card, .tag { fill: #ffffff !important; stroke: #9a9a9a !important; }" in pblock,
@@ -152,6 +154,7 @@ check(".card, .tag { fill: #ffffff !important; stroke: #9a9a9a !important; }" in
 check(".t { fill: #000000 !important; }" in pblock, "print title ink")
 check(".d, .cap, .side { fill: #333333 !important; }" in pblock, "print muted ink")
 check(".arrow-a { stroke: #000000 !important; }" in pblock, "print accent arrow")
+check(".arrow, .dash, .loop { stroke: #333333 !important; }" in pblock, "print loop stroke")
 
 # Theme table
 scripts = re.findall(r"<script>(.*?)</script>", demo, re.S)
@@ -360,6 +363,9 @@ check("diagram body in manual section 10" in low, "skill diagram body")
 # Manual
 check("## 3. Theme" in man, "manual theme section")
 check("## 10. Diagram body" in man, "manual diagram body")
+check("Loopback, a later card feeding an earlier one" in man, "manual loopback pattern")
+check("242, 230, 218, 206" in man and "808, 820, 832, 844" in man, "manual loop lanes")
+check("| `hi` | top + 20 |" in man and "| `lo` | top + h - 20 |" in man, "manual side marks")
 check("## 11. Validation" in man, "manual validation")
 check("## 13. Top bar and modes" in man, "manual top bar section")
 check("demo.html" in man and "template.html" in man, "manual file references")

@@ -47,7 +47,7 @@ The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.
 
 ## Files
 
-- `style-manual.md`: file contract, theme rules, type scale, grid, card anatomy, connectors, branch patterns, diagram body, validation, checklist, top bar rules.
+- `style-manual.md`: file contract, theme rules, type scale, grid, card anatomy, connectors, branch and loop patterns, diagram body, validation, checklist, top bar rules.
 - `template.html`: page shell to copy; theme table, top bar, print rules and one marked diagram slot, no diagram content.
 - `demo.html`: filled reference page with the bar, three diagrams and the print theme.
 
