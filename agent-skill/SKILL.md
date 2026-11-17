@@ -16,17 +16,18 @@ One self-contained `.html` page per topic, or one page with several diagrams. St
 
 Do not choose colors or restyle controls; the page follows whichever theme the reader picks.
 
-The full contract lives in [references/style-manual.md](references/style-manual.md). [demo.html](demo.html) is the same shell with three filled diagrams.
+The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.html) is the same shell with three filled diagrams.
 
 ## Workflow
 
-1. Read `references/style-manual.md` before writing. Copy `template.html` to `<topic>-flow.html`. Replace the title, subtitle and footer; insert diagram sections at the marked slot.
+1. Read `style-manual.md` before writing. Copy `template.html` to `<topic>-flow.html` in the workspace root unless the user or project rules name another folder. Replace the title, subtitle and footer; insert diagram sections at the marked slot.
 2. Keep the page shell as it is: head script, token block, top bar, bar script and print rules. Change only the page copy and the diagram bodies.
 3. Write the page in this order: top bar, h1, p.sub, one or more sections (head with h2 pill, p.note, svg), footer. Use the diagram body in manual section 10.
 4. Keep the grid: viewBox `0 0 1040 H`, main column x=300 width=470, card top `30 + 108n`, card height 70, arrow 28, caption x=549 at y+88, tag at last card top + 98, viewBox height tag + 32.
 5. Fill text within the budgets: main description 65 characters, side description 28 or 26, card title 24, caption 42, tag line 78.
 6. Mark one focus card and at most two accent connectors per diagram. Solid for the main path, dash for side channels.
 7. Run the section 11 validator, then check both modes, both theme foldouts and the print preview at 100 percent and at 800 px width.
+8. After the user has viewed the page, ask whether the diagram file can be deleted. Do not delete it unasked.
 
 ## Themes and modes
 
@@ -46,7 +47,7 @@ The full contract lives in [references/style-manual.md](references/style-manual.
 
 ## Files
 
-- `references/style-manual.md`: file contract, theme rules, type scale, grid, card anatomy, connectors, branch patterns, diagram body, validation, checklist, top bar rules.
+- `style-manual.md`: file contract, theme rules, type scale, grid, card anatomy, connectors, branch patterns, diagram body, validation, checklist, top bar rules.
 - `template.html`: page shell to copy; theme table, top bar, print rules and one marked diagram slot, no diagram content.
 - `demo.html`: filled reference page with the bar, three diagrams and the print theme.
 

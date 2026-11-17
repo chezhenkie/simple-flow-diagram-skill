@@ -38,18 +38,18 @@ def one_hex(css, name):
 
 files = ["README.md", "agent-skill/SKILL.md", "agent-skill/template.html",
          "agent-skill/demo.html", "docs/index.html", "CHANGELOG.md", "LICENSE",
-         "agent-skill/references/style-manual.md", "tools/check.py", "tools/harness.js"]
+         "agent-skill/style-manual.md", "tools/check.py", "tools/harness.js", "tools/README.md"]
 for f in files:
     b = read(f)
     check(all(x <= 126 and (x >= 32 or x in (9, 10)) for x in b), f + " ascii")
     check(b"\r" not in b, f + " lf only")
 
-check(not os.path.exists("agent-skill/references/palettes.html"), "palette sheet removed")
+check(not os.path.exists("agent-skill/palettes.html"), "palette sheet removed")
 
 demo = text("agent-skill/demo.html")
 tpl = text("agent-skill/template.html")
 skill = text("agent-skill/SKILL.md")
-man = text("agent-skill/references/style-manual.md")
+man = text("agent-skill/style-manual.md")
 cl = text("CHANGELOG.md")
 rd = text("README.md")
 pages = text("docs/index.html")
@@ -179,8 +179,8 @@ if raw:
     except Exception:
         themes = {}
 check(set(themes) == {"dark", "light"}, "theme table has two modes")
-DARK = ["ayu", "github", "nightowl", "solarized", "monochrome"]
-LIGHT = ["cursor", "monokai", "orng", "tokyonight", "vercel"]
+DARK = ["github", "monochrome", "ayu", "nightowl", "solarized"]
+LIGHT = ["tokyonight", "vercel", "cursor", "monokai", "orng"]
 check(list(themes.get("dark", {})) == DARK, "five dark themes in order")
 check(list(themes.get("light", {})) == LIGHT, "five light themes in order")
 for mode in ("dark", "light"):
@@ -193,12 +193,12 @@ for mode in ("dark", "light"):
 # Default token blocks match the first theme of each mode
 root_css = re.search(r":root\s*\{(.*?)\}", demo, re.S).group(1)
 dark_css = re.search(r'html\[data-theme="dark"\]\s*\{(.*?)\}', demo, re.S).group(1)
-cur = themes.get("light", {}).get("cursor", {})
-ayu = themes.get("dark", {}).get("ayu", {})
+cur = themes.get("light", {}).get("tokyonight", {})
+ayu = themes.get("dark", {}).get("github", {})
 for key, var in (("bg", "page-bg"), ("card", "card"), ("ink", "ink"),
                  ("muted", "muted"), ("line", "line"), ("accent", "accent")):
-    check(one_hex(root_css, var) == cur.get(key, "").lower(), "cursor default " + var)
-    check(one_hex(dark_css, var) == ayu.get(key, "").lower(), "ayu default " + var)
+    check(one_hex(root_css, var) == cur.get(key, "").lower(), "tokyonight default " + var)
+    check(one_hex(dark_css, var) == ayu.get(key, "").lower(), "github default " + var)
 check("--mint" not in demo and "--page-mint" not in demo, "no mint token")
 check(".diagram" not in demo, "no per-section palette class")
 check(not re.search(r'\.d\d\s*\{', demo), "no palette slot rules")
@@ -339,7 +339,7 @@ check(desc_m is not None and 1 <= len(desc_m.group(1)) <= 1024, "skill descripti
 check(desc_m is not None and "token efficiency" in desc_m.group(1), "skill description goal")
 for link in re.findall(r"\]\(([^)]+)\)", skill):
     check(os.path.isfile(os.path.join("agent-skill", link)), "skill link " + link)
-check("demo.html" in skill and "template.html" in skill and "references/style-manual.md" in skill,
+check("demo.html" in skill and "template.html" in skill and "style-manual.md" in skill,
       "skill file map")
 check("palettes.html" not in skill, "skill no palette sheet")
 low = skill.lower()

@@ -41,7 +41,7 @@ The page carries one theme, and every diagram on it follows that theme. A theme 
 | `line` | card and tag borders, bar lines |
 | `accent` | section pill, focus border, action arrow |
 
-Ten themes ship in the template, five per mode. Dark: `ayu`, `github`, `nightowl`, `solarized`, `monochrome`. Light: `cursor`, `monokai`, `orng`, `tokyonight`, `vercel`.
+Ten themes ship in the template, five per mode. Dark: `github`, `monochrome`, `ayu`, `nightowl`, `solarized`. Light: `tokyonight`, `vercel`, `cursor`, `monokai`, `orng`.
 
 Rules:
 
@@ -57,7 +57,7 @@ Rules:
 |---|---|---|---|
 | h1 | 22 | 400 | page title |
 | `.sub` | 13 | 400 | page subtitle |
-| h2 | 16 | 400 | section pill, accent fill with contrast text (grey on black in print) |
+| h2 | 16 | 600 | section pill, accent fill with contrast text (grey on black in print) |
 | `.note` | 13 | 400 | instruction above the diagram |
 | `.t` | 14.5 | 600 | card title |
 | `.d` | 12.5 | 400 | card description |

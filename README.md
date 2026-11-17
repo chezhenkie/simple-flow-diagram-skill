@@ -16,7 +16,7 @@ Click a sample to open the full-size PNG.
 | Light | Dark | Print friendly |
 |:---:|:---:|:---:|
 | [<img src="docs/demo-light.png" width="280" alt="Demo page in light mode">](docs/demo-light.png) | [<img src="docs/demo-dark.png" width="280" alt="Demo page in dark mode">](docs/demo-dark.png) | [<img src="docs/demo-print-friendly.png" width="280" alt="Demo page with print friendly on">](docs/demo-print-friendly.png) |
-| Demo, cursor light | Same page, ayu dark | White page, print tokens |
+| Demo, tokyonight light | Same page, github dark | White page, print tokens |
 
 <table>
   <tr>
@@ -32,15 +32,15 @@ Four controls sit at the top right. All are native buttons and work with Tab, En
 
 The mode switch selects light or dark. The page starts from the OS preference and follows OS changes until the switch is clicked.
 
-`dark theme` and `light theme` open a foldout with five names each. Dark: ayu, github, nightowl, solarized, monochrome. Light: cursor, monokai, orng, tokyonight, vercel. Picking a name applies it to the page and every diagram on it, and switches to that mode. Each mode keeps its own pick, so the switch flips between the two.
+`dark theme` and `light theme` open a foldout with five names each. Dark: github, monochrome, ayu, nightowl, solarized. Light: tokyonight, vercel, cursor, monokai, orng. Picking a name applies it to the page and every diagram on it, and switches to that mode. Each mode keeps its own pick, so the switch flips between the two.
 
 <img src="docs/bar-dark.png" width="244" alt="Top bar in dark mode">
 
-Dark mode: ayu theme, print off.
+Dark mode: github theme, print off.
 
 <img src="docs/bar-light.png" width="244" alt="Top bar in light mode">
 
-Light mode: cursor theme, print off.
+Light mode: tokyonight theme, print off.
 
 <img src="docs/bar-print-friendly.png" width="244" alt="Top bar with print friendly on">
 
@@ -53,7 +53,7 @@ Print friendly on: the print control fills, the mode and theme stay unchanged.
 | `agent-skill/SKILL.md` | Agent entry point, workflow and hard rules |
 | `agent-skill/template.html` | Page shell to copy; marked diagram slot |
 | `agent-skill/demo.html` | Filled reference page with three diagrams |
-| `agent-skill/references/style-manual.md` | Theme rules, grid, type scale, card anatomy, connectors, validation |
+| `agent-skill/style-manual.md` | Theme rules, grid, type scale, card anatomy, connectors, validation |
 | `tools/` | Static and bar behavior checks |
 | `docs/` | Screenshots and the GitHub Pages entry |
 | `CHANGELOG.md` | Version history |
@@ -79,7 +79,7 @@ Codex scans `.agents/skills` from the current folder up to the repository root. 
 
 ## Use
 
-Ask for a flow diagram in this style. The agent reads `agent-skill/SKILL.md`, copies `agent-skill/template.html`, fills the page copy and inserts one section per diagram. The diagram body in `agent-skill/references/style-manual.md` section 10 is the starting block.
+Ask for a flow diagram in this style. The agent reads `agent-skill/SKILL.md`, copies `agent-skill/template.html`, fills the page copy and inserts one section per diagram. The diagram body in `agent-skill/style-manual.md` section 10 is the starting block.
 
 ### Call the skill
 

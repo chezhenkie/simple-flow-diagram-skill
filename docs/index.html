@@ -11,38 +11,38 @@
   })();
 </script>
 <style>
-  /* Default tokens: cursive theme for light, ayu for dark. The bar script replaces them. */
+  /* Default tokens: tokyonight theme for light, github for dark. The bar script replaces them. */
   :root {
     color-scheme: light;
-    --page-bg: #FCFCFC;
-    --page-ink: #141414;
-    --page-muted: #5F5F5F;
-    --page-line: #D4D4D4;
-    --card: #F3F3F3;
-    --ink: #141414;
-    --muted: #5F5F5F;
-    --line: #D4D4D4;
-    --accent: #6F9BA6;
+    --page-bg: #E1E2E7;
+    --page-ink: #3369E6;
+    --page-muted: #5A6377;
+    --page-line: #737A8C;
+    --card: #D5D6DB;
+    --ink: #3369E6;
+    --muted: #5A6377;
+    --line: #737A8C;
+    --accent: #B15C00;
     --pill-ink: #FFFFFF;
-    --tb-ink: #5F5F5F;
-    --tb-line: #D4D4D4;
+    --tb-ink: #5A6377;
+    --tb-line: #737A8C;
     --thumb: #cbcbcb;
     --thumb-line: #888888;
   }
   html[data-theme="dark"] {
     color-scheme: dark;
-    --page-bg: #0B0E14;
-    --page-ink: #BFBDB6;
-    --page-muted: #565B66;
-    --page-line: #6C7380;
-    --card: #0F131A;
-    --ink: #BFBDB6;
-    --muted: #565B66;
-    --line: #6C7380;
-    --accent: #E6B450;
-    --pill-ink: #000000;
-    --tb-ink: #565B66;
-    --tb-line: #6C7380;
+    --page-bg: #0D1117;
+    --page-ink: #C9D1D9;
+    --page-muted: #8B949E;
+    --page-line: #30363D;
+    --card: #010409;
+    --ink: #C9D1D9;
+    --muted: #8B949E;
+    --line: #30363D;
+    --accent: #2971E1;
+    --pill-ink: #FFFFFF;
+    --tb-ink: #8B949E;
+    --tb-line: #30363D;
     --thumb: #2e2e2e;
     --thumb-line: #777777;
   }
@@ -61,7 +61,7 @@
   .head { display: flex; align-items: center; margin: 0 0 10px; }
   h2 {
     display: inline-flex; align-items: center; height: 28px; padding: 0 12px 4px;
-    font-size: 16px; font-weight: 400; margin: 0; background: var(--accent);
+    font-size: 16px; font-weight: 600; margin: 0; background: var(--accent);
     color: var(--pill-ink); border: 1px solid var(--accent); border-radius: 3px;
   }
   .note { color: var(--page-muted); font-size: 13px; margin: 0 0 16px; }
@@ -353,21 +353,21 @@
 
     var THEMES = {
       dark: {
-        ayu:        { bg: '#0B0E14', card: '#0F131A', ink: '#BFBDB6', muted: '#565B66', line: '#6C7380', accent: '#E6B450' },
-        github:     { bg: '#0D1117', card: '#010409', ink: '#C9D1D9', muted: '#8B949E', line: '#30363D', accent: '#39C5CF' },
-        nightowl:   { bg: '#011627', card: '#0B253A', ink: '#D6DEEB', muted: '#5F7E97', line: '#5F7E97', accent: '#C792EA' },
-        solarized:  { bg: '#002B36', card: '#073642', ink: '#839496', muted: '#586E75', line: '#073642', accent: '#2AA198' },
-        monochrome: { bg: '#000000', card: '#1A1A1A', ink: '#EDEDED', muted: '#878787', line: '#1F1F1F', accent: '#FFFFFF' }
+        github:     { bg: '#0D1117', card: '#010409', ink: '#C9D1D9', muted: '#8B949E', line: '#30363D', accent: '#2971E1' },
+        monochrome: { bg: '#000000', card: '#1A1A1A', ink: '#EDEDED', muted: '#A8A8A8', line: '#1F1F1F', accent: '#D4D4D4' },
+        ayu:        { bg: '#0B0E14', card: '#0F131A', ink: '#AAD94C', muted: '#59C2FF', line: '#6C7380', accent: '#E6B450' },
+        nightowl:   { bg: '#011627', card: '#1D3B53', ink: '#FFCB6B', muted: '#7FDBCA', line: '#C792EA', accent: '#22DA6E' },
+        solarized:  { bg: '#002B36', card: '#073642', ink: '#9DB0B0', muted: '#7A9298', line: '#073642', accent: '#C24F1F' }
       },
       light: {
-        cursor:      { bg: '#FCFCFC', card: '#F3F3F3', ink: '#141414', muted: '#5F5F5F', line: '#D4D4D4', accent: '#6F9BA6' },
-        monokai:     { bg: '#FAFAFA', card: '#F0F0F0', ink: '#272822', muted: '#75715E', line: '#D0D0D0', accent: '#A6E22E' },
-        orng:        { bg: '#FFFFFF', card: '#FFF7F1', ink: '#1A1A1A', muted: '#8A8A8A', line: '#EC5B2B', accent: '#C94D24' },
-        tokyonight:  { bg: '#E1E2E7', card: '#D5D6DB', ink: '#3760BF', muted: '#8990A3', line: '#737A8C', accent: '#B15C00' },
-        vercel:      { bg: '#FFFFFF', card: '#FAFAFA', ink: '#171717', muted: '#666666', line: '#EAEAEA', accent: '#8E4EC6' }
+        tokyonight:  { bg: '#E1E2E7', card: '#D5D6DB', ink: '#3369E6', muted: '#5A6377', line: '#737A8C', accent: '#B15C00' },
+        vercel:      { bg: '#E1E2E7', card: '#FFFFFF', ink: '#CC2424', muted: '#333333', line: '#333333', accent: '#FFB224' },
+        cursor:      { bg: '#E1E2E7', card: '#F3F3F3', ink: '#2C5960', muted: '#58696D', line: '#7E979C', accent: '#50ADC5' },
+        monokai:     { bg: '#E1E2E7', card: '#F0F0F0', ink: '#333333', muted: '#5F634B', line: '#939A76', accent: '#AE81FF' },
+        orng:        { bg: '#E1E2E7', card: '#FFF7F1', ink: '#C94D24', muted: '#333333', line: '#C2765A', accent: '#C94D24' }
       }
     };
-    var chosen = { dark: 'ayu', light: 'cursor' };
+    var chosen = { dark: 'github', light: 'tokyonight' };
 
     function isDark() { return root.getAttribute('data-theme') === 'dark'; }
     function isPrint() { return root.getAttribute('data-print') === 'on'; }
