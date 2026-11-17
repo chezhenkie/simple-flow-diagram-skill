@@ -131,8 +131,8 @@ check(".toggle .ico-l { left: 7px;" in demo and ".toggle .ico-r { right: 8px;" i
       "switch icons centered")
 check(".tb-btn.on { background: var(--tb-ink); color: var(--page-bg);" in demo, "print active fill")
 check(not re.search(r'<svg\b[^>]*\s(?:width|height)="', demo), "no fixed svg size")
-check(re.search(r"h2\s*\{[^}]*background:\s*var\(--accent\);[^}]*color:\s*var\(--pill-ink\)", demo)
-      is not None, "pill uses accent and contrast ink")
+check(re.search(r"h2\s*\{[^}]*background:\s*transparent;[^}]*color:\s*var\(--page-ink\);[^}]*border:\s*2px solid var\(--accent\)", demo)
+      is not None, "pill is transparent with a 2px accent outline")
 
 # Print rules
 ps = demo.find("@media print")
@@ -144,12 +144,12 @@ check("break-inside: avoid" in pblock, "print break rule")
 check("print-color-adjust: exact" in pblock, "print color adjust")
 check("background: #ffffff !important" in pblock and "color: #000000 !important" in pblock,
       "print white page")
-check("h2 { background: #e6e6e6 !important; color: #000000 !important; border-color: #000000 !important; }"
-      in pblock, "print pill in media")
+check("h2 { background: transparent !important; color: #000000 !important; border: 2px solid #000000 !important; }"
+      in pblock, "print pill outline in media")
 check(".loop { stroke: var(--muted); stroke-width: 1.6; fill: none; stroke-dasharray: 0.1 6; stroke-linecap: round; }" in demo,
       "loop line style")
-check('html[data-print="on"] h2 { background: #e6e6e6 !important; color: #000000 !important;'
-      ' border-color: #000000 !important; }' in demo, "print toggle pill style")
+check('html[data-print="on"] h2 { background: transparent !important; color: #000000 !important;'
+      ' border: 2px solid #000000 !important; }' in demo, "print toggle pill style")
 check(".card, .tag { fill: #ffffff !important; stroke: #9a9a9a !important; }" in pblock,
       "print card fill")
 check(".t { fill: #000000 !important; }" in pblock, "print title ink")
@@ -215,7 +215,7 @@ for fn in ("function applyTheme", "function applyPrint", "function buildMenu",
            "function syncMenus", "function closeMenus", "function inkOn",
            "function setMode", "function setPrint"):
     check(fn in script, "bar script has " + fn[9:])
-check("--pill-ink" in script and "inkOn(t.accent)" in script, "pill ink derived")
+check("--pick-ink" in script and "inkOn(t.accent)" in script, "menu pick ink derived")
 check("0.179" in script, "pill ink contrast threshold")
 check("'--thumb': mode === 'dark' ? '#2E2E2E' : '#CBCBCB'" in script,
       "theme sets switch thumb per mode")
@@ -415,7 +415,7 @@ check('<section class="diagram' not in man and "<section>\n  <div class=\"head\"
       "manual plain section body")
 check("palette pair" not in man.lower(), "manual no palette pairs")
 check("--mint" not in man and "P0" not in man, "manual no mint or P0")
-check("`#e6e6e6` pill with black text and a black border" in man, "manual print pill")
+check("transparent with a 2 px accent outline" in man, "manual pill outline")
 check("auto width, 18 px high" in man, "manual print button size")
 check("68 px minimum width" in man, "manual theme button size")
 check("role=\"menu\"" in man and "menuitemradio" in man, "manual menu markup")

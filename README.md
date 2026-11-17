@@ -2,7 +2,7 @@
 
 An agent skill that turns a process into a flow diagram on one HTML page, built for minimal token use and fast generation. Layout, nine themes, the light and dark switch and the print view live in the template, so the agent writes the cards and the captions and nothing else. Any model can place boxes and arrows; the point here is a consistent result at the smallest possible cost.
 
-Readability is the first principle. All nine themes are tuned for contrast in light, dark and print, with the pill, text, border and muted values checked in the browser. The palette is fixed, so a page cannot drift from it.
+Readability is the first principle. The nine themes start from well-known programmer palettes, then text, border, muted, accent and the section outline are tuned until each one reads in light, dark and print. The light themes take the most care, because a bright page is where glare shows: the page sits on a light grey instead of white, the ink is darkened against it, and the title box is an outline rather than a block of colour. The palette is fixed, so a page cannot drift from it.
 
 ## Themes
 

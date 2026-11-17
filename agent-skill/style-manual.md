@@ -39,7 +39,7 @@ The page carries one theme, and every diagram on it follows that theme. A theme 
 | `ink` | page text, card titles |
 | `muted` | descriptions, captions, connectors, footer, bar ink |
 | `line` | card and tag borders, bar lines |
-| `accent` | section pill, focus border, action arrow |
+| `accent` | section pill outline, focus border, action arrow |
 
 Nine themes ship in the template: five dark and four light. Dark: `github`, `monochrome`, `ayu`, `nightowl`, `solarized`. Light: `vercel`, `tokyonight`, `cursor`, `orng`. Light opens on `vercel`, dark on `github`.
 
@@ -47,9 +47,9 @@ Rules:
 
 - The agent does not pick, mix or author colors. The list is fixed and the theme script in `template.html` sets the six values as CSS custom properties.
 - A diagram carries no colors of its own. No class on a section, no per-section token block, no inline `fill` or `stroke` with a color value.
-- The pill text is black or white by accent contrast, in both modes.
+- The pill is transparent with a 2 px accent outline and takes the page ink for its text, in both modes. No theme fills the title box, so it never competes with the diagram.
 - One theme per page. Two diagrams side by side use the same tokens; contrast comes from layout and copy.
-- Print is a separate state with fixed tokens: white page, black ink, `#333333` muted, `#9a9a9a` line, black accent, and a `#e6e6e6` pill with black text and a black border.
+- Print is a separate state with fixed tokens: white page, black ink, `#333333` muted, `#9a9a9a` line, black accent, and the same transparent pill with a 2 px black outline and black text.
 
 ## 4. Type scale
 
@@ -57,7 +57,7 @@ Rules:
 |---|---|---|---|
 | h1 | 22 | 400 | page title |
 | `.sub` | 13 | 400 | page subtitle |
-| h2 | 16 | 600 | section pill, accent fill with contrast text (black on light grey in print) |
+| h2 | 16 | 600 | section pill, transparent with a 2 px accent outline and page ink text (black outline in print) |
 | `.note` | 13 | 400 | instruction above the diagram |
 | `.t` | 14.5 | 600 | card title |
 | `.d` | 12.5 | 400 | card description |
@@ -334,7 +334,7 @@ print("ok", len(svgs), "svg", len(raw), "bytes")
 Visual checks:
 
 - Open the file at 100 percent zoom. Switch between light and dark, open both theme foldouts and pick one theme from each. Every diagram must follow the theme, with no diagram keeping its own colors.
-- Toggle print mode and confirm the print preview: white page, grey pills with black borders, print cards.
+- Toggle print mode and confirm the print preview: white page, outlined pills, print cards.
 - Operate both bar controls with the keyboard and confirm the focus ring and state change.
 - Confirm the bar is hidden in the print preview and every diagram renders in the print tokens.
 - Narrow the window to 800 px. The SVG scales; no text may touch a border or another card.
@@ -389,8 +389,8 @@ State:
 
 Token scope:
 
-- Every token lives on `:root`: `--page-bg`, `--page-ink`, `--page-muted`, `--page-line`, `--card`, `--ink`, `--muted`, `--line`, `--accent`, `--pill-ink`, plus the bar and thumb tokens.
-- The theme script writes the six theme values and the derived pill ink to `:root` whenever the mode or theme changes.
+- Every token lives on `:root`: `--page-bg`, `--page-ink`, `--page-muted`, `--page-line`, `--card`, `--ink`, `--muted`, `--line`, `--accent`, `--pick-ink`, plus the bar and thumb tokens.
+- The theme script writes the six theme values and the derived menu pick ink to `:root` whenever the mode or theme changes. `--pick-ink` is the text on the filled accent row in the theme foldout; the section pill uses `--page-ink` over a transparent fill.
 - Print writes its own fixed values to `:root`, so it wins over the theme without a cascade trick.
 
 Scripts:
@@ -401,5 +401,5 @@ Scripts:
 Print:
 
 - `@page` margin 12 mm, exact color adjust, `break-inside: avoid` per section.
-- `@media print` hides the bar, removes the page cap and forces the print values again, so paper output is print-themed even when the toggle was never clicked. The pill is `#e6e6e6` with black text and a black border.
+- `@media print` hides the bar, removes the page cap and forces the print values again, so paper output is print-themed even when the toggle was never clicked. The pill keeps the transparent fill with a 2 px black outline and black text.
 - Print mode on screen keeps the bar visible; only the print preview hides it.

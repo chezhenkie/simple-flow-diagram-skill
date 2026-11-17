@@ -23,7 +23,7 @@
     --muted: #333333;
     --line: #333333;
     --accent: #E8A020;
-    --pill-ink: #000000;
+    --pick-ink: #000000;
     --tb-ink: #333333;
     --tb-line: #333333;
     --thumb: #cbcbcb;
@@ -40,7 +40,7 @@
     --muted: #8B949E;
     --line: #30363D;
     --accent: #2971E1;
-    --pill-ink: #FFFFFF;
+    --pick-ink: #FFFFFF;
     --tb-ink: #8B949E;
     --tb-line: #30363D;
     --thumb: #2e2e2e;
@@ -61,8 +61,8 @@
   .head { display: flex; align-items: center; margin: 0 0 10px; }
   h2 {
     display: inline-flex; align-items: center; height: 28px; padding: 0 12px 4px;
-    font-size: 16px; font-weight: 600; margin: 0; background: var(--accent);
-    color: var(--pill-ink); border: 1px solid var(--accent); border-radius: 3px;
+    font-size: 16px; font-weight: 600; margin: 0; background: transparent;
+    color: var(--page-ink); border: 2px solid var(--accent); border-radius: 3px;
   }
   .note { color: var(--page-muted); font-size: 13px; margin: 0 0 16px; }
   svg { display: block; width: 100%; height: auto; }
@@ -121,7 +121,7 @@
     white-space: nowrap;
   }
   .menu button:hover, .menu button:focus-visible { background: var(--tb-line); }
-  .menu button[aria-checked="true"] { background: var(--accent); color: var(--pill-ink); }
+  .menu button[aria-checked="true"] { background: var(--accent); color: var(--pick-ink); }
   .toggle {
     position: relative; width: 44px; height: 20px; padding: 0; cursor: pointer;
     background: transparent; border: 0; color: inherit;
@@ -151,7 +151,7 @@
     main { max-width: none; padding: 0; }
     body { background: #ffffff !important; color: #000000 !important; }
     h1, .sub, .note, footer { color: #000000 !important; }
-    h2 { background: #e6e6e6 !important; color: #000000 !important; border-color: #000000 !important; }
+    h2 { background: transparent !important; color: #000000 !important; border: 2px solid #000000 !important; }
     .card, .tag { fill: #ffffff !important; stroke: #9a9a9a !important; }
     .focus { fill: #ffffff !important; stroke: #000000 !important; }
     .t { fill: #000000 !important; }
@@ -162,7 +162,7 @@
     section { break-inside: avoid; margin-bottom: 24px; }
     body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
-  html[data-print="on"] h2 { background: #e6e6e6 !important; color: #000000 !important; border-color: #000000 !important; }
+  html[data-print="on"] h2 { background: transparent !important; color: #000000 !important; border: 2px solid #000000 !important; }
 </style>
 </head>
 <body>
@@ -443,7 +443,7 @@
       var vars = {
         '--page-bg': t.bg, '--page-ink': t.ink, '--page-muted': t.muted, '--page-line': t.line,
         '--card': t.card, '--ink': t.ink, '--muted': t.muted, '--line': t.line,
-        '--accent': t.accent, '--pill-ink': inkOn(t.accent),
+        '--accent': t.accent, '--pick-ink': inkOn(t.accent),
         '--tb-ink': t.muted, '--tb-line': t.line,
         '--thumb': mode === 'dark' ? '#2E2E2E' : '#CBCBCB',
         '--thumb-line': mode === 'dark' ? '#777777' : '#888888'
@@ -456,7 +456,7 @@
         '--page-bg': '#FFFFFF', '--page-ink': '#000000', '--page-muted': '#333333',
         '--page-line': '#9A9A9A', '--card': '#FFFFFF', '--ink': '#000000',
         '--muted': '#333333', '--line': '#9A9A9A', '--accent': '#000000',
-        '--pill-ink': '#000000', '--tb-ink': '#333333', '--tb-line': '#9A9A9A',
+        '--pick-ink': '#000000', '--tb-ink': '#333333', '--tb-line': '#9A9A9A',
         '--thumb': '#CBCBCB', '--thumb-line': '#888888'
       };
       for (var k in vars) root.style.setProperty(k, vars[k]);
