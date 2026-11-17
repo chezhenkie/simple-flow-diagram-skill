@@ -15,7 +15,7 @@ Nine themes ship in the template: five dark and four light. Dark: github, monoch
 
 ## Samples
 
-Click a sample to open the full-size PNG.
+Click a sample to open the full-size PNG. The samples show the first two of the four sections.
 
 | Light | Dark | Print friendly |
 |:---:|:---:|:---:|
@@ -38,29 +38,17 @@ The mode switch selects light or dark. The page starts from the OS preference an
 
 `dark theme` and `light theme` open a foldout with five dark names or four light names. Dark: github, monochrome, ayu, nightowl, solarized. Light: vercel, tokyonight, cursor, orng. Picking a name applies it to the page and every diagram on it, and switches to that mode. Each mode keeps its own pick, so the switch flips between the two.
 
-<img src="docs/bar-dark.png" width="244" alt="Top bar in dark mode">
+<img src="docs/bar-dark.png" width="400" alt="Top bar in dark mode">
 
 Dark mode: github theme, print off.
 
-<img src="docs/bar-light.png" width="244" alt="Top bar in light mode">
+<img src="docs/bar-light.png" width="400" alt="Top bar in light mode">
 
 Light mode: vercel theme, print off.
 
-<img src="docs/bar-print-friendly.png" width="244" alt="Top bar with print friendly on">
+<img src="docs/bar-print-friendly.png" width="400" alt="Top bar with print friendly on">
 
 Print friendly on: the print control fills, the mode and theme stay unchanged.
-
-## Files
-
-| File | Purpose |
-|---|---|
-| `agent-skill/SKILL.md` | Agent entry point, workflow and hard rules |
-| `agent-skill/template.html` | Page shell to copy; marked diagram slot |
-| `agent-skill/demo.html` | Filled reference page with four diagrams |
-| `agent-skill/style-manual.md` | Theme rules, grid, type scale, card anatomy, connectors, validation |
-| `tools/` | Static and bar behavior checks |
-| `docs/` | Screenshots and the GitHub Pages entry |
-| `CHANGELOG.md` | Version history |
 
 ## Install
 
@@ -98,12 +86,24 @@ Codex also lists installed skills with `/skills`.
 
 Example request: `Draw the request path as a flow diagram in the house style.`
 
+## Files
+
+| File | Purpose |
+|---|---|
+| `agent-skill/SKILL.md` | Agent entry point, workflow and hard rules |
+| `agent-skill/template.html` | Page shell to copy; marked diagram slot |
+| `agent-skill/demo.html` | Filled reference page with four diagrams |
+| `agent-skill/style-manual.md` | Theme rules, grid, type scale, card anatomy, connectors, validation |
+| `testing-tools/` | Static and bar behavior checks |
+| `docs/` | Screenshots and the GitHub Pages entry |
+| `CHANGELOG.md` | Version history |
+
 ## Check
 
 Run from the repo root:
 
 ```sh
-python tools/check.py
+python testing-tools/check.py
 ```
 
 The script validates ASCII and LF endings, the theme table, SVG geometry, template and demo parity, and the bar state machine. Python 3 and Node are required.

@@ -38,7 +38,7 @@ def one_hex(css, name):
 
 files = ["README.md", "agent-skill/SKILL.md", "agent-skill/template.html",
          "agent-skill/demo.html", "docs/index.html", "CHANGELOG.md", "LICENSE",
-         "agent-skill/style-manual.md", "tools/check.py", "tools/harness.js", "tools/README.md"]
+         "agent-skill/style-manual.md", "testing-tools/check.py", "testing-tools/harness.js", "testing-tools/README.md"]
 for f in files:
     b = read(f)
     check(all(x <= 126 and (x >= 32 or x in (9, 10)) for x in b), f + " ascii")
@@ -439,7 +439,7 @@ check("## Page controls" in rd, "readme page controls")
 rimgs = [a or b for a, b in re.findall(r'!\[[^\]]*\]\(([^)]+)\)|<img[^>]+src="([^"]+)"', rd)]
 check(len(rimgs) == 6 and all(os.path.isfile(x) for x in rimgs), "readme images")
 check(rd.count('width="280"') == 3, "readme sample thumbnails")
-check(rd.count('width="244"') == 3, "readme closeup sizes")
+check(rd.count('width="400"') == 3, "readme closeup sizes")
 check("docs/bar-dark.png" in rd and "docs/bar-light.png" in rd
       and "docs/bar-print-friendly.png" in rd, "readme bar closeups")
 check("docs/demo-dark.png" in rd and "docs/demo-print-friendly.png" in rd, "readme demo states")
@@ -461,7 +461,7 @@ check("a few hundred tokens" in rd, "readme token figure")
 check("written part stays small" in man, "manual cost note")
 
 # Script syntax and behavior
-artifacts = os.path.join("tools", ".artifacts")
+artifacts = os.path.join("testing-tools", ".artifacts")
 os.makedirs(artifacts, exist_ok=True)
 for old in os.listdir(artifacts):
     if re.match(r"s\d\.js$", old):
@@ -480,7 +480,7 @@ if node:
         check(r.returncode == 0, "script %d syntax" % i)
         if r.returncode != 0:
             print(r.stderr.strip()[:300])
-    r = subprocess.run([node, os.path.join("tools", "harness.js")], capture_output=True, text=True)
+    r = subprocess.run([node, os.path.join("testing-tools", "harness.js")], capture_output=True, text=True)
     check(r.returncode == 0, "bar behavior harness")
     if r.returncode != 0:
         print(r.stdout.strip()[:800])
