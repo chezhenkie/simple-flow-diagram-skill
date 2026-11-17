@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.0.0
+
+### New features
+
+#### All platforms
+
+* Split row: a decision card forks into two 222 px cards at x=300 and x=548, with arrows at 411 and 659 and captions at 425 and 673. A merge returns on the same two positions.
+* Loopback returns use four lanes per side, 24 px inside the side box at a 20 px pitch, drawn as round dots so a return reads apart from a side dash.
+* Three line styles are named: solid for the main path, dashed for a side channel or alternate branch, dotted for a return.
+* Nine themes: monokai is gone and the light foldout lists four names. Light opens on vercel and dark on github; `:root` mirrors vercel and the dark block mirrors github.
+* Vercel accent retuned to `#E8A020` and tokyonight muted text to `#474F60`.
+* Top bar carries a 28 px inset at both ends.
+* `demo.html` adds a package section with the split row, and the docs section returns a rejected draft to Draft. Section order is request, package, video, docs.
+* `SKILL.md` opens a finished page in the local browser and keeps a second window closed when the page is already open.
+* The checker covers split rows and per-boundary arrows and captions: 370 checks.
+* Regenerated all six screenshots.
+
 ## 0.7.0
 
 ### New features

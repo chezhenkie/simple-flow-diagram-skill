@@ -91,27 +91,27 @@ function names(el) {
 }
 
 var DARK = 'github,monochrome,ayu,nightowl,solarized';
-var LIGHT = 'tokyonight,vercel,cursor,orng';
+var LIGHT = 'vercel,tokyonight,cursor,orng';
 
 var c = makeContext(false);
 run(c);
 ok(c.root.getAttribute('data-theme') === 'light', 'initial light theme');
 ok(c.mode.getAttribute('aria-checked') === 'true', 'initial light aria');
 ok(c.mode.classList.contains('on') === true, 'initial light thumb');
-ok(c.bg() === '#E1E2E7', 'initial tokyonight background');
+ok(c.bg() === '#E1E2E7', 'initial vercel background');
 ok(names(c.darkMenu) === DARK, 'dark menu names');
 ok(names(c.lightMenu) === LIGHT, 'light menu names');
 ok(c.darkMenu.children[0].getAttribute('aria-checked') === 'true', 'dark default github marked');
 ok(c.darkMenu.children[2].getAttribute('aria-checked') === 'false', 'ayu not marked by default');
-ok(c.lightMenu.children[0].getAttribute('aria-checked') === 'true', 'light default tokyonight marked');
-ok(c.lightMenu.children[1].getAttribute('aria-checked') === 'false', 'vercel not marked by default');
+ok(c.lightMenu.children[0].getAttribute('aria-checked') === 'true', 'light default vercel marked');
+ok(c.lightMenu.children[1].getAttribute('aria-checked') === 'false', 'tokyonight not marked by default');
 
 c.mq.set(true);
 ok(c.root.getAttribute('data-theme') === 'dark', 'os change to dark');
 ok(c.mode.getAttribute('aria-checked') === 'false', 'os dark aria');
 ok(c.bg() === '#0D1117', 'os dark uses github');
 c.mq.set(false);
-ok(c.bg() === '#E1E2E7', 'os back to cursor');
+ok(c.bg() === '#E1E2E7', 'os back to vercel');
 
 c.darkBtn.click();
 ok(c.darkMenu.classList.contains('open') === true, 'dark menu opens');
@@ -129,10 +129,10 @@ ok(c.darkMenu.classList.contains('open') === false, 'menu closes after pick');
 ok(c.darkBtn.getAttribute('aria-expanded') === 'false', 'button collapsed after pick');
 
 c.mode.click();
-ok(c.bg() === '#E1E2E7', 'mode switch returns to cursor');
+ok(c.bg() === '#E1E2E7', 'mode switch returns to vercel');
 c.lightBtn.click();
 c.lightMenu.children[1].click();
-ok(c.root.style.props['--line'] === '#333333', 'vercel light line applied');
+ok(c.root.style.props['--line'] === '#737A8C', 'tokyonight light line applied');
 c.mode.click();
 ok(c.bg() === '#0D1117', 'github remembered across mode switch');
 c.mq.set(true);
@@ -163,7 +163,7 @@ ok(d.mode.getAttribute('aria-checked') === 'false', 'initial os dark aria');
 ok(d.print.getAttribute('aria-pressed') === 'false', 'initial print off');
 d.mq.set(false);
 ok(d.root.getAttribute('data-theme') === 'light', 'os follow before manual');
-ok(d.bg() === '#E1E2E7', 'os light cursor');
+ok(d.bg() === '#E1E2E7', 'os light vercel');
 
 if (failures) {
   console.log('harness failures: ' + failures);

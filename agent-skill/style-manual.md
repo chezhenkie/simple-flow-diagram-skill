@@ -41,13 +41,13 @@ The page carries one theme, and every diagram on it follows that theme. A theme 
 | `line` | card and tag borders, bar lines |
 | `accent` | section pill, focus border, action arrow |
 
-Nine themes ship in the template: five dark and four light. Dark: `github`, `monochrome`, `ayu`, `nightowl`, `solarized`. Light: `tokyonight`, `vercel`, `cursor`, `orng`.
+Nine themes ship in the template: five dark and four light. Dark: `github`, `monochrome`, `ayu`, `nightowl`, `solarized`. Light: `vercel`, `tokyonight`, `cursor`, `orng`. Light opens on `vercel`, dark on `github`.
 
 Rules:
 
 - The agent does not pick, mix or author colors. The list is fixed and the theme script in `template.html` sets the six values as CSS custom properties.
 - A diagram carries no colors of its own. No class on a section, no per-section token block, no inline `fill` or `stroke` with a color value.
-- The pill text color is derived from the accent at run time: white on a dark accent, black on a light one.
+- The pill text is white in light mode; in dark mode it is black or white by accent luminance.
 - One theme per page. Two diagrams side by side use the same tokens; contrast comes from layout and copy.
 - Print is a separate state with fixed tokens: white page, black ink, `#333333` muted, `#9a9a9a` line, black accent, and a `#e6e6e6` pill with black text and a black border.
 
@@ -74,10 +74,13 @@ All coordinates are integers in a `1040 x H` viewBox.
 | element | x | width | notes |
 |---|---|---|---|
 | main column | 300 | 470 | center line at 535 |
+| split card, left | 300 | 222 | text at 318 |
+| split card, right | 548 | 222 | text at 566 |
 | side card, left | 40 | 210 | text at x+16 |
 | side card, right | 800 | 220 | text at x+16, 20 px right margin |
 | main text | 318 | to 752 | card padding 18 |
 | caption lane | 549 | to 790 | 14 px right of the spine |
+| split caption | 425, 673 | 18 characters | one per branch, 14 px right of its arrow |
 | tag | 300 | 470 | same width as the main column |
 
 Vertical rhythm:
@@ -85,12 +88,15 @@ Vertical rhythm:
 ```
 card top        y = 30 + 108 * n
 card height     70 main, 70 / 90 / 100 side
+split row       two 222 cards at x 300 and x 548, 26 gap
 gap between     38
 arrow between   y+70 to y+98 (28 long)
 caption         y+88 (x 549)
 tag             last card top + 98
 viewBox height  tag y + 32
 ```
+
+A split row replaces the main card on that row; the parent above and any merged card below stay 470 wide.
 
 Examples: six main cards put the last top at 570, the tag at 668 and the viewBox height at 700. Two cards give a tag at 236 and a 268-high viewBox.
 
@@ -127,10 +133,12 @@ Text limits, measured at the sizes above:
 | element | usable px | practical characters | budget |
 |---|---|---|---|
 | main description | 434 | 72 | 65 |
+| split description, 222 card | 186 | 31 | 28 |
 | side description, 220 card | 186 | 31 | 28 |
 | side description, 210 card | 176 | 29 | 26 |
-| card title, 220 card | 204 | 28 | 24 |
+| card title, 220 or 222 card | 204 | 28 | 24 |
 | arrow caption | 241 | 44 | 42 |
+| split caption | 113 | 20 | 18 |
 | tag line | 434 | 86 | 78 |
 
 SVG text does not wrap. An overlong line runs into the border. Count characters before writing.
@@ -220,6 +228,35 @@ Rules:
 - One loopback per lane, so at most four per side. More than two per diagram usually reads better as two sections.
 - A loopback label is optional. If used, keep it to 12 characters in a free row gap, 6 px from the spine, never over a card.
 
+Split row, a decision card forking into two cards on the next row:
+
+```html
+<line class="arrow" x1="411" y1="208" x2="411" y2="236" marker-end="url(#flowHead)"/>
+<text class="cap" x="425" y="226">musl target</text>
+<line class="arrow" x1="659" y1="208" x2="659" y2="236" marker-end="url(#flowHead)"/>
+<text class="cap" x="673" y="226">msvc target</text>
+
+<rect class="card" x="300" y="246" width="222" height="70" rx="3"/>
+<text class="t" x="318" y="276">Linux</text>
+<text class="d" x="318" y="296">x86_64-unknown-linux-musl</text>
+
+<rect class="card" x="548" y="246" width="222" height="70" rx="3"/>
+<text class="t" x="566" y="276">Windows</text>
+<text class="d" x="566" y="296">x86_64-pc-windows-msvc</text>
+```
+
+Two arrows leave the parent bottom at the card centres, 411 and 659, and enter the children at the same x. A merge back into a 470 card uses the same two positions. No fork bar, no elbows.
+
+Split rules:
+
+- The single column stays the default. Use a split only where a decision produces two named outcomes, and make the decision card the focus.
+- A split is a branch, not a parallel path: both children leave the same row, and each is a normal card with a title and one description line.
+- Both children take 28 characters of description, the same 186 px usable width as a 220 side card. Text sits at 318 and 566.
+- Captions sit at 425 and 673 and take 18 characters, so each ends clear of the other and inside x=790.
+- The inner edges at 522 and 548 carry no connector. A loop attaches to a split card at its outer edge, x=300 or x=770, at a free mark.
+- A side box may sit on a split row, one per side. The left box feeds the left card and the right box the right card.
+- Split arrows stay muted. They take the accent only when the focus card is the decision and one branch is the main action.
+
 ## 9. Section copy
 
 - h2 pattern: `subject: outcome`, lowercase, for example `video download: url to file`.
@@ -274,6 +311,8 @@ Copy the page shell from `template.html`: theme tokens, top bar, theme script, b
 </section>
 ```
 
+For a decision, replace one row with a split row: two 222 cards at x=300 and x=548, two arrows at 411 and 659, captions at 425 and 673 of 18 characters. Section 8 holds the rules.
+
 ## 11. Validation
 
 Run before delivery:
@@ -301,6 +340,7 @@ Visual checks:
 - Confirm the bar is hidden in the print preview and every diagram renders in the print tokens.
 - Narrow the window to 800 px. The SVG scales; no text may touch a border or another card.
 - Confirm no caption crosses x=790 and no side text crosses its card edge.
+- Confirm a split row: two arrows land on the card centres, each caption sits in its own half, and no connector meets an inner edge.
 - Confirm each loopback leaves and enters a main card at a free mark, never on a side stub, and that no loop connector starts under a side box.
 - Confirm round loop dots read apart from side dashes (5 4).
 - Confirm one accent card and one accent arrow per diagram.
@@ -311,9 +351,9 @@ Visual checks:
 - [ ] ASCII only, straight quotes, hyphen for dashes.
 - [ ] One h1, one sub, one footer.
 - [ ] h2 pill reads `subject: outcome`.
-- [ ] Main column at x=300, width 470, pitch 108, height 70.
+- [ ] Main column at x=300, width 470, or a split row of two 222 cards at x=300 and x=548; pitch 108, height 70.
 - [ ] Card title at +30, description at +50 for 70-high cards.
-- [ ] Arrow 28 long, caption at y+88, x=549.
+- [ ] Arrow 28 long, caption at y+88, x=549, or x=425 and x=673 on a split row.
 - [ ] Tag at last card top + 98, viewBox height = tag y + 32.
 - [ ] Descriptions carry real flags, files and limits.
 - [ ] One focus card, at most two accent connectors, dash only for side channels.
@@ -334,7 +374,7 @@ Visual checks:
 
 Bar:
 
-- Fixed, 24 px high, right aligned, 10 px UI font. Fill is `var(--page-bg)` with no bottom divider, so the controls sit directly on the page.
+- Fixed, 24 px high, right aligned, 28 px inset at both ends, 10 px UI font. Fill is `var(--page-bg)` with no bottom divider, so the controls sit directly on the page.
 - Print toggle: auto width, 18 px high, printer icon plus the label `print friendly`, `aria-pressed`. Active fill uses the bar ink.
 - Mode switch: 44 x 20 px, moon left and sun right, 16 px thumb, `aria-checked` true in light mode.
 - Dark theme and light theme: text label plus a solid downward caret, 18 px high, same border as the print toggle, 68 px minimum width, each with a foldout below it. No icons.

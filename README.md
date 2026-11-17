@@ -4,13 +4,13 @@ An agent skill that turns a process into a flow diagram on one HTML page, built 
 
 ## Themes
 
-Nine themes ship in the template: five dark and four light. Dark: github, monochrome, ayu, nightowl, solarized. Light: tokyonight, vercel, cursor, orng. The page opens on github or tokyonight from the OS preference, and the two foldouts switch names, each mode keeping its own pick. Every color on the page comes from the chosen theme, so a diagram carries no palette of its own.
+Nine themes ship in the template: five dark and four light. Dark: github, monochrome, ayu, nightowl, solarized. Light: vercel, tokyonight, cursor, orng. The page opens on github or vercel from the OS preference, and the two foldouts switch names, each mode keeping its own pick. Every color on the page comes from the chosen theme, so a diagram carries no palette of its own.
 
 ## Cost and speed
 
 - Token use: the page shell, the theme table, the bar script and the print rules are copied as they are. New text per page is the title, the subtitle, the diagrams and the footer; a one-diagram page is a few hundred tokens.
 - Speed: no colour choice, no CSS, no layout decisions and no second pass. One pass produces a finished page.
-- Consistency: every run uses the same grid and one of ten fixed themes, so pages from different models look the same.
+- Consistency: every run uses the same grid and one of nine fixed themes, so pages from different models look the same.
 - Scope: one self-contained file that opens from disk, with no build step, network access or assets.
 
 ## Samples
@@ -20,7 +20,7 @@ Click a sample to open the full-size PNG.
 | Light | Dark | Print friendly |
 |:---:|:---:|:---:|
 | [<img src="docs/demo-light.png" width="280" alt="Demo page in light mode">](docs/demo-light.png) | [<img src="docs/demo-dark.png" width="280" alt="Demo page in dark mode">](docs/demo-dark.png) | [<img src="docs/demo-print-friendly.png" width="280" alt="Demo page with print friendly on">](docs/demo-print-friendly.png) |
-| Demo, tokyonight light | Same page, github dark | White page, print tokens |
+| Demo, vercel light | Same page, github dark | White page, print tokens |
 
 <table>
   <tr>
@@ -36,7 +36,7 @@ Four controls sit at the top right. All are native buttons and work with Tab, En
 
 The mode switch selects light or dark. The page starts from the OS preference and follows OS changes until the switch is clicked.
 
-`dark theme` and `light theme` open a foldout with five dark names or four light names. Dark: github, monochrome, ayu, nightowl, solarized. Light: tokyonight, vercel, cursor, orng. Picking a name applies it to the page and every diagram on it, and switches to that mode. Each mode keeps its own pick, so the switch flips between the two.
+`dark theme` and `light theme` open a foldout with five dark names or four light names. Dark: github, monochrome, ayu, nightowl, solarized. Light: vercel, tokyonight, cursor, orng. Picking a name applies it to the page and every diagram on it, and switches to that mode. Each mode keeps its own pick, so the switch flips between the two.
 
 <img src="docs/bar-dark.png" width="244" alt="Top bar in dark mode">
 
@@ -44,7 +44,7 @@ Dark mode: github theme, print off.
 
 <img src="docs/bar-light.png" width="244" alt="Top bar in light mode">
 
-Light mode: tokyonight theme, print off.
+Light mode: vercel theme, print off.
 
 <img src="docs/bar-print-friendly.png" width="244" alt="Top bar with print friendly on">
 
@@ -56,7 +56,7 @@ Print friendly on: the print control fills, the mode and theme stay unchanged.
 |---|---|
 | `agent-skill/SKILL.md` | Agent entry point, workflow and hard rules |
 | `agent-skill/template.html` | Page shell to copy; marked diagram slot |
-| `agent-skill/demo.html` | Filled reference page with three diagrams |
+| `agent-skill/demo.html` | Filled reference page with four diagrams |
 | `agent-skill/style-manual.md` | Theme rules, grid, type scale, card anatomy, connectors, validation |
 | `tools/` | Static and bar behavior checks |
 | `docs/` | Screenshots and the GitHub Pages entry |
@@ -110,8 +110,8 @@ The script validates ASCII and LF endings, the theme table, SVG geometry, templa
 
 ## Limits
 
-- One main path per diagram, up to seven cards. Split longer flows into sections.
-- One theme per page and no colors of the agent's own. The reader picks from ten installed themes.
+- One main path per diagram, up to seven cards. A decision may fork into two cards on one row. Split longer flows into sections.
+- One theme per page and no colors of the agent's own. The reader picks from nine installed themes.
 - ASCII only, inline SVG, no external assets.
 - Text budgets are fixed; cut text or split the step when it does not fit.
 

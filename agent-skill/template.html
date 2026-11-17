@@ -11,21 +11,21 @@
   })();
 </script>
 <style>
-  /* Default tokens: tokyonight theme for light, github for dark. The bar script replaces them. */
+  /* Default tokens: vercel theme for light, github for dark. The bar script replaces them. */
   :root {
     color-scheme: light;
     --page-bg: #E1E2E7;
-    --page-ink: #3369E6;
-    --page-muted: #5A6377;
-    --page-line: #737A8C;
-    --card: #D5D6DB;
-    --ink: #3369E6;
-    --muted: #5A6377;
-    --line: #737A8C;
-    --accent: #B15C00;
+    --page-ink: #CC2424;
+    --page-muted: #333333;
+    --page-line: #333333;
+    --card: #FFFFFF;
+    --ink: #CC2424;
+    --muted: #333333;
+    --line: #333333;
+    --accent: #E8A020;
     --pill-ink: #FFFFFF;
-    --tb-ink: #5A6377;
-    --tb-line: #737A8C;
+    --tb-ink: #333333;
+    --tb-line: #333333;
     --thumb: #cbcbcb;
     --thumb-line: #888888;
   }
@@ -88,7 +88,7 @@
   #tb {
     position: fixed; top: 0; left: 0; right: 0; height: 24px; z-index: 10;
     display: flex; align-items: center; justify-content: flex-end; gap: 7px;
-    padding: 0 10px; background: var(--page-bg); color: var(--tb-ink);
+    padding: 0 28px; background: var(--page-bg); color: var(--tb-ink);
     font: 10px/1 "Segoe UI", system-ui, -apple-system, sans-serif;
     user-select: none; transition: background .25s, color .25s;
   }
@@ -232,13 +232,13 @@
         solarized:  { bg: '#002B36', card: '#073642', ink: '#9DB0B0', muted: '#7A9298', line: '#073642', accent: '#C24F1F' }
       },
       light: {
-        tokyonight:  { bg: '#E1E2E7', card: '#D5D6DB', ink: '#3369E6', muted: '#5A6377', line: '#737A8C', accent: '#B15C00' },
-        vercel:      { bg: '#E1E2E7', card: '#FFFFFF', ink: '#CC2424', muted: '#333333', line: '#333333', accent: '#FFB224' },
+        vercel:      { bg: '#E1E2E7', card: '#FFFFFF', ink: '#CC2424', muted: '#333333', line: '#333333', accent: '#E8A020' },
+        tokyonight:  { bg: '#E1E2E7', card: '#D5D6DB', ink: '#3369E6', muted: '#474F60', line: '#737A8C', accent: '#B15C00' },
         cursor:      { bg: '#E1E2E7', card: '#F3F3F3', ink: '#2C5960', muted: '#58696D', line: '#7E979C', accent: '#50ADC5' },
         orng:        { bg: '#E1E2E7', card: '#FFF7F1', ink: '#C94D24', muted: '#333333', line: '#C2765A', accent: '#C94D24' }
       }
     };
-    var chosen = { dark: 'github', light: 'tokyonight' };
+    var chosen = { dark: 'github', light: 'vercel' };
 
     function isDark() { return root.getAttribute('data-theme') === 'dark'; }
     function isPrint() { return root.getAttribute('data-print') === 'on'; }

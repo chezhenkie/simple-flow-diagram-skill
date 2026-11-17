@@ -16,15 +16,15 @@ One self-contained `.html` page per topic, or one page with several diagrams. St
 
 Do not choose colors or restyle controls; the page follows whichever theme the reader picks.
 
-The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.html) is the same shell with three filled diagrams.
+The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.html) is the same shell with four filled diagrams.
 
 ## Workflow
 
 1. Read `style-manual.md` before writing. Copy `template.html` to `<topic>-flow.html` in the workspace root unless the user or project rules name another folder. Replace the title, subtitle and footer; insert diagram sections at the marked slot.
 2. Keep the page shell as it is: head script, token block, top bar, bar script and print rules. Change only the page copy and the diagram bodies.
 3. Write the page in this order: top bar, h1, p.sub, one or more sections (head with h2 pill, p.note, svg), footer. Use the diagram body in manual section 10.
-4. Keep the grid: viewBox `0 0 1040 H`, main column x=300 width=470, card top `30 + 108n`, card height 70, arrow 28, caption x=549 at y+88, tag at last card top + 98, viewBox height tag + 32.
-5. Fill text within the budgets: main description 65 characters, side description 28 or 26, card title 24, caption 42, tag line 78.
+4. Keep the grid: viewBox `0 0 1040 H`, main column x=300 width=470, card top `30 + 108n`, card height 70, arrow 28, caption x=549 at y+88, tag at last card top + 98, viewBox height tag + 32. A decision may fork into two 222 cards at x=300 and x=548, with arrows at 411 and 659 and captions at 425 and 673.
+5. Fill text within the budgets: main description 65 characters, split and side description 28 or 26, card title 24, caption 42 or 18 on a split, tag line 78.
 6. Mark one focus card and at most two accent connectors per diagram. Solid for the main path, dashed for side channels, dotted for returns.
 7. Run the section 11 validator, then check both modes, both theme foldouts and the print preview at 100 percent and at 800 px width. Open the page in the local browser when it is done; if it is already open from an earlier pass, do not open another window or tab, and let the user refresh.
 8. After the user has viewed the page, ask whether the diagram file can be deleted. Do not delete it unasked.
@@ -32,7 +32,7 @@ The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.
 ## Themes and modes
 
 - One theme covers the page and every diagram on it. Sections carry no class, no token block and no color of their own.
-- The reader picks the theme: five dark names and five light names in the two foldouts, each mode remembering its own pick.
+- The reader picks the theme: five dark names and four light names in the two foldouts, each mode remembering its own pick.
 - The mode switch chooses light or dark and starts from the OS preference. Print is a separate toggle with fixed values.
 - Never hardcode a fill or stroke outside the template's classes and `var(--...)` tokens.
 
@@ -50,7 +50,7 @@ The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.
 
 - `style-manual.md`: file contract, theme rules, type scale, grid, card anatomy, connectors, branch and loop patterns, diagram body, validation, checklist, top bar rules.
 - `template.html`: page shell to copy; theme table, top bar, print rules and one marked diagram slot, no diagram content.
-- `demo.html`: filled reference page with the bar, three diagrams and the print theme.
+- `demo.html`: filled reference page with the bar, four diagrams and the print theme.
 
 ## Limits
 

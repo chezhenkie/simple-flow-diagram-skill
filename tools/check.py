@@ -61,7 +61,7 @@ check(demo.count("<footer") == 1, "demo one footer")
 check(pages == demo, "pages demo matches demo")
 check(re.search(r'<html[^>]*data-theme="light"[^>]*data-print="off"', demo[:200]),
       "demo initial state attributes")
-check(len(re.findall(r"<section>", demo)) == 3, "demo three bare sections")
+check(len(re.findall(r"<section>", demo)) == 4, "demo four bare sections")
 check(not re.search(r"<section[^>]+>", demo), "no section attributes")
 check('<span class="meta">' not in demo, "no palette meta labels")
 
@@ -110,6 +110,7 @@ check(re.search(r"#tb\s*\{[^}]*background:\s*var\(--page-bg\)", demo) is not Non
       "bar page background")
 tb_css = re.search(r"#tb\s*\{.*?\}", demo, re.S).group(0)
 check("border-bottom" not in tb_css, "bar no divider")
+check(re.search(r"#tb\s*\{[^}]*padding:\s*0 28px", demo) is not None, "bar inset")
 check(re.search(r"\.tb-btn\s*\{[^}]*height:\s*18px", demo) is not None
       and re.search(r"\.tb-btn\s*\{[^}]*padding:\s*0 6px", demo) is not None
       and re.search(r"\.tb-btn\s*\{[^}]*gap:\s*4px", demo) is not None, "bar button size")
@@ -183,7 +184,7 @@ if raw:
         themes = {}
 check(set(themes) == {"dark", "light"}, "theme table has two modes")
 DARK = ["github", "monochrome", "ayu", "nightowl", "solarized"]
-LIGHT = ["tokyonight", "vercel", "cursor", "orng"]
+LIGHT = ["vercel", "tokyonight", "cursor", "orng"]
 check(list(themes.get("dark", {})) == DARK, "five dark themes in order")
 check(list(themes.get("light", {})) == LIGHT, "four light themes in order")
 for mode in ("dark", "light"):
@@ -196,11 +197,11 @@ for mode in ("dark", "light"):
 # Default token blocks match the first theme of each mode
 root_css = re.search(r":root\s*\{(.*?)\}", demo, re.S).group(1)
 dark_css = re.search(r'html\[data-theme="dark"\]\s*\{(.*?)\}', demo, re.S).group(1)
-cur = themes.get("light", {}).get("tokyonight", {})
+cur = themes.get("light", {}).get("vercel", {})
 ayu = themes.get("dark", {}).get("github", {})
 for key, var in (("bg", "page-bg"), ("card", "card"), ("ink", "ink"),
                  ("muted", "muted"), ("line", "line"), ("accent", "accent")):
-    check(one_hex(root_css, var) == cur.get(key, "").lower(), "tokyonight default " + var)
+    check(one_hex(root_css, var) == cur.get(key, "").lower(), "vercel default " + var)
     check(one_hex(dark_css, var) == ayu.get(key, "").lower(), "github default " + var)
 check("--mint" not in demo and "--page-mint" not in demo, "no mint token")
 check(".diagram" not in demo, "no per-section palette class")
@@ -237,7 +238,7 @@ check(not re.search(r'<script[^>]+src=|<link\b|@import|https?://', tpl), "templa
 
 # SVGs, markers, geometry, budgets
 svgs = re.findall(r"<svg\b.*?</svg>", demo, re.S)
-check(len(svgs) == 6, "demo six inline svgs")
+check(len(svgs) == 7, "demo seven inline svgs")
 for n, s in enumerate(svgs):
     try:
         ET.fromstring(s)
@@ -247,7 +248,7 @@ for n, s in enumerate(svgs):
     check(ok, "svg %d parses" % n)
 sections = [s for s in re.findall(r"<section>(.*?)</section>", demo, re.S)]
 ids = re.findall(r'<marker id="([^"]+)"', demo)
-check(len(ids) == 6 and len(set(ids)) == 6, "six unique marker ids")
+check(len(ids) == 8 and len(set(ids)) == 8, "eight unique marker ids")
 check(set(re.findall(r"url\(#([^)]+)\)", demo)) <= set(ids), "marker refs resolve")
 check(not hexes(re.sub(r"<script>.*?</script>", "", demo.split("<body>")[1].split("<footer>")[0])),
       "no hex colors in body markup")
@@ -260,14 +261,30 @@ for n, body in enumerate(sections):
         continue
     root = ET.fromstring(m.group(0))
     rects = root.findall("rect")
-    mains = [r for r in rects if r.get("class") in ("card", "focus") and r.get("x") == "300"]
+    mains = [r for r in rects if r.get("class") in ("card", "focus")
+             and r.get("x") in ("300", "548")]
     focus = [r for r in mains if r.get("class") == "focus"]
     check(len(mains) >= 2, tag + " main cards")
     check(len(focus) == 1, tag + " one focus")
-    check(all(r.get("width") == "470" and r.get("height") == "70" for r in mains),
-          tag + " main card size")
-    ys = sorted(int(r.get("y")) for r in mains)
+
+    rows = {}
+    for r in mains:
+        x, y, w = int(r.get("x")), int(r.get("y")), int(r.get("width"))
+        rows.setdefault(y, []).append((x, w))
+    check(all(int(r.get("height")) == 70 for r in mains), tag + " card height")
+    check(all((x, w) in ((300, 470), (300, 222), (548, 222)) for y, cells in rows.items()
+              for x, w in cells), tag + " card geometry")
+    ys = sorted(rows)
     check(ys == [30 + 108 * i for i in range(len(ys))], tag + " card pitch")
+    shapes = []
+    for y in ys:
+        cells = sorted(rows[y])
+        shapes.append(len(cells))
+        check(cells in ([(300, 470)], [(300, 222), (548, 222)]),
+              tag + " row shape at %d" % y)
+    if n == 1:
+        check(2 in shapes, tag + " split row")
+
     tags = [r for r in rects if r.get("class") == "tag"]
     tag_y = int(tags[0].get("y")) if tags else -1
     check(len(tags) == 1 and tags[0].get("x") == "300" and tags[0].get("width") == "470"
@@ -275,20 +292,28 @@ for n, body in enumerate(sections):
     check(tag_y == ys[-1] + 98, tag + " tag position")
     check(root.get("viewBox") == "0 0 1040 %d" % (tag_y + 32), tag + " viewBox height")
 
-    sides = [r for r in rects if r.get("class") == "card" and r.get("x") != "300"]
-    check(len(sides) == 1, tag + " one side card")
+    sides = [r for r in rects if r.get("class") == "card"
+             and r.get("x") not in ("300", "548")]
+    check(len(sides) <= 1, tag + " at most one side card")
     for r in sides:
         x, w, h = r.get("x"), r.get("width"), r.get("height")
         check(x in ("40", "800") and ((x == "40" and w == "210") or (x == "800" and w == "220"))
               and h in ("70", "90", "100"), tag + " side card size")
         check(int(r.get("y")) in ys, tag + " side card row")
 
+    # One arrow per boundary, two when either row is split.
+    want_arrow, want_cap = [], []
+    for i in range(len(ys) - 1):
+        split = 2 in (shapes[i], shapes[i + 1])
+        for x in ((411, 659) if split else (535,)):
+            want_arrow.append((x, x, ys[i] + 70, ys[i] + 98))
+        for x in ((425, 673) if split else (549,)):
+            want_cap.append((x, ys[i] + 88))
+
     lines = [l for l in root.findall("line") if l.get("class") in ("arrow", "arrow-a")]
-    expected = [(y + 70, y + 98) for y in ys[:-1]]
-    check(sorted((int(l.get("y1")), int(l.get("y2"))) for l in lines) == expected,
-          tag + " arrow geometry")
-    check(all(l.get("x1") == "535" and l.get("x2") == "535" for l in lines),
-          tag + " arrows on spine")
+    got = sorted((int(l.get("x1")), int(l.get("x2")), int(l.get("y1")), int(l.get("y2")))
+                 for l in lines)
+    check(got == sorted(want_arrow), tag + " arrow geometry")
     accents = [l for l in lines if l.get("class") == "arrow-a"]
     check(1 <= len(accents) <= 2, tag + " accent connectors")
 
@@ -307,8 +332,12 @@ for n, body in enumerate(sections):
 
     texts = root.findall("text")
     caps = [t for t in texts if t.get("class") == "cap"]
-    check(all(t.get("x") == "549" for t in caps), tag + " captions at x 549")
-    check(sorted(int(t.get("y")) for t in caps) == [y + 88 for y in ys[:-1]], tag + " caption rows")
+    check(sorted((int(t.get("x")), int(t.get("y"))) for t in caps) == sorted(want_cap),
+          tag + " captions at the arrow rows")
+
+    desc = {}
+    for r in mains:
+        desc[(int(r.get("x")) + 18, int(r.get("y")) + 50)] = 65 if int(r.get("width")) == 470 else 28
 
     for t in texts:
         s = t.text or ""
@@ -316,10 +345,14 @@ for n, body in enumerate(sections):
         if c == "t":
             check(len(s) <= 24, tag + " title budget " + repr(s))
         elif c == "d":
-            lim = {"318": 65, "56": 26, "816": 28}.get(t.get("x"))
+            x, y = t.get("x"), t.get("y")
+            lim = {"56": 26, "816": 28}.get(x)
+            if lim is None and x and y:
+                lim = desc.get((int(x), int(y)))
             check(lim is not None and len(s) <= lim, tag + " desc budget " + repr(s))
         elif c == "cap":
-            check(len(s) <= 42, tag + " caption budget " + repr(s))
+            lim = {"549": 42, "425": 18, "673": 18}.get(t.get("x"))
+            check(lim is not None and len(s) <= lim, tag + " caption budget " + repr(s))
         elif c == "side":
             if int(t.get("y")) == tag_y + 17:
                 check(len(s) <= 78, tag + " tag budget " + repr(s))
@@ -350,7 +383,7 @@ check("token efficiency" in low and "minimal token use" in low and "speed." in l
       "skill goals")
 check("## Goals" in skill, "skill goals section")
 check("no external javascript" in low and "no javascript" not in low, "skill script rule")
-check("five dark names and five light names" in low, "skill theme count")
+check("five dark names and four light names" in low, "skill theme count")
 check("print toggle labelled `print friendly`" in low, "skill print label")
 check("dark theme` and `light theme` foldouts" in low or "`dark theme` and `light theme`" in low,
       "skill foldout labels")
@@ -365,6 +398,10 @@ check("## 3. Theme" in man, "manual theme section")
 check("## 10. Diagram body" in man, "manual diagram body")
 check("Loopback, a later card feeding an earlier one" in man, "manual loopback pattern")
 check("226, 206, 186, 166" in man and "824, 844, 864, 884" in man, "manual loop lanes")
+check("Split row, a decision card forking into two cards on the next row" in man,
+      "manual split pattern")
+check("411 and 659" in man, "manual split arrows")
+check("425 and 673" in man, "manual split captions")
 check("| `hi` | top + 20 |" in man and "| `lo` | top + h - 20 |" in man, "manual side marks")
 check("## 11. Validation" in man, "manual validation")
 check("## 13. Top bar and modes" in man, "manual top bar section")
@@ -391,7 +428,7 @@ for name in DARK + LIGHT:
 
 # Changelog
 versions = re.findall(r"^## (\d+\.\d+\.\d+)$", cl, re.M)
-check(versions == ["0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
+check(versions == ["1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
       "changelog versions newest first")
 check(not re.search(r"\b(19|20)\d\d\b", cl), "changelog no dates")
 check(not re.search(r"\bv\d+\.\d+", cl), "changelog bare versions")
@@ -419,6 +456,7 @@ check("Windows" not in rd and "PowerShell" not in rd and "%USERPROFILE%" not in 
 check("palettes.html" not in rd and "palette pair" not in rd, "readme no palette sheet")
 check("dark theme" in rd and "light theme" in rd, "readme theme foldouts")
 check("minimal token use" in rd.lower() and "## Cost and speed" in rd, "readme cost section")
+check("one of nine fixed themes" in rd and "nine installed themes" in rd, "readme theme count")
 check("a few hundred tokens" in rd, "readme token figure")
 check("written part stays small" in man, "manual cost note")
 
