@@ -338,7 +338,9 @@ check("demo.html" in skill and "template.html" in skill and "references/style-ma
       "skill file map")
 check("palettes.html" not in skill, "skill no palette sheet")
 low = skill.lower()
-check("token efficiency" in low and "speed of generation" in low, "skill goal paragraph")
+check("token efficiency" in low and "minimal token use" in low and "speed." in low,
+      "skill goals")
+check("## Goals" in skill, "skill goals section")
 check("no external javascript" in low and "no javascript" not in low, "skill script rule")
 check("six dark names and six light names" in low, "skill theme count")
 check("print toggle labelled `print friendly`" in low, "skill print label")
@@ -405,7 +407,9 @@ check("Windows" not in rd and "PowerShell" not in rd and "%USERPROFILE%" not in 
       "readme no os specifics")
 check("palettes.html" not in rd and "palette pair" not in rd, "readme no palette sheet")
 check("dark theme" in rd and "light theme" in rd, "readme theme foldouts")
-check("smallest writing effort" in rd, "readme goal sentence")
+check("minimal token use" in rd.lower() and "## Cost and speed" in rd, "readme cost section")
+check("a few hundred tokens" in rd, "readme token figure")
+check("written part stays small" in man, "manual cost note")
 
 # Script syntax and behavior
 artifacts = os.path.join("tools", ".artifacts")

@@ -1,10 +1,13 @@
 # Simple flow diagram
 
-An agent skill that turns a process into a flow diagram on a single HTML page, for diagrams that are read once and thrown away.
+An agent skill that turns a process into a flow diagram on one HTML page, built for minimal token use and fast generation. Layout, twelve themes, the light and dark switch and the print view live in the template, so the agent writes the cards and the captions and nothing else. Any model can place boxes and arrows; the point here is a consistent result at the smallest possible cost.
 
-The point is not to draw something an agent could not draw: even a small model can place boxes and arrows. The point is a result that looks the same every time, at the smallest writing effort. The layout, the themes, the light and dark switch and the print view live in the template, so the agent writes the cards, the captions and one sentence per section, and nothing else.
+## Cost and speed
 
-Open the file in any browser: one main path from start to finish, optional branches on the side, and a top bar for themes and the print view. No setup, external files or network access.
+- Token use: the page shell, the theme table, the bar script and the print rules are copied as they are. New text per page is the title, the subtitle, the diagrams and the footer; a one-diagram page is a few hundred tokens.
+- Speed: no colour choice, no CSS, no layout decisions and no second pass. One pass produces a finished page.
+- Consistency: every run uses the same grid and one of twelve fixed themes, so pages from different models look the same.
+- Scope: one self-contained file that opens from disk, with no build step, network access or assets.
 
 ## Samples
 

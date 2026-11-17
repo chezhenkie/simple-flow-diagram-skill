@@ -6,9 +6,15 @@ license: MIT
 
 # Simple flow diagram
 
-One self-contained `.html` page per topic, or one page with several diagrams. Start from [template.html](template.html): the layout, the themes, the mode switch and the print view are already in it. Do not choose colors, add palettes or restyle controls; the page follows whichever theme the reader picks.
+One self-contained `.html` page per topic, or one page with several diagrams. Start from [template.html](template.html): the layout, the themes, the mode switch and the print view are already in it.
 
-Speed of generation and token efficiency are the point of this skill. Everything that would otherwise be repeated on every page lives in the template, so a run costs one HTML file with the cards and captions filled in. A small model can finish a page in a single pass, and the result looks the same every time.
+## Goals
+
+- Minimal token use. Copy the shell, the theme table and the scripts; write only the page copy and the diagram cards.
+- Speed. One pass, no colour or layout decisions, no second draft.
+- Consistency. The same grid and the same twelve themes on every run, from any model.
+
+Do not choose colors, add palettes or restyle controls; the page follows whichever theme the reader picks.
 
 The full contract lives in [references/style-manual.md](references/style-manual.md). [demo.html](demo.html) is the same shell with three filled diagrams.
 

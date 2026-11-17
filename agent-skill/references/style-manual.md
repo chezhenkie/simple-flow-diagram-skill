@@ -2,6 +2,8 @@
 
 Specsheet for hand-written, single-file flow diagrams with a small top bar for mode, theme and print. One vertical main path, optional side blocks, one theme for the page, no external dependencies.
 
+The shell is copied, not rebuilt. This manual exists so the written part stays small and predictable: a fixed grid, a fixed type scale, fixed themes, and text budgets that fit on the first pass.
+
 ## 1. File contract
 
 - One `.html` file per topic, named `<topic>-flow.html`, copied from `template.html`.
