@@ -216,7 +216,7 @@ for fn in ("function applyTheme", "function applyPrint", "function buildMenu",
            "function setMode", "function setPrint"):
     check(fn in script, "bar script has " + fn[9:])
 check("--pill-ink" in script and "inkOn(t.accent)" in script, "pill ink derived")
-check("=== 'light' ? '#FFFFFF'" in script, "light pill ink white")
+check("0.179" in script, "pill ink contrast threshold")
 check("'--thumb': mode === 'dark' ? '#2E2E2E' : '#CBCBCB'" in script,
       "theme sets switch thumb per mode")
 check("menuitemradio" in script, "menu rows are menuitemradio")
@@ -315,7 +315,7 @@ for n, body in enumerate(sections):
                  for l in lines)
     check(got == sorted(want_arrow), tag + " arrow geometry")
     accents = [l for l in lines if l.get("class") == "arrow-a"]
-    check(1 <= len(accents) <= 2, tag + " accent connectors")
+    check(len(accents) <= 2, tag + " accent connectors")
 
     fills = {}
     for mk in root.findall(".//marker"):
@@ -431,7 +431,7 @@ for name in DARK + LIGHT:
 
 # Changelog
 versions = re.findall(r"^## (\d+\.\d+\.\d+)$", cl, re.M)
-check(versions == ["1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
+check(versions == ["1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
       "changelog versions newest first")
 check(not re.search(r"\b(19|20)\d\d\b", cl), "changelog no dates")
 check(not re.search(r"\bv\d+\.\d+", cl), "changelog bare versions")

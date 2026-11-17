@@ -15,15 +15,15 @@
   :root {
     color-scheme: light;
     --page-bg: #E1E2E7;
-    --page-ink: #CC2424;
+    --page-ink: #B81F1F;
     --page-muted: #333333;
     --page-line: #333333;
     --card: #FFFFFF;
-    --ink: #CC2424;
+    --ink: #B81F1F;
     --muted: #333333;
     --line: #333333;
     --accent: #E8A020;
-    --pill-ink: #FFFFFF;
+    --pill-ink: #000000;
     --tb-ink: #333333;
     --tb-line: #333333;
     --thumb: #cbcbcb;
@@ -228,14 +228,14 @@
         github:     { bg: '#0D1117', card: '#010409', ink: '#C9D1D9', muted: '#8B949E', line: '#30363D', accent: '#2971E1' },
         monochrome: { bg: '#000000', card: '#1A1A1A', ink: '#EDEDED', muted: '#A8A8A8', line: '#1F1F1F', accent: '#D4D4D4' },
         ayu:        { bg: '#0B0E14', card: '#0F131A', ink: '#AAD94C', muted: '#59C2FF', line: '#6C7380', accent: '#E6B450' },
-        nightowl:   { bg: '#011627', card: '#1D3B53', ink: '#FFCB6B', muted: '#7FDBCA', line: '#C792EA', accent: '#22DA6E' },
-        solarized:  { bg: '#002B36', card: '#073642', ink: '#9DB0B0', muted: '#7A9298', line: '#073642', accent: '#C24F1F' }
+        nightowl:   { bg: '#011627', card: '#1D3B53', ink: '#FFCB6B', muted: '#7FDBCA', line: '#9B6FD0', accent: '#27A65C' },
+        solarized:  { bg: '#002B36', card: '#073642', ink: '#9DB0B0', muted: '#8FA5AA', line: '#073642', accent: '#C24F1F' }
       },
       light: {
-        vercel:      { bg: '#E1E2E7', card: '#FFFFFF', ink: '#CC2424', muted: '#333333', line: '#333333', accent: '#E8A020' },
-        tokyonight:  { bg: '#E1E2E7', card: '#D5D6DB', ink: '#3369E6', muted: '#474F60', line: '#737A8C', accent: '#B15C00' },
+        vercel:      { bg: '#E1E2E7', card: '#FFFFFF', ink: '#B81F1F', muted: '#333333', line: '#333333', accent: '#E8A020' },
+        tokyonight:  { bg: '#E1E2E7', card: '#D5D6DB', ink: '#2655C2', muted: '#474F60', line: '#737A8C', accent: '#B15C00' },
         cursor:      { bg: '#E1E2E7', card: '#F3F3F3', ink: '#2C5960', muted: '#58696D', line: '#7E979C', accent: '#50ADC5' },
-        orng:        { bg: '#E1E2E7', card: '#FFF7F1', ink: '#C94D24', muted: '#333333', line: '#C2765A', accent: '#C94D24' }
+        orng:        { bg: '#E1E2E7', card: '#FFF7F1', ink: '#A63D1A', muted: '#333333', line: '#C2765A', accent: '#C94D24' }
       }
     };
     var chosen = { dark: 'github', light: 'vercel' };
@@ -246,9 +246,12 @@
     function inkOn(hex) {
       var s = hex.replace('#', '');
       if (s.length === 3) s = s[0] + s[0] + s[1] + s[1] + s[2] + s[2];
-      var r = parseInt(s.slice(0, 2), 16), g = parseInt(s.slice(2, 4), 16), b = parseInt(s.slice(4, 6), 16);
-      var l = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
-      return l > 0.55 ? '#000000' : '#FFFFFF';
+      var c = [0, 2, 4].map(function (i) {
+        var v = parseInt(s.slice(i, i + 2), 16) / 255;
+        return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+      });
+      var l = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+      return l > 0.179 ? '#000000' : '#FFFFFF';
     }
 
     function applyTheme() {
@@ -258,7 +261,7 @@
       var vars = {
         '--page-bg': t.bg, '--page-ink': t.ink, '--page-muted': t.muted, '--page-line': t.line,
         '--card': t.card, '--ink': t.ink, '--muted': t.muted, '--line': t.line,
-        '--accent': t.accent, '--pill-ink': root.getAttribute('data-theme') === 'light' ? '#FFFFFF' : inkOn(t.accent),
+        '--accent': t.accent, '--pill-ink': inkOn(t.accent),
         '--tb-ink': t.muted, '--tb-line': t.line,
         '--thumb': mode === 'dark' ? '#2E2E2E' : '#CBCBCB',
         '--thumb-line': mode === 'dark' ? '#777777' : '#888888'
@@ -306,6 +309,7 @@
         b.setAttribute('aria-checked', String(chosen[mode] === name));
         b.textContent = name;
         b.addEventListener('click', function () {
+          manual = true;
           chosen[mode] = name;
           syncMenus();
           closeMenus();

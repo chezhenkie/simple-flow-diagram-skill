@@ -2,6 +2,8 @@
 
 An agent skill that turns a process into a flow diagram on one HTML page, built for minimal token use and fast generation. Layout, nine themes, the light and dark switch and the print view live in the template, so the agent writes the cards and the captions and nothing else. Any model can place boxes and arrows; the point here is a consistent result at the smallest possible cost.
 
+Readability is the first principle. All nine themes are tuned for contrast in light, dark and print, with the pill, text, border and muted values checked in the browser. The palette is fixed, so a page cannot drift from it.
+
 ## Themes
 
 Nine themes ship in the template: five dark and four light. Dark: github, monochrome, ayu, nightowl, solarized. Light: vercel, tokyonight, cursor, orng. The page opens on github or vercel from the OS preference, and the two foldouts switch names, each mode keeping its own pick. Every color on the page comes from the chosen theme, so a diagram carries no palette of its own.

@@ -165,6 +165,16 @@ d.mq.set(false);
 ok(d.root.getAttribute('data-theme') === 'light', 'os follow before manual');
 ok(d.bg() === '#E1E2E7', 'os light vercel');
 
+var g = makeContext(false);
+run(g);
+g.lightBtn.click();
+g.lightMenu.children[1].click();
+ok(g.root.getAttribute('data-theme') === 'light', 'theme pick stays light');
+ok(g.root.style.props['--line'] === '#737A8C', 'tokyonight line after pick');
+g.mq.set(true);
+ok(g.root.getAttribute('data-theme') === 'light', 'theme pick stops os follow');
+ok(g.root.style.props['--line'] === '#737A8C', 'theme pick survives os change');
+
 if (failures) {
   console.log('harness failures: ' + failures);
   process.exit(1);

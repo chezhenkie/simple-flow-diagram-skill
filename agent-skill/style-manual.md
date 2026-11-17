@@ -47,7 +47,7 @@ Rules:
 
 - The agent does not pick, mix or author colors. The list is fixed and the theme script in `template.html` sets the six values as CSS custom properties.
 - A diagram carries no colors of its own. No class on a section, no per-section token block, no inline `fill` or `stroke` with a color value.
-- The pill text is white in light mode; in dark mode it is black or white by accent luminance.
+- The pill text is black or white by accent contrast, in both modes.
 - One theme per page. Two diagrams side by side use the same tokens; contrast comes from layout and copy.
 - Print is a separate state with fixed tokens: white page, black ink, `#333333` muted, `#9a9a9a` line, black accent, and a `#e6e6e6` pill with black text and a black border.
 
@@ -385,7 +385,7 @@ State:
 - `html[data-theme="light"]` or `html[data-theme="dark"]` selects the mode, and with it which theme list applies.
 - Each mode remembers its own theme. The mode switch flips between the two picks.
 - `html[data-print="on"]` forces the print tokens on a white page. It does not change `data-theme`; switching it off restores the mode that was active before.
-- Initial mode comes from `prefers-color-scheme`; OS changes are followed until the mode switch is used. No storage.
+- Initial mode comes from `prefers-color-scheme`; OS changes are followed until the mode switch or a theme pick is used. No storage.
 
 Token scope:
 
