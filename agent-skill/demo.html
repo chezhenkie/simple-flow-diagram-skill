@@ -211,8 +211,8 @@
           <div class="head">
             <h2>request path: client to row</h2>
           </div>
-          <p class="note">Cache reads sit on the left lane; a miss falls through to the store card.</p>
-          <svg viewBox="0 0 1040 376" role="img" aria-label="Request path: request, handler focus, store cards, cache side channel, tag line">
+          <p class="note">Cache reads sit on the left lane; a miss falls through to Store. A failed write returns to Request.</p>
+          <svg viewBox="0 0 1040 376" role="img" aria-label="Request path: request, handler focus, store cards, cache side channel, retry return to request, tag line">
             <defs>
               <marker id="rqHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
                 <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
@@ -222,6 +222,9 @@
               </marker>
             </defs>
       
+            <path class="loop" d="M 300 266 H 242 V 80 H 300" marker-end="url(#rqHead)"/>
+            <text class="side" x="248" y="126">on 5xx</text>
+
             <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
             <text class="t" x="318" y="60">Request</text>
             <text class="d" x="318" y="80">GET /v1/items, bearer token checked</text>

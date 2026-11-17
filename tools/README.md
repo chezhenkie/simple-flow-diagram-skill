@@ -3,7 +3,7 @@
 Two checks guard the skill payload. Run them from the repository root or by absolute path.
 
 ```sh
-python tools/check.py        # 326 static checks, prints failures only
+python tools/check.py        # 327 static checks, prints failures only
 python tools/check.py -v     # same run, prints every PASS line
 node tools/harness.js        # bar script against a fake DOM
 ```
