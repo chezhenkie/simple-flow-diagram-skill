@@ -1,6 +1,10 @@
 # Simple flow diagram
 
-An agent skill that turns a process into a flow diagram on a single HTML page. Open the file in any browser: one main path from start to finish, optional branches on the side, and a top bar for light, dark and print views. No setup, external files or network access.
+An agent skill that turns a process into a flow diagram on a single HTML page, for diagrams that are read once and thrown away.
+
+The point is not to draw something an agent could not draw: even a small model can place boxes and arrows. The point is a result that looks the same every time, at the smallest writing effort. The layout, the themes, the light and dark switch and the print view live in the template, so the agent writes the cards, the captions and one sentence per section, and nothing else.
+
+Open the file in any browser: one main path from start to finish, optional branches on the side, and a top bar for themes and the print view. No setup, external files or network access.
 
 ## Samples
 
@@ -9,7 +13,7 @@ Click a sample to open the full-size PNG.
 | Light | Dark | Print friendly |
 |:---:|:---:|:---:|
 | [<img src="docs/demo-light.png" width="280" alt="Demo page in light mode">](docs/demo-light.png) | [<img src="docs/demo-dark.png" width="280" alt="Demo page in dark mode">](docs/demo-dark.png) | [<img src="docs/demo-print-friendly.png" width="280" alt="Demo page with print friendly on">](docs/demo-print-friendly.png) |
-| Three flows, one page background | Same layout, dark palette pairs | White page, print palette |
+| Three flows, one theme | Same page, ayu theme | White page, print tokens |
 
 <table>
   <tr>
@@ -19,23 +23,25 @@ Click a sample to open the full-size PNG.
 
 ## Page controls
 
-Two controls sit at the top right. Both are native buttons and work with Tab, Enter and Space.
+Four controls sit at the top right. All are native buttons and work with Tab, Enter and Space.
 
-`print friendly` previews the paper theme on screen: white page, black text and the print palette on every diagram. The bar is hidden in the browser print preview. Switching it off restores the mode that was active before.
+`print friendly` previews the paper theme on screen: white page, black text and the print tokens on every diagram. The bar is hidden in the browser print preview. Switching it off restores the mode that was active before.
 
 The mode switch selects light or dark. The page starts from the OS preference and follows OS changes until the switch is clicked.
 
+`dark theme` and `light theme` open a foldout with six names each. Dark: ayu, catppuccin, github, nightowl, solarized, vercel. Light: cursor, monokai, orng, synthwave84, tokyonight, vercel. Picking a name applies it to the page and every diagram on it, and switches to that mode. Each mode keeps its own pick, so the switch flips between the two.
+
 <img src="docs/bar-dark.png" width="244" alt="Top bar in dark mode">
 
-Dark mode: moon selected, print off.
+Dark mode: ayu theme, print off.
 
 <img src="docs/bar-light.png" width="244" alt="Top bar in light mode">
 
-Light mode: sun selected, print off.
+Light mode: cursor theme, print off.
 
 <img src="docs/bar-print-friendly.png" width="244" alt="Top bar with print friendly on">
 
-Print friendly on: the print control fills, the light/dark selection stays unchanged.
+Print friendly on: the print control fills, the mode and theme stay unchanged.
 
 ## Files
 
@@ -44,8 +50,7 @@ Print friendly on: the print control fills, the light/dark selection stays uncha
 | `agent-skill/SKILL.md` | Agent entry point, workflow and hard rules |
 | `agent-skill/template.html` | Page shell to copy; marked diagram slot |
 | `agent-skill/demo.html` | Filled reference page with three diagrams |
-| `agent-skill/references/style-manual.md` | Grid, type scale, card anatomy, connectors, validation |
-| `agent-skill/references/palettes.html` | Palette catalog for both modes and print |
+| `agent-skill/references/style-manual.md` | Theme rules, grid, type scale, card anatomy, connectors, validation |
 | `tools/` | Static and bar behavior checks |
 | `docs/` | Screenshots and the GitHub Pages entry |
 | `CHANGELOG.md` | Version history |
@@ -94,12 +99,12 @@ Run from the repo root:
 python tools/check.py
 ```
 
-The script validates ASCII and LF endings, palette tokens, SVG geometry, template and demo parity, and the bar state machine. Python 3 and Node are required.
+The script validates ASCII and LF endings, the theme table, SVG geometry, template and demo parity, and the bar state machine. Python 3 and Node are required.
 
 ## Limits
 
 - One main path per diagram, up to seven cards. Split longer flows into sections.
-- Light mode uses light palettes; dark mode uses dark palettes. Mix pairs for contrast.
+- One theme per page and no colors of the agent's own. The reader picks from twelve installed themes.
 - ASCII only, inline SVG, no external assets.
 - Text budgets are fixed; cut text or split the step when it does not fit.
 

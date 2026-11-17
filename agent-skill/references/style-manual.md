@@ -1,13 +1,13 @@
 # Flow diagram style manual
 
-Specsheet for hand-written, single-file flow diagrams with a small top bar for light/dark and print themes. One vertical main path, optional side blocks, muted palette, no external dependencies.
+Specsheet for hand-written, single-file flow diagrams with a small top bar for mode, theme and print. One vertical main path, optional side blocks, one theme for the page, no external dependencies.
 
 ## 1. File contract
 
 - One `.html` file per topic, named `<topic>-flow.html`, copied from `template.html`.
 - UTF-8, printable ASCII only. No typographic quotes, dashes, arrows or bullets.
 - Inline scripts limited to the top bar and its initial mode. No external CSS, fonts, images or icon sets. Must open from `file://`.
-- Light and dark themes from the top bar switch, initial state from `prefers-color-scheme`. The print theme is a separate toggle.
+- Light and dark mode from the top bar switch, initial state from `prefers-color-scheme`. Two foldouts pick the theme for each mode. The print theme is a separate toggle.
 - One `<main>` wrapper, max width 1080 px, centered.
 - One `<h1>`, one `.sub`, one or more `<section>` blocks, one `<footer>`.
 - SVG scales with the page; no fixed pixel width or height attributes.
@@ -15,7 +15,7 @@ Specsheet for hand-written, single-file flow diagrams with a small top bar for l
 ## 2. Page order
 
 ```
-div#tb          fixed 24px bar: print toggle, light/dark switch
+div#tb          fixed 24px bar: print toggle, mode switch, dark theme, light theme
 h1              page title, 22px
 p.sub           one sentence naming the whole path, 13px
 section
@@ -26,26 +26,28 @@ section         optional further diagrams, same shape
 footer          shared infrastructure or invariant, 1-2 sentences
 ```
 
-## 3. Palette
+## 3. Theme
 
-| token | light | dark | use |
-|---|---|---|---|
-| `--bg` | `#dfe4ee` | `#161b24` | page background (`--page-bg`) |
-| `--card` | `#fdfdfd` | `#262626` | card and tag fill |
-| `--ink` | `#14181c` | `#e6ebef` | titles |
-| `--muted` | `#546374` | `#93a2b3` | descriptions, captions, footer, connectors |
-| `--line` | `#c9c9c9` | `#424242` | borders |
-| `--accent` | `#0f766e` | `#4fd1c5` | focus border, action arrow |
-| `--mint` | `#46755c` | `#46755c` | section pill (`--page-mint`) |
+The page carries one theme, and every diagram on it follows that theme. A theme is six values:
+
+| value | role |
+|---|---|
+| `bg` | page background |
+| `card` | card and tag fill |
+| `ink` | page text, card titles |
+| `muted` | descriptions, captions, connectors, footer, bar ink |
+| `line` | card and tag borders, bar lines |
+| `accent` | section pill, focus border, action arrow |
+
+Twelve themes ship in the template, six per mode. Dark: `ayu`, `catppuccin`, `github`, `nightowl`, `solarized`, `vercel`. Light: `cursor`, `monokai`, `orng`, `synthwave84`, `tokyonight`, `vercel`.
 
 Rules:
 
-- Accent marks the focus card and the active edge of the path. Keep accent connectors to one or two per diagram.
-- Mint is fixed across screen themes; print uses a light grey pill with black text and a black border.
-- All SVG fills and strokes use classes backed by `var(--...)`, never hardcoded colors, so the dark theme follows without a second stylesheet.
-- One common page background per page, set by the mode, not by the individual diagram palettes. Diagram sections carry no page tint; the catalog `--bg` and `--mint` rows map to the page tokens `--page-bg` and `--page-mint`.
-- Light mode uses light palettes only; dark mode uses dark palettes only, also when several diagrams share a page. Mix pairs for contrast: L1/D1, L2/D3, L3/D2, L4/D5.
-- Print mode overrides every diagram with the P0 tokens and a white page. It is independent of the light/dark switch and restores the previous mode when switched off.
+- The agent does not pick, mix or author colors. The list is fixed and the theme script in `template.html` sets the six values as CSS custom properties.
+- A diagram carries no colors of its own. No palette class on a section, no per-section token block, no inline `fill` or `stroke` with a color value.
+- The pill text color is derived from the accent at run time: white on a dark accent, black on a light one.
+- One theme per page. Two diagrams side by side use the same tokens; contrast comes from layout and copy, not from a second palette.
+- Print is a separate state with fixed tokens: white page, black ink, `#333333` muted, `#9a9a9a` line, black accent, and a `#e6e6e6` pill with black text and a black border.
 
 ## 4. Type scale
 
@@ -53,7 +55,7 @@ Rules:
 |---|---|---|---|
 | h1 | 22 | 400 | page title |
 | `.sub` | 13 | 400 | page subtitle |
-| h2 | 16 | 400 | section pill, white on mint (black on light grey in print) |
+| h2 | 16 | 400 | section pill, accent fill with contrast text (grey on black in print) |
 | `.note` | 13 | 400 | instruction above the diagram |
 | `.t` | 14.5 | 600 | card title |
 | `.d` | 12.5 | 400 | card description |
@@ -197,10 +199,10 @@ Rules:
 
 ## 10. Diagram body
 
-Copy the page shell from `template.html`: page tokens, top bar, theme script, bar script and print rules. The block below is one section body to place at the template's diagram slot; repeat it for each diagram. It uses the demo `d1` slot, which carries L2/D3; change the section class when you pick another pair.
+Copy the page shell from `template.html`: theme tokens, top bar, theme script, bar script and print rules. The block below is one section body to place at the template's diagram slot; repeat it for each diagram. No class on the section: the theme colours every diagram on the page.
 
 ```html
-<section class="diagram d1">
+<section>
   <div class="head">
     <h2>main path: start to finish</h2>
   </div>
@@ -261,9 +263,10 @@ print("ok", len(svgs), "svg", len(raw), "bytes")
 
 Visual checks:
 
-- Open the file at 100 percent zoom. Toggle the bar switch and confirm both themes, then toggle print mode and confirm the print preview.
+- Open the file at 100 percent zoom. Switch between light and dark, open both theme foldouts and pick one theme from each. Every diagram must follow the theme, with no diagram keeping its own colors.
+- Toggle print mode and confirm the print preview: white page, grey pills with black borders, print cards.
 - Operate both bar controls with the keyboard and confirm the focus ring and state change.
-- Confirm the bar is hidden in the print preview and every diagram renders in P0.
+- Confirm the bar is hidden in the print preview and every diagram renders in the print tokens.
 - Narrow the window to 800 px. The SVG scales; no text may touch a border or another card.
 - Confirm no caption crosses x=790 and no side text crosses its card edge.
 - Confirm one accent card and one accent arrow per diagram.
@@ -284,9 +287,9 @@ Visual checks:
 - [ ] `role="img"` and a full `aria-label` on each SVG.
 - [ ] Light and dark checked in a browser.
 - [ ] Python validation passes.
-- [ ] Top bar present: 24 px, print toggle labelled `print friendly`, then mode switch, keyboard operable.
-- [ ] Every diagram uses a palette from the active family; one common background per page.
-- [ ] Print toggle forces P0 and hides the bar in the print preview.
+- [ ] Top bar present: 24 px, print toggle, mode switch, dark theme and light theme foldouts, keyboard operable.
+- [ ] One theme for the page; no section class, no per-diagram colors.
+- [ ] Print toggle forces the print tokens and hides the bar in the print preview.
 - [ ] Inline scripts limited to the bar; no external files.
 
 ## 13. Top bar and modes
@@ -298,28 +301,30 @@ Bar:
 - Fixed, 24 px high, right aligned, 10 px UI font. Fill is `var(--page-bg)` with no bottom divider, so the controls sit directly on the page.
 - Print toggle: auto width, 18 px high, printer icon plus the label `print friendly`, `aria-pressed`. Active fill uses the bar ink.
 - Mode switch: 44 x 20 px, moon left and sun right, 16 px thumb, `aria-checked` true in light mode.
-- Both controls are native `<button>` elements, so Enter and Space work without key handlers.
-- Labels: the print toggle shows `print friendly`; the mode switch has no visible text. Both carry `aria-label` and `title`.
+- Dark theme and light theme: text buttons, 18 px high, same border as the print toggle, 68 px minimum width, each with a foldout below it. No icons.
+- A foldout lists the six theme names for its mode, one row per name, `role="menu"` with `menuitemradio` rows and the current theme marked `aria-checked`. Picking a name applies it and switches to that mode.
+- All controls are native `<button>` elements, so Enter and Space work without key handlers. Escape closes a foldout, and so does a click outside it.
 
 State:
 
-- `html[data-theme="light"]` or `html[data-theme="dark"]` selects the common page background and the diagram family.
-- `html[data-print="on"]` forces P0 on every diagram and a white page. It does not change `data-theme`.
+- `html[data-theme="light"]` or `html[data-theme="dark"]` selects the mode, and with it which theme list applies.
+- Each mode remembers its own theme. The mode switch flips between the two picks.
+- `html[data-print="on"]` forces the print tokens on a white page. It does not change `data-theme`; switching it off restores the mode that was active before.
 - Initial mode comes from `prefers-color-scheme`; OS changes are followed until the user toggles. No storage.
 
 Token scope:
 
-- Page tokens live on `:root` and the theme blocks: `--page-bg`, `--page-ink`, `--page-muted`, `--page-line`, `--page-mint`, plus the bar and thumb tokens.
-- Diagram tokens live on each section: `--card`, `--ink`, `--muted`, `--line`, `--accent`, set per family under the theme selector.
-- The print override comes after the scoped theme blocks, so it wins at equal specificity.
+- Every token lives on `:root`: `--page-bg`, `--page-ink`, `--page-muted`, `--page-line`, `--card`, `--ink`, `--muted`, `--line`, `--accent`, `--pill-ink`, plus the bar and thumb tokens.
+- The theme script writes the six theme values and the derived pill ink to `:root` whenever the mode or theme changes.
+- Print writes its own fixed values to `:root`, so it wins over the theme without a cascade trick.
 
 Scripts:
 
 - One inline script in the head sets the initial `data-theme` before paint.
-- One inline script before `</body>` wires both buttons and follows OS changes until the user toggles.
+- One inline script before `</body>` holds the theme table, builds both foldouts, applies the theme and follows OS changes until the user toggles.
 
 Print:
 
 - `@page` margin 12 mm, exact color adjust, `break-inside: avoid` per section.
-- `@media print` hides the bar, removes the page cap and repeats the P0 override, so paper output is print-themed even when the toggle was never clicked. The P0 pill is light grey with black text and a black border.
+- `@media print` hides the bar, removes the page cap and forces the print values again, so paper output is print-themed even when the toggle was never clicked. The pill is `#e6e6e6` with black text and a black border.
 - Print mode on screen keeps the bar visible; only the print preview hides it.

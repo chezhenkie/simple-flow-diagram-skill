@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.6.0
+
+### New features
+
+#### All platforms
+
+* Themes replace palette pairs. Twelve built-in themes: ayu, catppuccin, github, nightowl, solarized and vercel for dark; cursor, monokai, orng, synthwave84, tokyonight and vercel for light.
+* Two foldout controls in the top bar, `dark theme` and `light theme`, each listing the six names for its mode. Picking one applies it and switches mode; each mode keeps its own pick.
+* One theme covers the page and every diagram on it. Sections carry no class and no colors of their own.
+* The agent no longer chooses colors. The page shell and the theme table are fixed, so a diagram costs only the cards, captions and notes.
+* Removed the palette catalog and its per-section tokens.
+* Rewritten checker and bar harness for the theme table, the foldouts, and print tokens on `:root`.
+
 ## 0.5.0
 
 ### New features

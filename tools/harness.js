@@ -2,30 +2,49 @@
 var fs = require('fs');
 var path = require('path');
 
-function makeEl(initial) {
-  var attrs = Object.assign({}, initial || {});
-  var classes = {};
-  var handlers = {};
-  return {
-    attrs: attrs,
-    classes: classes,
-    handlers: handlers,
-    setAttribute: function (k, v) { attrs[k] = String(v); },
-    getAttribute: function (k) { return k in attrs ? attrs[k] : null; },
-    addEventListener: function (k, fn) { handlers[k] = fn; },
-    classList: {
-      toggle: function (name, on) { classes[name] = !!on; },
-      contains: function (name) { return !!classes[name]; }
+function El(attrs) {
+  var el = {
+    attrs: Object.assign({}, attrs || {}),
+    classes: {},
+    handlers: {},
+    children: [],
+    style: {
+      props: {},
+      setProperty: function (k, v) { this.props[k] = String(v); }
     },
-    click: function () { if (handlers.click) handlers.click(); }
+    textContent: '',
+    setAttribute: function (k, v) { el.attrs[k] = String(v); },
+    getAttribute: function (k) { return k in el.attrs ? el.attrs[k] : null; },
+    addEventListener: function (k, fn) { el.handlers[k] = fn; },
+    appendChild: function (child) { el.children.push(child); },
+    focus: function () { el.focused = true; },
+    click: function () {
+      if (el.handlers.click) el.handlers.click({ stopPropagation: function () {}, target: el });
+    },
+    classList: {
+      add: function (n) { el.classes[n] = true; },
+      remove: function (n) { delete el.classes[n]; },
+      toggle: function (n, on) { el.classes[n] = !!on; },
+      contains: function (n) { return !!el.classes[n]; }
+    }
   };
+  return el;
 }
 
 function makeContext(osDark) {
-  var root = makeEl({ 'data-theme': 'light', 'data-print': 'off' });
-  var mode = makeEl({ 'aria-checked': 'true' });
-  var print = makeEl({ 'aria-pressed': 'false' });
+  var root = El({ 'data-theme': 'light', 'data-print': 'off' });
+  var mode = El({ 'aria-checked': 'true' });
+  var print = El({ 'aria-pressed': 'false' });
+  var darkBtn = El({ 'aria-expanded': 'false' });
+  var lightBtn = El({ 'aria-expanded': 'false' });
+  var darkMenu = El({});
+  var lightMenu = El({});
   mode.classes.on = true;
+  var byId = {
+    mode: mode, print: print,
+    'dark-theme': darkBtn, 'light-theme': lightBtn,
+    'dark-menu': darkMenu, 'light-menu': lightMenu
+  };
   var mq = {
     matches: osDark,
     handlers: {},
@@ -38,14 +57,17 @@ function makeContext(osDark) {
   };
   var document = {
     documentElement: root,
-    getElementById: function (id) {
-      return id === 'mode' ? mode : (id === 'print' ? print : null);
-    }
+    handlers: {},
+    getElementById: function (id) { return byId[id] || null; },
+    createElement: function () { return El({}); },
+    addEventListener: function (k, fn) { document.handlers[k] = fn; }
   };
-  var window = {
-    matchMedia: function () { return mq; }
+  var window = { matchMedia: function () { return mq; } };
+  return {
+    root: root, mode: mode, print: print, darkBtn: darkBtn, lightBtn: lightBtn,
+    darkMenu: darkMenu, lightMenu: lightMenu, mq: mq, document: document, window: window,
+    bg: function () { return root.style.props['--page-bg']; }
   };
-  return { root: root, mode: mode, print: print, mq: mq, document: document, window: window };
 }
 
 function run(ctx) {
@@ -64,23 +86,53 @@ function ok(value, label) {
   }
 }
 
+function names(el) {
+  return el.children.map(function (c) { return c.textContent; }).join(',');
+}
+
+var DARK = 'ayu,catppuccin,github,nightowl,solarized,vercel';
+var LIGHT = 'cursor,monokai,orng,synthwave84,tokyonight,vercel';
+
 var c = makeContext(false);
 run(c);
 ok(c.root.getAttribute('data-theme') === 'light', 'initial light theme');
 ok(c.mode.getAttribute('aria-checked') === 'true', 'initial light aria');
 ok(c.mode.classList.contains('on') === true, 'initial light thumb');
+ok(c.bg() === '#FCFCFC', 'initial cursor background');
+ok(names(c.darkMenu) === DARK, 'dark menu names');
+ok(names(c.lightMenu) === LIGHT, 'light menu names');
+ok(c.darkMenu.children[0].getAttribute('aria-checked') === 'true', 'dark default marked');
+ok(c.lightMenu.children[0].getAttribute('aria-checked') === 'true', 'light default marked');
 
 c.mq.set(true);
 ok(c.root.getAttribute('data-theme') === 'dark', 'os change to dark');
 ok(c.mode.getAttribute('aria-checked') === 'false', 'os dark aria');
-ok(c.mode.classList.contains('on') === false, 'os dark thumb');
+ok(c.bg() === '#0B0E14', 'os dark uses ayu');
 c.mq.set(false);
-ok(c.root.getAttribute('data-theme') === 'light', 'os change back to light');
+ok(c.bg() === '#FCFCFC', 'os back to cursor');
+
+c.darkBtn.click();
+ok(c.darkMenu.classList.contains('open') === true, 'dark menu opens');
+ok(c.darkBtn.getAttribute('aria-expanded') === 'true', 'dark button expanded');
+c.darkBtn.click();
+ok(c.darkMenu.classList.contains('open') === false, 'dark menu closes');
+
+c.darkBtn.click();
+c.darkMenu.children[2].click();
+ok(c.root.getAttribute('data-theme') === 'dark', 'pick github switches to dark');
+ok(c.bg() === '#0D1117', 'github background applied');
+ok(c.darkMenu.children[2].getAttribute('aria-checked') === 'true', 'github marked');
+ok(c.darkMenu.children[0].getAttribute('aria-checked') === 'false', 'ayu unmarked');
+ok(c.darkMenu.classList.contains('open') === false, 'menu closes after pick');
+ok(c.darkBtn.getAttribute('aria-expanded') === 'false', 'button collapsed after pick');
 
 c.mode.click();
-ok(c.root.getAttribute('data-theme') === 'dark', 'click toggles to dark');
-ok(c.mode.getAttribute('aria-checked') === 'false', 'click dark aria');
-ok(c.mode.classList.contains('on') === false, 'click dark thumb');
+ok(c.bg() === '#FCFCFC', 'mode switch returns to cursor');
+c.lightBtn.click();
+c.lightMenu.children[5].click();
+ok(c.bg() === '#FFFFFF', 'vercel light background applied');
+c.mode.click();
+ok(c.bg() === '#0D1117', 'github remembered across mode switch');
 c.mq.set(true);
 c.mq.set(false);
 ok(c.root.getAttribute('data-theme') === 'dark', 'os ignored after manual toggle');
@@ -88,26 +140,26 @@ ok(c.root.getAttribute('data-theme') === 'dark', 'os ignored after manual toggle
 c.print.click();
 ok(c.root.getAttribute('data-print') === 'on', 'print on');
 ok(c.print.getAttribute('aria-pressed') === 'true', 'print aria on');
-ok(c.print.classList.contains('on') === true, 'print fill on');
-c.mode.click();
-ok(c.root.getAttribute('data-theme') === 'light', 'mode changes while print on');
-ok(c.root.getAttribute('data-print') === 'on', 'print stays on');
+ok(c.bg() === '#FFFFFF', 'print white page');
+ok(c.root.style.props['--muted'] === '#333333', 'print muted token');
 c.print.click();
 ok(c.root.getAttribute('data-print') === 'off', 'print off');
+ok(c.bg() === '#0D1117', 'print off restores github');
 ok(c.print.getAttribute('aria-pressed') === 'false', 'print aria off');
-ok(c.print.classList.contains('on') === false, 'print fill off');
-ok(c.root.getAttribute('data-theme') === 'dark', 'print off restores saved dark');
-ok(c.mode.getAttribute('aria-checked') === 'false', 'restored dark aria');
-ok(c.mode.classList.contains('on') === false, 'restored dark thumb');
+
+c.darkBtn.click();
+c.darkMenu.children[0].click();
+ok(c.bg() === '#0B0E14', 'ayu selected again');
 
 var d = makeContext(true);
 run(d);
 ok(d.root.getAttribute('data-theme') === 'dark', 'initial os dark theme');
+ok(d.bg() === '#0B0E14', 'initial os dark ayu');
 ok(d.mode.getAttribute('aria-checked') === 'false', 'initial os dark aria');
-ok(d.mode.classList.contains('on') === false, 'initial os dark thumb');
 ok(d.print.getAttribute('aria-pressed') === 'false', 'initial print off');
 d.mq.set(false);
 ok(d.root.getAttribute('data-theme') === 'light', 'os follow before manual');
+ok(d.bg() === '#FCFCFC', 'os light cursor');
 
 if (failures) {
   console.log('harness failures: ' + failures);
