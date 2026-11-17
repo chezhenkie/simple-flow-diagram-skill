@@ -46,9 +46,9 @@ Twelve themes ship in the template, six per mode. Dark: `ayu`, `catppuccin`, `gi
 Rules:
 
 - The agent does not pick, mix or author colors. The list is fixed and the theme script in `template.html` sets the six values as CSS custom properties.
-- A diagram carries no colors of its own. No palette class on a section, no per-section token block, no inline `fill` or `stroke` with a color value.
+- A diagram carries no colors of its own. No class on a section, no per-section token block, no inline `fill` or `stroke` with a color value.
 - The pill text color is derived from the accent at run time: white on a dark accent, black on a light one.
-- One theme per page. Two diagrams side by side use the same tokens; contrast comes from layout and copy, not from a second palette.
+- One theme per page. Two diagrams side by side use the same tokens; contrast comes from layout and copy.
 - Print is a separate state with fixed tokens: white page, black ink, `#333333` muted, `#9a9a9a` line, black accent, and a `#e6e6e6` pill with black text and a black border.
 
 ## 4. Type scale

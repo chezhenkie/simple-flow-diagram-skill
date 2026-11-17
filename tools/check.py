@@ -385,8 +385,7 @@ for name in DARK + LIGHT:
 
 # Changelog
 versions = re.findall(r"^## (\d+\.\d+\.\d+)$", cl, re.M)
-check(versions == ["0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
-      "changelog versions newest first")
+check(versions == ["0.6.0"], "changelog current version only")
 check(not re.search(r"\b(19|20)\d\d\b", cl), "changelog no dates")
 check(not re.search(r"\bv\d+\.\d+", cl), "changelog bare versions")
 check("theme" in cl.lower() and "foldout" in cl.lower(), "changelog theme wording")

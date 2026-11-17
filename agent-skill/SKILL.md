@@ -14,7 +14,7 @@ One self-contained `.html` page per topic, or one page with several diagrams. St
 - Speed. One pass, no colour or layout decisions, no second draft.
 - Consistency. The same grid and the same twelve themes on every run, from any model.
 
-Do not choose colors, add palettes or restyle controls; the page follows whichever theme the reader picks.
+Do not choose colors or restyle controls; the page follows whichever theme the reader picks.
 
 The full contract lives in [references/style-manual.md](references/style-manual.md). [demo.html](demo.html) is the same shell with three filled diagrams.
 
