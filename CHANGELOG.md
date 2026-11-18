@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.3.5
+
+### New features
+
+#### All platforms
+
+* The dark foldout gains harbor: a navy page, dark grey cards and a teal accent, taken from the dark palette of an existing page.
+* Monochrome is renamed oledblack. Its six values are unchanged.
+* Nightowl is removed. Dark order: github, harbor, solarized, oledblack, ayu.
+
 ## 1.3.4
 
 ### New features

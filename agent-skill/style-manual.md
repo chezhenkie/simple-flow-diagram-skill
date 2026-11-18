@@ -28,7 +28,7 @@ footer          shared infrastructure or invariant, 1-2 sentences
 
 A theme is six values: `bg` page, `card` card and tag fill, `ink` page text and card titles, `muted` descriptions, captions, connectors, footer and bar ink, `line` card and tag borders and bar lines, `accent` pill outline, focus border and action arrow.
 
-Nine themes ship in the template: five dark and four light. Dark: `github`, `monochrome`, `ayu`, `nightowl`, `solarized`. Light: `vercel`, `tokyonight`, `cursor`, `orng`. Light opens on `vercel`, dark on `github`.
+Nine themes ship in the template: five dark and four light. Dark: `github`, `harbor`, `solarized`, `oledblack`, `ayu`. Light: `vercel`, `tokyonight`, `cursor`, `orng`. Light opens on `vercel`, dark on `github`.
 
 - The agent does not pick, mix or author colors. The theme script in `template.html` writes the six values as CSS custom properties.
 - A diagram carries no colors of its own: no class on a section, no per-section token block, no inline `fill` or `stroke` with a color value.

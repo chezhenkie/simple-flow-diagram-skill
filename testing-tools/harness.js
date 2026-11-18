@@ -98,7 +98,7 @@ function names(el) {
   return el.children.map(function (c) { return c.textContent; }).join(',');
 }
 
-var DARK = 'github,monochrome,ayu,nightowl,solarized';
+var DARK = 'github,harbor,solarized,oledblack,ayu';
 var LIGHT = 'vercel,tokyonight,cursor,orng';
 
 var c = makeContext(false);
@@ -110,7 +110,7 @@ ok(c.bg() === '#E1E2E7', 'initial vercel background');
 ok(names(c.darkMenu) === DARK, 'dark menu names');
 ok(names(c.lightMenu) === LIGHT, 'light menu names');
 ok(c.darkMenu.children[0].getAttribute('aria-checked') === 'true', 'dark default github marked');
-ok(c.darkMenu.children[2].getAttribute('aria-checked') === 'false', 'ayu not marked by default');
+ok(c.darkMenu.children[4].getAttribute('aria-checked') === 'false', 'ayu not marked by default');
 ok(c.lightMenu.children[0].getAttribute('aria-checked') === 'true', 'light default vercel marked');
 ok(c.lightMenu.children[1].getAttribute('aria-checked') === 'false', 'tokyonight not marked by default');
 
@@ -130,7 +130,7 @@ c.darkMenu.handlers.keydown.call(c.darkMenu, { key: 'ArrowDown', preventDefault:
 ok(c.darkMenu.children[1].focused === true, 'arrow down moves one row');
 c.document.activeElement = c.darkMenu.children[1];
 c.darkMenu.handlers.keydown.call(c.darkMenu, { key: 'End', preventDefault: function () {} });
-ok(c.darkMenu.children[4].focused === true, 'End moves to the last row');
+ok(c.darkMenu.children[c.darkMenu.children.length - 1].focused === true, 'End moves to the last row');
 c.document.handlers.keydown.call(c.document, { key: 'Escape' });
 ok(c.darkMenu.classList.contains('open') === false, 'escape closes the menu');
 ok(c.darkBtn.focused === true, 'escape returns focus to the theme button');
@@ -140,7 +140,7 @@ c.darkMenu.children[0].click();
 ok(c.root.getAttribute('data-theme') === 'dark', 'pick github switches to dark');
 ok(c.bg() === '#0D1117', 'github background applied');
 ok(c.darkMenu.children[0].getAttribute('aria-checked') === 'true', 'github marked');
-ok(c.darkMenu.children[2].getAttribute('aria-checked') === 'false', 'ayu unmarked');
+ok(c.darkMenu.children[4].getAttribute('aria-checked') === 'false', 'ayu unmarked');
 ok(c.darkMenu.classList.contains('open') === false, 'menu closes after pick');
 ok(c.darkBtn.getAttribute('aria-expanded') === 'false', 'button collapsed after pick');
 
@@ -169,7 +169,7 @@ ok(c.root.style.props['--thumb-line'] === '#777777', 'print off restores dark th
 ok(c.print.getAttribute('aria-pressed') === 'false', 'print aria off');
 
 c.darkBtn.click();
-c.darkMenu.children[2].click();
+c.darkMenu.children[4].click();
 ok(c.bg() === '#0B0E14', 'ayu selected again');
 
 var d = makeContext(true);
