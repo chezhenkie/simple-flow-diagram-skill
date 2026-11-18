@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.3.1
+
+### New features
+
+#### All platforms
+
+* The checker accepts two side cards, one per side, and one or two dashes per box, so it matches the manual's side-card contract. A two-box fixture with three dashes passes; the same page with one dash fails.
+* The switch thumb pairs live in one table read by the theme and print paths, and the print palette is defined once in `:root`, aliased by `@media print` and by the print toggle. The values are typed once.
+* The bar menus take the keyboard: opening a foldout focuses its checked row, the arrow keys and Home and End move between rows, and Escape closes it and returns focus to its button. The focus ring stays inside the viewport, print drops the dark color scheme, and a `prefers-reduced-motion` rule stops the 250 ms transitions.
+* The checker follows the new shell: 394 checks.
+
 ## 1.3.0
 
 ### New features

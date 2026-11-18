@@ -134,28 +134,34 @@ check(not re.search(r'<svg\b[^>]*\s(?:width|height)="', demo), "no fixed svg siz
 check(re.search(r"h2\s*\{[^}]*background:\s*transparent;[^}]*color:\s*var\(--page-ink\);[^}]*border:\s*2px solid var\(--accent\)", demo)
       is not None, "pill is transparent with a 2px accent outline")
 
-# Print rules
-ps = demo.find("@media print")
+# Print rules: one palette in :root, aliased by @media print and by the bar script.
+ps = demo.find("@media print {")
 pe = demo.find("</style>", ps)
 pblock = demo[ps:pe] if ps >= 0 and pe > ps else ""
 check("#tb { display: none; }" in pblock, "print hides bar")
 check("@page { margin: 12mm; }" in pblock, "print page margin")
 check("break-inside: avoid" in pblock, "print break rule")
 check("print-color-adjust: exact" in pblock, "print color adjust")
-check("background: #ffffff !important" in pblock and "color: #000000 !important" in pblock,
+check("color-scheme: light !important;" in pblock, "print color scheme")
+check(demo.count("--print-bg: #FFFFFF;") == 1 and demo.count("--print-ink: #000000;") == 1
+      and demo.count("--print-muted: #333333;") == 1 and demo.count("--print-line: #9A9A9A;") == 1,
+      "one print palette")
+check("--page-bg: var(--print-bg) !important;" in pblock
+      and "--page-ink: var(--print-ink) !important;" in pblock
+      and "--accent: var(--print-ink) !important;" in pblock, "print tokens alias the palette")
+check(not re.search(r"#[0-9a-fA-F]{3,6}", pblock), "print block has no literal colors")
+check("body { background: var(--page-bg) !important; color: var(--page-ink) !important; }" in pblock,
       "print white page")
-check("h2 { background: transparent !important; color: #000000 !important; border: 2px solid #000000 !important; }"
-      in pblock, "print pill outline in media")
+check("h2 { background: transparent !important" not in pblock, "print pill uses the base outline")
 check(".loop { stroke: var(--muted); stroke-width: 1.6; fill: none; stroke-dasharray: 0.1 6; stroke-linecap: round; }" in demo,
       "loop line style")
-check('html[data-print="on"] h2 { background: transparent !important; color: #000000 !important;'
-      ' border: 2px solid #000000 !important; }' in demo, "print toggle pill style")
-check(".card, .tag { fill: #ffffff !important; stroke: #9a9a9a !important; }" in pblock,
+check('html[data-print="on"] h2 {' not in demo, "no per-state pill override")
+check(".card, .tag { fill: var(--card) !important; stroke: var(--line) !important; }" in pblock,
       "print card fill")
-check(".t { fill: #000000 !important; }" in pblock, "print title ink")
-check(".d, .cap, .side { fill: #333333 !important; }" in pblock, "print muted ink")
-check(".arrow-a { stroke: #000000 !important; }" in pblock, "print accent arrow")
-check(".arrow, .dash, .loop { stroke: #333333 !important; }" in pblock, "print loop stroke")
+check(".t { fill: var(--ink) !important; }" in pblock, "print title ink")
+check(".d, .cap, .side { fill: var(--muted) !important; }" in pblock, "print muted ink")
+check(".arrow-a { stroke: var(--accent) !important; }" in pblock, "print accent arrow")
+check(".arrow, .dash, .loop { stroke: var(--muted) !important; }" in pblock, "print loop stroke")
 
 # Theme table
 scripts = re.findall(r"<script>(.*?)</script>", demo, re.S)
@@ -217,8 +223,15 @@ for fn in ("function applyTheme", "function applyPrint", "function buildMenu",
     check(fn in script, "bar script has " + fn[9:])
 check("--pick-ink" in script and "inkOn(t.accent)" in script, "menu pick ink derived")
 check("0.179" in script, "pill ink contrast threshold")
-check("'--thumb': mode === 'dark' ? '#2E2E2E' : '#CBCBCB'" in script,
+check("'--thumb': THUMB[mode].bg, '--thumb-line': THUMB[mode].line" in script,
       "theme sets switch thumb per mode")
+check(script.count("'#2E2E2E'") == 1 and script.count("'#CBCBCB'") == 1,
+      "one switch thumb pair per mode")
+check("function menuKey" in script and "ArrowDown" in script and "Home" in script,
+      "menu arrow keys")
+check("prefers-reduced-motion" in demo, "reduced motion rule")
+check("outline-offset: 1px" in demo, "focus ring inside the viewport")
+check('html[data-print="on"] { color-scheme: light; }' in demo, "print mode light color scheme")
 check("menuitemradio" in script, "menu rows are menuitemradio")
 check("prefers-color-scheme" in scripts[0] and "prefers-color-scheme" in script, "os preference read")
 check("if (!manual)" in script, "os follow until manual")
@@ -294,7 +307,8 @@ for n, body in enumerate(sections):
 
     sides = [r for r in rects if r.get("class") == "card"
              and r.get("x") not in ("300", "548")]
-    check(len(sides) <= 1, tag + " at most one side card")
+    check(len(sides) <= 2, tag + " at most two side cards")
+    check(len({r.get("x") for r in sides}) == len(sides), tag + " one side card per side")
     for r in sides:
         x, w, h = r.get("x"), r.get("width"), r.get("height")
         check(x in ("40", "800") and ((x == "40" and w == "210") or (x == "800" and w == "220"))
@@ -328,7 +342,7 @@ for n, body in enumerate(sections):
         check(ref is not None and fills.get(ref.group(1)) == want, tag + " marker pair")
 
     dashes = [p for p in root.findall("path") if p.get("class") == "dash"]
-    check(len(dashes) == len(sides), tag + " dash per side card")
+    check(len(sides) <= len(dashes) <= 2 * len(sides), tag + " one or two dashes per side card")
 
     texts = root.findall("text")
     caps = [t for t in texts if t.get("class") == "cap"]
@@ -419,7 +433,7 @@ check("transparent with a 2 px accent outline" in man, "manual pill outline")
 check("auto width, 18 px high" in man, "manual print button size")
 check("68 px minimum width" in man, "manual theme button size")
 check("role=\"menu\"" in man and "menuitemradio" in man, "manual menu markup")
-check("Escape closes a foldout" in man, "manual escape close")
+check("Escape closes the foldout" in man, "manual escape close")
 check("Each mode remembers its own theme" in man, "manual mode memory")
 check("The agent does not pick, mix or author colors" in man, "manual color rule")
 check("| `.meta` |" not in man, "manual no meta type")
@@ -452,7 +466,7 @@ check(r.returncode == 1 and "main row 3 at 246" in r.stdout, "validator catches 
 
 # Changelog
 versions = re.findall(r"^## (\d+\.\d+\.\d+)$", cl, re.M)
-check(versions == ["1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
+check(versions == ["1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
       "changelog versions newest first")
 check(not re.search(r"\b(19|20)\d\d\b", cl), "changelog no dates")
 check(not re.search(r"\bv\d+\.\d+", cl), "changelog bare versions")

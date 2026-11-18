@@ -337,7 +337,7 @@ The demo page passes 460 checks. Checks that the validator cannot make, because 
 
 - Open the file at 100 percent zoom. Switch between light and dark, open both theme foldouts and pick one theme from each. Every diagram must follow the theme, with no diagram keeping its own colors.
 - Toggle print mode and confirm the print preview: white page, outlined pills, print cards.
-- Operate both bar controls with the keyboard and confirm the focus ring and state change.
+- Operate both bar controls with the keyboard and confirm the focus ring and state change. In an open foldout, the arrow keys and Home and End move between rows, and Escape closes it and returns focus to its button.
 - Confirm the bar is hidden in the print preview and every diagram renders in the print tokens.
 - If a width check is needed, shrink the window until the bar is 360 px wide and confirm the four controls still fit on one line.
 - Confirm no caption crosses x=790 and no side text crosses its card edge.
@@ -382,7 +382,7 @@ Bar:
 - Mode switch: 44 x 20 px, moon left and sun right, 16 px thumb, `aria-checked` true in light mode.
 - Dark theme and light theme: text label plus a solid downward caret, 18 px high, same border as the print toggle, 68 px minimum width, each with a foldout below it. No icons.
 - A foldout lists the theme names for its mode, one row per name, `role="menu"` with `menuitemradio` rows and the current theme marked `aria-checked`. Picking a name applies it and switches to that mode.
-- All controls are native `<button>` elements, so Enter and Space work without key handlers. Escape closes a foldout, and so does a click outside it.
+- All controls are native `<button>` elements, so Enter and Space work without key handlers. Opening a foldout focuses its checked row, the arrow keys move between rows, Home and End jump to the ends, and Escape closes the foldout, returns focus to its button and also closes on a click outside.
 
 State:
 
@@ -393,7 +393,7 @@ State:
 
 Token scope:
 
-- Every token lives on `:root`: `--page-bg`, `--page-ink`, `--page-muted`, `--page-line`, `--card`, `--ink`, `--muted`, `--line`, `--accent`, `--pick-ink`, plus the bar and thumb tokens.
+- Every colour token lives on `:root`: `--page-bg`, `--page-ink`, `--page-muted`, `--page-line`, `--card`, `--ink`, `--muted`, `--line`, `--accent`, `--pick-ink`, the print palette (`--print-bg`, `--print-ink`, `--print-muted`, `--print-line`) and the bar tokens. The switch thumb is written by the theme script.
 - The theme script writes the six theme values and the derived menu pick ink to `:root` whenever the mode or theme changes. `--pick-ink` is the text on the filled accent row in the theme foldout; the section pill uses `--page-ink` over a transparent fill.
 - Print writes its own fixed values to `:root`, so it wins over the theme without a cascade trick.
 
@@ -405,5 +405,6 @@ Scripts:
 Print:
 
 - `@page` margin 12 mm, exact color adjust, `break-inside: avoid` per section.
-- `@media print` hides the bar, removes the page cap and forces the print values again, so paper output is print-themed even when the toggle was never clicked. The pill keeps the transparent fill with a 2 px black outline and black text.
+- `@media print` hides the bar, removes the page cap, drops the dark color scheme and forces the print palette through the tokens, so paper output is print-themed even when the toggle was never clicked. The pill keeps the transparent fill with a black outline and black text.
+- The 250 ms colour transitions stop under `prefers-reduced-motion: reduce`.
 - Print mode on screen keeps the bar visible; only the print preview hides it.

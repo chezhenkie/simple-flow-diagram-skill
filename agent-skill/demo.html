@@ -26,8 +26,11 @@
     --pick-ink: #000000;
     --tb-ink: #333333;
     --tb-line: #333333;
-    --thumb: #cbcbcb;
-    --thumb-line: #888888;
+    /* Print palette: written once here, aliased by the toggle and by the print stylesheet. */
+    --print-bg: #FFFFFF;
+    --print-ink: #000000;
+    --print-muted: #333333;
+    --print-line: #9A9A9A;
   }
   html[data-theme="dark"] {
     color-scheme: dark;
@@ -43,9 +46,8 @@
     --pick-ink: #FFFFFF;
     --tb-ink: #8B949E;
     --tb-line: #30363D;
-    --thumb: #2e2e2e;
-    --thumb-line: #777777;
   }
+  html[data-print="on"] { color-scheme: light; }
   * { box-sizing: border-box; }
   body {
     margin: 0;
@@ -142,27 +144,43 @@
   .toggle.on .ico-l { opacity: 0.45; }
   .toggle.on .ico-r { opacity: 1; }
   .tb-btn:focus-visible, .toggle:focus-visible, .menu button:focus-visible {
-    outline: 2px solid var(--tb-ink); outline-offset: 2px;
+    outline: 2px solid var(--tb-ink); outline-offset: 1px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
   }
 
   @media print {
     @page { margin: 12mm; }
+    :root {
+      color-scheme: light !important;
+      --page-bg: var(--print-bg) !important;
+      --page-ink: var(--print-ink) !important;
+      --page-muted: var(--print-muted) !important;
+      --page-line: var(--print-line) !important;
+      --card: var(--print-bg) !important;
+      --ink: var(--print-ink) !important;
+      --muted: var(--print-muted) !important;
+      --line: var(--print-line) !important;
+      --accent: var(--print-ink) !important;
+      --pick-ink: var(--print-bg) !important;
+      --tb-ink: var(--print-muted) !important;
+      --tb-line: var(--print-line) !important;
+    }
     #tb { display: none; }
     main { max-width: none; padding: 0; }
-    body { background: #ffffff !important; color: #000000 !important; }
-    h1, .sub, .note, footer { color: #000000 !important; }
-    h2 { background: transparent !important; color: #000000 !important; border: 2px solid #000000 !important; }
-    .card, .tag { fill: #ffffff !important; stroke: #9a9a9a !important; }
-    .focus { fill: #ffffff !important; stroke: #000000 !important; }
-    .t { fill: #000000 !important; }
-    .d, .cap, .side { fill: #333333 !important; }
-    .arrow, .dash, .loop { stroke: #333333 !important; }
-    .arrow-a { stroke: #000000 !important; }
-    footer { border-top-color: #9a9a9a !important; }
+    body { background: var(--page-bg) !important; color: var(--page-ink) !important; }
+    h1, .sub, .note, footer { color: var(--page-ink) !important; }
+    .card, .tag { fill: var(--card) !important; stroke: var(--line) !important; }
+    .focus { fill: var(--card) !important; stroke: var(--accent) !important; }
+    .t { fill: var(--ink) !important; }
+    .d, .cap, .side { fill: var(--muted) !important; }
+    .arrow, .dash, .loop { stroke: var(--muted) !important; }
+    .arrow-a { stroke: var(--accent) !important; }
+    footer { border-top-color: var(--line) !important; }
     section { break-inside: avoid; margin-bottom: 24px; }
     body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
-  html[data-print="on"] h2 { background: transparent !important; color: #000000 !important; border: 2px solid #000000 !important; }
 </style>
 </head>
 <body>
@@ -421,6 +439,10 @@
       }
     };
     var chosen = { dark: 'github', light: 'vercel' };
+    var THUMB = {
+      dark: { bg: '#2E2E2E', line: '#777777' },
+      light: { bg: '#CBCBCB', line: '#888888' }
+    };
 
     function isDark() { return root.getAttribute('data-theme') === 'dark'; }
     function isPrint() { return root.getAttribute('data-print') === 'on'; }
@@ -445,19 +467,20 @@
         '--card': t.card, '--ink': t.ink, '--muted': t.muted, '--line': t.line,
         '--accent': t.accent, '--pick-ink': inkOn(t.accent),
         '--tb-ink': t.muted, '--tb-line': t.line,
-        '--thumb': mode === 'dark' ? '#2E2E2E' : '#CBCBCB',
-        '--thumb-line': mode === 'dark' ? '#777777' : '#888888'
+        '--thumb': THUMB[mode].bg, '--thumb-line': THUMB[mode].line
       };
       for (var k in vars) root.style.setProperty(k, vars[k]);
     }
 
     function applyPrint() {
       var vars = {
-        '--page-bg': '#FFFFFF', '--page-ink': '#000000', '--page-muted': '#333333',
-        '--page-line': '#9A9A9A', '--card': '#FFFFFF', '--ink': '#000000',
-        '--muted': '#333333', '--line': '#9A9A9A', '--accent': '#000000',
-        '--pick-ink': '#000000', '--tb-ink': '#333333', '--tb-line': '#9A9A9A',
-        '--thumb': '#CBCBCB', '--thumb-line': '#888888'
+        '--page-bg': 'var(--print-bg)', '--page-ink': 'var(--print-ink)',
+        '--page-muted': 'var(--print-muted)', '--page-line': 'var(--print-line)',
+        '--card': 'var(--print-bg)', '--ink': 'var(--print-ink)',
+        '--muted': 'var(--print-muted)', '--line': 'var(--print-line)',
+        '--accent': 'var(--print-ink)', '--pick-ink': 'var(--print-bg)',
+        '--tb-ink': 'var(--print-muted)', '--tb-line': 'var(--print-line)',
+        '--thumb': THUMB.light.bg, '--thumb-line': THUMB.light.line
       };
       for (var k in vars) root.style.setProperty(k, vars[k]);
     }
@@ -526,6 +549,24 @@
       if (open) {
         menu.classList.add('open');
         btn.setAttribute('aria-expanded', 'true');
+        var items = Array.prototype.slice.call(menu.children);
+        var pick = items.filter(function (b) {
+          return b.getAttribute('aria-checked') === 'true';
+        })[0] || items[0];
+        if (pick) pick.focus();
+      }
+    }
+
+    function menuKey(e) {
+      var items = Array.prototype.slice.call(this.children);
+      var n = items.length;
+      var i = items.indexOf(document.activeElement);
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        items[(i + (e.key === 'ArrowDown' ? 1 : -1) + n) % n].focus();
+      } else if (e.key === 'Home' || e.key === 'End') {
+        e.preventDefault();
+        items[e.key === 'Home' ? 0 : n - 1].focus();
       }
     }
 
@@ -549,11 +590,21 @@
       if (!e.target.closest('.group')) closeMenus();
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeMenus();
+      if (e.key !== 'Escape') return;
+      var openBtn = null;
+      [['dark-theme', 'dark-menu'], ['light-theme', 'light-menu']].forEach(function (pair) {
+        if (document.getElementById(pair[1]).classList.contains('open')) {
+          openBtn = document.getElementById(pair[0]);
+        }
+      });
+      closeMenus();
+      if (openBtn) openBtn.focus();
     });
 
     buildMenu('dark-menu', 'dark');
     buildMenu('light-menu', 'light');
+    document.getElementById('dark-menu').addEventListener('keydown', menuKey);
+    document.getElementById('light-menu').addEventListener('keydown', menuKey);
     applyTheme();
 
     if (mq) {
