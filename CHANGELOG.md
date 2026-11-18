@@ -6,8 +6,8 @@
 
 #### All platforms
 
-* The README and the skill goals lead with determinism: the pitch is the same grid, the same toolbar and one of nine fixed themes on every run, and the cost section states the fixed read of the manual and the shell that buys it.
-* The skill description and goals say repeatability, economy and one pass. The checker follows the new wording.
+* The README and the skill goals put the same result first: every run uses the same grid, the same toolbar and one of nine fixed themes. The cost section states the read it takes, the manual and the shell once, then the cards.
+* The skill description and goals say repeatable, small written part and one pass. The checker follows the new wording.
 
 ## 1.3.3
 

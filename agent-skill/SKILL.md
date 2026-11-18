@@ -10,8 +10,8 @@ One self-contained `.html` page per topic, or one page with several diagrams. St
 
 ## Goals
 
-- Determinism. Copy the shell, the theme table and the scripts; the same grid, the same toolbar and one of nine fixed themes on every run, from any model.
-- Economy. Write only the page copy and the diagram cards; the shell is copied, not rebuilt.
+- The same result every run. Copy the shell, the theme table and the scripts; the grid, the toolbar and one of nine fixed themes do not change.
+- A small written part. Write only the page copy and the diagram cards; the shell is copied, not rebuilt.
 - One pass. No colour or layout decisions, no second draft.
 
 Do not choose colors or restyle controls; the page follows whichever theme the reader picks.

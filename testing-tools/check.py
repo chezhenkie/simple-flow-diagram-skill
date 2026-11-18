@@ -400,7 +400,7 @@ check("demo.html" in skill and "template.html" in skill and "style-manual.md" in
       "skill file map")
 check("palettes.html" not in skill, "skill no palette sheet")
 low = skill.lower()
-check("determinism" in low and "economy" in low and "one pass" in low,
+check("the same result every run" in low and "small written part" in low and "one pass" in low,
       "skill goals")
 check("## Goals" in skill, "skill goals section")
 check("no external javascript" in low and "no javascript" not in low, "skill script rule")
@@ -500,7 +500,7 @@ check("Windows" not in rd and "PowerShell" not in rd and "%USERPROFILE%" not in 
       "readme no os specifics")
 check("palettes.html" not in rd and "palette pair" not in rd, "readme no palette sheet")
 check("dark theme" in rd and "light theme" in rd, "readme theme foldouts")
-check("## Cost and consistency" in rd and "deterministic" in rd.lower(), "readme cost section")
+check("## Cost and consistency" in rd and "fixed cost" in rd.lower(), "readme cost section")
 check("one of nine fixed themes" in rd and "nine installed themes" in rd, "readme theme count")
 check("a few hundred tokens" in rd, "readme token figure")
 check("written part stays small" in man, "manual cost note")
