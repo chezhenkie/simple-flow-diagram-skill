@@ -1,6 +1,6 @@
 # Simple flow diagram
 
-An agent skill that turns a process into a flow diagram on one HTML page, built for minimal token use and fast generation. Layout, nine themes, the light and dark switch and the print view live in the template, so the agent writes the cards and the captions and nothing else. Any model can place boxes and arrows; the point here is a consistent result at the smallest possible token cost.
+An agent skill that turns a process into a flow diagram on one HTML page, built for a deterministic result: the same grid, the same toolbar and one of nine fixed themes on every run. Layout, themes, the light and dark switch and the print view live in the template, so the agent writes the cards and the captions and nothing else. The shell is copied rather than invented, which is what keeps pages from different models and runs identical in shape.
 
 Readability is the first principle. The nine themes start from well-known programmer palettes, then text, border, muted, accent and the section outline are tuned until each one reads in light, dark and print. The light themes take the most care, because a bright page is where glare shows: the page sits on a light grey instead of white, the ink is darkened against it, and the title box is an outline rather than a block of colour. The palette is fixed, so a page cannot drift from it.
 
@@ -8,12 +8,14 @@ Readability is the first principle. The nine themes start from well-known progra
 
 Nine themes ship in the template: five dark and four light. Dark: github, monochrome, ayu, nightowl, solarized. Light: vercel, tokyonight, cursor, orng. The page opens on github or vercel from the OS preference, and the two foldouts switch names, each mode keeping its own pick. Every color on the page comes from the chosen theme, so a diagram carries no palette of its own.
 
-## Cost and speed
+## Cost and consistency
 
-- Token use: the page shell, the theme table, the bar script and the print rules are copied as they are. New text per page is the title, the subtitle, the diagrams and the footer; a one-diagram page is a few hundred tokens.
-- Speed: no colour choice, no CSS, no layout decisions and no second pass. One pass produces a finished page.
-- Consistency: every run uses the same grid and one of nine fixed themes, so pages from different models look the same.
+- Fixed cost: one read of the manual and the shell, then the cards. The page shell, the theme table, the bar script and the print rules are copied as they are, so a second diagram on the page adds no new shell and no new decisions.
+- Written part: the title, the subtitle, the sections and the footer; a one-diagram page is a few hundred tokens of new text. The shell is read once and copied, not written.
+- Consistency: every run uses the same grid and one of nine fixed themes, so pages from different models look the same, toolbar included.
 - Scope: one self-contained file that opens from disk, with no build step, network access or assets.
+
+That fixed read is the trade for a page whose controls, themes and layout are identical every time.
 
 ## Samples
 

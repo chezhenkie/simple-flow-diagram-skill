@@ -1,6 +1,6 @@
 ---
 name: simple-flow-diagram-skill
-description: "Build a flow diagram as one standalone HTML page: one vertical main path, optional side channels, and a fixed top bar with nine themes, light/dark switching and a print view already wired up. Built for speed and token efficiency: the template carries every repeated decision, so the agent writes only the cards and captions in one pass, and output stays consistent and short. Use when asked for a process flow, request path, pipeline, decision flow, state or lifecycle flow, or to restyle an existing flow diagram to this style."
+description: "Build a flow diagram as one standalone HTML page: one vertical main path, optional side channels, and a fixed top bar with nine themes, light/dark switching and a print view already wired up. Built for repeatability: the template carries every repeated decision, so the agent writes only the cards and captions in one pass, and output stays consistent and short. Use when asked for a process flow, request path, pipeline, decision flow, state or lifecycle flow, or to restyle an existing flow diagram to this style."
 license: MIT
 ---
 
@@ -10,9 +10,9 @@ One self-contained `.html` page per topic, or one page with several diagrams. St
 
 ## Goals
 
-- Minimal token use. Copy the shell, the theme table and the scripts; write only the page copy and the diagram cards.
-- Speed. One pass, no colour or layout decisions, no second draft.
-- Consistency. The same grid and the same nine themes on every run, from any model.
+- Determinism. Copy the shell, the theme table and the scripts; the same grid, the same toolbar and one of nine fixed themes on every run, from any model.
+- Economy. Write only the page copy and the diagram cards; the shell is copied, not rebuilt.
+- One pass. No colour or layout decisions, no second draft.
 
 Do not choose colors or restyle controls; the page follows whichever theme the reader picks.
 

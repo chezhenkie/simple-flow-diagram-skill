@@ -393,14 +393,14 @@ check(fields == ["name", "description", "license"], "skill three fields")
 check(lines[1].startswith("name: simple-flow-diagram-skill"), "skill name")
 desc_m = re.search(r'description:\s*"(.*)"', skill)
 check(desc_m is not None and 1 <= len(desc_m.group(1)) <= 1024, "skill description length")
-check(desc_m is not None and "token efficiency" in desc_m.group(1), "skill description goal")
+check(desc_m is not None and "repeatability" in desc_m.group(1), "skill description goal")
 for link in re.findall(r"\]\(([^)]+)\)", skill):
     check(os.path.isfile(os.path.join("agent-skill", link)), "skill link " + link)
 check("demo.html" in skill and "template.html" in skill and "style-manual.md" in skill,
       "skill file map")
 check("palettes.html" not in skill, "skill no palette sheet")
 low = skill.lower()
-check("token efficiency" in low and "minimal token use" in low and "speed." in low,
+check("determinism" in low and "economy" in low and "one pass" in low,
       "skill goals")
 check("## Goals" in skill, "skill goals section")
 check("no external javascript" in low and "no javascript" not in low, "skill script rule")
@@ -473,7 +473,7 @@ check(r.returncode == 1 and "main row" in r.stdout, "validator catches an off-gr
 
 # Changelog
 versions = re.findall(r"^## (\d+\.\d+\.\d+)$", cl, re.M)
-check(versions == ["1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
+check(versions == ["1.3.4", "1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
       "changelog versions newest first")
 check(not re.search(r"\b(19|20)\d\d\b", cl), "changelog no dates")
 check(not re.search(r"\bv\d+\.\d+", cl), "changelog bare versions")
@@ -500,7 +500,7 @@ check("Windows" not in rd and "PowerShell" not in rd and "%USERPROFILE%" not in 
       "readme no os specifics")
 check("palettes.html" not in rd and "palette pair" not in rd, "readme no palette sheet")
 check("dark theme" in rd and "light theme" in rd, "readme theme foldouts")
-check("minimal token use" in rd.lower() and "## Cost and speed" in rd, "readme cost section")
+check("## Cost and consistency" in rd and "deterministic" in rd.lower(), "readme cost section")
 check("one of nine fixed themes" in rd and "nine installed themes" in rd, "readme theme count")
 check("a few hundred tokens" in rd, "readme token figure")
 check("written part stays small" in man, "manual cost note")

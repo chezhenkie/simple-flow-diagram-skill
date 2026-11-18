@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.4
+
+### New features
+
+#### All platforms
+
+* The README and the skill goals lead with determinism: the pitch is the same grid, the same toolbar and one of nine fixed themes on every run, and the cost section states the fixed read of the manual and the shell that buys it.
+* The skill description and goals say repeatability, economy and one pass. The checker follows the new wording.
+
 ## 1.3.3
 
 ### New features
