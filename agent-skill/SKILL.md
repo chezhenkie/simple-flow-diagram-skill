@@ -51,7 +51,7 @@ The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.
 - `style-manual.md`: file contract, theme rules, type scale, grid, card anatomy, connectors, branch and loop patterns, diagram body, validation, checklist, top bar rules.
 - `validate.py`: page validator; run it after the draft and after every edit.
 - `template.html`: page shell to copy; theme table, top bar, print rules and one marked diagram slot, no diagram content.
-- `demo.html`: filled reference page with the bar, four diagrams and the print theme.
+- `demo.html`: filled reference page with the bar, one card payment diagram and the print theme.
 
 ## Limits
 

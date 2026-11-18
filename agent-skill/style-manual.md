@@ -333,7 +333,7 @@ It reads the page and `template.html` beside it, then prints one line per failur
 - Connectors: zero to two accent connectors, loops on a lane, upward, leaving and entering at side marks, unique marker ids, every marker defined.
 - Colors: no hex or rgb fill or stroke in the markup.
 
-The demo page passes 460 checks. Checks that the validator cannot make, because they need eyes, follow below.
+The demo page passes 245 checks. Checks that the validator cannot make, because they need eyes, follow below.
 
 - Open the file at 100 percent zoom. Switch between light and dark, open both theme foldouts and pick one theme from each. Every diagram must follow the theme, with no diagram keeping its own colors.
 - Toggle print mode and confirm the print preview: white page, outlined pills, print cards.

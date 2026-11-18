@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>flow diagram board</title>
+<title>Card payment authorization - flow</title>
 <script>
   (function () {
     var d = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -220,197 +220,93 @@
 </div>
 
 <main>
-  <h1>flow diagram board</h1>
-  <p class="sub">Four flow diagrams on one page. The bar switches mode, picks a theme and turns on the print theme.</p>
 
-  <!-- Diagram slot: insert one section per diagram. -->
-
-  <section>
-          <div class="head">
-            <h2>request path: client to row</h2>
-          </div>
-          <p class="note">Cache reads sit on the left lane; a miss falls through to Store. A failed write returns to Request.</p>
-          <svg viewBox="0 0 1040 376" role="img" aria-label="Request path: request, handler focus, store cards, cache side channel, retry return to request, tag line">
-            <defs>
-              <marker id="rqHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
-              </marker>
-              <marker id="rqHeadA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
-              </marker>
-            </defs>
-      
-            <path class="loop" d="M 300 266 H 226 V 80 H 300" marker-end="url(#rqHead)"/>
-            <text class="side" x="232" y="126">on 5xx</text>
-
-            <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="56">Request</text>
-            <text class="d" x="318" y="74">GET /v1/items, bearer token checked</text>
-      
-            <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#rqHeadA)"/>
-            <text class="cap" x="549" y="118">route match</text>
-      
-            <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="164">Handler</text>
-            <text class="d" x="318" y="182">validate, query pool, render json</text>
-      
-            <rect class="card" x="40" y="138" width="210" height="70" rx="3"/>
-            <text class="t" x="56" y="164">Cache</text>
-            <text class="d" x="56" y="182">redis, 60 s ttl</text>
-            <text class="d" x="56" y="197">misses fall through</text>
-            <path class="dash" d="M 250 173 H 290" marker-end="url(#rqHead)"/>
-      
-            <line class="arrow" x1="535" y1="208" x2="535" y2="236" marker-end="url(#rqHead)"/>
-            <text class="cap" x="549" y="226">row set</text>
-      
-            <rect class="card" x="300" y="246" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="272">Store</text>
-            <text class="d" x="318" y="290">postgres pool, 8 conns, 3 s timeout</text>
-      
-            <rect class="tag" x="300" y="344" width="470" height="26" rx="3"/>
-            <text class="side" x="318" y="361">one request ends in one response: 200 or 4xx</text>
-          </svg>
-        </section>
+  <!-- Page copy: replace the title, subtitle and footer. -->
+  <h1>Card payment authorization</h1>
+  <p class="sub">From the Pay press to the receipt, through the payment request, the fraud check and the issuer decision.</p>
 
   <section>
-          <div class="head">
-            <h2>package: source to two targets</h2>
-          </div>
-          <p class="note">One source and one lockfile feed both targets; each links its own system libc.</p>
-          <svg viewBox="0 0 1040 376" role="img" aria-label="Package path: source and build cards, linux and windows split cards, tag line">
-            <defs>
-              <marker id="pkgHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
-              </marker>
-              <marker id="pkgHeadA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
-              </marker>
-            </defs>
+    <div class="head">
+      <h2>card payment: pay press to receipt</h2>
+    </div>
+    <p class="note">The issuer decides and the shop acts on the response code. A decline holds no funds, so the basket stays intact and the customer picks another card.</p>
+    <svg viewBox="0 0 1040 592" role="img" aria-label="Card payment authorization: checkout and payment request cards, fraud check side channel, issuer response focus card forking into approved and declined branches, receipt and retry cards, return to checkout">
+      <defs>
+        <marker id="payHead" viewBox="0 0 10 10" refX="9" refY="5"
+                markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
+        </marker>
+        <marker id="payHeadA" viewBox="0 0 10 10" refX="9" refY="5"
+                markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
+        </marker>
+      </defs>
 
-            <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="56">Source</text>
-            <text class="d" x="318" y="74">one repo, one lockfile, five crates</text>
+      <path class="loop" d="M 770 482 H 824 V 80 H 770" marker-end="url(#payHead)"/>
+      <text class="side" x="830" y="122">retry card</text>
 
-            <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#pkgHeadA)"/>
-            <text class="cap" x="549" y="118">target list</text>
+      <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
+      <text class="t" x="318" y="56">Checkout</text>
+      <text class="d" x="318" y="74">pay pressed; browser posts card form and amount</text>
 
-            <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="164">Build</text>
-            <text class="d" x="318" y="182">cargo build, release, two targets</text>
+      <line class="arrow" x1="535" y1="100" x2="535" y2="128" marker-end="url(#payHead)"/>
+      <text class="cap" x="549" y="118">checkout form post</text>
 
-            <line class="arrow" x1="411" y1="208" x2="411" y2="236" marker-end="url(#pkgHead)"/>
-            <text class="cap" x="425" y="226">musl target</text>
-            <line class="arrow" x1="659" y1="208" x2="659" y2="236" marker-end="url(#pkgHead)"/>
-            <text class="cap" x="673" y="226">msvc target</text>
+      <rect class="card" x="300" y="138" width="470" height="70" rx="3"/>
+      <text class="t" x="318" y="164">Payment request</text>
+      <text class="d" x="318" y="182">POST /payments: amount, currency, card token</text>
 
-            <rect class="card" x="300" y="246" width="222" height="70" rx="3"/>
-            <text class="t" x="318" y="272">Linux</text>
-            <text class="d" x="318" y="290">x86_64-unknown-linux-musl</text>
+      <rect class="card" x="40" y="138" width="210" height="70" rx="3"/>
+      <text class="t" x="56" y="164">Fraud check</text>
+      <text class="d" x="56" y="182">risk rules on the request</text>
+      <text class="d" x="56" y="197">score gates approval</text>
+      <path class="dash" d="M 300 173 H 254" marker-end="url(#payHead)"/>
+      <path class="dash" d="M 145 208 V 296 H 290" marker-end="url(#payHead)"/>
+      <text class="side" x="156" y="288">risk score</text>
 
-            <rect class="card" x="548" y="246" width="222" height="70" rx="3"/>
-            <text class="t" x="566" y="272">Windows</text>
-            <text class="d" x="566" y="290">x86_64-pc-windows-msvc</text>
+      <line class="arrow-a" x1="535" y1="208" x2="535" y2="236" marker-end="url(#payHeadA)"/>
+      <text class="cap" x="549" y="226">authorization request</text>
 
-            <rect class="tag" x="300" y="344" width="470" height="26" rx="3"/>
-            <text class="side" x="318" y="361">one source ends in one binary per target</text>
-          </svg>
-        </section>
+      <rect class="focus" x="300" y="246" width="470" height="70" rx="3"/>
+      <text class="t" x="318" y="272">Issuer response</text>
+      <text class="d" x="318" y="290">approval code or decline reason from the issuer</text>
 
-  <section>
-          <div class="head">
-            <h2>video path: url to file</h2>
-          </div>
-          <p class="note">Audio leaves the main path before mux; the video path never waits on it. A mux failure retries transcode once, then refetches the source.</p>
-          <svg viewBox="0 0 1040 376" role="img" aria-label="Video path: fetch, transcode focus, mux cards, audio side channel, two returns on the right, tag line">
-            <defs>
-              <marker id="vidHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
-              </marker>
-              <marker id="vidHeadA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
-              </marker>
-            </defs>
-      
-            <path class="arrow" d="M 770 266 H 824 V 188 H 770" marker-end="url(#vidHead)"/>
-            <path class="loop" d="M 770 296 H 844 V 80 H 770" marker-end="url(#vidHead)"/>
+      <line class="arrow-a" x1="411" y1="316" x2="411" y2="344" marker-end="url(#payHeadA)"/>
+      <text class="cap" x="425" y="334">approved</text>
+      <line class="arrow" x1="659" y1="316" x2="659" y2="344" marker-end="url(#payHead)"/>
+      <text class="cap" x="673" y="334">declined</text>
 
-            <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="56">Fetch</text>
-            <text class="d" x="318" y="74">input url, format select 1080p</text>
-      
-            <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#vidHeadA)"/>
-            <text class="cap" x="549" y="118">job queued</text>
-      
-            <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="164">Transcode</text>
-            <text class="d" x="318" y="182">ffmpeg, h264, 6 threads</text>
-      
-            <rect class="card" x="40" y="138" width="210" height="70" rx="3"/>
-            <text class="t" x="56" y="164">Audio out</text>
-            <text class="d" x="56" y="182">aac, 128 kbit/s</text>
-            <text class="d" x="56" y="197">no video stream</text>
-            <path class="dash" d="M 300 173 H 254" marker-end="url(#vidHead)"/>
-      
-            <line class="arrow" x1="535" y1="208" x2="535" y2="236" marker-end="url(#vidHead)"/>
-            <text class="cap" x="549" y="226">h264 + aac</text>
-      
-            <rect class="card" x="300" y="246" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="272">Mux</text>
-            <text class="d" x="318" y="290">aac + mp4, faststart flag</text>
-      
-            <rect class="tag" x="300" y="344" width="470" height="26" rx="3"/>
-            <text class="side" x="318" y="361">one run ends in one file or a non-zero exit</text>
-          </svg>
-        </section>
+      <rect class="card" x="300" y="354" width="222" height="70" rx="3"/>
+      <text class="t" x="318" y="380">Approved</text>
+      <text class="d" x="318" y="398">auth code returned</text>
+      <text class="d" x="318" y="413">funds held 7 days</text>
 
-  <section>
-          <div class="head">
-            <h2>docs path: draft to page</h2>
-          </div>
-          <p class="note">A review that asks for changes returns the draft; publish reads only the reviewed file.</p>
-          <svg viewBox="0 0 1040 376" role="img" aria-label="Docs path: draft, review focus, publish cards, shared spec side channel, return to draft, tag line">
-            <defs>
-              <marker id="docHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
-              </marker>
-              <marker id="docHeadA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
-              </marker>
-            </defs>
+      <rect class="card" x="548" y="354" width="222" height="70" rx="3"/>
+      <text class="t" x="566" y="380">Declined</text>
+      <text class="d" x="566" y="398">no funds held</text>
+      <text class="d" x="566" y="413">reason code logged</text>
 
-            <path class="loop" d="M 300 158 H 226 V 80 H 300" marker-end="url(#docHead)"/>
-            <text class="side" x="232" y="126">rejected</text>
+      <line class="arrow" x1="411" y1="424" x2="411" y2="452" marker-end="url(#payHead)"/>
+      <text class="cap" x="425" y="442">capture and email</text>
+      <line class="arrow" x1="659" y1="424" x2="659" y2="452" marker-end="url(#payHead)"/>
+      <text class="cap" x="673" y="442">no charge</text>
 
-            <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="56">Draft</text>
-            <text class="d" x="318" y="74">one markdown file, ascii only</text>
-      
-            <line class="arrow-a" x1="535" y1="100" x2="535" y2="128" marker-end="url(#docHeadA)"/>
-            <text class="cap" x="549" y="118">review requested</text>
-      
-            <rect class="focus" x="300" y="138" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="164">Review</text>
-            <text class="d" x="318" y="182">two reviewers, comments resolved</text>
-      
-            <rect class="card" x="800" y="138" width="220" height="70" rx="3"/>
-            <text class="t" x="816" y="164">Shared spec</text>
-            <text class="d" x="816" y="182">one theme per page</text>
-            <text class="d" x="816" y="197">nine in the bar</text>
-            <path class="dash" d="M 800 173 H 780" marker-end="url(#docHead)"/>
-      
-            <line class="arrow" x1="535" y1="208" x2="535" y2="236" marker-end="url(#docHead)"/>
-            <text class="cap" x="549" y="226">both resolved</text>
-      
-            <rect class="card" x="300" y="246" width="470" height="70" rx="3"/>
-            <text class="t" x="318" y="272">Publish</text>
-            <text class="d" x="318" y="290">static html, one file, no assets</text>
-      
-            <rect class="tag" x="300" y="344" width="470" height="26" rx="3"/>
-            <text class="side" x="318" y="361">one draft ends in one page or another review round</text>
-          </svg>
-        </section>
+      <rect class="card" x="300" y="462" width="222" height="70" rx="3"/>
+      <text class="t" x="318" y="488">Receipt</text>
+      <text class="d" x="318" y="506">capture, order placed</text>
+      <text class="d" x="318" y="521">email sent to customer</text>
 
-  <footer>One theme colours the page and every diagram on it. The print theme overrides it.</footer>
+      <rect class="card" x="548" y="462" width="222" height="70" rx="3"/>
+      <text class="t" x="566" y="488">Another card</text>
+      <text class="d" x="566" y="506">card list reopened</text>
+      <text class="d" x="566" y="521">basket left intact</text>
+
+      <rect class="tag" x="300" y="560" width="470" height="26" rx="3"/>
+      <text class="side" x="318" y="577">one attempt ends in one issuer verdict: approved or declined</text>
+    </svg>
+  </section>
+
+  <footer>Only an approval reserves funds and produces a receipt; a declined attempt leaves no charge behind.</footer>
 
 </main>
 

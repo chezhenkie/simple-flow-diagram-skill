@@ -17,7 +17,7 @@ Nine themes ship in the template: five dark and four light. Dark: github, monoch
 
 ## Samples
 
-Click a sample to open the full-size PNG. The samples show the first two of the four sections.
+Click a sample to open the full-size PNG. The samples show the whole page, footer included.
 
 | Light | Dark | Print friendly |
 |:---:|:---:|:---:|
@@ -94,7 +94,7 @@ Example request: `Draw the request path as a flow diagram in the house style.`
 |---|---|
 | `agent-skill/SKILL.md` | Agent entry point, workflow and hard rules |
 | `agent-skill/template.html` | Page shell to copy; marked diagram slot |
-| `agent-skill/demo.html` | Filled reference page with four diagrams |
+| `agent-skill/demo.html` | Filled reference page: card payment flow with a side channel, a split and a return |
 | `agent-skill/style-manual.md` | Theme rules, grid, type scale, card anatomy, connectors, validation |
 | `agent-skill/validate.py` | Page validator, run on the finished page |
 | `testing-tools/` | Static and bar behavior checks |

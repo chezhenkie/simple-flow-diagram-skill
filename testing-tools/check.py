@@ -61,7 +61,7 @@ check(demo.count("<footer") == 1, "demo one footer")
 check(pages == demo, "pages demo matches demo")
 check(re.search(r'<html[^>]*data-theme="light"[^>]*data-print="off"', demo[:200]),
       "demo initial state attributes")
-check(len(re.findall(r"<section>", demo)) == 4, "demo four bare sections")
+check(len(re.findall(r"<section>", demo)) == 1, "demo one bare section")
 check(not re.search(r"<section[^>]+>", demo), "no section attributes")
 check('<span class="meta">' not in demo, "no palette meta labels")
 
@@ -251,7 +251,7 @@ check(not re.search(r'<script[^>]+src=|<link\b|@import|https?://', tpl), "templa
 
 # SVGs, markers, geometry, budgets
 svgs = re.findall(r"<svg\b.*?</svg>", demo, re.S)
-check(len(svgs) == 7, "demo seven inline svgs")
+check(len(svgs) == 4, "demo four inline svgs")
 for n, s in enumerate(svgs):
     try:
         ET.fromstring(s)
@@ -261,11 +261,12 @@ for n, s in enumerate(svgs):
     check(ok, "svg %d parses" % n)
 sections = [s for s in re.findall(r"<section>(.*?)</section>", demo, re.S)]
 ids = re.findall(r'<marker id="([^"]+)"', demo)
-check(len(ids) == 8 and len(set(ids)) == 8, "eight unique marker ids")
+check(len(ids) == 2 and len(set(ids)) == 2, "two unique marker ids")
 check(set(re.findall(r"url\(#([^)]+)\)", demo)) <= set(ids), "marker refs resolve")
 check(not hexes(re.sub(r"<script>.*?</script>", "", demo.split("<body>")[1].split("<footer>")[0])),
       "no hex colors in body markup")
 
+split_seen = False
 for n, body in enumerate(sections):
     tag = "d%d" % (n + 1)
     m = re.search(r"<svg\b.*?</svg>", body, re.S)
@@ -295,8 +296,8 @@ for n, body in enumerate(sections):
         shapes.append(len(cells))
         check(cells in ([(300, 470)], [(300, 222), (548, 222)]),
               tag + " row shape at %d" % y)
-    if n == 1:
-        check(2 in shapes, tag + " split row")
+    if 2 in shapes:
+        split_seen = True
 
     tags = [r for r in rects if r.get("class") == "tag"]
     tag_y = int(tags[0].get("y")) if tags else -1
@@ -376,6 +377,8 @@ for n, body in enumerate(sections):
             else:
                 check(len(s) <= 28, tag + " branch label budget " + repr(s))
 
+check(split_seen, "demo split row")
+
 # Skill
 lines = skill.split("\n")
 check(lines[0] == "---", "skill frontmatter open")
@@ -448,25 +451,28 @@ check("python validate.py" in man, "manual validator command")
 check("xml.etree.ElementTree" not in man, "manual inline validator removed")
 check("800 px" not in man.lower() and "800 px" not in low, "no 800 px check")
 check("validate.py" in skill, "skill names the validator")
-check("460 checks" in man, "manual validator count")
+man_count = re.search(r"The demo page passes (\d+) checks", man)
+check(man_count is not None, "manual validator count")
 r = subprocess.run([sys.executable, "agent-skill/validate.py", "agent-skill/demo.html"],
                    capture_output=True, text=True)
 check(r.returncode == 0, "validator passes on demo")
 vm = re.search(r"checks: (\d+) failures: 0", r.stdout)
-check(vm is not None and int(vm.group(1)) >= 400, "validator check count")
-if vm:
-    check(int(vm.group(1)) == 460, "validator count matches the manual")
+check(vm is not None and int(vm.group(1)) >= 200, "validator check count")
+if vm and man_count:
+    check(int(vm.group(1)) == int(man_count.group(1)), "validator count matches the manual")
 broken = "testing-tools/.artifacts/broken.html"
 os.makedirs("testing-tools/.artifacts", exist_ok=True)
-open(broken, "w", encoding="ascii", newline="\n").write(
-    demo.replace('<rect class="card" x="300" y="246" width="470" height="70" rx="3"/>',
-                 '<rect class="card" x="300" y="250" width="470" height="70" rx="3"/>', 1))
+broken_src = re.sub(r'<rect class="focus" x="300" y="(\d+)"',
+                    lambda m: '<rect class="focus" x="300" y="%d"' % (int(m.group(1)) + 4),
+                    demo, count=1)
+check(broken_src != demo, "off-grid probe built")
+open(broken, "w", encoding="ascii", newline="\n").write(broken_src)
 r = subprocess.run([sys.executable, "agent-skill/validate.py", broken], capture_output=True, text=True)
-check(r.returncode == 1 and "main row 3 at 246" in r.stdout, "validator catches an off-grid card")
+check(r.returncode == 1 and "main row" in r.stdout, "validator catches an off-grid card")
 
 # Changelog
 versions = re.findall(r"^## (\d+\.\d+\.\d+)$", cl, re.M)
-check(versions == ["1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
+check(versions == ["1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
       "changelog versions newest first")
 check(not re.search(r"\b(19|20)\d\d\b", cl), "changelog no dates")
 check(not re.search(r"\bv\d+\.\d+", cl), "changelog bare versions")

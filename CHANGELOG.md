@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.3.2
+
+### New features
+
+#### All platforms
+
+* The demo page is one long diagram: a card payment flow from the Pay press to the receipt, with a fraud side channel, a two-card decision split, a return lane and a tag line.
+* The samples are rebuilt from that page: three 900 x 806 shots of the whole page, footer included.
+* The checker follows the new demo: one section, one diagram, two marker ids, a split-row check that looks at every section, and the validator count read from the manual instead of hardcoded, at 313 checks. The demo passes 245.
+
 ## 1.3.1
 
 ### New features
