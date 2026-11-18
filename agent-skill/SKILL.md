@@ -16,11 +16,11 @@ One self-contained `.html` page per topic, or one page with several diagrams. St
 
 Do not choose colors or restyle controls; the page follows whichever theme the reader picks.
 
-The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.html) is the same shell with four filled diagrams.
+The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.html) is the same shell with one filled diagram.
 
 ## Workflow
 
-1. Read `style-manual.md` before writing; sections 5 to 10 carry every number the page needs. Copy `template.html` to `<topic>-flow.html` in the workspace root unless the user or project rules name another folder. Copy the shell as it is: read only the marked diagram slot, not the whole file. Replace the title, subtitle and footer, then insert diagram sections at the slot. `demo.html` is optional reference, not required reading.
+1. Read `style-manual.md` before writing; it carries every number and rule the page needs. Copy `template.html` to `<topic>-flow.html` in the workspace root unless the user or project rules name another folder. Copy the shell as it is. Replace the title, subtitle and footer, then insert diagram sections at the slot. `demo.html` is an optional filled example.
 2. Keep the page shell as it is: head script, token block, top bar, bar script and print rules. Change only the page copy and the diagram bodies.
 3. Write the page in this order: top bar, h1, p.sub, one or more sections (head with h2 pill, p.note, svg), footer. Use the diagram body in manual section 10.
 4. Keep the grid: viewBox `0 0 1040 H`, main column x=300 width=470, card top `30 + 108n`, card height 70, arrow 28, caption x=549 at y+88. The tag is optional at last card top + 98 with a viewBox of `tag + 32`, or none with a viewBox of last top + 102. Up to seven main cards; the tag and side boxes do not count. Side boxes are fixed at 210 wide on x=40 and 220 wide on x=800. A decision may fork into two 222 cards at x=300 and x=548, with arrows at 411 and 659 and captions at 425 and 673.

@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.3
+
+### New features
+
+#### All platforms
+
+* The style manual is 17.6 KB against 23.6 KB, with the same numbers and rules: the theme value table, the type scale table, the repeated validator coverage and the long checklist are now short prose or short lists.
+* The split example in the manual places the title at y+26 and the description at y+44, matching the card grid and the validator; the old block used the retired y+30 baseline.
+
 ## 1.3.2
 
 ### New features
