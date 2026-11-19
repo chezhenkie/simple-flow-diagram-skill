@@ -1,25 +1,22 @@
 # Simple flow diagram
 
-An agent skill that turns a process into a flow diagram on one HTML page. Every run produces the same grid, the same toolbar and one of nine fixed themes. Layout, themes, the light and dark switch and the print view live in the template, so the agent writes the cards and the captions and nothing else. The shell is copied rather than invented, so pages from different models come out the same.
+An agent skill that turns a process into a flow diagram on one HTML page. Every run produces a spec based formatted diagram. Layout, themes, the light and dark switch and the print view are fixed in the template, so the agent writes the cards and the captions and nothing else. Consistent results every time with token economy in mind.
 
-Readability is the first principle. The nine themes start from well-known programmer palettes, then text, border, muted, accent and the section outline are tuned until each one reads in light, dark and print. The light themes take the most care, because a bright page is where glare shows: the page sits on a light grey instead of white, the ink is darkened against it, and the title box is an outline rather than a block of colour. The palette is fixed, so a page cannot drift from it.
+The nine themes start from well-known programmer palettes. Text, color, border, muted, accent and the section outline are tuned until each one reads in light, dark and print. The light themes have been specially tuned to prevent glare.
 
 ## Themes
 
-Nine themes ship in the template: five dark and four light. Dark: github, harbor, solarized, oledblack, ayu. Light: vercel, tokyonight, cursor, orng. The page opens on github or vercel from the OS preference, and the two foldouts switch names, each mode keeping its own pick. Every color on the page comes from the chosen theme, so a diagram carries no palette of its own.
+Nine themes ship in the template: five dark and four light. Dark: github, harbor, solarized, oledblack, ayu. Light: vercel, tokyonight, cursor, orng. The page opens on theme dependent on OS light/dark mode. The two foldouts switch themes, each mode keeping its own pick. Every color on the page comes from the chosen theme, so a diagram carries no palette of its own.
 
-## Cost and consistency
+## Token cost and consistency
 
 - Fixed cost: one read of the manual and the shell, then the cards. The page shell, the theme table, the bar script and the print rules are copied as they are, so a second diagram on the page adds no shell work.
 - Written part: the title, the subtitle, the sections and the footer; a one-diagram page is a few hundred tokens of new text. The shell is read once and copied, not written.
 - Consistency: every run uses the same grid and one of nine fixed themes, so pages from different models look the same, toolbar included.
 - Scope: one self-contained file that opens from disk, with no build step, network access or assets.
 
-The fixed read is the price of identical controls, themes and layout.
 
-## Samples
-
-Click a sample to open the full-size PNG. The samples show the whole page, footer included.
+## Sample page
 
 | Light | Dark | Print friendly |
 |:---:|:---:|:---:|
@@ -36,7 +33,7 @@ Click a sample to open the full-size PNG. The samples show the whole page, foote
 
 Four controls sit at the top right. All are native buttons and work with Tab, Enter and Space.
 
-`print friendly` previews the paper theme on screen: white page, black text and the print tokens on every diagram. The bar is hidden in the browser print preview. Switching it off restores the mode that was active before.
+`print friendly` previews the paper theme on screen: white page, black text and the print tokens on every diagram. The bar is hidden in the browser print preview. Switching it off restores theme that was active before.
 
 The mode switch selects light or dark. The page starts from the OS preference and follows OS changes until the switch is clicked.
 
