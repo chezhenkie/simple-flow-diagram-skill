@@ -15,12 +15,11 @@ Nine themes ship in the template: five dark and four light. Dark: github, harbor
 - Consistency: every run uses the same grid and one of nine fixed themes, so pages from different models look the same, toolbar included.
 - Scope: one self-contained file that opens from disk, with no build step, network access or assets.
 
-
 ## Sample page
 
 | Light | Dark | Print friendly |
 |:---:|:---:|:---:|
-| [<img src="docs/demo-light.png" width="280" alt="Demo page in light mode">](docs/demo-light.png) | [<img src="docs/demo-dark.png" width="280" alt="Demo page in dark mode">](docs/demo-dark.png) | [<img src="docs/demo-print-friendly.png" width="280" alt="Demo page with print friendly on">](docs/demo-print-friendly.png) |
+| [<img src="docs/demo-light.png" width="280" alt="Demo page in light mode">](https://chezhenkie.github.io/simple-flow-diagram-skill/) | [<img src="docs/demo-dark.png" width="280" alt="Demo page in dark mode">](https://chezhenkie.github.io/simple-flow-diagram-skill/) | [<img src="docs/demo-print-friendly.png" width="280" alt="Demo page with print friendly on">](https://chezhenkie.github.io/simple-flow-diagram-skill/) |
 | Demo, vercel light | Same page, github dark | White page, print tokens |
 
 <table>
@@ -112,7 +111,7 @@ The script validates ASCII and LF endings, the theme table, SVG geometry, templa
 
 ## Limits
 
-- One main path per diagram, up to seven cards. A decision may fork into two cards on one row. Split longer flows into sections.
+- One main path per diagram, up to seven rows. A decision may fork into two cards on one row. Split longer flows into sections.
 - One theme per page and no colors of the agent's own. The reader picks from nine installed themes.
 - ASCII only, inline SVG, no external assets.
 - Text budgets are fixed; cut text or split the step when it does not fit.

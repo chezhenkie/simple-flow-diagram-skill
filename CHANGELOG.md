@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.6
+
+### New features
+
+#### All platforms
+
+* The focus card carries a 2 px accent border instead of 1.4, so the marking does not rely on colour alone. The manual states the width.
+
 ## 1.3.5
 
 ### New features

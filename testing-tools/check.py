@@ -473,7 +473,7 @@ check(r.returncode == 1 and "main row" in r.stdout, "validator catches an off-gr
 
 # Changelog
 versions = re.findall(r"^## (\d+\.\d+\.\d+)$", cl, re.M)
-check(versions == ["1.3.5", "1.3.4", "1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
+check(versions == ["1.3.6", "1.3.5", "1.3.4", "1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
       "changelog versions newest first")
 check(not re.search(r"\b(19|20)\d\d\b", cl), "changelog no dates")
 check(not re.search(r"\bv\d+\.\d+", cl), "changelog bare versions")
@@ -500,7 +500,7 @@ check("Windows" not in rd and "PowerShell" not in rd and "%USERPROFILE%" not in 
       "readme no os specifics")
 check("palettes.html" not in rd and "palette pair" not in rd, "readme no palette sheet")
 check("dark theme" in rd and "light theme" in rd, "readme theme foldouts")
-check("## Cost and consistency" in rd and "fixed cost" in rd.lower(), "readme cost section")
+check("## Token cost and consistency" in rd and "fixed cost" in rd.lower(), "readme cost section")
 check("one of nine fixed themes" in rd and "nine installed themes" in rd, "readme theme count")
 check("a few hundred tokens" in rd, "readme token figure")
 check("written part stays small" in man, "manual cost note")

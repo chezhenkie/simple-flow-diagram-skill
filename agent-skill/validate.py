@@ -3,7 +3,7 @@
 
 Usage: python validate.py <page>-flow.html [-v]
 
-Reads the page, the manual numbers and nothing else. Prints one line per
+Reads the page and `template.html` beside it. Prints one line per
 failure, then a count. Exit code 1 on any failure, 0 on a clean page.
 
 The shell (style block and both inline scripts) is compared with

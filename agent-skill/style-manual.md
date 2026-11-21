@@ -49,7 +49,7 @@ Coordinates are integers in a `1040 x H` viewBox.
 | main column | 300 | 470 | center line at 535 |
 | split card, left | 300 | 222 | text at 318 |
 | split card, right | 548 | 222 | text at 566 |
-| side card, left | 40 | 210 | text at x+16, 10 px left margin |
+| side card, left | 40 | 210 | text at x+16, 40 px left margin |
 | side card, right | 800 | 220 | text at x+16, 20 px right margin |
 | main text | 318 | to 752 | card padding 18 |
 | caption lane | 549 | to 790 | 14 px right of the spine |
@@ -69,7 +69,7 @@ tag             last card top + 98, optional
 viewBox height  tag y + 32, or last card top + 102 without a tag
 ```
 
-A split row replaces the main card on that row; the parent above and any merged card below stay 470 wide. Six main cards put the last top at 570, the tag at 668 and the height at 700; two cards put the tag at 236 and the height at 268, or 232 without a tag.
+A split row replaces the main card on that row; the parent above and any merged card below stay 470 wide. Six main rows put the last top at 570, the tag at 668 and the height at 700; two rows put the tag at 236 and the height at 268, or 240 without a tag.
 
 Side marks, from a card or side box top, where `h` is the height:
 
@@ -87,11 +87,11 @@ Baselines:
 - 90/100-high side card: title `y+26`, up to three description lines at `y+44`, `y+59`, `y+74`.
 - Tag text: `y+17`.
 
-Do not change the 108 pitch. If a card needs more text, cut the text or split the step. A diagram carries up to seven main cards; the tag and side boxes do not count, and a longer path becomes two sections.
+Do not change the 108 pitch. If a card needs more text, cut the text or split the step. A diagram carries up to seven main rows; the tag and side boxes do not count, and a longer path becomes two sections.
 
 ## 6. Card anatomy
 
-A card is `<rect class="card">` or `<rect class="focus">` with `rx="3"`, plus `.t`: 1 to 4 words, sentence case, the actor or stage, no punctuation and no verbs in title case; and `.d`: the concrete mechanism, with real flags, endpoints, file names, sizes, no marketing, no restatement of the title, no trailing period. A 70-high card takes two description lines, a 90/100-high side card three. `focus` marks the component that does the work or coordinates the branch; one per diagram.
+A card is `<rect class="card">` or `<rect class="focus">` with `rx="3"`, plus `.t`: 1 to 4 words, sentence case, the actor or stage, no punctuation and no verbs in title case; and `.d`: the concrete mechanism, with real flags, endpoints, file names, sizes, no marketing, no restatement of the title, no trailing period. A 70-high card takes two description lines, a 90/100-high side card three. `focus` marks the component that does the work or coordinates the branch; one per diagram, with a 2 px accent border against 1.2 for a card.
 
 Text limits, per line:
 
@@ -255,7 +255,7 @@ For a decision, replace one row with a split row: two 222 cards at x=300 and x=5
 python validate.py <topic>-flow.html
 ```
 
-It reads the page and `template.html` beside it, prints one line per failure and a final count, and exits 1 when the page is not ready. It covers the file shape, the shell copy byte-equal to `template.html`, the bar and its theme table, the section structure, the geometry (`30 + 108n` rows, split cards, side boxes, one focus card), the arrows and captions, the text baselines and budgets, the tag and viewBox height, the connectors, marker ids and hardcoded colors.
+It reads the page and `template.html` beside it, prints one line per failure and a final count, and exits 1 when the page is not ready. It covers the file shape, the style block and both scripts unchanged against `template.html`, the bar and its theme table, the section structure, the geometry (`30 + 108n` rows, split cards, side boxes, one focus card), the arrows and captions, the text baselines and budgets, the tag and viewBox height, the connectors, marker ids and hardcoded colors.
 
 The demo page passes 245 checks. The checks that need eyes:
 
@@ -273,12 +273,12 @@ The demo page passes 245 checks. The checks that need eyes:
 - [ ] One h1, one sub, one footer; h2 pill reads `subject: outcome`.
 - [ ] Main column x=300 width 470, or two 222 cards at 300 and 548; pitch 108, height 70.
 - [ ] Title at +26, descriptions at +44 and +59; tag at last top + 98 and viewBox at tag y + 32, or last top + 102.
-- [ ] Up to seven main cards; side boxes 210 at x=40 and 220 at x=800.
+- [ ] Up to seven main rows; side boxes 210 at x=40 and 220 at x=800.
 - [ ] One focus card, zero to two accent connectors; `dash` for sides, `loop` for returns.
 - [ ] Loop lanes at 226/206/186/166 and 824/844/864/884, free marks, path before the cards.
 - [ ] Marker ids unique and defined; `role="img"` and an aria-label on each SVG.
 - [ ] One theme for the page, no section class, no per-diagram colors; inline scripts bar only.
-- [ ] `python validate.py <topic>-flow.html` exits 0, then light and dark checked in a browser.
+- [ ] `python validate.py <topic>-flow.html` exits 0, then light and dark checked in Firefox or Chromium.
 
 ## 13. Top bar and modes
 
@@ -293,5 +293,5 @@ The demo page passes 245 checks. The checks that need eyes:
 - `html[data-theme="light"|"dark"]` selects the mode and its list. Each mode remembers its own theme; the switch flips between the two picks.
 - `html[data-print="on"]` forces the print tokens on a white page and leaves `data-theme` alone; off restores the previous mode.
 - Initial mode comes from `prefers-color-scheme`, followed until the mode switch or a theme pick. No storage.
-- Tokens live on `:root`; the theme script writes the six values and `--pick-ink` on every change, and print writes its fixed values there too, so it wins without a cascade trick.
+- Tokens live on `:root`; the theme script writes the six values and `--pick-ink` on every change, and print aliases its fixed values there too, so it wins without a cascade trick.
 - One inline head script sets the initial `data-theme` before paint; one script before `</body>` holds the theme table, builds the foldouts, applies the theme and follows OS changes.
