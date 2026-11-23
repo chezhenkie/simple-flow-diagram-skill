@@ -31,7 +31,7 @@ function El(attrs) {
   return el;
 }
 
-function makeContext(osDark) {
+function makeContext(osDark, search) {
   var root = El({ 'data-theme': 'light', 'data-print': 'off' });
   var mode = El({ 'aria-checked': 'true' });
   var print = El({ 'aria-pressed': 'false' });
@@ -55,17 +55,24 @@ function makeContext(osDark) {
       if (this.handlers.change) this.handlers.change({ matches: v });
     }
   };
+  var link = El({ href: 'other-page.html' });
+  var docLink = El({ href: 'notes.md' });
   var document = {
     documentElement: root,
     handlers: {},
     getElementById: function (id) { return byId[id] || null; },
     createElement: function () { return El({}); },
+    querySelectorAll: function () { return [link, docLink]; },
     addEventListener: function (k, fn) { document.handlers[k] = fn; }
   };
-  var window = { matchMedia: function () { return mq; } };
+  var window = {
+    matchMedia: function () { return mq; },
+    location: { search: search || '' }
+  };
   return {
     root: root, mode: mode, print: print, darkBtn: darkBtn, lightBtn: lightBtn,
     darkMenu: darkMenu, lightMenu: lightMenu, mq: mq, document: document, window: window,
+    link: link, docLink: docLink,
     bg: function () { return root.style.props['--page-bg']; }
   };
 }
@@ -113,6 +120,9 @@ ok(c.darkMenu.children[0].getAttribute('aria-checked') === 'true', 'dark default
 ok(c.darkMenu.children[4].getAttribute('aria-checked') === 'false', 'ayu not marked by default');
 ok(c.lightMenu.children[0].getAttribute('aria-checked') === 'true', 'light default vercel marked');
 ok(c.lightMenu.children[1].getAttribute('aria-checked') === 'false', 'tokyonight not marked by default');
+ok(c.link.getAttribute('href') === 'other-page.html?mode=light&dark=github&light=vercel',
+   'link carries the initial picks');
+ok(c.docLink.getAttribute('href') === 'notes.md', 'non-page links untouched');
 
 c.mq.set(true);
 ok(c.root.getAttribute('data-theme') === 'dark', 'os change to dark');
@@ -149,6 +159,8 @@ ok(c.bg() === '#E1E2E7', 'mode switch returns to vercel');
 c.lightBtn.click();
 c.lightMenu.children[1].click();
 ok(c.root.style.props['--line'] === '#6B7280', 'tokyonight light line applied');
+ok(c.link.getAttribute('href') === 'other-page.html?mode=light&dark=github&light=tokyonight',
+   'link follows a theme pick');
 c.mode.click();
 ok(c.bg() === '#0D1117', 'github remembered across mode switch');
 c.mq.set(true);
@@ -191,6 +203,18 @@ ok(g.root.style.props['--line'] === '#6B7280', 'tokyonight line after pick');
 g.mq.set(true);
 ok(g.root.getAttribute('data-theme') === 'light', 'theme pick stops os follow');
 ok(g.root.style.props['--line'] === '#6B7280', 'theme pick survives os change');
+
+var p = makeContext(false, '?mode=dark&dark=ayu&light=cursor');
+run(p);
+ok(p.root.getAttribute('data-theme') === 'dark', 'link mode read on load');
+ok(p.bg() === '#0B0E14', 'link dark pick applied');
+ok(p.darkMenu.children[4].getAttribute('aria-checked') === 'true', 'link dark pick marked');
+ok(p.lightMenu.children[2].getAttribute('aria-checked') === 'true', 'link light pick marked');
+ok(p.link.getAttribute('href') === 'other-page.html?mode=dark&dark=ayu&light=cursor',
+   'link state carried onward');
+ok(!('change' in p.mq.handlers), 'no os listener when the link carries the mode');
+p.mq.set(false);
+ok(p.root.getAttribute('data-theme') === 'dark', 'link state survives an os change');
 
 if (failures) {
   console.log('harness failures: ' + failures);

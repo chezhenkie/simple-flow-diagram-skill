@@ -37,7 +37,7 @@ def one_hex(css, name):
 
 
 files = ["README.md", "agent-skill/SKILL.md", "agent-skill/template.html",
-         "agent-skill/demo.html", "docs/index.html", "CHANGELOG.md", "LICENSE",
+         "agent-skill/demo.html", "agent-skill/index.html", "docs/index.html", "CHANGELOG.md", "LICENSE",
          "agent-skill/style-manual.md", "testing-tools/check.py", "testing-tools/validate.py",
          "testing-tools/harness.js", "testing-tools/README.md"]
 for f in files:
@@ -49,6 +49,7 @@ check(not os.path.exists("agent-skill/palettes.html"), "palette sheet removed")
 
 demo = text("agent-skill/demo.html")
 tpl = text("agent-skill/template.html")
+idx = text("agent-skill/index.html")
 skill = text("agent-skill/SKILL.md")
 man = text("agent-skill/style-manual.md")
 cl = text("CHANGELOG.md")
@@ -250,6 +251,48 @@ check(re.search(r"<style>(.*?)</style>", tpl, re.S).group(1)
       == re.search(r"<style>(.*?)</style>", demo, re.S).group(1), "template styles match demo")
 check(not re.search(r'<script[^>]+src=|<link\b|@import|https?://', tpl), "template no external assets")
 
+# Index shell: same bar, tokens and scripts, plus link cards and a documents table.
+istyles = re.findall(r"<style>(.*?)</style>", idx, re.S)
+check(len(istyles) == 2, "index two style blocks")
+check(bool(istyles) and istyles[0] == re.search(r"<style>(.*?)</style>", demo, re.S).group(1),
+      "index shared style matches demo")
+check(len(istyles) == 2 and all(k in istyles[1] for k in (".grid {", ".entry {", ".glyph {", ".docs {")),
+      "index grid, entry, glyph and docs styles")
+check(re.search(r'<div id="tb".*?\n</div>', idx, re.S).group(0) == tb,
+      "index bar matches demo")
+check(re.findall(r"<script>(.*?)</script>", idx, re.S) == scripts, "index scripts match demo")
+check(idx.count("<h1") == 1 and idx.count('<p class="sub">') == 1 and idx.count("<footer") == 1,
+      "index page copy slots")
+check("Index copy:" in idx and "Entry:" in idx and "Documents:" in idx, "index marked slots")
+check(idx.count('<nav class="grid" aria-label="group label">') == 1, "index one example group")
+check(idx.count('class="entry"') == 1 and idx.count('class="glyph"') == 1, "index one example entry")
+check(idx.count('class="hot"') == 1, "index one accent glyph path")
+check('href="first-page.html"' in idx and 'href="notes.md"' in idx, "index example links")
+check(idx.count("<section") == 1 and 'aria-labelledby="documents"' in idx, "index documents section")
+check(idx.count('class="docs"') == 1 and ">Document<" in idx and ">Covers<" in idx,
+      "index documents table")
+check("localStorage" not in idx and "sessionStorage" not in idx, "index no storage")
+check(not hexes(idx.split("<body>")[1].split("</main>")[0]), "no hex colors in index body markup")
+glyph = re.search(r'<svg class="glyph".*?</svg>', idx, re.S)
+check(glyph is not None, "index glyph present")
+if glyph:
+    try:
+        ET.fromstring(glyph.group(0))
+        check(True, "index glyph parses")
+    except Exception:
+        check(False, "index glyph parses")
+check(not re.search(r'<script[^>]+src=|<link\b|@import|https?://', idx), "index no external assets")
+for fn in ("function readParams", "function pickQuery", "function syncLinks"):
+    check(fn in script, "bar script has " + fn[9:])
+check("window.location.search" in script and "/[?&]mode=(dark|light)\\b/" in scripts[0],
+      "mode read from the link before paint")
+check(script.index("var startMode = readParams();") < script.index("buildMenu('dark-menu'"),
+      "params read before the menus are built")
+check("'?mode=' + (isDark() ? 'dark' : 'light')" in script
+      and "'&dark=' + chosen.dark" in script and "'&light=' + chosen.light" in script,
+      "link query carries mode and both picks")
+check("syncLinks();" in script, "theme change rewrites the links")
+
 # SVGs, markers, geometry, budgets
 svgs = re.findall(r"<svg\b.*?</svg>", demo, re.S)
 check(len(svgs) == 4, "demo four inline svgs")
@@ -396,8 +439,8 @@ check(desc_m is not None and 1 <= len(desc_m.group(1)) <= 1024, "skill descripti
 check(desc_m is not None and "repeatability" in desc_m.group(1), "skill description goal")
 for link in re.findall(r"\]\(([^)]+)\)", skill):
     check(os.path.isfile(os.path.join("agent-skill", link)), "skill link " + link)
-check("demo.html" in skill and "template.html" in skill and "style-manual.md" in skill,
-      "skill file map")
+check("demo.html" in skill and "template.html" in skill and "style-manual.md" in skill
+      and "index.html" in skill, "skill file map")
 check("palettes.html" not in skill, "skill no palette sheet")
 low = skill.lower()
 check("the same result every run" in low and "small written part" in low and "one pass" in low,
@@ -413,6 +456,10 @@ check("print theme" in low, "skill print mention")
 check("head with h2 pill" in low, "skill section head")
 check("ascii only" in low, "skill ascii rule")
 check("diagram body in manual section 10" in low, "skill diagram body")
+check("## Page types" in skill, "skill page types")
+check("manual section 14" in skill and "index.html" in skill, "skill index chapter")
+check("no screenshots" in low and "no pdf" in low, "skill no render pass")
+check("both modes" not in low, "skill no per-page mode pass")
 
 # Manual
 check("## 3. Theme" in man, "manual theme section")
@@ -426,6 +473,14 @@ check("425 and 673" in man, "manual split captions")
 check("| `hi` | top + 20 |" in man and "| `lo` | top + h - 20 |" in man, "manual side marks")
 check("## 11. Validation" in man, "manual validation")
 check("## 13. Top bar and modes" in man, "manual top bar section")
+check("## 14. Index pages" in man, "manual index chapter")
+check("copy `index.html` instead of `template.html`" in man, "manual index shell")
+check('class="glyph"' in man and "104 x 56" in man, "manual glyph rules")
+check("?mode=...&dark=...&light=..." in man, "manual index link query")
+check("Two to six entries" in man, "manual index group size")
+check("screenshots" in man.lower() and "pdfs" in man.lower(), "manual no render pass")
+check("Switch light and dark" not in man, "manual no per-page theme pass")
+check("both foldouts opened" not in man, "manual checklist no per-page render")
 check("demo.html" in man and "template.html" in man, "manual file references")
 check("Inline scripts limited" in man, "manual inline script rule")
 check("one or more `<section>` blocks" in man, "manual section count")
@@ -450,8 +505,8 @@ for name in DARK + LIGHT:
 # Page validator
 check("800 px" not in man.lower() and "800 px" not in low, "no 800 px check")
 check(not os.path.exists("agent-skill/validate.py"), "validator outside the payload")
-check(sorted(os.listdir("agent-skill")) == ["SKILL.md", "demo.html", "style-manual.md", "template.html"],
-      "payload is four files")
+check(sorted(os.listdir("agent-skill")) == ["SKILL.md", "demo.html", "index.html", "style-manual.md", "template.html"],
+      "payload is five files")
 check("validate.py" not in skill and "python" not in skill.lower(), "skill free of the validator")
 check("validate.py" not in man and "python" not in man.lower(), "manual free of the validator")
 r = subprocess.run([sys.executable, "testing-tools/validate.py", "agent-skill/demo.html",
@@ -472,7 +527,7 @@ check(r.returncode == 1 and "main row" in r.stdout, "validator catches an off-gr
 
 # Changelog
 versions = re.findall(r"^## (\d+\.\d+\.\d+)$", cl, re.M)
-check(versions == ["1.4.0", "1.3.7", "1.3.6", "1.3.5", "1.3.4", "1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
+check(versions == ["1.5.0", "1.4.0", "1.3.7", "1.3.6", "1.3.5", "1.3.4", "1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
       "changelog versions newest first")
 check(not re.search(r"\b(19|20)\d\d\b", cl), "changelog no dates")
 check(not re.search(r"\bv\d+\.\d+", cl), "changelog bare versions")
@@ -501,6 +556,11 @@ check("palettes.html" not in rd and "palette pair" not in rd, "readme no palette
 check("dark theme" in rd and "light theme" in rd, "readme theme foldouts")
 check("## Token cost and consistency" in rd and "fixed cost" in rd.lower(), "readme cost section")
 check("one of nine fixed themes" in rd and "nine installed themes" in rd, "readme theme count")
+check("## Several pages" in rd, "readme index section")
+check("agent-skill/index.html" in rd, "readme index shell")
+check("payload is five files" in rd, "readme five files")
+check("keeps the theme" in rd, "readme theme carry")
+check("No screenshots" in rd and "no PDFs" in rd, "readme no render pass")
 check("a few hundred tokens" in rd, "readme token figure")
 check("written part stays small" in man, "manual cost note")
 

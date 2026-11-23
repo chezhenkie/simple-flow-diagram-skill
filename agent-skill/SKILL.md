@@ -1,12 +1,17 @@
 ---
 name: simple-flow-diagram-skill
-description: "Build a flow diagram as one standalone HTML page: one vertical main path, optional side channels, and a fixed top bar with nine themes, light/dark switching and a print view already wired up. Built for repeatability: the template carries every repeated decision, so the agent writes only the cards and captions in one pass, and output stays consistent and short. Use when asked for a process flow, request path, pipeline, decision flow, state or lifecycle flow, or to restyle an existing flow diagram to this style."
+description: "Build a flow diagram as one standalone HTML page: one vertical main path, optional side channels, and a fixed top bar with nine themes, light/dark switching and a print view already wired up. Built for repeatability: the template carries every repeated decision, so the agent writes only the cards and captions in one pass, and output stays consistent and short. Use when asked for a process flow, request path, pipeline, decision flow, state or lifecycle flow, or to restyle an existing flow diagram to this style. It also builds an index page that lists several diagrams and documents, with small inline SVG glyphs and the same bar."
 license: MIT
 ---
 
 # Simple flow diagram
 
-One self-contained `.html` page per topic, or one page with several diagrams. Start from [template.html](template.html): the layout, the themes, the mode switch and the print view are already in it.
+One self-contained `.html` page per topic, or one page with several diagrams. Start from [template.html](template.html): the layout, the themes, the mode switch and the print view are already in it. A folder of finished pages and documents can open on [index.html](index.html), a second shell with link cards and a document table.
+
+## Page types
+
+- Diagram page: copy `template.html`; the workflow below applies.
+- Index page: copy `index.html`; manual section 14 applies. It lists the diagram pages and documents of one folder, one link card each with a small inline glyph, and keeps the same bar, themes and print rules. The mode and both theme picks travel in every local page link.
 
 ## Goals
 
@@ -26,7 +31,7 @@ The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.
 4. Keep the grid: viewBox `0 0 1040 H`, main column x=300 width=470, card top `30 + 108n`, card height 70, arrow 28, caption x=549 at y+88. The tag is optional at last card top + 98 with a viewBox of `tag + 32`, or none with a viewBox of last top + 102. Up to seven main rows; the tag and side boxes do not count. Side boxes are fixed at 210 wide on x=40 and 220 wide on x=800. A decision may fork into two 222 cards at x=300 and x=548, with arrows at 411 and 659 and captions at 425 and 673.
 5. Fill text within the budgets: 65 characters per main line, 28 or 26 per split or side line, card title 24, caption 42 or 18 on a split, tag line 78. A 70-high card takes two lines, a 90/100-high side card three.
 6. Mark one focus card and zero to two accent connectors per diagram. Solid for the main path, dashed for side channels, dotted for returns.
-7. Check the page against the manual: geometry, text budgets, one focus card and zero to two accents, loop lanes and marker ids. Then check both modes, both theme foldouts and the print preview at 100 percent. Open the page in Firefox or Chromium when it is done; if it is already open from an earlier pass, do not open another window or tab, and let the user refresh.
+7. Check only the written part against the manual: geometry, text budgets, one focus card and zero to two accents, loop lanes and marker ids. The shell is copied byte for byte and is already checked in the repository; do not test the bar, themes or print on the page. Open the page once for the user when it is done; if it is already open from an earlier pass, do not open another window or tab, and let the user refresh.
 8. After the user has viewed the page, ask whether the diagram file can be deleted. Do not delete it unasked.
 
 ## Themes and modes
@@ -44,14 +49,15 @@ The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.
 - Top bar: fixed, 24 px high, right aligned, page background fill, no divider. Print toggle labelled `print friendly`, mode switch, then the `dark theme` and `light theme` foldouts. Native buttons, keyboard operable, labeled.
 - Colors only through `var(--...)`. Tokens live on `:root`; the print override comes last.
 - Marker ids unique per page, prefixed by section. Pair each line class with the matching arrowhead.
-- Open a finished page in Firefox or Chromium. If it is already open from an earlier pass, do not open another window or tab; the user refreshes.
+- Open a finished page once for the user. No screenshots, no PDFs, no theme-by-theme renders; the shell is checked in the repository, not on every page.
 
 ## Files
 
-- `style-manual.md`: file contract, theme rules, type scale, grid, card anatomy, connectors, branch and loop patterns, diagram body, validation, checklist, top bar rules.
+- `style-manual.md`: file contract, theme rules, type scale, grid, card anatomy, connectors, branch and loop patterns, diagram body, validation, checklist, top bar rules, index pages.
 - `template.html`: page shell to copy; theme table, top bar, print rules and one marked diagram slot, no diagram content.
+- `index.html`: index shell to copy; grid of link cards with inline glyphs, documents table, same bar. Fill the marked copy slots.
 - `demo.html`: filled reference page with the bar, one card payment diagram and the print theme.
 
 ## Limits
 
-More than seven main rows: split into two sections. Text that does not fit the budgets: cut it or split the step. Do not invent fills, sizes or spacing outside the manual.
+More than seven main rows: split into two sections. Text that does not fit the budgets: cut it or split the step. Do not invent fills, sizes or spacing outside the manual. An index lists pages; it is not a dashboard and carries no counts or status.

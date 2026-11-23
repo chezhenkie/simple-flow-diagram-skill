@@ -253,17 +253,9 @@ For a decision, replace one row with a split row: two 222 cards at x=300 and x=5
 
 ## 11. Validation
 
-The page is right when it matches the numbers in sections 5 to 8 and its shell matches `template.html`: head script, token block, bar, bar script and print rules unchanged. Recheck the geometry, the text baselines and budgets, the tag and viewBox height, the focus and accents, the loop lanes and the marker ids.
+The page is right when it matches the numbers in sections 5 to 8 and its shell matches `template.html`: head script, token block, bar, bar script and print rules unchanged. Check the written part by reading: geometry, text baselines and budgets, the tag and viewBox height, the focus and accents, the loop lanes and the marker ids.
 
-The checks that need eyes:
-
-- Open the file at 100 percent. Switch light and dark, open both foldouts, pick one theme from each; every diagram follows the theme.
-- Toggle print and confirm white page, outlined pills and print cards. The bar is hidden in the print preview.
-- Operate the bar by keyboard: focus ring, state change, arrows and Home and End in an open foldout, Escape returns focus.
-- Confirm no caption crosses x=790, and a split row lands its arrows on the card centres with each caption in its half.
-- Confirm each loopback leaves and enters at a free mark, never a side stub, and no loop starts under a side box.
-- Confirm one focus card and at most two accent connectors, every marker id referenced and unique.
-- If a width check is needed, shrink until the bar is 360 px wide and confirm four controls fit on one line.
+The shell, the bar, the themes and the print view are fixed and checked once in the repository. Do not render them per page, take screenshots or make PDFs. Open the finished page once for the user; the user's eye is the last check.
 
 ## 12. Checklist
 
@@ -276,7 +268,7 @@ The checks that need eyes:
 - [ ] Loop lanes at 226/206/186/166 and 824/844/864/884, free marks, path before the cards.
 - [ ] Marker ids unique and defined; `role="img"` and an aria-label on each SVG.
 - [ ] One theme for the page, no section class, no per-diagram colors; inline scripts bar only.
-- [ ] Light and dark checked in Firefox or Chromium, both foldouts opened, print previewed at 100 percent.
+- [ ] Written part checked by reading; the page opened once for the user; no per-page theme, foldout or print pass.
 
 ## 13. Top bar and modes
 
@@ -293,3 +285,32 @@ The checks that need eyes:
 - Initial mode comes from `prefers-color-scheme`, followed until the mode switch or a theme pick. No storage.
 - Tokens live on `:root`; the theme script writes the six values and `--pick-ink` on every change, and print aliases its fixed values there too, so it wins without a cascade trick.
 - One inline head script sets the initial `data-theme` before paint; one script before `</body>` holds the theme table, builds the foldouts, applies the theme and follows OS changes.
+- A link to a local `.html` page carries the reader's state. The bar script writes `?mode=...&dark=...&light=...` into every local page link on load and after each pick, and reads those values on load. A page opened from an index therefore keeps the mode and both theme picks. No storage; a link with no query opens on the OS mode and the default picks.
+
+## 14. Index pages
+
+A set of finished diagram pages and documents may open on one index page. It is a separate page type: copy `index.html` instead of `template.html`. Sections 1 to 13 keep their rules for the diagram pages the index links; this chapter covers the index itself.
+
+Order: bar, h1, `.sub`, one or more groups, an optional documents section, footer. A group is a `.note` label and a `nav.grid`; the label is lowercase and names the group, as in `maps` or `paths`. Two to six entries per group.
+
+An entry is one link card:
+
+```html
+<a class="entry" href="page-one.html">
+  <svg class="glyph" viewBox="0 0 104 56" aria-hidden="true" focusable="false">
+    <rect x="2" y="20" width="24" height="16" rx="2"/>
+    <rect x="40" y="20" width="24" height="16" rx="2"/>
+    <rect x="78" y="20" width="24" height="16" rx="2"/>
+    <path class="hot" d="M 6 20 V 10 H 98 V 20 M 52 10 V 20"/>
+  </svg>
+  <span class="name">Page one</span>
+  <span class="desc">What the page shows, in one line.</span>
+</a>
+```
+
+- `href` is the page file name. The bar script appends the theme query to every local `.html` link; do not write a query by hand.
+- Name: 1 to 4 words, sentence case, up to 28 characters. Description: up to 70 characters, one line.
+- Glyph: 104 x 56, shapes between x 2 and 102 and y 4 and 52. Rects and paths only, no text. Muted stroke 1.4; zero or one `.hot` path in accent at 1.6. A few objects that suggest the page, not a legend.
+- Documents are optional: the h2 pill, a `.note`, and a `.docs` table with `Document` and `Covers` columns, one row per file. The file name links the file.
+- The entries, glyphs, names and descriptions are checked by reading against the bounds above. The shell is fixed and checked in the repository; do not re-test the bar, both modes or print on the index. Open the index once for the user.
+- Limits: an index lists pages; it does not explain them. No counts, badges, status rows or diagrams inside a glyph.

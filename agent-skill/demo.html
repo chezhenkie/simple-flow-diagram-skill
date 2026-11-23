@@ -6,7 +6,9 @@
 <title>Card payment authorization - flow</title>
 <script>
   (function () {
-    var d = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var p = /[?&]mode=(dark|light)\b/.exec(window.location.search || '');
+    var d = p ? p[1] === 'dark'
+              : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     document.documentElement.setAttribute('data-theme', d ? 'dark' : 'light');
   })();
 </script>
@@ -340,6 +342,44 @@
       light: { bg: '#CBCBCB', line: '#888888' }
     };
 
+    function readParams() {
+      var s = (window.location && window.location.search) || '';
+      if (s.charAt(0) === '?') s = s.slice(1);
+      if (!s) return null;
+      var out = {};
+      s.split('&').forEach(function (p) {
+        var i = p.indexOf('=');
+        if (i > 0) out[p.slice(0, i)] = p.slice(i + 1);
+      });
+      if (THEMES.dark[out.dark]) chosen.dark = out.dark;
+      if (THEMES.light[out.light]) chosen.light = out.light;
+      if (THEMES.dark[out.dark] || THEMES.light[out.light] ||
+          out.mode === 'dark' || out.mode === 'light') manual = true;
+      return out.mode === 'dark' || out.mode === 'light' ? out.mode : null;
+    }
+
+    function pickQuery() {
+      return '?mode=' + (isDark() ? 'dark' : 'light') +
+             '&dark=' + chosen.dark + '&light=' + chosen.light;
+    }
+
+    function syncLinks() {
+      var nodes = document.querySelectorAll ? document.querySelectorAll('a[href]') : [];
+      for (var i = 0; i < nodes.length; i++) {
+        var a = nodes[i];
+        var href = a.getAttribute('href') || '';
+        if (href.charAt(0) === '#' || href.slice(0, 2) === '//') continue;
+        if (/^[a-z][a-z0-9+.-]*:/i.test(href)) continue;
+        var cut = href.search(/[?#]/);
+        var path = cut < 0 ? href : href.slice(0, cut);
+        var hash = href.indexOf('#') < 0 ? '' : href.slice(href.indexOf('#'));
+        if (!/\.html$/.test(path)) continue;
+        a.setAttribute('href', path + pickQuery() + hash);
+      }
+    }
+
+    var startMode = readParams();
+
     function isDark() { return root.getAttribute('data-theme') === 'dark'; }
     function isPrint() { return root.getAttribute('data-print') === 'on'; }
 
@@ -366,6 +406,7 @@
         '--thumb': THUMB[mode].bg, '--thumb-line': THUMB[mode].line
       };
       for (var k in vars) root.style.setProperty(k, vars[k]);
+      syncLinks();
     }
 
     function applyPrint() {
@@ -503,7 +544,9 @@
     document.getElementById('light-menu').addEventListener('keydown', menuKey);
     applyTheme();
 
-    if (mq) {
+    if (startMode) {
+      setMode(startMode === 'dark');
+    } else if (mq) {
       setMode(mq.matches);
       var onChange = function (e) { if (!manual) setMode(e.matches); };
       if (mq.addEventListener) mq.addEventListener('change', onChange);
