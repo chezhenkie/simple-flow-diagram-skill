@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.4.0
+
+### Changes
+
+#### All platforms
+
+* The palette pass raises the weak accent and line values. Github accent and line, harbor line, solarized accent and line, oledblack line, vercel accent, tokyonight line, cursor accent and line, and orng line change.
+* Solarized and vercel accents sit between their original and fully passing values; tokyonight and orng accents are unchanged. Four mark pairs keep a small shortfall under deuteranopia and are accepted deviations; the manual and the colour audit record them.
+* The colour audit carries the clamp, line-on-page and scoped-loss corrections, the 1.4.0 values and the accepted deviations.
+
 ## 1.3.7
 
 ### Changes

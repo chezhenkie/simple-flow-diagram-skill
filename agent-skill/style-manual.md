@@ -30,6 +30,8 @@ A theme is six values: `bg` page, `card` card and tag fill, `ink` page text and 
 
 Nine themes ship in the template: five dark and four light. Dark: `github`, `harbor`, `solarized`, `oledblack`, `ayu`. Light: `vercel`, `tokyonight`, `cursor`, `orng`. Light opens on `vercel`, dark on `github`.
 
+The 1.4.0 palette pass raised the weak line and accent values. Four mark pairs keep a small shortfall under deuteranopia and are accepted deviations: vercel accent on page 2.91:1, tokyonight accent on card 2.97:1, tokyonight checked label 4.31:1 and orng checked label 4.00:1. Solarized and vercel accents sit between their original and fully passing values; tokyonight and orng accents are unchanged. The shortfalls affect emphasis and a menu label; the focus card still reads by 2 px width, the line marks clear 3:1 and the labels are text. Do not retune these tokens without an explicit request.
+
 - The agent does not pick, mix or author colors. The theme script in `template.html` writes the six values as CSS custom properties.
 - A diagram carries no colors of its own: no class on a section, no per-section token block, no inline `fill` or `stroke` with a color value.
 - The pill is transparent with a 2 px accent outline and takes the page ink for its text, in both modes. No theme fills the title box.

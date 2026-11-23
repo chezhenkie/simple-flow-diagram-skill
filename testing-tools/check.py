@@ -472,7 +472,7 @@ check(r.returncode == 1 and "main row" in r.stdout, "validator catches an off-gr
 
 # Changelog
 versions = re.findall(r"^## (\d+\.\d+\.\d+)$", cl, re.M)
-check(versions == ["1.3.7", "1.3.6", "1.3.5", "1.3.4", "1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
+check(versions == ["1.4.0", "1.3.7", "1.3.6", "1.3.5", "1.3.4", "1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
       "changelog versions newest first")
 check(not re.search(r"\b(19|20)\d\d\b", cl), "changelog no dates")
 check(not re.search(r"\bv\d+\.\d+", cl), "changelog bare versions")

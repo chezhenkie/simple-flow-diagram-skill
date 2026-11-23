@@ -148,7 +148,7 @@ c.mode.click();
 ok(c.bg() === '#E1E2E7', 'mode switch returns to vercel');
 c.lightBtn.click();
 c.lightMenu.children[1].click();
-ok(c.root.style.props['--line'] === '#737A8C', 'tokyonight light line applied');
+ok(c.root.style.props['--line'] === '#6B7280', 'tokyonight light line applied');
 c.mode.click();
 ok(c.bg() === '#0D1117', 'github remembered across mode switch');
 c.mq.set(true);
@@ -187,10 +187,10 @@ run(g);
 g.lightBtn.click();
 g.lightMenu.children[1].click();
 ok(g.root.getAttribute('data-theme') === 'light', 'theme pick stays light');
-ok(g.root.style.props['--line'] === '#737A8C', 'tokyonight line after pick');
+ok(g.root.style.props['--line'] === '#6B7280', 'tokyonight line after pick');
 g.mq.set(true);
 ok(g.root.getAttribute('data-theme') === 'light', 'theme pick stops os follow');
-ok(g.root.style.props['--line'] === '#737A8C', 'theme pick survives os change');
+ok(g.root.style.props['--line'] === '#6B7280', 'theme pick survives os change');
 
 if (failures) {
   console.log('harness failures: ' + failures);

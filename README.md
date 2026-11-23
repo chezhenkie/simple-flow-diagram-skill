@@ -8,6 +8,8 @@ The nine themes start from well-known programmer palettes. Text, color, border, 
 
 Nine themes ship in the template: five dark and four light. Dark: github, harbor, solarized, oledblack, ayu. Light: vercel, tokyonight, cursor, orng. The page opens on theme dependent on OS light/dark mode. The two foldouts switch themes, each mode keeping its own pick. Every color on the page comes from the chosen theme, so a diagram carries no palette of its own.
 
+The 1.4.0 palette pass raises the weak borders and accents. Four mark pairs keep a small shortfall under simulation and are accepted deviations: vercel accent on page, tokyonight accent on card, and the tokyonight and orng checked labels. They affect emphasis and a menu label, not the diagram structure.
+
 ## Token cost and consistency
 
 - Fixed cost: one read of the manual and the shell, then the cards. The page shell, the theme table, the bar script and the print rules are copied as they are, so a second diagram on the page adds no shell work.
