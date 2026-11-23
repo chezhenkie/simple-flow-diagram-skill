@@ -96,6 +96,7 @@ Example request: `Draw the request path as a flow diagram in the house style.`
 | `agent-skill/style-manual.md` | Theme rules, grid, type scale, card anatomy, connectors, validation |
 | `testing-tools/` | Static checks, page validator and bar behavior checks |
 | `docs/` | Screenshots and the GitHub Pages entry |
+| `color-vision-audit.md` | Colour vision audit of the nine themes |
 | `CHANGELOG.md` | Version history |
 
 ## Check

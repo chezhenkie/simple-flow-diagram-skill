@@ -1,6 +1,6 @@
 # Testing tools
 
-Two checks guard the skill payload. Run them from the repository root or by absolute path.
+The static checker and the bar harness guard the skill payload; the page validator checks the demo. Run them from the repository root or by absolute path.
 
 ```sh
 python testing-tools/check.py        # 312 static checks, prints failures only
