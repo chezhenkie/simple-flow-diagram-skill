@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Check a finished page against the flow diagram contract.
 
-Usage: python validate.py <page>-flow.html [-v]
+Usage: python validate.py <page>-flow.html [template.html] [-v]
 
-Reads the page and `template.html` beside it. Prints one line per
-failure, then a count. Exit code 1 on any failure, 0 on a clean page.
-
-The shell (style block and both inline scripts) is compared with
-template.html beside this file, so a page that edited the shell fails.
+Reads the page, prints one line per failure, then a count. Exit code 1 on
+any failure, 0 on a clean page. The shell (style block and both inline
+scripts) is compared with template.html, given as the second argument or
+found beside the tool and in `../agent-skill/`, so a page that edited the
+shell fails.
 """
 
 import re
@@ -113,13 +113,19 @@ def page_checks(raw, body, text):
     check(body.count('aria-controls="') == 2, "foldouts point at menus")
 
 
-def shell_checks(page_style, page_scripts):
+def shell_checks(page_style, page_scripts, template=None):
     import os
     here = os.path.dirname(os.path.abspath(__file__))
-    tpl = os.path.join(here, "template.html")
-    if not os.path.isfile(tpl):
+    if template is None:
+        for candidate in (os.path.join(here, "template.html"),
+                          os.path.join(here, "..", "agent-skill", "template.html")):
+            if os.path.isfile(candidate):
+                template = candidate
+                break
+    if template is None or not os.path.isfile(template):
+        check(False, "template.html for the shell comparison")
         return
-    src = open(tpl, encoding="ascii").read()
+    src = open(template, encoding="ascii").read()
     ts = STYLE.search(src)
     tscripts = SCRIPTS.findall(src)
     check(ts is not None and page_style.strip() == ts.group(1).strip(), "shell style unchanged")
@@ -312,16 +318,17 @@ def main(argv):
     verbose = "-v" in argv
     args = [a for a in argv[1:] if not a.startswith("-")]
     if not args:
-        print("usage: python validate.py <page>.html [-v]")
+        print("usage: python validate.py <page>.html [template.html] [-v]")
         return 2
     path = args[0]
+    template = args[1] if len(args) > 1 else None
     raw = open(path, "rb").read()
     text = raw.decode("ascii", "replace")
     body = strip_comments(text)
 
     page_checks(raw, body, text)
     style = STYLE.search(body)
-    shell_checks(style.group(1) if style else "", SCRIPTS.findall(body))
+    shell_checks(style.group(1) if style else "", SCRIPTS.findall(body), template)
 
     sections = re.findall(r"<section>(.*?)</section>", body, re.S)
     check(len(sections) >= 1, "at least one section")

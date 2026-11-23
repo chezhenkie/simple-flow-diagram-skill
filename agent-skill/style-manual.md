@@ -251,13 +251,9 @@ For a decision, replace one row with a split row: two 222 cards at x=300 and x=5
 
 ## 11. Validation
 
-```
-python validate.py <topic>-flow.html
-```
+The page is right when it matches the numbers in sections 5 to 8 and its shell matches `template.html`: head script, token block, bar, bar script and print rules unchanged. Recheck the geometry, the text baselines and budgets, the tag and viewBox height, the focus and accents, the loop lanes and the marker ids.
 
-It reads the page and `template.html` beside it, prints one line per failure and a final count, and exits 1 when the page is not ready. It covers the file shape, the style block and both scripts unchanged against `template.html`, the bar and its theme table, the section structure, the geometry (`30 + 108n` rows, split cards, side boxes, one focus card), the arrows and captions, the text baselines and budgets, the tag and viewBox height, the connectors, marker ids and hardcoded colors.
-
-The demo page passes 245 checks. The checks that need eyes:
+The checks that need eyes:
 
 - Open the file at 100 percent. Switch light and dark, open both foldouts, pick one theme from each; every diagram follows the theme.
 - Toggle print and confirm white page, outlined pills and print cards. The bar is hidden in the print preview.
@@ -278,7 +274,7 @@ The demo page passes 245 checks. The checks that need eyes:
 - [ ] Loop lanes at 226/206/186/166 and 824/844/864/884, free marks, path before the cards.
 - [ ] Marker ids unique and defined; `role="img"` and an aria-label on each SVG.
 - [ ] One theme for the page, no section class, no per-diagram colors; inline scripts bar only.
-- [ ] `python validate.py <topic>-flow.html` exits 0, then light and dark checked in Firefox or Chromium.
+- [ ] Light and dark checked in Firefox or Chromium, both foldouts opened, print previewed at 100 percent.
 
 ## 13. Top bar and modes
 

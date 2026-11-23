@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.3.7
+
+### Changes
+
+#### All platforms
+
+* The page validator leaves the skill payload for `testing-tools/validate.py`. The payload is four files, needs no Python 3 and no longer reads the 14.6 KB source.
+* `SKILL.md` step 7 and manual section 11 check the page against the manual and the browser instead of a command; the checker keeps the mechanical page check for the demo and an off-grid probe.
+* The checker enforces the payload: `agent-skill/` holds four files, no executable, and neither the skill nor the manual names a runtime. 312 checks.
+* The colour vision audit of the nine themes is added at `color-vision-audit.md`.
+
 ## 1.3.6
 
 ### New features

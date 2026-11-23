@@ -3,7 +3,7 @@
 Two checks guard the skill payload. Run them from the repository root or by absolute path.
 
 ```sh
-python testing-tools/check.py        # 313 static checks, prints failures only
+python testing-tools/check.py        # 312 static checks, prints failures only
 python testing-tools/check.py -v     # same run, prints every PASS line
 node testing-tools/harness.js        # bar script against a fake DOM
 ```
@@ -12,7 +12,7 @@ node testing-tools/harness.js        # bar script against a fake DOM
 
 `harness.js` reads the two inline scripts from `agent-skill/demo.html`, loads them into a small fake DOM and checks the initial mode, OS preference following, menu rows, theme picking, per-mode memory, print tokens, and the switch thumb reset. It needs no other file, so a fresh clone can run it alone. `check.py` runs it automatically, so a separate call is only needed when debugging the bar.
 
-`agent-skill/validate.py` is the page validator that ships with the payload. `check.py` runs it on the demo page, requires a clean exit and compares its check count with the manual, then breaks a card position and requires a failure.
+`testing-tools/validate.py` is the page validator. It is a maintainer tool and does not ship with the payload. `check.py` runs it on the demo page, requires a clean exit, then breaks a card position and requires a failure.
 
 Artifacts, if any, go to `testing-tools/.artifacts`, which is ignored by git. Both tool files are required to be ASCII with LF endings.
 

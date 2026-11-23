@@ -52,7 +52,7 @@ Print friendly on: the print control fills, the mode and theme stay unchanged.
 
 ## Install
 
-The skill payload is in `agent-skill/`. Clone the repository, then copy that folder into the skills folder for your agent and name the copy `simple-flow-diagram-skill`. The folder name must match the `name` in `SKILL.md`.
+The skill payload is four files in `agent-skill/`. Clone the repository, then copy that folder into the skills folder for your agent and name the copy `simple-flow-diagram-skill`. The folder name must match the `name` in `SKILL.md`.
 
 ```sh
 git clone https://github.com/chezhenkie/simple-flow-diagram-skill.git
@@ -94,8 +94,7 @@ Example request: `Draw the request path as a flow diagram in the house style.`
 | `agent-skill/template.html` | Page shell to copy; marked diagram slot |
 | `agent-skill/demo.html` | Filled reference page: card payment flow with a side channel, a split and a return |
 | `agent-skill/style-manual.md` | Theme rules, grid, type scale, card anatomy, connectors, validation |
-| `agent-skill/validate.py` | Page validator, run on the finished page |
-| `testing-tools/` | Static and bar behavior checks |
+| `testing-tools/` | Static checks, page validator and bar behavior checks |
 | `docs/` | Screenshots and the GitHub Pages entry |
 | `CHANGELOG.md` | Version history |
 
@@ -107,7 +106,7 @@ Run from the repo root:
 python testing-tools/check.py
 ```
 
-The script validates ASCII and LF endings, the theme table, SVG geometry, template and demo parity, and the bar state machine. Python 3 and Node are required.
+The script checks ASCII and LF endings, the theme table, SVG geometry, template and demo parity and the page validator on the demo, and runs the bar state machine. Python 3 and Node are required.
 
 ## Limits
 

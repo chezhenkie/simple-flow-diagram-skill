@@ -37,8 +37,8 @@ def one_hex(css, name):
 
 
 files = ["README.md", "agent-skill/SKILL.md", "agent-skill/template.html",
-         "agent-skill/demo.html", "agent-skill/validate.py", "docs/index.html", "CHANGELOG.md", "LICENSE",
-         "agent-skill/style-manual.md", "testing-tools/check.py",
+         "agent-skill/demo.html", "docs/index.html", "CHANGELOG.md", "LICENSE",
+         "agent-skill/style-manual.md", "testing-tools/check.py", "testing-tools/validate.py",
          "testing-tools/harness.js", "testing-tools/README.md"]
 for f in files:
     b = read(f)
@@ -448,19 +448,17 @@ for name in DARK + LIGHT:
         check("`" + name + "`" in man, "manual names " + name)
 
 # Page validator
-check("python validate.py" in man, "manual validator command")
-check("xml.etree.ElementTree" not in man, "manual inline validator removed")
 check("800 px" not in man.lower() and "800 px" not in low, "no 800 px check")
-check("validate.py" in skill, "skill names the validator")
-man_count = re.search(r"The demo page passes (\d+) checks", man)
-check(man_count is not None, "manual validator count")
-r = subprocess.run([sys.executable, "agent-skill/validate.py", "agent-skill/demo.html"],
-                   capture_output=True, text=True)
+check(not os.path.exists("agent-skill/validate.py"), "validator outside the payload")
+check(sorted(os.listdir("agent-skill")) == ["SKILL.md", "demo.html", "style-manual.md", "template.html"],
+      "payload is four files")
+check("validate.py" not in skill and "python" not in skill.lower(), "skill free of the validator")
+check("validate.py" not in man and "python" not in man.lower(), "manual free of the validator")
+r = subprocess.run([sys.executable, "testing-tools/validate.py", "agent-skill/demo.html",
+                    "agent-skill/template.html"], capture_output=True, text=True)
 check(r.returncode == 0, "validator passes on demo")
 vm = re.search(r"checks: (\d+) failures: 0", r.stdout)
 check(vm is not None and int(vm.group(1)) >= 200, "validator check count")
-if vm and man_count:
-    check(int(vm.group(1)) == int(man_count.group(1)), "validator count matches the manual")
 broken = "testing-tools/.artifacts/broken.html"
 os.makedirs("testing-tools/.artifacts", exist_ok=True)
 broken_src = re.sub(r'<rect class="focus" x="300" y="(\d+)"',
@@ -468,12 +466,13 @@ broken_src = re.sub(r'<rect class="focus" x="300" y="(\d+)"',
                     demo, count=1)
 check(broken_src != demo, "off-grid probe built")
 open(broken, "w", encoding="ascii", newline="\n").write(broken_src)
-r = subprocess.run([sys.executable, "agent-skill/validate.py", broken], capture_output=True, text=True)
+r = subprocess.run([sys.executable, "testing-tools/validate.py", broken, "agent-skill/template.html"],
+                   capture_output=True, text=True)
 check(r.returncode == 1 and "main row" in r.stdout, "validator catches an off-grid card")
 
 # Changelog
 versions = re.findall(r"^## (\d+\.\d+\.\d+)$", cl, re.M)
-check(versions == ["1.3.6", "1.3.5", "1.3.4", "1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
+check(versions == ["1.3.7", "1.3.6", "1.3.5", "1.3.4", "1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
       "changelog versions newest first")
 check(not re.search(r"\b(19|20)\d\d\b", cl), "changelog no dates")
 check(not re.search(r"\bv\d+\.\d+", cl), "changelog bare versions")
