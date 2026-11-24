@@ -6,6 +6,7 @@ An agent skill that turns a process into a flow diagram on one HTML page. The la
 - Cheap: the template is read once and copied, so a page adds a few hundred tokens of new text and a second diagram needs no extra setup.
 - Readable: the type scale, spacing and card grid are tuned for reading, and the palettes are retuned for colour-vision impaired readers.
 - Consistent: one of nine fixed themes and the same grid on every run, so pages from different models match.
+- Scoped: one main path per diagram, up to seven rows; a decision may fork into two cards on one row, and side boxes are optional. A longer flow becomes a second diagram on the same page, at little extra token cost.
 - Switch: light, dark and print friendly are one click away, and the choice carries into linked pages.
 - No browser pass: no screenshots, no PDFs, no renders per theme. The agent checks the written cards by reading and opens the page once for you.
 
