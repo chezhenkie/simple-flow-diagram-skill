@@ -581,8 +581,8 @@ check("https://chezhenkie.github.io/simple-flow-diagram-skill/demo.html" in rd,
       "readme live demo link")
 check("The project index is live at https://chezhenkie.github.io/simple-flow-diagram-skill/." in rd,
       "readme live index link")
-check("<table>" in rd and "CLICK HERE TO OPEN THE LIVE, GITHUB-HOSTED DEMO PAGE" in rd,
-      "readme live demo box")
+check("<table>" in rd and "CLICK HERE TO OPEN THE LIVE, GITHUB-HOSTED INDEX PAGE" in rd,
+      "readme live index box")
 check("@simple-flow-diagram-skill" in rd and "$simple-flow-diagram-skill" in rd
       and rd.count("/skill:simple-flow-diagram-skill") == 2, "readme skill invocations")
 check("~/.agents/skills" in rd and "~/.pi/agent/skills" in rd

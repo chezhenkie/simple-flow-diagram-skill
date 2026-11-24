@@ -28,7 +28,7 @@ The 1.4.0 palette pass raises the weak borders and accents. Four mark pairs keep
 
 <table>
   <tr>
-    <td><a href="https://chezhenkie.github.io/simple-flow-diagram-skill/demo.html">CLICK HERE TO OPEN THE LIVE, GITHUB-HOSTED DEMO PAGE</a></td>
+    <td><a href="https://chezhenkie.github.io/simple-flow-diagram-skill/">CLICK HERE TO OPEN THE LIVE, GITHUB-HOSTED INDEX PAGE</a></td>
   </tr>
 </table>
 
