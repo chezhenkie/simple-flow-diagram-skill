@@ -35,6 +35,12 @@ function makeContext(osDark, search) {
   var root = El({ 'data-theme': 'light', 'data-print': 'off' });
   var mode = El({ 'aria-checked': 'true' });
   var print = El({ 'aria-pressed': 'false' });
+  var bri = El({});
+  bri.value = '0';
+  var sat = El({});
+  sat.value = '0';
+  var briOut = El({});
+  var satOut = El({});
   var darkBtn = El({ 'aria-expanded': 'false' });
   var lightBtn = El({ 'aria-expanded': 'false' });
   var darkMenu = El({});
@@ -42,6 +48,8 @@ function makeContext(osDark, search) {
   mode.classes.on = true;
   var byId = {
     mode: mode, print: print,
+    brightness: bri, saturation: sat,
+    'brightness-value': briOut, 'saturation-value': satOut,
     'dark-theme': darkBtn, 'light-theme': lightBtn,
     'dark-menu': darkMenu, 'light-menu': lightMenu
   };
@@ -71,6 +79,7 @@ function makeContext(osDark, search) {
   };
   return {
     root: root, mode: mode, print: print, darkBtn: darkBtn, lightBtn: lightBtn,
+    bri: bri, sat: sat, briOut: briOut, satOut: satOut,
     darkMenu: darkMenu, lightMenu: lightMenu, mq: mq, document: document, window: window,
     link: link, docLink: docLink,
     bg: function () { return root.style.props['--page-bg']; }
@@ -124,6 +133,25 @@ ok(c.link.getAttribute('href') === 'other-page.html?mode=light&dark=github&light
    'link carries the initial picks');
 ok(c.docLink.getAttribute('href') === 'notes.md', 'non-page links untouched');
 
+ok(c.briOut.textContent === '0' && c.satOut.textContent === '0', 'slider readouts start at 0');
+c.bri.value = '2';
+c.bri.handlers.input();
+ok(c.bg() === '#FFFFFF', 'brightness +2 lifts the vercel page to white');
+ok(c.briOut.textContent === '2', 'brightness readout follows');
+c.bri.value = '9';
+c.bri.handlers.input();
+ok(c.briOut.textContent === '3' && c.bg() === '#FFFFFF', 'brightness clamps at +3');
+c.bri.value = '0';
+c.bri.handlers.input();
+ok(c.bg() === '#E1E2E7', 'brightness back to the shipped page');
+c.sat.value = '3';
+c.sat.handlers.input();
+ok(c.root.style.props['--accent'] !== '#AD720A', 'saturation moves the accent');
+ok(c.satOut.textContent === '3', 'saturation readout follows');
+c.sat.value = '0';
+c.sat.handlers.input();
+ok(c.root.style.props['--accent'] === '#AD720A', 'saturation back to the shipped accent');
+
 c.mq.set(true);
 ok(c.root.getAttribute('data-theme') === 'dark', 'os change to dark');
 ok(c.mode.getAttribute('aria-checked') === 'false', 'os dark aria');
@@ -173,6 +201,11 @@ ok(c.print.getAttribute('aria-pressed') === 'true', 'print aria on');
 ok(c.bg() === 'var(--print-bg)', 'print white page');
 ok(c.root.style.props['--muted'] === 'var(--print-muted)', 'print muted aliases the palette');
 ok(c.root.style.props['--thumb'] === '#CBCBCB', 'print light thumb');
+c.bri.value = '1';
+c.bri.handlers.input();
+ok(c.bg() === 'var(--print-bg)', 'print ignores the sliders');
+c.bri.value = '0';
+c.bri.handlers.input();
 c.print.click();
 ok(c.root.getAttribute('data-print') === 'off', 'print off');
 ok(c.bg() === '#0D1117', 'print off restores github');

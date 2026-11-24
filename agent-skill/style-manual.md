@@ -284,12 +284,14 @@ The template, the toolbar, the themes and the print view are fixed and checked o
 - Print toggle: auto width, 18 px high, printer icon plus `print friendly`, `aria-pressed`; active fill is the toolbar ink.
 - Mode switch: 44 x 20 px, moon left, sun right, 16 px thumb, `aria-checked` true in light.
 - Theme buttons: text plus a solid caret, 18 px high, 68 px minimum width, a menu below each.
+- Brightness and saturation sliders follow the two theme buttons: an icon, a 48 px track with a 10 px thumb, and the step readout. Seven steps from -3 to +3; 0 is the shipped palette. Each step scales brightness by 8 percent and saturation by 15 percent, applied to the six theme values after the theme pick.
+- The sliders change the applied palette only. The saved pick, the print palette and the link state are untouched, and a reload starts both at 0.
 - A menu lists its mode's names in `role="menu"` rows with `menuitemradio` and the current name marked `aria-checked`. Picking one applies it and switches mode.
 - Native `<button>` controls, so Enter and Space work. Opening a menu focuses its checked row; arrows move, Home and End jump, Escape closes the menu and returns focus to its button, a click outside closes it.
 - `html[data-theme="light"|"dark"]` selects the mode and its list. Each mode remembers its own theme; the switch flips between the two picks.
 - `html[data-print="on"]` forces the print tokens on a white page and leaves `data-theme` alone; off restores the previous mode.
 - Initial mode comes from `prefers-color-scheme`, followed until the mode switch or a theme pick. No storage.
-- Tokens live on `:root`; the theme script writes the six values and `--pick-ink` on every change, and print aliases its fixed values there too, so it wins without a cascade trick.
+- Tokens live on `:root`; the theme script writes the six adjusted values and `--pick-ink` on every change, and print aliases its fixed values there too, so it wins without a cascade trick.
 - One inline head script sets the initial `data-theme` before paint; one script before `</body>` holds the theme table, builds the menus, applies the theme and follows OS changes.
 - A link to a local `.html` page carries the reader's state. The toolbar script writes `?mode=...&dark=...&light=...` into every local page link on load and after each pick, and reads those values on load. A page opened from an index therefore keeps the mode and both theme choices. No storage; a link with no query opens on the OS mode and the default choices.
 

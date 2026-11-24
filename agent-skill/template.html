@@ -145,7 +145,24 @@
   .toggle .ico-r { right: 8px; opacity: 0.45; }
   .toggle.on .ico-l { opacity: 0.45; }
   .toggle.on .ico-r { opacity: 1; }
-  .tb-btn:focus-visible, .toggle:focus-visible, .menu button:focus-visible {
+  .sl { display: inline-flex; align-items: center; gap: 4px; }
+  .sl svg { width: 10px; height: 10px; flex-shrink: 0; }
+  .sl input[type=range] {
+    -webkit-appearance: none; appearance: none; width: 48px; height: 3px;
+    padding: 0; margin: 0; cursor: pointer; outline: none;
+    background: var(--tb-line); border: 1px solid var(--tb-line); border-radius: 2px;
+  }
+  .sl input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none; width: 10px; height: 10px;
+    background: var(--page-bg); border: 1px solid var(--tb-ink); border-radius: 2px;
+    cursor: pointer;
+  }
+  .sl input[type=range]::-moz-range-thumb {
+    width: 10px; height: 10px; background: var(--page-bg);
+    border: 1px solid var(--tb-ink); border-radius: 2px; cursor: pointer;
+  }
+  .sl .v { min-width: 14px; text-align: center; font-variant-numeric: tabular-nums; }
+  .tb-btn:focus-visible, .toggle:focus-visible, .sl input:focus-visible, .menu button:focus-visible {
     outline: 2px solid var(--tb-ink); outline-offset: 1px;
   }
   @media (prefers-reduced-motion: reduce) {
@@ -219,6 +236,24 @@
     <button class="tb-btn fold" id="light-theme" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="light-menu" title="Light theme">light theme</button>
     <div class="menu" id="light-menu" role="menu" aria-label="Light theme"></div>
   </div>
+  <span class="s" aria-hidden="true"></span>
+  <div class="sl">
+    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+      <rect x="1" y="1" width="10" height="10"/>
+      <polygon points="1,1 11,1 1,11" fill="currentColor"/>
+    </svg>
+    <input type="range" id="brightness" min="-3" max="3" step="1" value="0" aria-label="Brightness">
+    <span class="v" id="brightness-value" aria-hidden="true">0</span>
+  </div>
+  <div class="sl">
+    <svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
+      <circle cx="6" cy="3" r="1.8"/>
+      <circle cx="3.5" cy="7.5" r="1.8"/>
+      <circle cx="8.5" cy="7.5" r="1.8"/>
+    </svg>
+    <input type="range" id="saturation" min="-3" max="3" step="1" value="0" aria-label="Saturation">
+    <span class="v" id="saturation-value" aria-hidden="true">0</span>
+  </div>
 </div>
 
 <main>
@@ -239,6 +274,10 @@
     var root = document.documentElement;
     var modeBtn = document.getElementById('mode');
     var printBtn = document.getElementById('print');
+    var bri = document.getElementById('brightness');
+    var sat = document.getElementById('saturation');
+    var briOut = document.getElementById('brightness-value');
+    var satOut = document.getElementById('saturation-value');
     var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
     var manual = false;
     var savedMode = null;
@@ -316,15 +355,92 @@
       return l > 0.179 ? '#000000' : '#FFFFFF';
     }
 
+    function stepOf(el) {
+      var n = parseInt(el.value, 10);
+      if (isNaN(n)) n = 0;
+      return Math.max(-3, Math.min(3, n));
+    }
+
+    function rgbOf(hex) {
+      return [1, 3, 5].map(function (i) { return parseInt(hex.substr(i, 2), 16); });
+    }
+
+    function rgbToHsl(r, g, b) {
+      r /= 255; g /= 255; b /= 255;
+      var max = Math.max(r, g, b), min = Math.min(r, g, b);
+      var h = 0, s = 0, l = (max + min) / 2;
+      if (max !== min) {
+        var d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+        else if (max === g) h = ((b - r) / d + 2) / 6;
+        else h = ((r - g) / d + 4) / 6;
+      }
+      return [h * 360, s, l];
+    }
+
+    function hslToRgb(h, s, l) {
+      h /= 360;
+      var r, g, b;
+      function hue(p, q, t) {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1 / 6) return p + (q - p) * 6 * t;
+        if (t < 1 / 2) return q;
+        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+        return p;
+      }
+      if (s === 0) {
+        r = g = b = l;
+      } else {
+        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        var p = 2 * l - q;
+        r = hue(p, q, h + 1 / 3);
+        g = hue(p, q, h);
+        b = hue(p, q, h - 1 / 3);
+      }
+      return [r * 255, g * 255, b * 255];
+    }
+
+    function rgbToHex(rgb) {
+      return '#' + rgb.map(function (v) {
+        var s = Math.max(0, Math.min(255, Math.round(v))).toString(16).toUpperCase();
+        return s.length === 1 ? '0' + s : s;
+      }).join('');
+    }
+
+    function adjustHex(hex, b, s) {
+      if (!b && !s) return hex;
+      var rgb = rgbOf(hex);
+      if (b) rgb = rgb.map(function (v) { return v * (1 + b * 0.08); });
+      if (s) {
+        var hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+        rgb = hslToRgb(hsl[0], Math.max(0, Math.min(1, hsl[1] * (1 + s * 0.15))), hsl[2]);
+      }
+      return rgbToHex(rgb);
+    }
+
+    function syncSliders() {
+      var b = stepOf(bri), s = stepOf(sat);
+      bri.value = b;
+      sat.value = s;
+      briOut.textContent = String(b);
+      satOut.textContent = String(s);
+    }
+
     function applyTheme() {
       if (isPrint()) return;
       var mode = isDark() ? 'dark' : 'light';
       var t = THEMES[mode][chosen[mode]];
+      var b = stepOf(bri), s = stepOf(sat);
+      var bg = adjustHex(t.bg, b, s), card = adjustHex(t.card, b, s);
+      var ink = adjustHex(t.ink, b, s), muted = adjustHex(t.muted, b, s);
+      var line = adjustHex(t.line, b, s), accent = adjustHex(t.accent, b, s);
       var vars = {
-        '--page-bg': t.bg, '--page-ink': t.ink, '--page-muted': t.muted, '--page-line': t.line,
-        '--card': t.card, '--ink': t.ink, '--muted': t.muted, '--line': t.line,
-        '--accent': t.accent, '--pick-ink': inkOn(t.accent),
-        '--tb-ink': t.muted, '--tb-line': t.line,
+        '--page-bg': bg, '--page-ink': ink, '--page-muted': muted, '--page-line': line,
+        '--card': card, '--ink': ink, '--muted': muted, '--line': line,
+        '--accent': accent, '--pick-ink': inkOn(accent),
+        '--tb-ink': muted, '--tb-line': line,
         '--thumb': THUMB[mode].bg, '--thumb-line': THUMB[mode].line
       };
       for (var k in vars) root.style.setProperty(k, vars[k]);
@@ -437,6 +553,8 @@
     printBtn.addEventListener('click', function () {
       setPrint(!isPrint());
     });
+    bri.addEventListener('input', function () { syncSliders(); applyTheme(); });
+    sat.addEventListener('input', function () { syncSliders(); applyTheme(); });
     document.getElementById('dark-theme').addEventListener('click', function (e) {
       e.stopPropagation();
       toggleMenu('dark-theme', 'dark-menu');
@@ -464,6 +582,7 @@
     buildMenu('light-menu', 'light');
     document.getElementById('dark-menu').addEventListener('keydown', menuKey);
     document.getElementById('light-menu').addEventListener('keydown', menuKey);
+    syncSliders();
     applyTheme();
 
     if (startMode) {

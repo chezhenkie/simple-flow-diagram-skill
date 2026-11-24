@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.0
+
+### New features
+
+* The toolbar gains brightness and saturation sliders after the two theme buttons. Each has seven steps from -3 to +3, a 48 px track, a 10 px thumb and a readout. A step scales brightness by 8 percent and saturation by 15 percent on the six theme values, so 0 is the shipped palette. The sliders change the applied palette only; the saved pick, the print palette and the link state are untouched.
+
 ## 1.5.2
 
 ### New features

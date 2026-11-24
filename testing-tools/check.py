@@ -75,8 +75,10 @@ check('<span class="meta">' not in demo, "no palette meta labels")
 tb_m = re.search(r'<div id="tb".*?\n</div>', demo, re.S)
 tb = tb_m.group(0) if tb_m else ""
 check(bool(tb), "demo top bar")
-order = [tb.find(x) for x in ('id="print"', 'id="mode"', 'id="dark-theme"', 'id="light-theme"')]
-check(all(v >= 0 for v in order) and order == sorted(order), "bar order print, mode, dark, light")
+order = [tb.find(x) for x in ('id="print"', 'id="mode"', 'id="dark-theme"', 'id="light-theme"',
+                              'id="brightness"', 'id="saturation"')]
+check(all(v >= 0 for v in order) and order == sorted(order),
+      "bar order print, mode, dark, light, brightness, saturation")
 check(re.search(r'<button class="tb-btn" id="print"[^>]*aria-pressed="false"', tb) is not None,
       "print control")
 check(re.search(r'<button class="toggle on" id="mode"[^>]*role="switch"[^>]*aria-checked="true"', tb) is not None,
@@ -99,13 +101,21 @@ for bid in ("dark-theme", "light-theme"):
     m = re.search(r'<button[^>]*id="%s"[^>]*>' % bid, tb)
     tag = m.group(0) if m else ""
     check('title="' in tag, "bar title " + bid)
-check(tb.count("<svg") == 3 and len(re.findall(r'<svg[^>]*aria-hidden="true"', tb)) == 3,
-      "bar three icons")
+check(tb.count("<svg") == 5 and len(re.findall(r'<svg[^>]*aria-hidden="true"', tb)) == 5,
+      "bar five icons")
 check(">dark theme</button>" in tb and ">light theme</button>" in tb, "theme button text")
 theme_btns = re.findall(r'<button class="tb-btn fold".*?</button>', tb, re.S)
 check(len(theme_btns) == 2 and all("<svg" not in b for b in theme_btns), "no icons in theme buttons")
-check(re.sub(r"<[^>]+>", "", tb).split() == ["print", "friendly", "dark", "theme", "light", "theme"],
+check(re.sub(r"<[^>]+>", "", tb).split() == ["print", "friendly", "dark", "theme", "light", "theme", "0", "0"],
       "bar visible text")
+for sid in ("brightness", "saturation"):
+    m = re.search(r'<input[^>]*id="%s"[^>]*>' % sid, tb)
+    tag = m.group(0) if m else ""
+    check('type="range"' in tag and 'min="-3"' in tag and 'max="3"' in tag
+          and 'step="1"' in tag and 'value="0"' in tag and 'aria-label="' in tag,
+          "slider " + sid)
+check(tb.find('id="light-theme"') < tb.find('id="brightness"'), "sliders right of the theme buttons")
+check(tb.count('class="sl"') == 2 and tb.count('class="v"') == 2, "two sliders with readouts")
 
 # Bar and menu CSS
 check(re.search(r"#tb\s*\{[^}]*position:\s*fixed", demo) is not None, "bar fixed")
@@ -135,6 +145,10 @@ check(re.search(r"\.toggle-thumb\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px", de
       "mode thumb 16 x 16")
 check(".toggle .ico-l { left: 7px;" in demo and ".toggle .ico-r { right: 8px;" in demo,
       "switch icons centered")
+check(re.search(r"\.sl input\[type=range\]\s*\{[^}]*width:\s*48px", demo) is not None,
+      "slider 48 px track")
+check(re.search(r"\.sl input\[type=range\]::-webkit-slider-thumb\s*\{[^}]*width:\s*10px", demo) is not None,
+      "slider 10 px thumb")
 check(".tb-btn.on { background: var(--tb-ink); color: var(--page-bg);" in demo, "print active fill")
 check(not re.search(r'<svg\b[^>]*\s(?:width|height)="', demo), "no fixed svg size")
 check(re.search(r"h2\s*\{[^}]*background:\s*transparent;[^}]*color:\s*var\(--page-ink\);[^}]*border:\s*2px solid var\(--accent\)", demo)
@@ -225,10 +239,16 @@ check("localStorage" not in demo and "sessionStorage" not in demo, "no storage")
 check("setAttribute('data-theme'" in scripts[0], "head sets theme")
 for fn in ("function applyTheme", "function applyPrint", "function buildMenu",
            "function syncMenus", "function closeMenus", "function inkOn",
+           "function adjustHex", "function syncSliders", "function stepOf",
            "function setMode", "function setPrint"):
     check(fn in script, "bar script has " + fn[9:])
-check("--pick-ink" in script and "inkOn(t.accent)" in script, "menu pick ink derived")
+check("--pick-ink" in script and "inkOn(accent)" in script, "menu pick ink derived")
 check("0.179" in script, "pill ink contrast threshold")
+check("parseInt(el.value, 10)" in script and "Math.max(-3, Math.min(3" in script,
+      "slider steps clamped")
+check("b * 0.08" in script and "s * 0.15" in script, "slider step factors")
+check(script.count("addEventListener('input'") == 2, "both sliders wired")
+check(script.count("syncSliders();") == 3, "sliders synced on load and on input")
 check("'--thumb': THUMB[mode].bg, '--thumb-line': THUMB[mode].line" in script,
       "theme sets switch thumb per mode")
 check(script.count("'#2E2E2E'") == 1 and script.count("'#CBCBCB'") == 1,
@@ -246,7 +266,7 @@ check("setMode(savedMode" in script, "print restores saved mode")
 # Template
 check(tpl.count("<h1") == 1 and tpl.count('<p class="sub">') == 1 and tpl.count("<footer") == 1,
       "template page copy slots")
-check("<section" not in tpl and tpl.count("<svg") == 3, "template no diagrams")
+check("<section" not in tpl and tpl.count("<svg") == 5, "template no diagrams")
 check("Diagram slot:" in tpl, "template diagram slot")
 check(re.search(r'<div id="tb".*?\n</div>', tpl, re.S).group(0) == tb,
       "template bar matches demo")
@@ -326,9 +346,20 @@ for n, s in enumerate(re.findall(r'<svg class="glyph".*?</svg>', live, re.S)):
     except Exception:
         check(False, "pages index glyph %d parses" % n)
 
+# The two sample pages in docs carry the same shell as the templates.
+samp = text("docs/sample-one-diagram.html")
+sstyle = re.findall(r"<style>(.*?)</style>", samp, re.S)
+check(len(sstyle) == 1
+      and sstyle[0] == re.search(r"<style>(.*?)</style>", demo, re.S).group(1),
+      "sample page style matches shell")
+check(re.findall(r"<script>(.*?)</script>", samp, re.S) == scripts, "sample page scripts match shell")
+check(re.search(r'<div id="tb".*?\n</div>', samp, re.S).group(0) == tb,
+      "sample page bar matches shell")
+check(samp.count("<h1") == 1 and samp.count("<footer") == 1, "sample page structure")
+
 # SVGs, markers, geometry, budgets
 svgs = re.findall(r"<svg\b.*?</svg>", demo, re.S)
-check(len(svgs) == 4, "demo four inline svgs")
+check(len(svgs) == 6, "demo six inline svgs")
 for n, s in enumerate(svgs):
     try:
         ET.fromstring(s)
@@ -579,7 +610,7 @@ check(r.returncode == 1 and "main row" in r.stdout, "validator catches an off-gr
 
 # Changelog
 versions = re.findall(r"^## (\d+\.\d+\.\d+)$", cl, re.M)
-check(versions == ["1.5.2", "1.5.1", "1.5.0", "1.4.0", "1.3.7", "1.3.6", "1.3.5", "1.3.4", "1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
+check(versions == ["1.6.0", "1.5.2", "1.5.1", "1.5.0", "1.4.0", "1.3.7", "1.3.6", "1.3.5", "1.3.4", "1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
       "changelog versions newest first")
 check(not re.search(r"\b(19|20)\d\d\b", cl), "changelog no dates")
 check(not re.search(r"\bv\d+\.\d+", cl), "changelog bare versions")
@@ -588,11 +619,13 @@ check("theme" in cl.lower() and "menu" in cl.lower(), "changelog theme wording")
 # README
 check("## Page controls" in rd, "readme page controls")
 rimgs = [a or b for a, b in re.findall(r'!\[[^\]]*\]\(([^)]+)\)|<img[^>]+src="([^"]+)"', rd)]
-check(len(rimgs) == 7 and all(os.path.isfile(x) for x in rimgs), "readme images")
+check(len(rimgs) == 9 and all(os.path.isfile(x) for x in rimgs), "readme images")
 check(rd.count('width="280"') == 4, "readme sample thumbnails")
 check(rd.count('width="400"') == 0, "readme closeups unscaled")
 check("docs/bar-dark.png" in rd and "docs/bar-light.png" in rd
       and "docs/bar-print-friendly.png" in rd, "readme bar closeups")
+check("docs/slider-dark.png" in rd and "docs/slider-light.png" in rd,
+      "readme slider closeups")
 check("docs/demo-dark.png" in rd and "docs/demo-github.png" in rd
       and "docs/demo-print-friendly.png" in rd, "readme demo states")
 check(rd.count('href="https://chezhenkie.github.io/simpleflow-diagram-skill/"') == 4

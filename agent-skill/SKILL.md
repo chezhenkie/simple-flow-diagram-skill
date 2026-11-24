@@ -40,6 +40,7 @@ The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.
 - One theme covers the page and every diagram on it. Sections carry no class, no token block and no color of their own.
 - The reader picks the theme: five dark names and four light names in the two menus, each mode remembering its own choice.
 - The mode switch chooses light or dark and starts from the OS preference. Print is a separate toggle with fixed values.
+- Brightness and saturation sliders adjust the applied palette in seven steps; they never change the saved pick and print ignores them.
 - Never hardcode a fill or stroke outside the template's classes and `var(--...)` tokens.
 
 ## Hard rules
@@ -47,7 +48,7 @@ The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.
 - ASCII only. Straight quotes, hyphen for dash, no arrows, bullets or other Unicode.
 - One `h1`, one `.sub`, one footer per page.
 - Inline scripts are limited to the head mode script and the toolbar script. No external JavaScript, CSS, fonts, images or icon sets. Must open from `file://`.
-- Toolbar: fixed, 24 px high, right aligned, page background fill, no divider. Print toggle labelled `print friendly`, mode switch, then the `dark theme` and `light theme` menus. Native buttons, keyboard operable, labeled.
+- Toolbar: fixed, 24 px high, right aligned, page background fill, no divider. Print toggle labelled `print friendly`, mode switch, then the `dark theme` and `light theme` menus, then the brightness and saturation sliders. Native controls, keyboard operable, labeled.
 - Colors only through `var(--...)`. Tokens live on `:root`; the print override comes last.
 - Marker ids unique per page, prefixed by section. Pair each line class with the matching arrowhead.
 - Open a finished page once for the user. No screenshots, no PDFs, no theme-by-theme renders; the template is checked in the repository, not on every page.

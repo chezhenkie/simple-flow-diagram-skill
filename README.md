@@ -36,13 +36,18 @@ Light, dark and print-friendly theming:
 
 ## Page controls - Tool Bar
 
-Four native controls, all keyboard operable: `print friendly` previews the printed look and restores the theme when off, the mode switch picks light or dark and follows the OS, and `dark theme` and `light theme` open a menu where each mode keeps its own pick.
+Six native controls, all keyboard operable: `print friendly` previews the printed look and restores the theme when off, the mode switch picks light or dark and follows the OS, `dark theme` and `light theme` open a menu where each mode keeps its own pick, and brightness and saturation shift the current theme in seven steps each. The sliders leave the saved theme pick alone.
 
 <img src="docs/bar-dark.png" alt="Toolbar in dark mode"><br>
 <img src="docs/bar-light.png" alt="Toolbar in light mode"><br>
 <img src="docs/bar-print-friendly.png" alt="Toolbar with print friendly on">
 
 The toolbar in dark, in light and with print friendly on.
+
+The sliders in dark, and in light at -1 and +2:
+
+<img src="docs/slider-dark.png" alt="Brightness and saturation sliders in dark mode"><br>
+<img src="docs/slider-light.png" alt="Brightness and saturation sliders at -1 and +2 in light mode">
 
 ## Optional index page
 
