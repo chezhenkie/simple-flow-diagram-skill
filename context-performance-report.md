@@ -1,4 +1,4 @@
-# Flow diagram skill: test and performance report
+# Flow diagram skill: context and performance report
 
 ## Summary
 
