@@ -578,8 +578,9 @@ check("docs/bar-dark.png" in rd and "docs/bar-light.png" in rd
       and "docs/bar-print-friendly.png" in rd, "readme bar closeups")
 check("docs/demo-dark.png" in rd and "docs/demo-github.png" in rd
       and "docs/demo-print-friendly.png" in rd, "readme demo states")
-check(rd.count('href="https://chezhenkie.github.io/simpleflow-diagram-skill/"') == 4,
-      "readme thumbnails link to the live index")
+check(rd.count('href="https://chezhenkie.github.io/simpleflow-diagram-skill/"') == 4
+      and "CLICK IMAGES TO GO TO GITHUB INDEX PAGE WITH SAMPLES AND DOCS" in rd,
+      "readme thumbnails and caps link to the live index")
 check("The project index is live at https://chezhenkie.github.io/simpleflow-diagram-skill/." in rd,
       "readme live index link")
 check("CLICK HERE" not in rd and "<table>" not in rd, "readme no index box")
