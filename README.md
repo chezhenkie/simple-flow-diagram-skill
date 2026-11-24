@@ -38,25 +38,19 @@ Light, dark and print-friendly theming:
 
 ## Page controls
 
-Four controls sit at the top right. All are native buttons and work with Tab, Enter and Space.
+Four native controls sit at the top right, with Tab, Enter and Space.
 
-`print friendly` previews the printed look on screen: white page, black text and the print colors on every diagram. The toolbar is hidden in the browser print preview. Switching it off restores the theme that was active before.
+`print friendly` previews the print look on screen, white page and black text, and hides in the print preview; switching it off restores the previous theme.
 
-The mode switch selects light or dark. The page starts from the OS preference and follows OS changes until the switch is clicked.
+The mode switch picks light or dark and follows the OS preference until clicked.
 
-`dark theme` and `light theme` open a menu with five dark names or four light names. Dark: github, harbor, solarized, oledblack, ayu. Light: vercel, tokyonight, cursor, orng. Picking a name applies it to the page and every diagram on it, and switches to that mode. Each mode keeps its own choice, so the switch flips between the two.
+`dark theme` and `light theme` open a menu of five dark or four light names; a pick applies to the page and switches mode, and each mode keeps its own choice.
 
-<img src="docs/bar-dark.png" alt="Toolbar in dark mode">
-
-Dark mode: github theme, print off.
-
-<img src="docs/bar-light.png" alt="Toolbar in light mode">
-
-Light mode: vercel theme, print off.
-
+<img src="docs/bar-dark.png" alt="Toolbar in dark mode"><br>
+<img src="docs/bar-light.png" alt="Toolbar in light mode"><br>
 <img src="docs/bar-print-friendly.png" alt="Toolbar with print friendly on">
 
-Print friendly on: the print control fills, the mode and theme stay unchanged.
+The toolbar in dark, in light and with print friendly on.
 
 ## Optional index page
 
