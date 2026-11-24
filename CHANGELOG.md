@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.5.2
+
+### New features
+
+* A finished page can be embedded in another HTML page as one iframe line before the host's `</main>`. The embedded page keeps its toolbar and theme, sits in the same folder or below, and takes a height computed from the viewBox rather than by eye.
+* Manual section 14 gains the embed rules and the height formula; the skill's page types list the embed.
+
 ## 1.5.1
 
 ### Changes

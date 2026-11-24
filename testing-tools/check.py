@@ -303,12 +303,12 @@ check(len(lstyle) == 2 and lstyle == istyles, "pages index styles match shell")
 check(re.findall(r"<script>(.*?)</script>", live, re.S) == scripts, "pages index scripts match shell")
 check(live.count("<h1") == 1 and live.count('<p class="sub">') == 1 and live.count("<footer") == 1,
       "pages index copy")
-check('href="demo.html"' in live, "pages index demo link")
+check('href="demo.html"' in live and 'href="sample-one-diagram.html"' in live, "pages index page links")
 for doc in ("SKILL.html", "color-vision-audit.html", "context-performance-report.html"):
     check('href="%s"' % doc in live, "pages index document " + doc)
 check(live.count('<nav class="grid" aria-label="pages">') == 1, "pages index one group")
-check(live.count('class="entry"') == 2 and live.count('class="glyph"') == 2, "pages index two entries")
-check(live.count('class="hot"') == 2, "pages index two accent glyph paths")
+check(live.count('class="entry"') == 3 and live.count('class="glyph"') == 3, "pages index three entries")
+check(live.count('class="hot"') == 3, "pages index three accent glyph paths")
 check(live.count('class="docs"') == 1 and ">Document<" in live and ">Covers<" in live,
       "pages index documents table")
 check("localStorage" not in live and "sessionStorage" not in live, "pages index no storage")
@@ -488,7 +488,8 @@ check("diagram body in manual section 10" in low, "skill diagram body")
 check("fill the copy in two edits" in low and "do not edit one section at a time" in low
       and "do not rewrite the whole page" in low, "skill two-edit rule")
 check("## Page types" in skill, "skill page types")
-check("manual section 14" in skill and "index.html" in skill, "skill index chapter")
+check("manual section 14" in skill and "index.html" in skill and "iframe" in skill,
+      "skill index chapter and embed")
 check("no screenshots" in low and "no pdf" in low, "skill no render pass")
 check("by reading" in low and "do not write a checker script" in low, "skill step 7 names the read method")
 check("count, grep, diff or hash" in low and "count, grep, diff or hash" in man.lower()
@@ -520,7 +521,7 @@ check("425 and 673" in man, "manual split captions")
 check("| `hi` | top + 20 |" in man and "| `lo` | top + h - 20 |" in man, "manual side marks")
 check("## 11. Validation" in man, "manual validation")
 check("## 13. Toolbar and modes" in man, "manual toolbar section")
-check("## 14. Index pages" in man, "manual index chapter")
+check("## 14. Index pages" in man and "### Embedding a page" in man, "manual index chapter")
 check("copy `index.html` instead of `template.html`" in man, "manual index shell")
 check('class="glyph"' in man and "104 x 56" in man, "manual glyph rules")
 check("?mode=...&dark=...&light=..." in man, "manual index link query")
@@ -574,7 +575,7 @@ check(r.returncode == 1 and "main row" in r.stdout, "validator catches an off-gr
 
 # Changelog
 versions = re.findall(r"^## (\d+\.\d+\.\d+)$", cl, re.M)
-check(versions == ["1.5.1", "1.5.0", "1.4.0", "1.3.7", "1.3.6", "1.3.5", "1.3.4", "1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
+check(versions == ["1.5.2", "1.5.1", "1.5.0", "1.4.0", "1.3.7", "1.3.6", "1.3.5", "1.3.4", "1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
       "changelog versions newest first")
 check(not re.search(r"\b(19|20)\d\d\b", cl), "changelog no dates")
 check(not re.search(r"\bv\d+\.\d+", cl), "changelog bare versions")
@@ -606,7 +607,9 @@ check("Windows" not in rd and "PowerShell" not in rd and "%USERPROFILE%" not in 
 check("palettes.html" not in rd and "palette pair" not in rd, "readme no palette sheet")
 check("dark theme" in rd and "light theme" in rd, "readme theme foldouts")
 check("colour-vision impaired" in rd and "a few hundred tokens" in rd and "seven rows" in rd
-      and "no extra setup" in rd and "instead of white text" in rd, "readme value bullets")
+      and "no extra setup" in rd and "instead of white text" in rd
+      and "run, evaluate, compare, edit, repeat" in rd
+      and "multiple sub-agent runs" in rd, "readme value bullets")
 check("gathers several finished diagrams and documents onto one page" in rd
       and rd.count("Optional index page") == 1, "readme index bullet")
 check("one of nine fixed themes" in rd and "nine installed themes" in rd, "readme theme count")

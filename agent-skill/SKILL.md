@@ -12,6 +12,7 @@ One self-contained `.html` page per topic, or one page with several diagrams. St
 
 - Diagram page: copy `template.html`; the workflow below applies.
 - Index page: copy `index.html`; manual section 14 applies. It lists the diagram pages and documents of one folder, one link card each with a small inline glyph, and keeps the same toolbar, themes and print rules. The mode and both theme choices travel in every local page link.
+- Embedded page: one finished page can sit inside another HTML page as one iframe placed before the host's closing `</main>`. It keeps its own toolbar and theme, sits in the same folder or below, and takes a height from manual section 14. No second copy.
 
 ## Goals
 
@@ -53,7 +54,7 @@ The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.
 
 ## Files
 
-- `style-manual.md`: file contract, theme rules, type scale, grid, card anatomy, connectors, branch and loop patterns, diagram body, validation, checklist, toolbar rules, index pages.
+- `style-manual.md`: file contract, theme rules, type scale, grid, card anatomy, connectors, branch and loop patterns, diagram body, validation, checklist, toolbar rules, index pages and embeds.
 - `template.html`: page template to copy; theme table, toolbar, print rules and one marked space for the diagram, no diagram content.
 - `index.html`: index template to copy; grid of link cards with inline glyphs, documents table, same toolbar. Fill the marked copy spaces.
 - `demo.html`: filled reference page with the toolbar, one card payment diagram and the print theme.

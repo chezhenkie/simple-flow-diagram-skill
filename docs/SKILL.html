@@ -260,6 +260,7 @@ pre code{background:none;color:inherit;padding:0}
 <ul>
 <li>Diagram page: copy <code>template.html</code>; the workflow below applies.</li>
 <li>Index page: copy <code>index.html</code>; manual section 14 applies. It lists the diagram pages and documents of one folder, one link card each with a small inline glyph, and keeps the same toolbar, themes and print rules. The mode and both theme choices travel in every local page link.</li>
+<li>Embedded page: one finished page can sit inside another HTML page as one iframe placed before the host's closing <code>&lt;/main&gt;</code>. It keeps its own toolbar and theme, sits in the same folder or below, and takes a height from manual section 14. No second copy.</li>
 </ul>
 <h2><span class="num">2</span>Goals</h2>
 <div class="rule"></div>
@@ -304,7 +305,7 @@ pre code{background:none;color:inherit;padding:0}
 <h2><span class="num">6</span>Files</h2>
 <div class="rule"></div>
 <ul>
-<li><code>style-manual.md</code>: file contract, theme rules, type scale, grid, card anatomy, connectors, branch and loop patterns, diagram body, validation, checklist, toolbar rules, index pages.</li>
+<li><code>style-manual.md</code>: file contract, theme rules, type scale, grid, card anatomy, connectors, branch and loop patterns, diagram body, validation, checklist, toolbar rules, index pages and embeds.</li>
 <li><code>template.html</code>: page template to copy; theme table, toolbar, print rules and one marked space for the diagram, no diagram content.</li>
 <li><code>index.html</code>: index template to copy; grid of link cards with inline glyphs, documents table, same toolbar. Fill the marked copy spaces.</li>
 <li><code>demo.html</code>: filled reference page with the toolbar, one card payment diagram and the print theme.</li>

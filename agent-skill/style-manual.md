@@ -320,3 +320,16 @@ An entry is one link card:
 - Documents are optional: the h2 pill, a `.note`, and a `.docs` table with `Document` and `Covers` columns, one row per file. The file name links the file.
 - The entries, glyphs, names and descriptions are checked by reading against the bounds above. The template is fixed and checked in the repository; do not re-test the toolbar, both modes or print on the index. Open the index once for the user.
 - Limits: an index lists pages; it does not explain them. No counts, badges, status rows or diagrams inside a glyph.
+
+### Embedding a page
+
+A finished diagram page can sit inside another HTML page, toolbar and theme included, as one iframe with no second copy. Place the line at the end of the host content, just before `</main>`:
+
+```html
+<iframe src="sample-one-diagram.html" title="DNS lookup flow" style="width:100%;height:1040px;border:1px solid #9a9a9a;margin-top:18px"></iframe>
+```
+
+- The embedded page sits in the host's folder or below it, because a page opened from `file://` frames only its own tree. `title` names it for a screen reader.
+- Height comes from the viewBox, not from the eye: `330 + (iframe width - 42) * H / 1040`, rounded up to the next 20, where `H` is the viewBox height. The 330 is the page chrome outside the svg: main padding, title, subtitle, section head, note and footer. An 808-high diagram in a 926 px column lands on 1020.
+- The box keeps the page's own toolbar and theme. The host's mode is not pushed into it, and the toolbar scrolls with the box, not the window.
+- A host rebuilt from Markdown loses the line, so it is added again after conversion. No print variant and no second copy.

@@ -58,7 +58,7 @@ The 4 of 4 result follows the merge rule, the three-character budget margin and 
 ## Final state
 
 - Skill: five files, no executable, no runtime, installed copy matching the repository.
-- Static checks: 394, zero failures. Toolbar harness: ok. Demo validator: 245, zero failures.
+- Static checks: 395, zero failures. Toolbar harness: ok. Demo validator: 245, zero failures.
 - Nine test pages passed; the run before the merge and margin rules had two failures of four.
 - No per-page browser pass. The template is checked in the repository, the written part is read once, the page is opened once.
 - The test pages were removed after the figures were recorded; this report is the record.

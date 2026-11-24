@@ -6,6 +6,7 @@ An agent skill that turns a process into a flow diagram on one HTML page. The la
 - Optional index page: it gathers several finished diagrams and documents onto one page, and a documents section can be added where needed. Demo: [GITHUB INDEX PAGE SIMPLE FLOW SKILL](https://chezhenkie.github.io/simpleflow-diagram-skill/).
 - Readable: the type scale, spacing and card grid are tuned for reading, and the palettes are retuned for colour-vision impaired readers. Light themes use a soft background against overall glare, and certain dark themes use light grey instead of white text against contrast glare.
 - Consistent: one of nine fixed themes and the same grid on every run, so pages from different models match.
+- Iterated under test: many rounds of multiple sub-agent runs, each a run, evaluate, compare, edit, repeat loop; the misses from those runs became the rules, budgets and checklist lines.
 - Token efficient: one main path per diagram, up to seven rows, with a fork or side boxes only where needed. Agent is forced to think compact by applying a given diagram structure. A longer flow automatically (per the skill rules) becomes a second diagram on the same page without reading the template again.
 - Switch: light, dark and print friendly are one click away, and the choice carries into linked pages.
 - No browser pass: no screenshots, no PDFs, no renders per theme. The agent checks the written cards by reading and opens the page once for you.
