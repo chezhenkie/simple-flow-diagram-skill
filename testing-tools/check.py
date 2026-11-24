@@ -305,7 +305,7 @@ check(re.findall(r"<script>(.*?)</script>", live, re.S) == scripts, "pages index
 check(live.count("<h1") == 1 and live.count('<p class="sub">') == 0 and live.count("<footer") == 1,
       "pages index copy without subtitle")
 check('href="demo.html"' in live and 'href="embed-sample.html"' in live
-      and 'src="sample-one-diagram.html"' in text("docs/embed-sample.html"),
+      and 'src="demo.html"' in text("docs/embed-sample.html"),
       "pages index page links")
 for doc in ("SKILL.html", "color-vision-audit.html", "context-performance-report.html"):
     check('href="%s"' % doc in live, "pages index document " + doc)

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>how a name becomes an address</title>
+<title>What happens after the pay button</title>
 <style>
   body {
     margin: 0; background: #f3efe6; color: #26221c;
@@ -24,7 +24,7 @@
   }
   p { max-width: 660px; margin: 0 0 20px; }
   figure { margin: 34px 0; }
-  iframe { display: block; width: 100%; height: 1030px; border: 0; }
+  iframe { display: block; width: 100%; height: 840px; border: 0; }
   figcaption {
     max-width: 660px; margin-top: 10px;
     font: 13px/1.5 "Segoe UI", system-ui, sans-serif; color: #6b6357;
@@ -41,22 +41,22 @@
 <header>field notes</header>
 
 <main>
-  <h1>How a name becomes an address</h1>
-  <p class="byline">Network notes, 24 November 2026</p>
+  <h1>What happens after the pay button</h1>
+  <p class="byline">Engineering notes, 24 November 2026</p>
 
-  <p>Every program that opens a connection starts with a name. Before any packet leaves the machine, the stub resolver checks the local hosts file and then asks the resolver configured in resolv.conf.</p>
+  <p>A card payment looks instant at the checkout. Behind the button, the request passes a fraud check, reaches the issuer, and comes back approved or declined.</p>
 
-  <p>The resolver does the walking. On a cold cache it queries a root server, follows the referral to the TLD, and then to the zone that holds the record. Each step returns the next name to ask.</p>
+  <p>The diagram below follows one request. It is a single HTML page, embedded here unchanged, with its own controls.</p>
 
   <figure>
-    <iframe src="sample-one-diagram.html" title="DNS lookup flow"></iframe>
-    <figcaption>The lookup from the application to the authoritative server.</figcaption>
+    <iframe src="demo.html" title="Card payment flow"></iframe>
+    <figcaption>One payment request, from checkout to receipt.</figcaption>
   </figure>
 
-  <p>The answer is cached for its TTL, so the next lookup usually stops at the resolver. The full walk happens again only after the record expires or the cache is cleared.</p>
+  <p>A decline returns along the same path with a code, so the checkout can show the reason and offer another card.</p>
 </main>
 
-<footer>Host sample for the simpleflow embed: the diagram above is sample-one-diagram.html, loaded unchanged.</footer>
+<footer>Host sample for the simpleflow embed: the diagram is demo.html, loaded unchanged.</footer>
 
 </body>
 </html>
