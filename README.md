@@ -11,6 +11,13 @@ An agent skill that turns a process into a flow diagram on one HTML page. The la
 
 An index page gathers several finished diagrams and documents onto one page.
 
+## Readability and colour vision
+
+- [Colour vision audit](https://chezhenkie.github.io/simpleflow-diagram-skill/color-vision-audit.html)
+- [color-vision impaired theme corrections](https://chezhenkie.github.io/simpleflow-diagram-skill/color-vision-audit-comparison.html)
+
+These are direct GitHub links to the two colour vision and readability documents.
+
 ## Themes
 
 Nine themes ship with the template.
