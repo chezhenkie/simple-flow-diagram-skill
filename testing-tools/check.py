@@ -593,8 +593,10 @@ check("Windows" not in rd and "PowerShell" not in rd and "%USERPROFILE%" not in 
       "readme no os specifics")
 check("palettes.html" not in rd and "palette pair" not in rd, "readme no palette sheet")
 check("dark theme" in rd and "light theme" in rd, "readme theme foldouts")
-check("colour-vision impaired" in rd and "under two minutes" in rd and "seven rows" in rd
+check("colour-vision impaired" in rd and "a few hundred tokens" in rd and "seven rows" in rd
       and "no extra setup" in rd and "instead of white text" in rd, "readme value bullets")
+check("gathers several finished diagrams and documents onto one page" in rd
+      and rd.count("Optional index page") == 1, "readme index bullet")
 check("one of nine fixed themes" in rd and "nine installed themes" in rd, "readme theme count")
 check("## Readability and colour vision" in rd
       and "color-vision-audit.html" in rd and "color-vision-audit-comparison.html" in rd
