@@ -249,7 +249,7 @@ pre code{background:none;color:inherit;padding:0}
 <p>Contrast is the WCAG 2.2 ratio <code>(L1 + 0.05) / (L2 + 0.05)</code> on relative luminance. The pairs and floors:</p>
 <ul>
 <li>Text at 4.5:1: ink on page, ink on card, muted on page, muted on card.</li>
-<li>Marks at 3:1: accent on page, accent on card, line on card (the card border) and line on page (the bar borders and the footer divider).</li>
+<li>Marks at 3:1: accent on page, accent on card, line on card (the card border) and line on page (the toolbar borders and the footer divider).</li>
 <li>Menu label at 4.5:1: the checked row&#39;s ink on the accent, using the page&#39;s own <code>inkOn</code> rule.</li>
 </ul>
 <p>The accent carries emphasis, not meaning. The focus card is also 2 px wide against 1.2 px, and the checked menu row keeps <code>aria-checked</code> for assistive technology.</p>
@@ -281,7 +281,7 @@ pre code{background:none;color:inherit;padding:0}
 <p>Github and solarized move by up to 0.14 on their minima and up to 0.19 on any pair; those themes stay above the floor in every case.</p>
 <h2><span class="num">3</span>Mark contrast</h2>
 <div class="rule"></div>
-<p>Normal vision. Card on page is the fill separation, given for context and not held to the 3:1 mark floor. Line on card is the 1.2 px card border; line on page draws the bar borders and the footer divider.</p>
+<p>Normal vision. Card on page is the fill difference, given for context and not held to the 3:1 mark floor. Line on card is the 1.2 px card border; line on page draws the toolbar borders and the footer divider.</p>
 <table><thead><tr><th>Theme</th><th>Card on page</th><th>Line on card</th><th>Line on page</th><th>Accent on page</th><th>Accent on card</th></tr></thead><tbody>
 <tr><td>github</td><td>1.09</td><td>4.47</td><td>4.12</td><td>5.15</td><td>5.58</td></tr>
 <tr><td>harbor</td><td>1.08</td><td>3.40</td><td>3.68</td><td>9.36</td><td>8.63</td></tr>
@@ -294,7 +294,7 @@ pre code{background:none;color:inherit;padding:0}
 <tr><td>orng</td><td>1.22</td><td>4.40</td><td>3.60</td><td>3.55</td><td>4.34</td></tr>
 </tbody></table>
 <p>The accent on page moves under simulation: vercel falls to 2.91 (deuteranopia), tokyonight to 3.33 (deuteranopia), solarized to 3.55 (protanopia) and cursor to 4.07 (protanopia). Vercel&#39;s 2.91 is the only accent on page under 3:1 and is an accepted deviation; every other theme stays at or above 3.09. Achromatopsia leaves these ratios unchanged.</p>
-<p>Every line clears 3:1 on card and on page in all simulations. The lowest are tokyonight 3.29 on card, cursor 3.31 on page, orng 3.33 on page, harbor 3.40 on card and oledblack 3.41 on card. Solarized&#39;s line is now <code>#93A1A1</code>, so its card border draws; the fill separation remains 1.15:1.</p>
+<p>Every line clears 3:1 on card and on page in all simulations. The lowest are tokyonight 3.29 on card, cursor 3.31 on page, orng 3.33 on page, harbor 3.40 on card and oledblack 3.41 on card. Solarized&#39;s line is <code>#93A1A1</code>, so its card border is visible; the fill difference remains 1.15:1.</p>
 <p>The accent marks are thin: a 2 px outline, a 2 px focus border and a 1.6 px connector. Below 3:1 they are faint for every reader, not only for readers with a colour vision deficiency.</p>
 <h2><span class="num">4</span>Checked menu row</h2>
 <div class="rule"></div>
@@ -322,7 +322,7 @@ pre code{background:none;color:inherit;padding:0}
 <li>The text shortfall is not specific to colour vision deficiency. Cursor&#39;s muted text is 4.44:1 in normal vision; the simulations move the other themes&#39; minima by at most 0.79 and any text pair by at most 1.01.</li>
 <li>The accent is the weakest emphasis mark. Vercel&#39;s accent on page is 2.91 under deuteranopia and tokyonight&#39;s accent on card is 2.97; both are accepted deviations. The title outline, the focus border and the accent connectors are emphasis; the structure survives without them, and the focus card still reads by width.</li>
 <li>The checked row keeps its label at 4.00-4.31 in two simulated cases, both accepted deviations. The row remains identifiable, at reduced contrast.</li>
-<li>Every line clears 3:1 in all simulations. The palette pass raised the weak borders; solarized&#39;s line is <code>#93A1A1</code> and its card border draws. No line shortfall is accepted.</li>
+<li>Every line clears 3:1 in all simulations. The palette pass raised the weak borders; solarized&#39;s line is <code>#93A1A1</code> and its card border is visible. No line shortfall is accepted.</li>
 <li>The palettes are fixed at 1.4.0. The accepted deviations are listed above; no further colour change is proposed.</li>
 </ol>
 <h2><span class="num">7</span>Limits</h2>

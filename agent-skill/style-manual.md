@@ -1,19 +1,19 @@
 # Flow diagram style manual
 
-Specsheet for hand-written, single-file flow diagrams with a small top bar for mode, theme and print. One vertical main path, optional side blocks, one theme for the page, no external dependencies. The shell is copied, not rebuilt; the written part stays small because the grid, the type scale, the themes and the budgets are fixed.
+Specsheet for hand-written, single-file flow diagrams with a small toolbar for mode, theme and print. One vertical main path, optional side blocks, one theme for the page, no external dependencies. The template is copied, not rebuilt; the written part stays small because the grid, the type scale, the themes and the budgets are fixed.
 
 ## 1. File contract
 
 - One `.html` file per topic, `<topic>-flow.html`, copied from `template.html`.
 - UTF-8, printable ASCII only. No typographic quotes, dashes, arrows or bullets.
-- Inline scripts limited to the top bar and its initial mode. No external CSS, fonts, images or icon sets. Must open from `file://`.
-- Light and dark from the bar switch, initial state from `prefers-color-scheme`; two foldouts pick a theme per mode; print is a separate toggle.
+- Inline scripts limited to the toolbar and its initial mode. No external CSS, fonts, images or icon sets. Must open from `file://`.
+- Light and dark from the toolbar switch, initial state from `prefers-color-scheme`; two menus pick a theme per mode; print is a separate toggle.
 - One `<main>` wrapper, max width 1080 px, centered; one `<h1>`, one `.sub`, one or more `<section>` blocks, one `<footer>`. The SVG scales with the page, no fixed width or height attributes.
 
 ## 2. Page order
 
 ```
-div#tb          fixed 24px bar: print toggle, mode switch, dark theme, light theme
+div#tb          fixed 24px toolbar: print toggle, mode switch, dark theme, light theme
 h1              page title, 22px
 p.sub           one sentence naming the whole path, 13px
 section
@@ -26,7 +26,7 @@ footer          shared infrastructure or invariant, 1-2 sentences
 
 ## 3. Theme
 
-A theme is six values: `bg` page, `card` card and tag fill, `ink` page text and card titles, `muted` descriptions, captions, connectors, footer and bar ink, `line` card and tag borders and bar lines, `accent` pill outline, focus border and action arrow.
+A theme is six values: `bg` page, `card` card and tag fill, `ink` page text and card titles, `muted` descriptions, captions, connectors, footer and toolbar ink, `line` card and tag borders and toolbar lines, `accent` pill outline, focus border and action arrow.
 
 Nine themes ship in the template: five dark and four light. Dark: `github`, `harbor`, `solarized`, `oledblack`, `ayu`. Light: `vercel`, `tokyonight`, `cursor`, `orng`. Light opens on `vercel`, dark on `github`.
 
@@ -188,7 +188,7 @@ Split row, a decision card forking into two cards on the next row:
 <text class="d" x="566" y="290">x86_64-pc-windows-msvc</text>
 ```
 
-Two arrows leave the parent bottom at the card centres, 411 and 659, and enter the children at the same x. A merge back into a 470 card uses the same positions. No fork bar, no elbows. If one branch ends and only one continues, the next row returns to one 470 card; that gap carries one arrow at x=535 and one caption at x=549.
+Two arrows leave the parent bottom at the card centres, 411 and 659, and enter the children at the same x. A merge back into a 470 card uses the same positions. No horizontal fork line, no elbows. If one branch ends and only one continues, the next row returns to one 470 card; that gap carries one arrow at x=535 and one caption at x=549.
 
 - The single column stays the default. A split needs a decision with two named outcomes, and the decision card is the focus.
 - Both children leave the same row and are normal cards with a title and up to two description lines.
@@ -208,7 +208,7 @@ Two arrows leave the parent bottom at the card centres, 411 and 659, and enter t
 
 ## 10. Diagram body
 
-Copy the shell from `template.html`: theme tokens, top bar, theme script, bar script and print rules. The block below is one section body for the diagram slot; repeat it per diagram. No class on the section.
+Start from `template.html`: theme tokens, toolbar, theme script, toolbar script and print rules. The block below is one section body for the diagram area; repeat it per diagram. No class on the section.
 
 ```html
 <section>
@@ -255,9 +255,9 @@ For a decision, replace one row with a split row: two 222 cards at x=300 and x=5
 
 ## 11. Validation
 
-The page is right when it matches the numbers in sections 5 to 8 and its shell matches `template.html`: head script, token block, bar, bar script and print rules unchanged. Check the written part by reading: geometry, arrows and captions, text baselines and budgets, the tag and viewBox height, the focus and accents, the loop lanes and the marker ids.
+The page is right when it follows the numbers in sections 5 to 8 and keeps `template.html` unchanged: head script, token block, toolbar, toolbar script and print rules. Check the written part by reading: geometry, arrows and captions, text baselines and budgets, the tag and viewBox height, the focus and accents, the loop lanes and the marker ids.
 
-The shell, the bar, the themes and the print view are fixed and checked once in the repository. Do not render them per page, take screenshots or make PDFs. Open the finished page once for the user; the user's eye is the last check.
+The template, the toolbar, the themes and the print view are fixed and checked once in the repository. Do not re-check them per page, take screenshots or make PDFs. Open the finished page once for the user; the user's eye is the last check.
 
 ## 12. Checklist
 
@@ -273,31 +273,31 @@ The shell, the bar, the themes and the print view are fixed and checked once in 
 - [ ] Loop lanes at 226/206/186/166 and 824/844/864/884, four segments and upward, free marks, path before the cards; loop label 12 characters.
 - [ ] Tag optional at 300, 470 wide, 26 high, last top + 98 with viewBox at tag y + 32, or last top + 102; tag text at y+17.
 - [ ] Marker ids unique on the page, prefixed by section, and defined for every arrowhead.
-- [ ] One theme for the page, no section class, no per-diagram colors; two inline scripts, shell copied byte for byte; no external assets, network URLs or storage.
-- [ ] Written part checked by reading; the page opened once for the user; no per-page theme, foldout or print pass.
+- [ ] One theme for the page, no section class, no per-diagram colors; two inline scripts, template copied byte for byte; no external assets, network URLs or storage.
+- [ ] Written part checked by reading; the page opened once for the user; no per-page theme, menu or print pass.
 
-## 13. Top bar and modes
+## 13. Toolbar and modes
 
-`demo.html` is the reference implementation. Copy its bar, token blocks and scripts; do not invent a second control style.
+`demo.html` is the reference implementation. Copy its toolbar, token blocks and scripts; do not invent a second control style.
 
 - Fixed, 24 px high, right aligned, 28 px inset, fill `var(--page-bg)`, no bottom divider.
-- Print toggle: auto width, 18 px high, printer icon plus `print friendly`, `aria-pressed`; active fill is the bar ink.
+- Print toggle: auto width, 18 px high, printer icon plus `print friendly`, `aria-pressed`; active fill is the toolbar ink.
 - Mode switch: 44 x 20 px, moon left, sun right, 16 px thumb, `aria-checked` true in light.
-- Theme buttons: text plus a solid caret, 18 px high, 68 px minimum width, a foldout below each.
-- A foldout lists its mode's names in `role="menu"` rows with `menuitemradio` and the current name marked `aria-checked`. Picking one applies it and switches mode.
-- Native `<button>` controls, so Enter and Space work. Opening a foldout focuses its checked row; arrows move, Home and End jump, Escape closes the foldout and returns focus to its button, a click outside closes it.
+- Theme buttons: text plus a solid caret, 18 px high, 68 px minimum width, a menu below each.
+- A menu lists its mode's names in `role="menu"` rows with `menuitemradio` and the current name marked `aria-checked`. Picking one applies it and switches mode.
+- Native `<button>` controls, so Enter and Space work. Opening a menu focuses its checked row; arrows move, Home and End jump, Escape closes the menu and returns focus to its button, a click outside closes it.
 - `html[data-theme="light"|"dark"]` selects the mode and its list. Each mode remembers its own theme; the switch flips between the two picks.
 - `html[data-print="on"]` forces the print tokens on a white page and leaves `data-theme` alone; off restores the previous mode.
 - Initial mode comes from `prefers-color-scheme`, followed until the mode switch or a theme pick. No storage.
 - Tokens live on `:root`; the theme script writes the six values and `--pick-ink` on every change, and print aliases its fixed values there too, so it wins without a cascade trick.
-- One inline head script sets the initial `data-theme` before paint; one script before `</body>` holds the theme table, builds the foldouts, applies the theme and follows OS changes.
-- A link to a local `.html` page carries the reader's state. The bar script writes `?mode=...&dark=...&light=...` into every local page link on load and after each pick, and reads those values on load. A page opened from an index therefore keeps the mode and both theme picks. No storage; a link with no query opens on the OS mode and the default picks.
+- One inline head script sets the initial `data-theme` before paint; one script before `</body>` holds the theme table, builds the menus, applies the theme and follows OS changes.
+- A link to a local `.html` page carries the reader's state. The toolbar script writes `?mode=...&dark=...&light=...` into every local page link on load and after each pick, and reads those values on load. A page opened from an index therefore keeps the mode and both theme choices. No storage; a link with no query opens on the OS mode and the default choices.
 
 ## 14. Index pages
 
 A set of finished diagram pages and documents may open on one index page. It is a separate page type: copy `index.html` instead of `template.html`. Sections 1 to 13 keep their rules for the diagram pages the index links; this chapter covers the index itself.
 
-Order: bar, h1, `.sub`, one or more groups, an optional documents section, footer. A group is a `.note` label and a `nav.grid`; the label is lowercase and names the group, as in `maps` or `paths`. Two to six entries per group.
+Order: toolbar, h1, `.sub`, one or more groups, an optional documents section, footer. A group is a `.note` label and a `nav.grid`; the label is lowercase and names the group, as in `maps` or `paths`. Two to six entries per group.
 
 An entry is one link card:
 
@@ -314,9 +314,9 @@ An entry is one link card:
 </a>
 ```
 
-- `href` is the page file name. The bar script appends the theme query to every local `.html` link; do not write a query by hand.
+- `href` is the page file name. The toolbar script appends the theme query to every local `.html` link; do not write a query by hand.
 - Name: 1 to 4 words, sentence case, up to 28 characters. Description: up to 70 characters, one line.
 - Glyph: 104 x 56, shapes between x 2 and 102 and y 4 and 52. Rects and paths only, no text. Muted stroke 1.4; zero or one `.hot` path in accent at 1.6. A few objects that suggest the page, not a legend.
 - Documents are optional: the h2 pill, a `.note`, and a `.docs` table with `Document` and `Covers` columns, one row per file. The file name links the file.
-- The entries, glyphs, names and descriptions are checked by reading against the bounds above. The shell is fixed and checked in the repository; do not re-test the bar, both modes or print on the index. Open the index once for the user.
+- The entries, glyphs, names and descriptions are checked by reading against the bounds above. The template is fixed and checked in the repository; do not re-test the toolbar, both modes or print on the index. Open the index once for the user.
 - Limits: an index lists pages; it does not explain them. No counts, badges, status rows or diagrams inside a glyph.

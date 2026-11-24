@@ -241,39 +241,39 @@ pre code{background:none;color:inherit;padding:0}
     <h1>SKILL</h1>  </header>
   <main>
 <h1>Simple flow diagram</h1>
-<p>One self-contained <code>.html</code> page per topic, or one page with several diagrams. Start from <a href="https://github.com/chezhenkie/simple-flow-diagram-skill/blob/main/agent-skill/template.html">template.html</a>: the layout, the themes, the mode switch and the print view are already in it. A folder of finished pages and documents can open on <a href="https://github.com/chezhenkie/simple-flow-diagram-skill/blob/main/agent-skill/index.html">index.html</a>, a second shell with link cards and a document table.</p>
+<p>One self-contained <code>.html</code> page per topic, or one page with several diagrams. Start from <a href="https://github.com/chezhenkie/simple-flow-diagram-skill/blob/main/agent-skill/template.html">template.html</a>: the layout, the themes, the mode switch and the print view are already in it. A folder of finished pages and documents can open on <a href="https://github.com/chezhenkie/simple-flow-diagram-skill/blob/main/agent-skill/index.html">index.html</a>, a second template with link cards and a document table.</p>
 <h2><span class="num">1</span>Page types</h2>
 <div class="rule"></div>
 <ul>
 <li>Diagram page: copy <code>template.html</code>; the workflow below applies.</li>
-<li>Index page: copy <code>index.html</code>; manual section 14 applies. It lists the diagram pages and documents of one folder, one link card each with a small inline glyph, and keeps the same bar, themes and print rules. The mode and both theme picks travel in every local page link.</li>
+<li>Index page: copy <code>index.html</code>; manual section 14 applies. It lists the diagram pages and documents of one folder, one link card each with a small inline glyph, and keeps the same toolbar, themes and print rules. The mode and both theme choices travel in every local page link.</li>
 </ul>
 <h2><span class="num">2</span>Goals</h2>
 <div class="rule"></div>
 <ul>
-<li>The same result every run. Copy the shell, the theme table and the scripts; the grid, the toolbar and one of nine fixed themes do not change.</li>
-<li>A small written part. Write only the page copy and the diagram cards; the shell is copied, not rebuilt.</li>
+<li>The same result every run. Copy the template, the theme table and the scripts; the grid, the toolbar and one of nine fixed themes do not change.</li>
+<li>A small written part. Write only the page copy and the diagram cards; the template is copied, not rebuilt.</li>
 <li>One pass. No colour or layout decisions, no second draft.</li>
 </ul>
 <p>Do not choose colors or restyle controls; the page follows whichever theme the reader picks.</p>
-<p>The full contract lives in <a href="https://github.com/chezhenkie/simple-flow-diagram-skill/blob/main/agent-skill/style-manual.md">style-manual.md</a>. <a href="demo.html">demo.html</a> is the same shell with one filled diagram.</p>
+<p>The full contract lives in <a href="https://github.com/chezhenkie/simple-flow-diagram-skill/blob/main/agent-skill/style-manual.md">style-manual.md</a>. <a href="demo.html">demo.html</a> is the same template with one filled diagram.</p>
 <h2><span class="num">3</span>Workflow</h2>
 <div class="rule"></div>
 <ol>
-<li>Read <code>style-manual.md</code> before writing; it carries every number and rule the page needs. Copy <code>template.html</code> to <code>&lt;topic&gt;-flow.html</code> in the workspace root unless the user or project rules name another folder. Copy the shell as it is. Replace the title, subtitle and footer, then insert diagram sections at the slot. <code>demo.html</code> is an optional filled example.</li>
-<li>Keep the page shell as it is: head script, token block, top bar, bar script and print rules. Change only the page copy and the diagram bodies.</li>
-<li>Write the page in this order: top bar, h1, p.sub, one or more sections (head with h2 pill, p.note, svg), footer. Use the diagram body in manual section 10.</li>
+<li>Read <code>style-manual.md</code> before writing; it carries every number and rule the page needs. Copy <code>template.html</code> to <code>&lt;topic&gt;-flow.html</code> in the workspace root unless the user or project rules name another folder. Copy the template as it is. Replace the title, subtitle and footer, then insert diagram sections at the marked space. <code>demo.html</code> is an optional filled example.</li>
+<li>Keep the page template as it is: head script, token block, toolbar, toolbar script and print rules. Change only the page copy and the diagram bodies.</li>
+<li>Write the page in this order: toolbar, h1, p.sub, one or more sections (head with h2 pill, p.note, svg), footer. Use the diagram body in manual section 10.</li>
 <li>Keep the grid: viewBox <code>0 0 1040 H</code>, main column x=300 width=470, card top <code>30 + 108n</code>, card height 70, arrow 28, caption x=549 at y+88. The tag is optional at last card top + 98 with a viewBox of <code>tag + 32</code>, or none with a viewBox of last top + 102. Up to seven main rows; the tag and side boxes do not count. Side boxes are fixed at 210 wide on x=40 and 220 wide on x=800. A decision may fork into two 222 cards at x=300 and x=548, with arrows at 411 and 659 and captions at 425 and 673.</li>
 <li>Fill text within the budgets: 65 characters per main line, 28 or 26 per split or side line, card title 24, caption 42 or 18 on a split, tag line 78. A 70-high card takes two lines, a 90/100-high side card three.</li>
 <li>Mark one focus card and zero to two accent connectors per diagram. Solid for the main path, dashed for side channels, dotted for returns.</li>
-<li>Check the written part by reading the page against the manual section 12 checklist: page structure, shell parity, geometry, arrows and captions, text budgets, focus and accents, loop lanes and marker ids. Do not write a checker script or run a separate check tool. The shell is copied byte for byte and is already checked in the repository; do not test the bar, themes or print on the page. Open the page once for the user when it is done; if it is already open from an earlier pass, do not open another window or tab, and let the user refresh.</li>
+<li>Check the written part by reading the page against the manual section 12 checklist: page structure, the template copy, geometry, arrows and captions, text budgets, focus and accents, loop lanes and marker ids. Do not write a checker script or run a separate check tool. The template is copied byte for byte and is already checked in the repository; do not test the toolbar, themes or print on the page. Open the page once for the user when it is done; if it is already open from an earlier pass, do not open another window or tab, and let the user refresh.</li>
 <li>After the user has viewed the page, ask whether the diagram file can be deleted. Do not delete it unasked.</li>
 </ol>
 <h2><span class="num">4</span>Themes and modes</h2>
 <div class="rule"></div>
 <ul>
 <li>One theme covers the page and every diagram on it. Sections carry no class, no token block and no color of their own.</li>
-<li>The reader picks the theme: five dark names and four light names in the two foldouts, each mode remembering its own pick.</li>
+<li>The reader picks the theme: five dark names and four light names in the two menus, each mode remembering its own choice.</li>
 <li>The mode switch chooses light or dark and starts from the OS preference. Print is a separate toggle with fixed values.</li>
 <li>Never hardcode a fill or stroke outside the template&#39;s classes and <code>var(--...)</code> tokens.</li>
 </ul>
@@ -282,19 +282,19 @@ pre code{background:none;color:inherit;padding:0}
 <ul>
 <li>ASCII only. Straight quotes, hyphen for dash, no arrows, bullets or other Unicode.</li>
 <li>One <code>h1</code>, one <code>.sub</code>, one footer per page.</li>
-<li>Inline scripts are limited to the head mode script and the bar script. No external JavaScript, CSS, fonts, images or icon sets. Must open from <code>file://</code>.</li>
-<li>Top bar: fixed, 24 px high, right aligned, page background fill, no divider. Print toggle labelled <code>print friendly</code>, mode switch, then the <code>dark theme</code> and <code>light theme</code> foldouts. Native buttons, keyboard operable, labeled.</li>
+<li>Inline scripts are limited to the head mode script and the toolbar script. No external JavaScript, CSS, fonts, images or icon sets. Must open from <code>file://</code>.</li>
+<li>Toolbar: fixed, 24 px high, right aligned, page background fill, no divider. Print toggle labelled <code>print friendly</code>, mode switch, then the <code>dark theme</code> and <code>light theme</code> menus. Native buttons, keyboard operable, labeled.</li>
 <li>Colors only through <code>var(--...)</code>. Tokens live on <code>:root</code>; the print override comes last.</li>
 <li>Marker ids unique per page, prefixed by section. Pair each line class with the matching arrowhead.</li>
-<li>Open a finished page once for the user. No screenshots, no PDFs, no theme-by-theme renders; the shell is checked in the repository, not on every page.</li>
+<li>Open a finished page once for the user. No screenshots, no PDFs, no theme-by-theme renders; the template is checked in the repository, not on every page.</li>
 </ul>
 <h2><span class="num">6</span>Files</h2>
 <div class="rule"></div>
 <ul>
-<li><code>style-manual.md</code>: file contract, theme rules, type scale, grid, card anatomy, connectors, branch and loop patterns, diagram body, validation, checklist, top bar rules, index pages.</li>
-<li><code>template.html</code>: page shell to copy; theme table, top bar, print rules and one marked diagram slot, no diagram content.</li>
-<li><code>index.html</code>: index shell to copy; grid of link cards with inline glyphs, documents table, same bar. Fill the marked copy slots.</li>
-<li><code>demo.html</code>: filled reference page with the bar, one card payment diagram and the print theme.</li>
+<li><code>style-manual.md</code>: file contract, theme rules, type scale, grid, card anatomy, connectors, branch and loop patterns, diagram body, validation, checklist, toolbar rules, index pages.</li>
+<li><code>template.html</code>: page template to copy; theme table, toolbar, print rules and one marked space for the diagram, no diagram content.</li>
+<li><code>index.html</code>: index template to copy; grid of link cards with inline glyphs, documents table, same toolbar. Fill the marked copy spaces.</li>
+<li><code>demo.html</code>: filled reference page with the toolbar, one card payment diagram and the print theme.</li>
 </ul>
 <h2><span class="num">7</span>Limits</h2>
 <div class="rule"></div>

@@ -243,16 +243,16 @@ pre code{background:none;color:inherit;padding:0}
 <h1>Flow diagram skill: context and performance report</h1>
 <h2><span class="num">1</span>Summary</h2>
 <div class="rule"></div>
-<p>The test measures the cost of a single diagram page and the cost of adding a second diagram to that page, using the installed 1.5.0 skill and a bare task prompt. The final workflow builds a one-diagram page in 69.3 s with 41,897 context and 369,280 total tokens, averaged over two runs, with both pages passing the validator. Adding a second diagram to the same page costs 64.4 s, 43,185 context and 268,705 total tokens, with the 25 KB shell untouched.</p>
+<p>The test measures the cost of a single diagram page and the cost of adding a second diagram to that page, using the installed 1.5.0 skill and a bare task prompt. The final workflow builds a one-diagram page in 69.3 s with 41,897 context and 369,280 total tokens, averaged over two runs, with both pages passing the validator. Adding a second diagram to the same page costs 64.4 s, 43,185 context and 268,705 total tokens, with the 25 KB template untouched.</p>
 <p>Each gain below was built on the previous workflow, but each row compares a different pair, so the percentages do not add.</p>
 <table><thead><tr><th>Change</th><th>Comparison</th><th>Reduction</th></tr></thead><tbody>
-<tr><td>Validator out of the payload</td><td>new input and wall, paired trial</td><td>40.5% input, 38.1% time</td></tr>
+<tr><td>Validator out of the skill</td><td>new input and wall, paired trial</td><td>40.5% input, 38.1% time</td></tr>
 <tr><td>Checker script removed</td><td>A, final against the old clean A</td><td>46.8% total, 27.2% time</td></tr>
 <tr><td>Read-only step 7 plus full checklist</td><td>pair, against the clean pair</td><td>37.8% total, 19.9% time</td></tr>
 <tr><td>Second diagram on the same page</td><td>against a fresh one-diagram page</td><td>27.2% total, 7.1% time</td></tr>
 <tr><td>Two-diagram page</td><td>against two separate pages</td><td>13.6% total, 3.5% time</td></tr>
 </tbody></table>
-<p>The validator removal is the largest single gain: 40.5% fewer new input and 38.1% less wall time, with the same pass rate. The 1.5.0 no-render workflow and the index shell are part of the baseline; their cost was not isolated in this test.</p>
+<p>The validator removal is the largest single gain: 40.5% fewer new input and 38.1% less wall time, with the same pass rate. The 1.5.0 no-browser workflow and the index page are part of the baseline; their cost was not isolated in this test.</p>
 <h2><span class="num">2</span>Method</h2>
 <div class="rule"></div>
 <p>The prompt was identical for every run except the destination path:</p>
@@ -261,18 +261,18 @@ pre code{background:none;color:inherit;padding:0}
 <p>Measurements come from the session store. Wall time is idle time minus creation time. Context is the last turn&#39;s input plus the cached prefix, the number the agent UI shows. Total tokens is new input plus output plus reasoning plus cache reads across the session; it is a cumulative billing figure, not the context of one turn.</p>
 <p>A maintainer ran the page validator after each run:</p>
 <pre><code class="language-sh">python testing-tools/validate.py &lt;page&gt;.html agent-skill/template.html</code></pre>
-<p>The validator is a maintainer tool outside the skill payload.</p>
+<p>The validator is a maintainer tool outside the skill.</p>
 <h2><span class="num">3</span>Changes under test</h2>
 <div class="rule"></div>
 <ul>
-<li>1.3.7 moved the page validator out of the skill payload to <code>testing-tools/validate.py</code>. The agent no longer reads the 14.6 KB source or runs the tool, and the payload no longer needs Python.</li>
-<li>1.5.0 removed the per-page browser pass. The shell is checked once in the repository, the written part is checked by reading and the page is opened once for the reader.</li>
+<li>1.3.7 moved the page validator out of the skill to <code>testing-tools/validate.py</code>. The agent no longer reads the 14.6 KB source or runs the tool, and the payload no longer needs Python.</li>
+<li>1.5.0 removed the per-page browser pass. The template is checked once in the repository, the written part is checked by reading and the page is opened once for the reader.</li>
 <li>Step 7 now names the check method: read the page against the manual section 12 checklist, and do not write a checker script or run a separate check tool.</li>
-<li>The section 12 checklist was expanded after a comparison with the validator. It now covers page structure, shell parity, line endings, corners, side heights, text indents, budgets, accent classes, loop shape, marker prefixes, assets and storage.</li>
+<li>The section 12 checklist was expanded after a comparison with the validator. It now covers page structure, the template copy, line endings, corners, side heights, text indents, budgets, accent classes, loop shape, marker prefixes, assets and storage.</li>
 </ul>
 <h2><span class="num">4</span>Validator removal</h2>
 <div class="rule"></div>
-<p>The validator left the skill payload in 1.3.7. The table below compares the paired runs that read the validator source with the runs that did not. All four pages passed the validator on the first attempt.</p>
+<p>The validator left the skill in 1.3.7. The table below compares the paired runs that read the validator source with the runs that did not. All four pages passed the validator on the first attempt.</p>
 <table><thead><tr><th>Arm</th><th>New input, run 1</th><th>New input, run 2</th><th>Mean new input</th><th>Wall s, run 1</th><th>Wall s, run 2</th><th>Mean wall s</th><th>Pages</th></tr></thead><tbody>
 <tr><td>With validator read</td><td>55,686</td><td>54,480</td><td>55,083</td><td>275.2</td><td>267.9</td><td>271.6</td><td>2/2</td></tr>
 <tr><td>Without</td><td>34,527</td><td>30,966</td><td>32,747</td><td>189.7</td><td>146.6</td><td>168.2</td><td>2/2</td></tr>
@@ -281,14 +281,14 @@ pre code{background:none;color:inherit;padding:0}
 <p>The trial used paired runs on the order topic. The mean is the average of the two runs. The gain is in the fixed read and the tool work, not in page quality.</p>
 <h2><span class="num">5</span>Step 7 iterations</h2>
 <div class="rule"></div>
-<p>The clean pair is the 1.5.0 baseline before step 7 changed. In that pair the check method was open: one agent wrote a private checker script and the other read the page. The v1 pair used the read-only step 7. v1 A missed the first arrow and its caption because the checklist had no connector item. The connector item was added for v2, and the full checklist for v3.</p>
+<p>The clean pair comes from the 1.5.0 baseline, before step 7 changed. In that pair the check method was open: one agent wrote a private checker script and the other read the page. The v1 pair used the read-only step 7. v1 A missed the first arrow and its caption because the checklist had no connector item. The connector item was added for v2, and the full checklist for v3.</p>
 <table><thead><tr><th>Pair</th><th>Step 7</th><th>Wall s</th><th>Turns</th><th>Context</th><th>New input</th><th>Total</th><th>Pages</th></tr></thead><tbody>
 <tr><td>clean</td><td>free method, checker allowed</td><td>86.5</td><td>14.5</td><td>47,785</td><td>38,558</td><td>593,449</td><td>2/2</td></tr>
 <tr><td>v1</td><td>read-only, no connector item</td><td>78.3</td><td>11.5</td><td>44,936</td><td>35,252</td><td>398,827</td><td>1/2</td></tr>
 <tr><td>v2</td><td>plus connector item</td><td>104.4</td><td>13</td><td>47,767</td><td>38,212</td><td>498,147</td><td>2/2</td></tr>
 <tr><td>v3</td><td>plus full checklist</td><td>69.3</td><td>11</td><td>41,897</td><td>32,191</td><td>369,280</td><td>2/2</td></tr>
 </tbody></table>
-<p>The v1 A page failed two checks, both the same missing arrow and its caption. The v2 and v3 pages pass. The v3 pair is the final one-diagram result.</p>
+<p>The v1 A page failed on one missing arrow and its caption. The v2 and v3 pages pass. The v3 pair is the final one-diagram result.</p>
 <h2><span class="num">6</span>Final one-diagram runs</h2>
 <div class="rule"></div>
 <table><thead><tr><th>Run</th><th>Wall s</th><th>Turns</th><th>Tools</th><th>Context</th><th>New input</th><th>Output</th><th>Reasoning</th><th>Cache read</th><th>Total</th><th>Checks</th></tr></thead><tbody>
@@ -306,8 +306,8 @@ pre code{background:none;color:inherit;padding:0}
 <tr><td>Two-diagram page, total</td><td>2</td><td>133.7</td><td>19</td><td>-</td><td>65,473</td><td>637,985</td><td>2/2 pass</td></tr>
 <tr><td>Two separate pages, total</td><td>2</td><td>138.6</td><td>22</td><td>-</td><td>64,382</td><td>738,560</td><td>4/4 pass</td></tr>
 </tbody></table>
-<p>The added section grows the page to 29,685 and 29,880 bytes, an increase of 4.5 to 4.7 KB. The shell, theme table, bar script and print rules are unchanged.</p>
-<p>The add run reads the existing page instead of the template, so its context is 3.1% higher and its new input 3.4% higher than a fresh one-diagram run. The saving is in turns, output and cache reads. The TLS flow is a familiar protocol, so part of the lower turn count is topic familiarity rather than shell reuse. The result supports the file claim: the added diagram writes about 4.6 KB and leaves the 25 KB shell alone. It does not make a second diagram free.</p>
+<p>The added section grows the page to 29,685 and 29,880 bytes, an increase of 4.5 to 4.7 KB. The template, theme table, toolbar script and print rules are unchanged.</p>
+<p>The second-diagram run reads the existing page instead of the template, so its context is 3.1% higher and its new input 3.4% higher than a fresh one-diagram run. The saving is in turns, output and cache reads. The TLS flow is a familiar protocol, so part of the lower turn count is topic familiarity rather than template reuse. The result supports the file claim: the added diagram writes about 4.6 KB and leaves the 25 KB template alone. It does not make a second diagram free.</p>
 <h2><span class="num">8</span>Checklist scan</h2>
 <div class="rule"></div>
 <p>The scan compared <code>testing-tools/validate.py</code> with manual section 12. It found ten rules that the checklist did not name and three manual ambiguities. All are now in the manual, and the static check count is 360.</p>
@@ -320,20 +320,20 @@ pre code{background:none;color:inherit;padding:0}
 <tr><td>Connector classes</td><td><code>arrow-a</code> for accents, matching muted and accent markers</td></tr>
 <tr><td>Loop shape</td><td>four segments, upward, 12-character label</td></tr>
 <tr><td>Marker ids</td><td>prefixed by section and defined for every arrowhead</td></tr>
-<tr><td>Shell and assets</td><td>shell parity, two inline scripts, no external assets, URLs or storage</td></tr>
+<tr><td>Template and assets</td><td>template untouched, two inline scripts, no external assets, URLs or storage</td></tr>
 <tr><td>Manual ambiguities</td><td>split one-branch, 90/100 mid mark, 10 px input and 4 px output stubs</td></tr>
 </tbody></table>
 <h2><span class="num">9</span>Final state</h2>
 <div class="rule"></div>
 <ul>
-<li>Skill payload: five files, no executable, no runtime.</li>
+<li>Skill: five files, no executable, no runtime.</li>
 <li>Static checks: 360, zero failures.</li>
-<li>Bar harness: ok.</li>
+<li>Toolbar test: ok.</li>
 <li>Demo validator: 245 checks, zero failures.</li>
 <li>Two-section test pages: 490 checks each, zero failures.</li>
 <li>Tested skill state: commit 94e4f6f, pushed; Pages built at that commit.</li>
 <li>Installed skill: synced with the repository.</li>
-<li>No per-page render pass: the shell is checked in the repository, the written part is read against the checklist and the page is opened once for the reader.</li>
+<li>No per-page browser pass: the template is checked in the repository, the written part is read against the checklist and the page is opened once for the reader.</li>
 <li>The test pages were deleted after the figures were recorded. This report is the record.</li>
 </ul>
 <h2><span class="num">10</span>Limits</h2>
@@ -343,7 +343,7 @@ pre code{background:none;color:inherit;padding:0}
 <li>The add case uses a known TLS flow; the lower cost is partly topic familiarity.</li>
 <li>Context and total tokens measure different things; the report keeps them separate.</li>
 <li>The validator remains a maintainer tool; the skill no longer reads or runs it.</li>
-<li>The 360 px bar and the head-script theme application remain separate shell findings. The text contrast shortfalls remain separate from the accepted mark deviations.</li>
+<li>The 360 px toolbar and the head-script theme application remain separate template findings. The text contrast shortfalls remain separate from the accepted mark deviations.</li>
 </ul>
   </main>
 </div>

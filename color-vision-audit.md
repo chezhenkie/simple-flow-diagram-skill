@@ -11,7 +11,7 @@ Simulation uses the Machado, Oliveira and Fernandes (2009) severity 1.0 matrices
 Contrast is the WCAG 2.2 ratio `(L1 + 0.05) / (L2 + 0.05)` on relative luminance. The pairs and floors:
 
 - Text at 4.5:1: ink on page, ink on card, muted on page, muted on card.
-- Marks at 3:1: accent on page, accent on card, line on card (the card border) and line on page (the bar borders and the footer divider).
+- Marks at 3:1: accent on page, accent on card, line on card (the card border) and line on page (the toolbar borders and the footer divider).
 - Menu label at 4.5:1: the checked row's ink on the accent, using the page's own `inkOn` rule.
 
 The accent carries emphasis, not meaning. The focus card is also 2 px wide against 1.2 px, and the checked menu row keeps `aria-checked` for assistive technology.
@@ -50,7 +50,7 @@ Github and solarized move by up to 0.14 on their minima and up to 0.19 on any pa
 
 ## Mark contrast
 
-Normal vision. Card on page is the fill separation, given for context and not held to the 3:1 mark floor. Line on card is the 1.2 px card border; line on page draws the bar borders and the footer divider.
+Normal vision. Card on page is the fill difference, given for context and not held to the 3:1 mark floor. Line on card is the 1.2 px card border; line on page draws the toolbar borders and the footer divider.
 
 | Theme | Card on page | Line on card | Line on page | Accent on page | Accent on card |
 |---|---:|---:|---:|---:|---:|
@@ -66,7 +66,7 @@ Normal vision. Card on page is the fill separation, given for context and not he
 
 The accent on page moves under simulation: vercel falls to 2.91 (deuteranopia), tokyonight to 3.33 (deuteranopia), solarized to 3.55 (protanopia) and cursor to 4.07 (protanopia). Vercel's 2.91 is the only accent on page under 3:1 and is an accepted deviation; every other theme stays at or above 3.09. Achromatopsia leaves these ratios unchanged.
 
-Every line clears 3:1 on card and on page in all simulations. The lowest are tokyonight 3.29 on card, cursor 3.31 on page, orng 3.33 on page, harbor 3.40 on card and oledblack 3.41 on card. Solarized's line is now `#93A1A1`, so its card border draws; the fill separation remains 1.15:1.
+Every line clears 3:1 on card and on page in all simulations. The lowest are tokyonight 3.29 on card, cursor 3.31 on page, orng 3.33 on page, harbor 3.40 on card and oledblack 3.41 on card. Solarized's line is `#93A1A1`, so its card border is visible; the fill difference remains 1.15:1.
 
 The accent marks are thin: a 2 px outline, a 2 px focus border and a 1.6 px connector. Below 3:1 they are faint for every reader, not only for readers with a colour vision deficiency.
 
@@ -101,7 +101,7 @@ These are accepted. The shortfalls are small and affect emphasis and a menu labe
 3. The text shortfall is not specific to colour vision deficiency. Cursor's muted text is 4.44:1 in normal vision; the simulations move the other themes' minima by at most 0.79 and any text pair by at most 1.01.
 4. The accent is the weakest emphasis mark. Vercel's accent on page is 2.91 under deuteranopia and tokyonight's accent on card is 2.97; both are accepted deviations. The title outline, the focus border and the accent connectors are emphasis; the structure survives without them, and the focus card still reads by width.
 5. The checked row keeps its label at 4.00-4.31 in two simulated cases, both accepted deviations. The row remains identifiable, at reduced contrast.
-6. Every line clears 3:1 in all simulations. The palette pass raised the weak borders; solarized's line is `#93A1A1` and its card border draws. No line shortfall is accepted.
+6. Every line clears 3:1 in all simulations. The palette pass raised the weak borders; solarized's line is `#93A1A1` and its card border is visible. No line shortfall is accepted.
 7. The palettes are fixed at 1.4.0. The accepted deviations are listed above; no further colour change is proposed.
 
 ## Limits

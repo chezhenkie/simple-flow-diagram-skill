@@ -6,11 +6,11 @@
 
 #### All platforms
 
-* An index shell joins the payload: `agent-skill/index.html`, a title, groups of link cards and an optional documents table. Each card carries a small inline SVG glyph drawn with the theme tokens.
-* The bar carries the mode and both theme picks in every local `.html` link, so a page opened from the index keeps the chosen theme. The head script reads the mode before paint. No storage.
-* The workflow keeps the browser out of the loop: the shell is checked once in the repository, the written part is checked by reading, and the page is opened once for the user. No screenshots, no PDFs, no per-theme renders.
+* The skill gains an index page, `agent-skill/index.html`: a title, groups of link cards and an optional documents table. Each card carries a small inline SVG glyph drawn with the theme tokens.
+* The toolbar carries the mode and both theme choices in every local `.html` link, so a page opened from the index keeps the chosen theme. The head script reads the mode before paint. No storage.
+* The workflow keeps the browser out of the loop: the template is checked once in the repository, the written part is checked by reading, and the page is opened once for the user. No screenshots, no PDFs, no per-theme renders.
 * Step 7 names the check method: read the page against the manual section 12 checklist; no checker script. The checklist now covers page structure, corners, side heights, text indents and budgets, accent classes, loop direction and marker prefixes.
-* Manual section 14 is a separate chapter for index pages; the payload is five files.
+* Manual section 14 is a separate chapter for index pages; the skill is five files.
 
 ## 1.4.0
 
@@ -28,9 +28,9 @@
 
 #### All platforms
 
-* The page validator leaves the skill payload for `testing-tools/validate.py`. The payload is four files, needs no Python 3 and no longer reads the 14.6 KB source.
+* The page validator leaves the skill for `testing-tools/validate.py`. The skill is four files, needs no Python 3 and no longer reads the 14.6 KB source.
 * `SKILL.md` step 7 and manual section 11 check the page against the manual and the browser instead of a command; the checker keeps the mechanical page check for the demo and an off-grid probe.
-* The checker enforces the payload: `agent-skill/` holds four files, no executable, and neither the skill nor the manual names a runtime. 312 checks.
+* The checker enforces the skill files: `agent-skill/` holds four files, no executable, and neither the skill nor the manual names a runtime. 312 checks.
 * The colour vision audit of the nine themes is added at `color-vision-audit.md`.
 
 ## 1.3.6
@@ -47,7 +47,7 @@
 
 #### All platforms
 
-* The dark foldout gains harbor: a navy page, dark grey cards and a teal accent, taken from the dark palette of an existing page.
+* The dark menu gains harbor: a navy page, dark grey cards and a teal accent, taken from the dark palette of an existing page.
 * Monochrome is renamed oledblack. Its six values are unchanged.
 * Nightowl is removed. Dark order: github, harbor, solarized, oledblack, ayu.
 
@@ -57,7 +57,7 @@
 
 #### All platforms
 
-* The README and the skill goals put the same result first: every run uses the same grid, the same toolbar and one of nine fixed themes. The cost section states the read it takes, the manual and the shell once, then the cards.
+* The README and the skill goals put the same result first: every run uses the same grid, the same toolbar and one of nine fixed themes. The cost section states the read it takes, the manual and the template once, then the cards.
 * The skill description and goals say repeatable, small written part and one pass. The checker follows the new wording.
 
 ## 1.3.3
@@ -87,8 +87,8 @@
 
 * The checker accepts two side cards, one per side, and one or two dashes per box, so it matches the manual's side-card contract. A two-box fixture with three dashes passes; the same page with one dash fails.
 * The switch thumb pairs live in one table read by the theme and print paths, and the print palette is defined once in `:root`, aliased by `@media print` and by the print toggle. The values are typed once.
-* The bar menus take the keyboard: opening a foldout focuses its checked row, the arrow keys and Home and End move between rows, and Escape closes it and returns focus to its button. The focus ring stays inside the viewport, print drops the dark color scheme, and a `prefers-reduced-motion` rule stops the 250 ms transitions.
-* The checker follows the new shell: 394 checks.
+* The toolbar menus take the keyboard: opening a menu focuses its checked row, the arrow keys and Home and End move between rows, and Escape closes it and returns focus to its button. The focus ring stays inside the viewport, print drops the dark color scheme, and a `prefers-reduced-motion` rule stops the 250 ms transitions.
+* The checker follows the new toolbar: 394 checks.
 
 ## 1.3.0
 
@@ -96,11 +96,11 @@
 
 #### All platforms
 
-* Page validator: `python validate.py <topic>-flow.html` ships in the payload and checks the file shape, the shell copy, the bar, the section structure, the grid, arrows and captions, text budgets, tag and height, connectors, lanes and marker ids. The demo page passes 460 checks with exit code 0.
-* Contract decisions reach the manual and the skill: side boxes fixed at 210 and 220, optional tag with a no-tag height of last card top + 102, up to seven main cards excluding the tag and side boxes, zero to two accent connectors, the loopback label convention, and a 360 px bar check in place of the 800 px window step.
-* The skill names the validator in step 7 and reads only the diagram slot and manual sections 5 to 10, so a page costs no more tokens than before.
+* Page validator: `python validate.py <topic>-flow.html` ships with the skill and checks the file shape, the template copy, the toolbar, the section structure, the grid, arrows and captions, text budgets, tag and height, connectors, lanes and marker ids. The demo page passes 460 checks with exit code 0.
+* Contract decisions reach the manual and the skill: side boxes fixed at 210 and 220, optional tag with a no-tag height of last card top + 102, up to seven main cards excluding the tag and side boxes, zero to two accent connectors, the loopback label convention, and a 360 px toolbar check in place of the 800 px window step.
+* The skill names the validator in step 7 and reads only the marked diagram area and manual sections 5 to 10, so a page costs no more tokens than before.
 * Manual section 11 is the validator description; the inline Python block is gone.
-* The bar harness reads both inline scripts from `demo.html`, so a fresh clone runs it without `check.py`.
+* The toolbar test reads both inline scripts from `demo.html`, so a fresh clone runs it without `check.py`.
 * The checker runs the validator on the demo, compares its count with the manual and requires a failure on an off-grid card: 381 checks.
 
 ## 1.2.0
@@ -128,7 +128,7 @@
 * Text budgets apply per line: 65 characters on a main line, 28 on a split line, 28 or 26 on a side line. A 90/100-high side card takes a third line at `y+74`.
 * The checker accepts the shared baselines and two-line cards: 370 checks.
 * Checks moved to `testing-tools/`; run `python testing-tools/check.py`.
-* README sample shots are recropped to the first two sections and the bar closeups display at 400 px.
+* README sample shots are recropped to the first two sections and the toolbar closeups display at 400 px.
 
 ## 1.0.0
 
@@ -139,9 +139,9 @@
 * Split row: a decision card forks into two 222 px cards at x=300 and x=548, with arrows at 411 and 659 and captions at 425 and 673. A merge returns on the same two positions.
 * Loopback returns use four lanes per side, 24 px inside the side box at a 20 px pitch, drawn as round dots so a return reads apart from a side dash.
 * Three line styles are named: solid for the main path, dashed for a side channel or alternate branch, dotted for a return.
-* Nine themes: monokai is gone and the light foldout lists four names. Light opens on vercel and dark on github; `:root` mirrors vercel and the dark block mirrors github.
+* Nine themes: monokai is gone and the light menu lists four names. Light opens on vercel and dark on github; `:root` mirrors vercel and the dark block mirrors github.
 * Vercel accent retuned to `#E8A020` and tokyonight muted text to `#474F60`.
-* Top bar carries a 28 px inset at both ends.
+* The toolbar carries a 28 px inset at both ends.
 * `demo.html` adds a package section with the split row, and the docs section returns a rejected draft to Draft. Section order is request, package, video, docs.
 * `SKILL.md` opens a finished page in the local browser and keeps a second window closed when the page is already open.
 * The checker covers split rows and per-boundary arrows and captions: 370 checks.
@@ -159,8 +159,8 @@
 * Style manual moved to `agent-skill/style-manual.md`, beside `SKILL.md`. `references/` is gone.
 * `SKILL.md` saves new pages to the workspace root unless the project rules name another folder, and asks before deleting a diagram the user has seen.
 * README gains a Themes section naming all ten themes and a cost and speed section. Install instructions are OS neutral.
-* Added `tools/README.md`. The checker and bar harness cover the new theme table, the defaults and the print tokens: 321 checks.
-* Bar controls polished: wider print toggle with visible label, raised button text, per-mode switch thumb colors.
+* Added `tools/README.md`. The checker and toolbar test cover the new theme table, the defaults and the print tokens: 321 checks.
+* Toolbar controls polished: wider print toggle with visible label, raised button text, per-mode switch thumb colors.
 * Regenerated all six screenshots from the current files.
 
 ## 0.6.0
@@ -170,11 +170,11 @@
 #### All platforms
 
 * Themes replace palette pairs. Twelve built-in themes: ayu, catppuccin, github, nightowl, solarized and vercel for dark; cursor, monokai, orng, synthwave84, tokyonight and vercel for light.
-* Two foldout controls in the top bar, `dark theme` and `light theme`, each listing the six names for its mode. Picking one applies it and switches mode; each mode keeps its own pick.
+* Two menu controls in the toolbar, `dark theme` and `light theme`, each listing the six names for its mode. Picking one applies it and switches mode; each mode keeps its own choice.
 * One theme covers the page and every diagram on it. Sections carry no class and no colors of their own.
-* The agent no longer chooses colors. The page shell and the theme table are fixed, so a diagram costs only the cards, captions and notes.
+* The agent no longer chooses colors. The page template and the theme table are fixed, so a diagram costs only the cards, captions and notes.
 * Removed the palette catalog and its per-section tokens.
-* Rewritten checker and bar harness for the theme table, the foldouts, and print tokens on `:root`.
+* Rewritten checker and toolbar test for the theme table, the menus, and print tokens on `:root`.
 
 ## 0.5.0
 
@@ -182,8 +182,8 @@
 
 #### All platforms
 
-* Moved the skill payload to `agent-skill/`: `SKILL.md`, `template.html`, `demo.html` and `references/`.
-* Moved the validator and bar harness to `tools/`; run `python tools/check.py`.
+* Moved the skill files to `agent-skill/`: `SKILL.md`, `template.html`, `demo.html` and `references/`.
+* Moved the validator and toolbar test to `tools/`; run `python tools/check.py`.
 * Added the public GitHub Pages demo and linked it from the README.
 * Added per-agent install and invocation instructions for OpenCode, Codex, Pi and OMP.
 
@@ -193,10 +193,10 @@
 
 #### All platforms
 
-* Added `template.html`: page shell with the top bar, token blocks, print rules and a marked diagram slot, no diagram content.
+* Added `template.html`: a page template with the toolbar, color blocks, print rules and a marked space for the diagram, and no diagram content.
 * Added `README.md` and `docs/` screenshots: demo page in light, dark and print states, plus closeups of both page controls.
-* Moved the validator and bar harness to `tests/`; run `python tests/check.py` from the repo root.
-* Top bar uses the page background with no divider; controls sit directly on the page.
+* Moved the validator and toolbar test to `tests/`; run `python tests/check.py` from the repo root.
+* The toolbar uses the page background with no divider; controls sit directly on the page.
 * Skill workflow and style manual start from the template; `demo.html` remains the filled reference page.
 
 ## 0.3.0
@@ -205,11 +205,11 @@
 
 #### All platforms
 
-* Added a fixed 24 px top bar with a light/dark switch and a separate print theme toggle labelled `print friendly`.
+* Added a fixed 24 px toolbar with a light/dark switch and a separate print theme toggle labelled `print friendly`.
 * Multi-diagram pages share one page background and may mix palette pairs; dark mode uses dark palettes only and light mode light palettes only.
-* Added `demo.html` as the reference shell with three diagrams, both modes and the print theme.
+* Added `demo.html` as the reference page with three diagrams, both modes and the print theme.
 * Print theme uses a white page, P0 diagrams and a light grey pill with black text and a black border.
-* Skill and style manual updated: inline bar scripts, no external assets, print override rules.
+* Skill and style manual updated: inline toolbar scripts, no external assets, print override rules.
 
 ## 0.2.0
 
