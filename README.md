@@ -61,6 +61,8 @@ The toolbar passes the mode and both theme choices into every local `.html` link
 The skill is five files. A diagram page copied from an older template still works but ignores the query until its toolbar script is updated.
 
 <hr>
+<hr>
+<hr>
 
 ## Install
 

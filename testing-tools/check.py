@@ -641,7 +641,7 @@ check("@simpleflow" in rd and "$simpleflow" in rd
 check("~/.agents/skills" in rd and "~/.pi/agent/skills" in rd
       and "~/.omp/agent/skills" in rd and ".opencode/skills" in rd, "readme agent install paths")
 check("simpleflow-diagram-skill/agent-skill" in rd and "as `simpleflow`" in rd, "readme install copy")
-check("<hr>\n\n## Install" in rd, "readme rule above install")
+check("<hr>\n<hr>\n<hr>\n\n## Install" in rd, "readme three rules above install")
 check("Windows" not in rd and "PowerShell" not in rd and "%USERPROFILE%" not in rd,
       "readme no os specifics")
 check("palettes.html" not in rd and "palette pair" not in rd, "readme no palette sheet")
