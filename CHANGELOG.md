@@ -9,6 +9,7 @@
 * An index shell joins the payload: `agent-skill/index.html`, a title, groups of link cards and an optional documents table. Each card carries a small inline SVG glyph drawn with the theme tokens.
 * The bar carries the mode and both theme picks in every local `.html` link, so a page opened from the index keeps the chosen theme. The head script reads the mode before paint. No storage.
 * The workflow keeps the browser out of the loop: the shell is checked once in the repository, the written part is checked by reading, and the page is opened once for the user. No screenshots, no PDFs, no per-theme renders.
+* Step 7 names the check method: read the page against the manual section 12 checklist; no checker script. The checklist now covers page structure, corners, side heights, text indents and budgets, accent classes, loop direction and marker prefixes.
 * Manual section 14 is a separate chapter for index pages; the payload is five files.
 
 ## 1.4.0

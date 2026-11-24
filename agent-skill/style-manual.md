@@ -103,12 +103,12 @@ Text limits, per line:
 | split description, 222 card | 186 | 31 | 28 |
 | side description, 220 card | 186 | 31 | 28 |
 | side description, 210 card | 176 | 29 | 26 |
-| card title, 220 or 222 card | 204 | 28 | 24 |
+| card title, every card | 204 | 28 | 24 |
 | arrow caption | 241 | 44 | 42 |
 | split caption | 113 | 20 | 18 |
 | tag line | 434 | 86 | 78 |
 
-SVG text does not wrap; an overlong line runs into the border. Count characters before writing.
+SVG text does not wrap; an overlong line runs into the border. Count characters before writing. The title budget is 24 on every card; a 470 main card has more room but keeps the same limit.
 
 ## 7. Connectors
 
@@ -149,6 +149,8 @@ Side input, dashed into the main column: `<path class="dash" d="M 250 173 H 290"
 
 Side output: `<path class="dash" d="M 770 399 H 796" marker-end="url(#flowHead)"/>`
 
+A side input stops 10 px before the main card; a side output stops 4 px before the side box. A side stub uses `mid` at top + h/2 on 70-, 90- and 100-high boxes.
+
 Exit branch with no return, such as a missing prerequisite: `<path class="dash" d="M 300 173 H 254" marker-end="url(#flowHead)"/>`
 
 Fallback that rejoins a lower card: `<path class="dash" d="M 910 454 V 605 H 780" marker-end="url(#flowHead)"/>` with its `.side` label.
@@ -186,7 +188,7 @@ Split row, a decision card forking into two cards on the next row:
 <text class="d" x="566" y="290">x86_64-pc-windows-msvc</text>
 ```
 
-Two arrows leave the parent bottom at the card centres, 411 and 659, and enter the children at the same x. A merge back into a 470 card uses the same positions. No fork bar, no elbows.
+Two arrows leave the parent bottom at the card centres, 411 and 659, and enter the children at the same x. A merge back into a 470 card uses the same positions. No fork bar, no elbows. If one branch ends and only one continues, the next row returns to one 470 card; that gap carries one arrow at x=535 and one caption at x=549.
 
 - The single column stays the default. A split needs a decision with two named outcomes, and the decision card is the focus.
 - Both children leave the same row and are normal cards with a title and up to two description lines.
@@ -253,21 +255,25 @@ For a decision, replace one row with a split row: two 222 cards at x=300 and x=5
 
 ## 11. Validation
 
-The page is right when it matches the numbers in sections 5 to 8 and its shell matches `template.html`: head script, token block, bar, bar script and print rules unchanged. Check the written part by reading: geometry, text baselines and budgets, the tag and viewBox height, the focus and accents, the loop lanes and the marker ids.
+The page is right when it matches the numbers in sections 5 to 8 and its shell matches `template.html`: head script, token block, bar, bar script and print rules unchanged. Check the written part by reading: geometry, arrows and captions, text baselines and budgets, the tag and viewBox height, the focus and accents, the loop lanes and the marker ids.
 
 The shell, the bar, the themes and the print view are fixed and checked once in the repository. Do not render them per page, take screenshots or make PDFs. Open the finished page once for the user; the user's eye is the last check.
 
 ## 12. Checklist
 
-- [ ] ASCII only, straight quotes, hyphen for dashes.
-- [ ] One h1, one sub, one footer; h2 pill reads `subject: outcome`.
-- [ ] Main column x=300 width 470, or two 222 cards at 300 and 548; pitch 108, height 70.
-- [ ] Title at +26, descriptions at +44 and +59; tag at last top + 98 and viewBox at tag y + 32, or last top + 102.
-- [ ] Up to seven main rows; side boxes 210 at x=40 and 220 at x=800.
-- [ ] One focus card, zero to two accent connectors; `dash` for sides, `loop` for returns.
-- [ ] Loop lanes at 226/206/186/166 and 824/844/864/884, free marks, path before the cards.
-- [ ] Marker ids unique and defined; `role="img"` and an aria-label on each SVG.
-- [ ] One theme for the page, no section class, no per-diagram colors; inline scripts bar only.
+- [ ] ASCII only, LF endings, straight quotes, hyphen for dashes.
+- [ ] One main, one h1, one sub, one footer; h2 pill reads `subject: outcome`.
+- [ ] One or more sections, each with a head, a note and one SVG; `role="img"` and an aria-label on the SVG; no fixed width or height.
+- [ ] Main column x=300 width 470, or two 222 cards at 300 and 548; pitch 108, height 70; viewBox `0 0 1040 H`; card and tag corners rx 3.
+- [ ] Arrows and captions: one arrow at x=535 in every row gap, caption at x=549 at y+18; split arrows at 411 and 659, captions at 425 and 673; if one branch ends, the next row returns to one 470 card with one arrow at 535.
+- [ ] Title at +26, descriptions at +44 and +59, a third line at +74 only on a 90/100 side card; text at x+18, or x+16 on a side box; one title per card.
+- [ ] Budgets: main 65, split 28, side 28 or 26, title 24 on every card, caption 42 or 18, tag 78.
+- [ ] Up to seven main rows; side boxes 210 at x=40 and 220 at x=800, 70/90/100 high on a row or 20 lower; a side stub uses mid at top + h/2 and stops 10 px before the main card or 4 px before the side box.
+- [ ] One focus card, zero to two accent connectors (`arrow-a`); `arrow` and `dash` use the muted marker, `arrow-a` the accent marker; `dash` for sides, `loop` for returns.
+- [ ] Loop lanes at 226/206/186/166 and 824/844/864/884, four segments and upward, free marks, path before the cards; loop label 12 characters.
+- [ ] Tag optional at 300, 470 wide, 26 high, last top + 98 with viewBox at tag y + 32, or last top + 102; tag text at y+17.
+- [ ] Marker ids unique on the page, prefixed by section, and defined for every arrowhead.
+- [ ] One theme for the page, no section class, no per-diagram colors; two inline scripts, shell copied byte for byte; no external assets, network URLs or storage.
 - [ ] Written part checked by reading; the page opened once for the user; no per-page theme, foldout or print pass.
 
 ## 13. Top bar and modes

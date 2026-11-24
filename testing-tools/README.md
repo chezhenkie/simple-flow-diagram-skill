@@ -3,7 +3,7 @@
 The static checker and the bar harness guard the skill payload; the page validator checks the demo. Run them from the repository root or by absolute path.
 
 ```sh
-python testing-tools/check.py        # 357 static checks, prints failures only
+python testing-tools/check.py        # 360 static checks, prints failures only
 python testing-tools/check.py -v     # same run, prints every PASS line
 node testing-tools/harness.js        # bar script against a fake DOM
 ```

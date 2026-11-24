@@ -459,6 +459,12 @@ check("diagram body in manual section 10" in low, "skill diagram body")
 check("## Page types" in skill, "skill page types")
 check("manual section 14" in skill and "index.html" in skill, "skill index chapter")
 check("no screenshots" in low and "no pdf" in low, "skill no render pass")
+check("by reading" in low and "do not write a checker script" in low, "skill step 7 names the read method")
+check("arrows and captions" in low and man.lower().count("arrows and captions") >= 2
+      and "one arrow at x=535 in every row gap" in man.lower(), "skill and manual cover arrows and captions")
+check(all(k in man for k in ("LF endings", "rx 3", "one title per card", "title 24 on every card",
+                             "arrow-a", "four segments and upward", "prefixed by section")),
+      "manual checklist covers the validator rules")
 check("both modes" not in low, "skill no per-page mode pass")
 
 # Manual
