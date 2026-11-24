@@ -256,8 +256,8 @@ pre code{background:none;color:inherit;padding:0}
 <h1>Flow diagram skill: context and performance report</h1>
 <h2><span class="num">1</span>Summary</h2>
 <div class="rule"></div>
-<p>Nine runs on the current skill, all with a bare task prompt and Windows Firefox: five build one DNS diagram on a page, four build three diagrams on one page. A one-diagram page takes 98.5 s, 9.4 turns, 41,642 end context and 309,065 total tokens, with 5 of 5 pages passing the validator. A three-diagram page takes 125.3 s, 11.5 turns, 48,732 end context and 434,066 total, 4 of 4 passing. Two extra diagrams add 26.8 s, 2.1 turns, 7,089 context and 124,992 total tokens, so end context grows 17 percent while wall time grows 27 percent and cost per diagram drops from 309k to 145k.</p>
-<p>End context is the figure the agent interface shows in its footer: the input plus the cached prefix of the last request. It stays between 38 and 56k in every run, 4 to 6 percent of a million-token window. Total tokens is the cumulative billing figure and runs six to eight times larger, so the two are never compared as one number.</p>
+<p>Nine runs on the current skill, all with a bare task prompt and Windows Firefox: five build one DNS diagram on a page, four build three diagrams on one page. A one-diagram page takes 98.5 s, 9.4 turns and 41,642 end context, with 5 of 5 pages passing the validator. A three-diagram page takes 125.3 s, 11.5 turns and 48,732 end context, 4 of 4 passing. Two extra diagrams add 26.8 s, 2.1 turns and 7,089 context, so end context grows 17 percent while wall time grows 27 percent and a diagram costs 41.8 s instead of 98.5 s.</p>
+<p>End context is the figure the agent interface shows in its footer: the input plus the cached prefix of the last request. It stays between 38 and 56k in every run, 4 to 6 percent of a million-token window.</p>
 <p>Earlier trials, kept as the record of how the workspace got here:</p>
 <table><thead><tr><th>Change</th><th>Comparison</th><th>Reduction</th></tr></thead><tbody>
 <tr><td>Validator out of the skill</td><td>new input and wall, paired trial</td><td>40.5% input, 38.1% time</td></tr>
@@ -272,28 +272,28 @@ pre code{background:none;color:inherit;padding:0}
 <p>The one-diagram prompt: draw the DNS lookup flow as a simpleflow diagram, save it at the given path, open it once in the running Firefox. The three-diagram prompt names DNS lookup, TLS handshake and HTTP request on one page. No prompt asks for a report, a list of checks or a defect hunt, and no run is touched while it works.</p>
 <p>Five agents ran the one-diagram task in separate folders and four ran the three-diagram task, all in parallel. Instructions, model and skill were identical within each set; only the destination path differed. A maintainer ran the validator after each run, since the validator is a tool outside the skill:</p>
 <pre><code class="language-sh">python testing-tools/validate.py &lt;page&gt;.html agent-skill/template.html</code></pre>
-<p>Wall time is the first request to idle. Turns are assistant messages. End context is the last request's input plus cache read plus cache write. Total is input, cache read, output and reasoning added over the session.</p>
+<p>Wall time is the first request to idle. Turns are assistant messages. End context is the last request's input plus cache read plus cache write.</p>
 <h2><span class="num">3</span>One diagram</h2>
 <div class="rule"></div>
-<table><thead><tr><th>Run</th><th>Wall s</th><th>Turns</th><th>End context</th><th>Total</th><th>Checks</th></tr></thead><tbody>
-<tr><td>f1</td><td>138.8</td><td>10</td><td>46,056</td><td>365,669</td><td>pass 241</td></tr>
-<tr><td>f2</td><td>82.4</td><td>9</td><td>39,528</td><td>278,831</td><td>pass 259</td></tr>
-<tr><td>f3</td><td>108.9</td><td>9</td><td>43,112</td><td>303,068</td><td>pass 257</td></tr>
-<tr><td>f4</td><td>67.5</td><td>8</td><td>38,384</td><td>237,611</td><td>pass 254</td></tr>
-<tr><td>f5</td><td>95.0</td><td>11</td><td>41,133</td><td>360,145</td><td>pass 241</td></tr>
-<tr><td>Mean</td><td>98.5</td><td>9.4</td><td>41,642</td><td>309,065</td><td>5/5</td></tr>
+<table><thead><tr><th>Run</th><th>Wall s</th><th>Turns</th><th>End context</th><th>Checks</th></tr></thead><tbody>
+<tr><td>f1</td><td>138.8</td><td>10</td><td>46,056</td><td>pass 241</td></tr>
+<tr><td>f2</td><td>82.4</td><td>9</td><td>39,528</td><td>pass 259</td></tr>
+<tr><td>f3</td><td>108.9</td><td>9</td><td>43,112</td><td>pass 257</td></tr>
+<tr><td>f4</td><td>67.5</td><td>8</td><td>38,384</td><td>pass 254</td></tr>
+<tr><td>f5</td><td>95.0</td><td>11</td><td>41,133</td><td>pass 241</td></tr>
+<tr><td>Mean</td><td>98.5</td><td>9.4</td><td>41,642</td><td>5/5</td></tr>
 </tbody></table>
 <p>The spread is 2.06x in wall time and 1.20x in end context. f1 is the slow end at 138.8 s with 12,802 reasoning tokens against 4,741 to 9,117 in the others, while its seven tool calls sit at the low end, so the extra time is a long think about the flow and the checklist, not more reading or more edits.</p>
 <h2><span class="num">4</span>Three diagrams</h2>
 <div class="rule"></div>
-<table><thead><tr><th>Run</th><th>Wall s</th><th>Turns</th><th>End context</th><th>Total</th><th>Checks</th></tr></thead><tbody>
-<tr><td>e1</td><td>106.2</td><td>11</td><td>44,773</td><td>384,129</td><td>pass 576</td></tr>
-<tr><td>e2</td><td>114.2</td><td>10</td><td>45,098</td><td>337,723</td><td>pass 512</td></tr>
-<tr><td>e3</td><td>152.2</td><td>15</td><td>56,064</td><td>635,956</td><td>pass 553</td></tr>
-<tr><td>e4</td><td>128.5</td><td>10</td><td>48,993</td><td>378,456</td><td>pass 586</td></tr>
-<tr><td>Mean</td><td>125.3</td><td>11.5</td><td>48,732</td><td>434,066</td><td>4/4</td></tr>
+<table><thead><tr><th>Run</th><th>Wall s</th><th>Turns</th><th>End context</th><th>Checks</th></tr></thead><tbody>
+<tr><td>e1</td><td>106.2</td><td>11</td><td>44,773</td><td>pass 576</td></tr>
+<tr><td>e2</td><td>114.2</td><td>10</td><td>45,098</td><td>pass 512</td></tr>
+<tr><td>e3</td><td>152.2</td><td>15</td><td>56,064</td><td>pass 553</td></tr>
+<tr><td>e4</td><td>128.5</td><td>10</td><td>48,993</td><td>pass 586</td></tr>
+<tr><td>Mean</td><td>125.3</td><td>11.5</td><td>48,732</td><td>4/4</td></tr>
 </tbody></table>
-<p>Three diagrams per page lower the cost of a diagram to 108.6k total and 41.8 s, against 309.1k and 98.5 s for a page of one, because the manual and template read are paid once. End context rises by only 7,089 tokens, about a fifth, which is the section bodies and captions; the diagram bodies are small beside the 21 KB manual.</p>
+<p>Three diagrams per page lower the cost of a diagram to 41.8 s, against 98.5 s for a page of one, because the manual and template read are paid once. End context rises by only 7,089 tokens, about a fifth, which is the section bodies and captions; the diagram bodies are small beside the 21 KB manual.</p>
 <p>The 4 of 4 result follows the merge rule, the three-character budget margin and the one-repair cap. The round before them, on the same task, had four runs with two failures: a merge drawn as two arrows that the validator refused, and side-card lines one character over budget. Both are now contract, and the margin is what a read can see.</p>
 <h2><span class="num">5</span>Earlier trials</h2>
 <div class="rule"></div>
@@ -304,20 +304,20 @@ pre code{background:none;color:inherit;padding:0}
 <tr><td>Change</td><td>-40.5%</td><td>-38.1%</td><td>same</td></tr>
 </tbody></table>
 <p>The step 7 pairs, from the 1.5.0 baseline onward. The check method was open in the clean pair, read-only in v1, and grew the connector item and the full checklist for v2 and v3. v1 A missed the first arrow and its caption, which exposed the gap.</p>
-<table><thead><tr><th>Pair</th><th>Step 7</th><th>Wall s</th><th>Turns</th><th>End context</th><th>Total</th><th>Pages</th></tr></thead><tbody>
-<tr><td>clean</td><td>free method</td><td>86.5</td><td>14.5</td><td>47,785</td><td>593,449</td><td>2/2</td></tr>
-<tr><td>v1</td><td>read-only</td><td>78.3</td><td>11.5</td><td>44,936</td><td>398,827</td><td>1/2</td></tr>
-<tr><td>v2</td><td>plus connectors</td><td>104.4</td><td>13</td><td>47,767</td><td>498,147</td><td>2/2</td></tr>
-<tr><td>v3</td><td>plus full checklist</td><td>69.3</td><td>11</td><td>41,897</td><td>369,280</td><td>2/2</td></tr>
+<table><thead><tr><th>Pair</th><th>Step 7</th><th>Wall s</th><th>Turns</th><th>End context</th><th>Pages</th></tr></thead><tbody>
+<tr><td>clean</td><td>free method</td><td>86.5</td><td>14.5</td><td>47,785</td><td>2/2</td></tr>
+<tr><td>v1</td><td>read-only</td><td>78.3</td><td>11.5</td><td>44,936</td><td>1/2</td></tr>
+<tr><td>v2</td><td>plus connectors</td><td>104.4</td><td>13</td><td>47,767</td><td>2/2</td></tr>
+<tr><td>v3</td><td>plus full checklist</td><td>69.3</td><td>11</td><td>41,897</td><td>2/2</td></tr>
 </tbody></table>
 <h2><span class="num">6</span>Second diagram on the same page</h2>
 <div class="rule"></div>
 <p>A 1.5.0 record. Two agents added a TLS 1.3 section to separate copies of a seven-row DNS page and kept the DNS section.</p>
-<table><thead><tr><th>Case</th><th>Wall s</th><th>Turns</th><th>End context</th><th>Total</th><th>Result</th></tr></thead><tbody>
-<tr><td>Fresh one-diagram page</td><td>69.3</td><td>11</td><td>41,897</td><td>369,280</td><td>2/2</td></tr>
-<tr><td>Add a second diagram</td><td>+64.4</td><td>8</td><td>43,185</td><td>268,705</td><td>2/2</td></tr>
-<tr><td>Two-diagram page</td><td>133.7</td><td>19</td><td>-</td><td>637,985</td><td>2/2</td></tr>
-<tr><td>Two separate pages</td><td>138.6</td><td>22</td><td>-</td><td>738,560</td><td>4/4</td></tr>
+<table><thead><tr><th>Case</th><th>Wall s</th><th>Turns</th><th>End context</th><th>Result</th></tr></thead><tbody>
+<tr><td>Fresh one-diagram page</td><td>69.3</td><td>11</td><td>41,897</td><td>2/2</td></tr>
+<tr><td>Add a second diagram</td><td>+64.4</td><td>8</td><td>43,185</td><td>2/2</td></tr>
+<tr><td>Two-diagram page</td><td>133.7</td><td>19</td><td>-</td><td>2/2</td></tr>
+<tr><td>Two separate pages</td><td>138.6</td><td>22</td><td>-</td><td>4/4</td></tr>
 </tbody></table>
 <p>The added section grows the page by 4.5 to 4.7 KB and leaves the 25 KB template alone. Adding a diagram to a finished page costs 64.4 s, mostly the page read and a fresh look at the checklist; planning three at once, as the current rounds do, costs 13.4 s per extra diagram. The difference is that the three-diagram agent never re-reads a page it just wrote.</p>
 <h2><span class="num">7</span>Checklist scan</h2>
@@ -337,7 +337,7 @@ pre code{background:none;color:inherit;padding:0}
 <ul>
 <li>Five and four runs per case, on one model and one topic, so the means are indicative and the spreads are wide.</li>
 <li>The three-diagram arm has no fresh-page comparison inside this round; the marginal figures come from the two means.</li>
-<li>Context and total measure different things and are kept apart in every table.</li>
+<li>End context is the last request's prompt, not the sum of every turn; the tooling report keeps the two apart.</li>
 <li>The validator is a maintainer tool; the skill neither reads nor runs it.</li>
 <li>The 360 px toolbar and the head-script theme application remain open template findings, as do the text contrast shortfalls against the accepted mark deviations.</li>
 </ul>
