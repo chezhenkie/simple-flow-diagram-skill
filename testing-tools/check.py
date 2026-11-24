@@ -573,7 +573,7 @@ check("## Page controls" in rd, "readme page controls")
 rimgs = [a or b for a, b in re.findall(r'!\[[^\]]*\]\(([^)]+)\)|<img[^>]+src="([^"]+)"', rd)]
 check(len(rimgs) == 6 and all(os.path.isfile(x) for x in rimgs), "readme images")
 check(rd.count('width="280"') == 3, "readme sample thumbnails")
-check(rd.count('width="400"') == 3, "readme closeup sizes")
+check(rd.count('width="400"') == 0, "readme closeups unscaled")
 check("docs/bar-dark.png" in rd and "docs/bar-light.png" in rd
       and "docs/bar-print-friendly.png" in rd, "readme bar closeups")
 check("docs/demo-dark.png" in rd and "docs/demo-print-friendly.png" in rd, "readme demo states")

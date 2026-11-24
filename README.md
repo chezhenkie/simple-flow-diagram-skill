@@ -42,15 +42,15 @@ The mode switch selects light or dark. The page starts from the OS preference an
 
 `dark theme` and `light theme` open a foldout with five dark names or four light names. Dark: github, harbor, solarized, oledblack, ayu. Light: vercel, tokyonight, cursor, orng. Picking a name applies it to the page and every diagram on it, and switches to that mode. Each mode keeps its own pick, so the switch flips between the two.
 
-<img src="docs/bar-dark.png" width="400" alt="Top bar in dark mode">
+<img src="docs/bar-dark.png" alt="Top bar in dark mode">
 
 Dark mode: github theme, print off.
 
-<img src="docs/bar-light.png" width="400" alt="Top bar in light mode">
+<img src="docs/bar-light.png" alt="Top bar in light mode">
 
 Light mode: vercel theme, print off.
 
-<img src="docs/bar-print-friendly.png" width="400" alt="Top bar with print friendly on">
+<img src="docs/bar-print-friendly.png" alt="Top bar with print friendly on">
 
 Print friendly on: the print control fills, the mode and theme stay unchanged.
 
