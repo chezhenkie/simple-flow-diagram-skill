@@ -2,8 +2,19 @@
 
 ## Summary
 
-The test measures the cost of a single diagram page and the cost of adding a second diagram to that page, using the installed 1.5.0 skill and a bare task prompt. The final workflow builds a one-diagram page in 69.3 s with 41,897 context and 369,280 total tokens, averaged over two runs, with both pages passing the validator.
-Adding a second diagram to the same page costs 64.4 s, 43,185 context and 268,705 total tokens, with the 25 KB shell untouched. The largest measured gain is the removal of the page validator from the skill payload: 40.5% fewer new input and 38.1% less wall time, with the same pass rate.
+The test measures the cost of a single diagram page and the cost of adding a second diagram to that page, using the installed 1.5.0 skill and a bare task prompt. The final workflow builds a one-diagram page in 69.3 s with 41,897 context and 369,280 total tokens, averaged over two runs, with both pages passing the validator. Adding a second diagram to the same page costs 64.4 s, 43,185 context and 268,705 total tokens, with the 25 KB shell untouched.
+
+Each gain below was built on the previous workflow, but each row compares a different pair, so the percentages do not add.
+
+| Change | Comparison | Reduction |
+|---|---|---|
+| Validator out of the payload | new input and wall, paired trial | 40.5% input, 38.1% time |
+| Checker script removed | A, final against the old clean A | 46.8% total, 27.2% time |
+| Read-only step 7 plus full checklist | pair, against the clean pair | 37.8% total, 19.9% time |
+| Second diagram on the same page | against a fresh one-diagram page | 27.2% total, 7.1% time |
+| Two-diagram page | against two separate pages | 13.6% total, 3.5% time |
+
+The validator removal is the largest single gain: 40.5% fewer new input and 38.1% less wall time, with the same pass rate. The 1.5.0 no-render workflow and the index shell are part of the baseline; their cost was not isolated in this test.
 
 ## Method
 
@@ -79,15 +90,6 @@ The base page was a seven-row DNS diagram of 25,163 bytes, validated at 275 chec
 The added section grows the page to 29,685 and 29,880 bytes, an increase of 4.5 to 4.7 KB. The shell, theme table, bar script and print rules are unchanged.
 
 The add run reads the existing page instead of the template, so its context is 3.1% higher and its new input 3.4% higher than a fresh one-diagram run. The saving is in turns, output and cache reads. The TLS flow is a familiar protocol, so part of the lower turn count is topic familiarity rather than shell reuse. The result supports the file claim: the added diagram writes about 4.6 KB and leaves the 25 KB shell alone. It does not make a second diagram free.
-
-## Gains
-
-| Change | Measure | Reduction |
-|---|---|---:|
-| Validator out of the payload | new input and wall, paired trial | 40.5% input, 38.1% time |
-| Step 7 read-only and full checklist | total and wall, against the clean pair | 37.8% total, 19.9% time |
-| Second diagram on the same page | total and wall, against a fresh page | 27.2% total, 7.1% time |
-| Two-diagram page | total and wall, against two separate pages | 13.6% total, 3.5% time |
 
 ## Checklist scan
 
