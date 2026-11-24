@@ -485,12 +485,24 @@ check("print theme" in low, "skill print mention")
 check("head with h2 pill" in low, "skill section head")
 check("ascii only" in low, "skill ascii rule")
 check("diagram body in manual section 10" in low, "skill diagram body")
+check("fill the copy in two edits" in low and "do not edit one section at a time" in low
+      and "do not rewrite the whole page" in low, "skill two-edit rule")
 check("## Page types" in skill, "skill page types")
 check("manual section 14" in skill and "index.html" in skill, "skill index chapter")
 check("no screenshots" in low and "no pdf" in low, "skill no render pass")
 check("by reading" in low and "do not write a checker script" in low, "skill step 7 names the read method")
+check("count, grep, diff or hash" in low and "count, grep, diff or hash" in man.lower()
+      and "a check is a read, not a measurement" in low, "skill and manual ban command checks")
 check("arrows and captions" in low and man.lower().count("arrows and captions") >= 2
-      and "one arrow at x=535 in every row gap" in man.lower(), "skill and manual cover arrows and captions")
+      and "one arrow at x=535" in man.lower(), "skill and manual cover arrows and captions")
+check("a merge back into" in low and "keeps the same pair" in man.lower()
+      and "a merge back into one 470 card keeps the 411 and 659 pair" in man.lower(),
+      "skill and manual allow a merge")
+check("write three characters under each limit" in low
+      and "every line is written three characters under its budget" in man.lower(),
+      "skill and manual keep a budget margin")
+check("one repair edit" in low and "one repair edit" in man.lower()
+      and "named in the reply to the user" in man.lower(), "skill and manual cap repairs")
 check(all(k in man for k in ("LF endings", "rx 3", "one title per card", "title 24 on every card",
                              "arrow-a", "four segments and upward", "prefixed by section")),
       "manual checklist covers the validator rules")
@@ -562,7 +574,7 @@ check(r.returncode == 1 and "main row" in r.stdout, "validator catches an off-gr
 
 # Changelog
 versions = re.findall(r"^## (\d+\.\d+\.\d+)$", cl, re.M)
-check(versions == ["1.5.0", "1.4.0", "1.3.7", "1.3.6", "1.3.5", "1.3.4", "1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
+check(versions == ["1.5.1", "1.5.0", "1.4.0", "1.3.7", "1.3.6", "1.3.5", "1.3.4", "1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
       "changelog versions newest first")
 check(not re.search(r"\b(19|20)\d\d\b", cl), "changelog no dates")
 check(not re.search(r"\bv\d+\.\d+", cl), "changelog bare versions")

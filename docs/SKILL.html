@@ -165,7 +165,20 @@ code{font-family:var(--font-mono);font-size:13px;background:var(--code-bg);color
 pre{background:var(--pre-bg);color:var(--pre-ink);padding:16px 20px;border-radius:4px;overflow-x:auto;margin:18px 0 24px;font-family:var(--font-mono);font-size:13px;line-height:1.6;transition:background .3s,color .3s}
 pre code{background:none;color:inherit;padding:0}
 .lede,em,.callout{font-family:var(--font-serif)!important}
-@media(max-width:620px){.wrap{padding:40px 18px 72px}h1{font-size:28px}}
+.svg-diagram{display:block;text-align:center;margin:24px 0;padding:20px;background:var(--card);border:1px solid var(--line);border-radius:4px;transition:background .3s,border-color .3s}
+.svg-diagram svg{max-width:100%;height:auto}
+.diagram-graph{position:relative;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:30px 24px 34px;overflow-x:auto;min-height:120px}
+.diagram-edges{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:0}
+.diagram-layers{position:relative;z-index:1;display:flex;flex-direction:column;gap:38px}
+.diagram-row{display:flex;justify-content:space-evenly;align-items:flex-start;padding:0 12px;gap:46px}
+.diagram-node{background:var(--node-bg, var(--card));border:1px solid var(--line);border-top:4px solid var(--accent);width:160px;min-height:64px;padding:12px 14px;display:flex;flex-direction:column;justify-content:center;font-family:var(--font-ui);font-size:14px;font-weight:600;color:var(--espresso);text-align:center;box-shadow:0 1px 0 var(--shadow-color);border-radius:3px;overflow:hidden;transition:box-shadow .15s ease,transform .15s ease,border-color .15s ease,background .35s ease}
+.diagram-node:hover{box-shadow:0 3px 10px var(--shadow-hover);transform:translateY(-1px)}
+.diagram-edge{fill:none;stroke:var(--edge, var(--line));stroke-width:2.8;transition:stroke .35s ease}
+.diagram-edge.loop{stroke-dasharray:5 4}
+.diagram-edge.lit{stroke:var(--accent);stroke-width:2.7;stroke-dasharray:8 5;animation:dg-dash .9s linear infinite}
+.diagram-edge.dim{opacity:.25}
+@keyframes dg-dash{to{stroke-dashoffset:-26}}
+@media(max-width:620px){.wrap{padding:40px 18px 72px}h1{font-size:28px}.diagram-node{width:120px;min-height:54px;padding:10px;font-size:12px}.diagram-row{gap:24px}}
 </style>
 <script>(function(){
   var ua=navigator.userAgent;
@@ -241,7 +254,7 @@ pre code{background:none;color:inherit;padding:0}
     <h1>SKILL</h1>  </header>
   <main>
 <h1>simpleflow diagram</h1>
-<p>One self-contained <code>.html</code> page per topic, or one page with several diagrams. Start from <a href="https://github.com/chezhenkie/simpleflow-diagram-skill/blob/main/agent-skill/template.html">template.html</a>: the layout, the themes, the mode switch and the print view are already in it. A folder of finished pages and documents can open on <a href="https://github.com/chezhenkie/simpleflow-diagram-skill/blob/main/agent-skill/index.html">index.html</a>, a second template with link cards and a document table.</p>
+<p>One self-contained <code>.html</code> page per topic, or one page with several diagrams. Start from <a href="template.html">template.html</a>: the layout, the themes, the mode switch and the print view are already in it. A folder of finished pages and documents can open on <a href="index.html">index.html</a>, a second template with link cards and a document table.</p>
 <h2><span class="num">1</span>Page types</h2>
 <div class="rule"></div>
 <ul>
@@ -256,17 +269,17 @@ pre code{background:none;color:inherit;padding:0}
 <li>One pass. No colour or layout decisions, no second draft.</li>
 </ul>
 <p>Do not choose colors or restyle controls; the page follows whichever theme the reader picks.</p>
-<p>The full contract lives in <a href="https://github.com/chezhenkie/simpleflow-diagram-skill/blob/main/agent-skill/style-manual.md">style-manual.md</a>. <a href="demo.html">demo.html</a> is the same template with one filled diagram.</p>
+<p>The full contract lives in <a href="style-manual.md">style-manual.md</a>. <a href="demo.html">demo.html</a> is the same template with one filled diagram.</p>
 <h2><span class="num">3</span>Workflow</h2>
 <div class="rule"></div>
 <ol>
 <li>Read <code>style-manual.md</code> before writing; it carries every number and rule the page needs. Copy <code>template.html</code> to <code>&lt;topic&gt;-flow.html</code> in the workspace root unless the user or project rules name another folder. Copy the template as it is. Replace the title, subtitle and footer, then insert diagram sections at the marked space. <code>demo.html</code> is an optional filled example.</li>
 <li>Keep the page template as it is: head script, token block, toolbar, toolbar script and print rules. Change only the page copy and the diagram bodies.</li>
-<li>Write the page in this order: toolbar, h1, p.sub, one or more sections (head with h2 pill, p.note, svg), footer. Use the diagram body in manual section 10.</li>
-<li>Keep the grid: viewBox <code>0 0 1040 H</code>, main column x=300 width=470, card top <code>30 + 108n</code>, card height 70, arrow 28, caption x=549 at y+88. The tag is optional at last card top + 98 with a viewBox of <code>tag + 32</code>, or none with a viewBox of last top + 102. Up to seven main rows; the tag and side boxes do not count. Side boxes are fixed at 210 wide on x=40 and 220 wide on x=800. A decision may fork into two 222 cards at x=300 and x=548, with arrows at 411 and 659 and captions at 425 and 673.</li>
-<li>Fill text within the budgets: 65 characters per main line, 28 or 26 per split or side line, card title 24, caption 42 or 18 on a split, tag line 78. A 70-high card takes two lines, a 90/100-high side card three.</li>
+<li>Fill the copy in two edits. The first replaces the title, h1, p.sub and footer; the second inserts every diagram section at the marked space in order, head with h2 pill, p.note and svg. Use the diagram body in manual section 10. Do not edit one section at a time and do not rewrite the whole page, because edits keep the template byte for byte; a further edit is only for a defect found in the read.</li>
+<li>Keep the grid: viewBox <code>0 0 1040 H</code>, main column x=300 width=470, card top <code>30 + 108n</code>, card height 70, arrow 28, caption x=549 at y+88. The tag is optional at last card top + 98 with a viewBox of <code>tag + 32</code>, or none with a viewBox of last top + 102. Up to seven main rows; the tag and side boxes do not count. Side boxes are fixed at 210 wide on x=40 and 220 wide on x=800. A decision may fork into two 222 cards at x=300 and x=548, with arrows at 411 and 659 and captions at 425 and 673. A merge back into one 470 card keeps that pair, captions optional.</li>
+<li>Fill text within the budgets: 65 characters per main line, 28 or 26 per split or side line, card title 24, caption 42 or 18 on a split, tag line 78. Write three characters under each limit, so a read can see the slack. A 70-high card takes two lines, a 90/100-high side card three.</li>
 <li>Mark one focus card and zero to two accent connectors per diagram. Solid for the main path, dashed for side channels, dotted for returns.</li>
-<li>Check the written part by reading the page against the manual section 12 checklist: page structure, the template copy, geometry, arrows and captions, text budgets, focus and accents, loop lanes and marker ids. Do not write a checker script or run a separate check tool. The template is copied byte for byte and is already checked in the repository; do not test the toolbar, themes or print on the page. Open the page once for the user when it is done; if it is already open from an earlier pass, do not open another window or tab, and let the user refresh.</li>
+<li>Check the written part by reading it once, by eye, against the manual section 12 checklist: page structure, geometry, arrows and captions, text budgets, focus and accents, loop lanes and marker ids. Do not write a checker script, run a separate check tool, or count, grep, diff or hash the page with commands; a check is a read, not a measurement. The template is copied byte for byte and is already checked in the repository, so do not compare the page against it and do not test the toolbar, themes or print. On a page that already holds a diagram, read only the new section and leave the earlier ones alone. A defect found in the read gets one repair edit; a defect that survives that edit is named in the reply to the user, never chased in another pass. Open the page once for the user when it is done; if it is already open from an earlier pass, do not open another window or tab, and let the user refresh.</li>
 <li>After the user has viewed the page, ask whether the diagram file can be deleted. Do not delete it unasked.</li>
 </ol>
 <h2><span class="num">4</span>Themes and modes</h2>
@@ -275,7 +288,7 @@ pre code{background:none;color:inherit;padding:0}
 <li>One theme covers the page and every diagram on it. Sections carry no class, no token block and no color of their own.</li>
 <li>The reader picks the theme: five dark names and four light names in the two menus, each mode remembering its own choice.</li>
 <li>The mode switch chooses light or dark and starts from the OS preference. Print is a separate toggle with fixed values.</li>
-<li>Never hardcode a fill or stroke outside the template&#39;s classes and <code>var(--...)</code> tokens.</li>
+<li>Never hardcode a fill or stroke outside the template's classes and <code>var(--...)</code> tokens.</li>
 </ul>
 <h2><span class="num">5</span>Hard rules</h2>
 <div class="rule"></div>
@@ -419,7 +432,9 @@ pre code{background:none;color:inherit;padding:0}
         '--code-bg':'#eceae4',
         '--pre-bg':'#343433',
         '--shadow-color':'rgba(45,45,45,0.06)',
-        '--pre-ink':'#f2f2ef'
+        '--pre-ink':'#f2f2ef',
+        '--edge':'#b5b3ab',
+        '--node-bg':'#efeee8'
       },
       dark:{
         '--paper':'#0a0c10',
@@ -437,7 +452,9 @@ pre code{background:none;color:inherit;padding:0}
         '--code-bg':'#1a2030',
         '--pre-bg':'#0a0c10',
         '--shadow-color':'rgba(0,0,0,0.4)',
-        '--pre-ink':'#d0ccc0'
+        '--pre-ink':'#d0ccc0',
+        '--edge':'#8b97ab',
+        '--node-bg':'#222a3a'
       }
     },
     solarized:{
@@ -461,7 +478,9 @@ pre code{background:none;color:inherit;padding:0}
         '--code-bg':'#eee8d5',
         '--pre-bg':'#eee8d5',
         '--shadow-color':'rgba(0,0,0,0.05)',
-        '--pre-ink':'#586e75'
+        '--pre-ink':'#586e75',
+        '--edge':'#93a1a1',
+        '--node-bg':'#fdf6e3'
       },
       dark:{
         '--paper':'#002b36',
@@ -483,7 +502,9 @@ pre code{background:none;color:inherit;padding:0}
         '--code-bg':'#073642',
         '--pre-bg':'#073642',
         '--shadow-color':'rgba(0,0,0,0.3)',
-        '--pre-ink':'#93a1a1'
+        '--pre-ink':'#93a1a1',
+        '--edge':'#839496',
+        '--node-bg':'#0b3f4e'
       }
     },
     monochrome:{
@@ -503,7 +524,9 @@ pre code{background:none;color:inherit;padding:0}
         '--code-bg':'#e8e8e8',
         '--pre-bg':'#333333',
         '--shadow-color':'rgba(0,0,0,0.08)',
-        '--pre-ink':'#f0f0f0'
+        '--pre-ink':'#f0f0f0',
+        '--edge':'#c2c2c2',
+        '--node-bg':'#efefef'
       },
       dark:{
         '--paper':'#1a1a1a',
@@ -521,7 +544,9 @@ pre code{background:none;color:inherit;padding:0}
         '--code-bg':'#333333',
         '--pre-bg':'#111111',
         '--shadow-color':'rgba(0,0,0,0.3)',
-        '--pre-ink':'#cccccc'
+        '--pre-ink':'#cccccc',
+        '--edge':'#cccccc',
+        '--node-bg':'#2e2e2e'
       }
     }
   };
@@ -676,6 +701,155 @@ pre code{background:none;color:inherit;padding:0}
   }
 
   return{init,getValues,setValues,setMode,setPalette,setFont};
+})();</script>
+<script>const Diagrams=(function(){
+  var NS='http://www.w3.org/2000/svg';
+
+  function center(graph,el){
+    var a=el.getBoundingClientRect();
+    var b=graph.getBoundingClientRect();
+    return{
+      x:a.left-b.left+a.width/2,
+      y:a.top-b.top+a.height/2,
+      h:a.height,
+      w:a.width
+    };
+  }
+
+  function bez(t,p0,c1,c2,p3){
+    var mt=1-t,a=mt*mt*mt,b=3*mt*mt*t,c=3*mt*t*t,d=t*t*t;
+    return{
+      x:a*p0.x+b*c1.x+c*c2.x+d*p3.x,
+      y:a*p0.y+b*c1.y+c*c2.y+d*p3.y
+    };
+  }
+
+  function drawEdge(graph,svg,edge,sourceNode,targetNode){
+    var S=center(graph,sourceNode);
+    var T=center(graph,targetNode);
+    var dx=T.x-S.x;
+    var dy=T.y-S.y;
+    var up=edge.loop||T.y+S.h<S.y;
+
+    var p0,p3,c1,c2;
+    if(edge.h){
+      var dir=dx>=0?1:-1;
+      p0={x:S.x+dir*S.w/2,y:S.y};
+      p3={x:T.x-dir*T.w/2,y:T.y};
+      var midY=(p0.y+p3.y)/2;
+      var spread=Math.abs(dx)*0.4;
+      c1={x:p0.x+dir*spread,y:midY};
+      c2={x:p3.x-dir*spread,y:midY};
+    }else if(up){
+      p0={x:S.x,y:S.y-S.h/2};
+      p3={x:T.x,y:T.y+S.h/2};
+      var bulge=90;
+      c1={x:p0.x-bulge,y:p0.y-30};
+      c2={x:p3.x-bulge,y:p3.y+30};
+    }else if(edge.d&&Math.abs(dx)>=Math.abs(dy)){
+      var ddir=dx>=0?1:-1;
+      p0={x:S.x+ddir*S.w/2,y:S.y};
+      p3={x:T.x-ddir*T.w/2,y:T.y};
+      var mx=(p0.x+p3.x)/2;
+      c1={x:mx,y:p0.y};
+      c2={x:mx,y:p3.y};
+    }else{
+      p0={x:S.x,y:S.y+S.h/2};
+      p3={x:T.x,y:T.y-S.h/2};
+      var my=(p0.y+p3.y)/2;
+      c1={x:p0.x,y:my};
+      c2={x:p3.x,y:my};
+    }
+
+    var g=document.createElementNS(NS,'g');
+    g.dataset.from=edge.s;
+    g.dataset.to=edge.t;
+
+    var path=document.createElementNS(NS,'path');
+    var d='M '+p0.x+' '+p0.y+' C '+c1.x+' '+c1.y+' '+c2.x+' '+c2.y+' '+p3.x+' '+p3.y;
+    path.setAttribute('d',d);
+    path.setAttribute('class','diagram-edge'+(edge.loop?' loop':''));
+    g.appendChild(path);
+    svg.appendChild(g);
+  }
+
+  function renderDiagram(data){
+    var graph=document.getElementById(data.id);
+    if(!graph)return;
+    var svg=graph.querySelector('.diagram-edges');
+    var layers=graph.querySelector('.diagram-layers');
+    if(!svg||!layers)return;
+
+    while(svg.firstChild)svg.removeChild(svg.firstChild);
+
+    var nodeMap={};
+    var nodes=layers.querySelectorAll('.diagram-node');
+    for(var i=0;i<nodes.length;i++){
+      var n=nodes[i];
+      var key=n.getAttribute('data-dg-node');
+      if(key)nodeMap[key]=n;
+    }
+
+    for(var i=0;i<data.edges.length;i++){
+      var e=data.edges[i];
+      var s=nodeMap[e.s];
+      var t=nodeMap[e.t];
+      if(s&&t)drawEdge(graph,svg,e,s,t);
+    }
+
+    function setLit(id){
+      var gs=svg.querySelectorAll('g');
+      for(var j=0;j<gs.length;j++){
+        var on=gs[j].getAttribute('data-from')===id;
+        var p=gs[j].querySelector('path');
+        if(!p)continue;
+        p.classList.toggle('lit',on);
+        p.classList.toggle('dim',!on);
+      }
+    }
+    function clearLit(){
+      var ps=svg.querySelectorAll('path');
+      for(var j=0;j<ps.length;j++)ps[j].classList.remove('lit','dim');
+    }
+    var pinned=null;
+    for(var key in nodeMap){
+      (function(k){
+        nodeMap[k].addEventListener('mouseenter',function(){setLit(k);});
+        nodeMap[k].addEventListener('mouseleave',function(){if(pinned)setLit(pinned);else clearLit();});
+        nodeMap[k].addEventListener('click',function(){
+          pinned=(pinned===k)?null:k;
+          if(pinned)setLit(pinned);else clearLit();
+        });
+      })(key);
+    }
+    graph.addEventListener('click',function(ev){
+      if(!ev.target.closest||!ev.target.closest('.diagram-node')){pinned=null;clearLit();}
+    });
+  }
+
+  function initAll(){
+    var q=window.__diagramQueue||[];
+    for(var i=0;i<q.length;i++){
+      renderDiagram(q[i]);
+    }
+  }
+
+  function debounce(fn,ms){
+    var t;
+    return function(){
+      clearTimeout(t);
+      t=setTimeout(fn,ms);
+    };
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',initAll);
+  }else{
+    initAll();
+  }
+  window.addEventListener('resize',debounce(initAll,100));
+
+  return{initAll,renderDiagram};
 })();</script>
 <script>(function(){
   var prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;

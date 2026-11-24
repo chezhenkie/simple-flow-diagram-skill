@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.5.1
+
+### Changes
+
+* Step 3 fills the copy in two edits: the page copy first, every section in one second edit. No per-section edits and no whole-page rewrite, so the template stays byte for byte.
+* Every line is written three characters under its budget, so the read can see the slack. The hard limits are unchanged.
+* A merge back into one 470 card keeps the split pair at 411 and 659, with captions at 425 and 673 optional. `testing-tools/validate.py` accepts that form as well as the centre arrow at 535.
+* Step 7 forbids counting, grepping, diffing and hashing the page with commands, and allows one repair edit after the read. A defect that survives the repair is named in the reply to the user.
+* Manual sections 6, 8, 11 and 12 carry the margin, the merge pair, the read rule and the repair cap.
+
 ## 1.5.0
 
 ### New features

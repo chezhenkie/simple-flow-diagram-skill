@@ -108,7 +108,7 @@ Text limits, per line:
 | split caption | 113 | 20 | 18 |
 | tag line | 434 | 86 | 78 |
 
-SVG text does not wrap; an overlong line runs into the border. Count characters before writing. The title budget is 24 on every card; a 470 main card has more room but keeps the same limit.
+SVG text does not wrap; an overlong line runs into the border. Every line is written three characters under its budget: main 62, split 25, side 25 or 23, title 21, caption 39 or 15, tag 75. The table keeps the hard limits, and a line that just fits is a rewrite. The title budget is 24 on every card; a 470 main card has more room but keeps the same limit.
 
 ## 7. Connectors
 
@@ -188,7 +188,7 @@ Split row, a decision card forking into two cards on the next row:
 <text class="d" x="566" y="290">x86_64-pc-windows-msvc</text>
 ```
 
-Two arrows leave the parent bottom at the card centres, 411 and 659, and enter the children at the same x. A merge back into a 470 card uses the same positions. No horizontal fork line, no elbows. If one branch ends and only one continues, the next row returns to one 470 card; that gap carries one arrow at x=535 and one caption at x=549.
+Two arrows leave the parent bottom at the card centres, 411 and 659, and enter the children at the same x. No horizontal fork line, no elbows. A merge back into a 470 card keeps the same pair, two arrows at 411 and 659 with captions at 425 and 673 where they add something. When one branch ends and only one continues, the gap carries one arrow at x=535 and one caption at x=549.
 
 - The single column stays the default. A split needs a decision with two named outcomes, and the decision card is the focus.
 - Both children leave the same row and are normal cards with a title and up to two description lines.
@@ -255,7 +255,7 @@ For a decision, replace one row with a split row: two 222 cards at x=300 and x=5
 
 ## 11. Validation
 
-The page is right when it follows the numbers in sections 5 to 8 and keeps `template.html` unchanged: head script, token block, toolbar, toolbar script and print rules. Check the written part by reading: geometry, arrows and captions, text baselines and budgets, the tag and viewBox height, the focus and accents, the loop lanes and the marker ids.
+The page is right when it follows the numbers in sections 5 to 8 and keeps `template.html` unchanged: head script, token block, toolbar, toolbar script and print rules. Check the written part by reading it once, by eye: geometry, arrows and captions, text baselines and budgets, the tag and viewBox height, the focus and accents, the loop lanes and the marker ids. Do not count, grep, diff or hash the page with commands, and do not compare it against the template; a check is a read, not a measurement. A diagram added to a page that already holds one needs only its own section checked. A defect found in the read gets one repair edit, and a defect that survives that edit is named in the reply to the user rather than chased in another pass.
 
 The template, the toolbar, the themes and the print view are fixed and checked once in the repository. Do not re-check them per page, take screenshots or make PDFs. Open the finished page once for the user; the user's eye is the last check.
 
@@ -265,9 +265,9 @@ The template, the toolbar, the themes and the print view are fixed and checked o
 - [ ] One main, one h1, one sub, one footer; h2 pill reads `subject: outcome`.
 - [ ] One or more sections, each with a head, a note and one SVG; `role="img"` and an aria-label on the SVG; no fixed width or height.
 - [ ] Main column x=300 width 470, or two 222 cards at 300 and 548; pitch 108, height 70; viewBox `0 0 1040 H`; card and tag corners rx 3.
-- [ ] Arrows and captions: one arrow at x=535 in every row gap, caption at x=549 at y+18; split arrows at 411 and 659, captions at 425 and 673; if one branch ends, the next row returns to one 470 card with one arrow at 535.
+- [ ] Arrows and captions: one arrow at x=535 in a row gap, caption at x=549 at y+18; split arrows at 411 and 659, captions at 425 and 673; a merge back into one 470 card keeps the 411 and 659 pair, captions optional; if one branch ends, the gap holds one arrow at 535.
 - [ ] Title at +26, descriptions at +44 and +59, a third line at +74 only on a 90/100 side card; text at x+18, or x+16 on a side box; one title per card.
-- [ ] Budgets: main 65, split 28, side 28 or 26, title 24 on every card, caption 42 or 18, tag 78.
+- [ ] Budgets: written three under, main 62, split 25, side 25 or 23, title 21, caption 39 or 15, tag 75; the hard limits stay main 65, split 28, side 28 or 26, title 24 on every card, caption 42 or 18, tag 78.
 - [ ] Up to seven main rows; side boxes 210 at x=40 and 220 at x=800, 70/90/100 high on a row or 20 lower; a side stub uses mid at top + h/2 and stops 10 px before the main card or 4 px before the side box.
 - [ ] One focus card, zero to two accent connectors (`arrow-a`); `arrow` and `dash` use the muted marker, `arrow-a` the accent marker; `dash` for sides, `loop` for returns.
 - [ ] Loop lanes at 226/206/186/166 and 824/844/864/884, four segments and upward, free marks, path before the cards; loop label 12 characters.

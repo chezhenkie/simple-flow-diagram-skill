@@ -165,7 +165,20 @@ code{font-family:var(--font-mono);font-size:13px;background:var(--code-bg);color
 pre{background:var(--pre-bg);color:var(--pre-ink);padding:16px 20px;border-radius:4px;overflow-x:auto;margin:18px 0 24px;font-family:var(--font-mono);font-size:13px;line-height:1.6;transition:background .3s,color .3s}
 pre code{background:none;color:inherit;padding:0}
 .lede,em,.callout{font-family:var(--font-serif)!important}
-@media(max-width:620px){.wrap{padding:40px 18px 72px}h1{font-size:28px}}
+.svg-diagram{display:block;text-align:center;margin:24px 0;padding:20px;background:var(--card);border:1px solid var(--line);border-radius:4px;transition:background .3s,border-color .3s}
+.svg-diagram svg{max-width:100%;height:auto}
+.diagram-graph{position:relative;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:30px 24px 34px;overflow-x:auto;min-height:120px}
+.diagram-edges{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:0}
+.diagram-layers{position:relative;z-index:1;display:flex;flex-direction:column;gap:38px}
+.diagram-row{display:flex;justify-content:space-evenly;align-items:flex-start;padding:0 12px;gap:46px}
+.diagram-node{background:var(--node-bg, var(--card));border:1px solid var(--line);border-top:4px solid var(--accent);width:160px;min-height:64px;padding:12px 14px;display:flex;flex-direction:column;justify-content:center;font-family:var(--font-ui);font-size:14px;font-weight:600;color:var(--espresso);text-align:center;box-shadow:0 1px 0 var(--shadow-color);border-radius:3px;overflow:hidden;transition:box-shadow .15s ease,transform .15s ease,border-color .15s ease,background .35s ease}
+.diagram-node:hover{box-shadow:0 3px 10px var(--shadow-hover);transform:translateY(-1px)}
+.diagram-edge{fill:none;stroke:var(--edge, var(--line));stroke-width:2.8;transition:stroke .35s ease}
+.diagram-edge.loop{stroke-dasharray:5 4}
+.diagram-edge.lit{stroke:var(--accent);stroke-width:2.7;stroke-dasharray:8 5;animation:dg-dash .9s linear infinite}
+.diagram-edge.dim{opacity:.25}
+@keyframes dg-dash{to{stroke-dashoffset:-26}}
+@media(max-width:620px){.wrap{padding:40px 18px 72px}h1{font-size:28px}.diagram-node{width:120px;min-height:54px;padding:10px;font-size:12px}.diagram-row{gap:24px}}
 </style>
 <script>(function(){
   var ua=navigator.userAgent;
@@ -243,8 +256,9 @@ pre code{background:none;color:inherit;padding:0}
 <h1>Flow diagram skill: context and performance report</h1>
 <h2><span class="num">1</span>Summary</h2>
 <div class="rule"></div>
-<p>The test measures the cost of a single diagram page and the cost of adding a second diagram to that page, using the installed 1.5.0 skill and a bare task prompt. The final workflow builds a one-diagram page in 69.3 s with 41,897 context and 369,280 total tokens, averaged over two runs, with both pages passing the validator. Adding a second diagram to the same page costs 64.4 s, 43,185 context and 268,705 total tokens, with the 25 KB template untouched.</p>
-<p>Each gain below was built on the previous workflow, but each row compares a different pair, so the percentages do not add.</p>
+<p>Nine runs on the current skill, all with a bare task prompt and Windows Firefox: five build one DNS diagram on a page, four build three diagrams on one page. A one-diagram page takes 98.5 s, 9.4 turns, 41,642 end context and 309,065 total tokens, with 5 of 5 pages passing the validator. A three-diagram page takes 125.3 s, 11.5 turns, 48,732 end context and 434,066 total, 4 of 4 passing. Two extra diagrams add 26.8 s, 2.1 turns, 7,089 context and 124,992 total tokens, so end context grows 17 percent while wall time grows 27 percent and cost per diagram drops from 309k to 145k.</p>
+<p>End context is the figure the agent interface shows in its footer: the input plus the cached prefix of the last request. It stays between 38 and 56k in every run, 4 to 6 percent of a million-token window. Total tokens is the cumulative billing figure and runs six to eight times larger, so the two are never compared as one number.</p>
+<p>Earlier trials, kept as the record of how the workspace got here:</p>
 <table><thead><tr><th>Change</th><th>Comparison</th><th>Reduction</th></tr></thead><tbody>
 <tr><td>Validator out of the skill</td><td>new input and wall, paired trial</td><td>40.5% input, 38.1% time</td></tr>
 <tr><td>Checker script removed</td><td>A, final against the old clean A</td><td>46.8% total, 27.2% time</td></tr>
@@ -252,98 +266,80 @@ pre code{background:none;color:inherit;padding:0}
 <tr><td>Second diagram on the same page</td><td>against a fresh one-diagram page</td><td>27.2% total, 7.1% time</td></tr>
 <tr><td>Two-diagram page</td><td>against two separate pages</td><td>13.6% total, 3.5% time</td></tr>
 </tbody></table>
-<p>The validator removal is the largest single gain: 40.5% fewer new input and 38.1% less wall time, with the same pass rate. The 1.5.0 no-browser workflow and the index page are part of the baseline; their cost was not isolated in this test.</p>
+<p>Each row compares a different pair, so the percentages do not add.</p>
 <h2><span class="num">2</span>Method</h2>
 <div class="rule"></div>
-<p>The prompt was identical for every run except the destination path:</p>
-<div class="callout"><p>Use the simpleflow skill to build a DNS lookup flow diagram and save it at &lt;path&gt;. Use Windows browsers only, never WSL.</p></div>
-<p>For the second-diagram case the prompt asked to add a TLS handshake section to an existing page and keep the DNS section. Each case used two agents in separate folders. No prompt asked for a report, a list of checks or a defect hunt. The installed skill was read from the OpenCode skills folder.</p>
-<p>Measurements come from the session store. Wall time is idle time minus creation time. Context is the last turn&#39;s input plus the cached prefix, the number the agent UI shows. Total tokens is new input plus output plus reasoning plus cache reads across the session; it is a cumulative billing figure, not the context of one turn.</p>
-<p>A maintainer ran the page validator after each run:</p>
+<p>The one-diagram prompt: draw the DNS lookup flow as a simpleflow diagram, save it at the given path, open it once in the running Firefox. The three-diagram prompt names DNS lookup, TLS handshake and HTTP request on one page. No prompt asks for a report, a list of checks or a defect hunt, and no run is touched while it works.</p>
+<p>Five agents ran the one-diagram task in separate folders and four ran the three-diagram task, all in parallel. Instructions, model and skill were identical within each set; only the destination path differed. A maintainer ran the validator after each run, since the validator is a tool outside the skill:</p>
 <pre><code class="language-sh">python testing-tools/validate.py &lt;page&gt;.html agent-skill/template.html</code></pre>
-<p>The validator is a maintainer tool outside the skill.</p>
-<h2><span class="num">3</span>Changes under test</h2>
+<p>Wall time is the first request to idle. Turns are assistant messages. End context is the last request's input plus cache read plus cache write. Total is input, cache read, output and reasoning added over the session.</p>
+<h2><span class="num">3</span>One diagram</h2>
+<div class="rule"></div>
+<table><thead><tr><th>Run</th><th>Wall s</th><th>Turns</th><th>End context</th><th>Total</th><th>Checks</th></tr></thead><tbody>
+<tr><td>f1</td><td>138.8</td><td>10</td><td>46,056</td><td>365,669</td><td>pass 241</td></tr>
+<tr><td>f2</td><td>82.4</td><td>9</td><td>39,528</td><td>278,831</td><td>pass 259</td></tr>
+<tr><td>f3</td><td>108.9</td><td>9</td><td>43,112</td><td>303,068</td><td>pass 257</td></tr>
+<tr><td>f4</td><td>67.5</td><td>8</td><td>38,384</td><td>237,611</td><td>pass 254</td></tr>
+<tr><td>f5</td><td>95.0</td><td>11</td><td>41,133</td><td>360,145</td><td>pass 241</td></tr>
+<tr><td>Mean</td><td>98.5</td><td>9.4</td><td>41,642</td><td>309,065</td><td>5/5</td></tr>
+</tbody></table>
+<p>The spread is 2.06x in wall time and 1.20x in end context. f1 is the slow end at 138.8 s with 12,802 reasoning tokens against 4,741 to 9,117 in the others, while its seven tool calls sit at the low end, so the extra time is a long think about the flow and the checklist, not more reading or more edits.</p>
+<h2><span class="num">4</span>Three diagrams</h2>
+<div class="rule"></div>
+<table><thead><tr><th>Run</th><th>Wall s</th><th>Turns</th><th>End context</th><th>Total</th><th>Checks</th></tr></thead><tbody>
+<tr><td>e1</td><td>106.2</td><td>11</td><td>44,773</td><td>384,129</td><td>pass 576</td></tr>
+<tr><td>e2</td><td>114.2</td><td>10</td><td>45,098</td><td>337,723</td><td>pass 512</td></tr>
+<tr><td>e3</td><td>152.2</td><td>15</td><td>56,064</td><td>635,956</td><td>pass 553</td></tr>
+<tr><td>e4</td><td>128.5</td><td>10</td><td>48,993</td><td>378,456</td><td>pass 586</td></tr>
+<tr><td>Mean</td><td>125.3</td><td>11.5</td><td>48,732</td><td>434,066</td><td>4/4</td></tr>
+</tbody></table>
+<p>Three diagrams per page lower the cost of a diagram to 108.6k total and 41.8 s, against 309.1k and 98.5 s for a page of one, because the manual and template read are paid once. End context rises by only 7,089 tokens, about a fifth, which is the section bodies and captions; the diagram bodies are small beside the 21 KB manual.</p>
+<p>The 4 of 4 result follows the merge rule, the three-character budget margin and the one-repair cap. The round before them, on the same task, had four runs with two failures: a merge drawn as two arrows that the validator refused, and side-card lines one character over budget. Both are now contract, and the margin is what a read can see.</p>
+<h2><span class="num">5</span>Earlier trials</h2>
+<div class="rule"></div>
+<p>The validator left the skill in 1.3.7. The paired trial below read the validator source in one arm and not the other; all four pages passed on the first attempt.</p>
+<table><thead><tr><th>Arm</th><th>Mean new input</th><th>Mean wall s</th><th>Pages</th></tr></thead><tbody>
+<tr><td>With validator read</td><td>55,083</td><td>271.6</td><td>2/2</td></tr>
+<tr><td>Without</td><td>32,747</td><td>168.2</td><td>2/2</td></tr>
+<tr><td>Change</td><td>-40.5%</td><td>-38.1%</td><td>same</td></tr>
+</tbody></table>
+<p>The step 7 pairs, from the 1.5.0 baseline onward. The check method was open in the clean pair, read-only in v1, and grew the connector item and the full checklist for v2 and v3. v1 A missed the first arrow and its caption, which exposed the gap.</p>
+<table><thead><tr><th>Pair</th><th>Step 7</th><th>Wall s</th><th>Turns</th><th>End context</th><th>Total</th><th>Pages</th></tr></thead><tbody>
+<tr><td>clean</td><td>free method</td><td>86.5</td><td>14.5</td><td>47,785</td><td>593,449</td><td>2/2</td></tr>
+<tr><td>v1</td><td>read-only</td><td>78.3</td><td>11.5</td><td>44,936</td><td>398,827</td><td>1/2</td></tr>
+<tr><td>v2</td><td>plus connectors</td><td>104.4</td><td>13</td><td>47,767</td><td>498,147</td><td>2/2</td></tr>
+<tr><td>v3</td><td>plus full checklist</td><td>69.3</td><td>11</td><td>41,897</td><td>369,280</td><td>2/2</td></tr>
+</tbody></table>
+<h2><span class="num">6</span>Second diagram on the same page</h2>
+<div class="rule"></div>
+<p>A 1.5.0 record. Two agents added a TLS 1.3 section to separate copies of a seven-row DNS page and kept the DNS section.</p>
+<table><thead><tr><th>Case</th><th>Wall s</th><th>Turns</th><th>End context</th><th>Total</th><th>Result</th></tr></thead><tbody>
+<tr><td>Fresh one-diagram page</td><td>69.3</td><td>11</td><td>41,897</td><td>369,280</td><td>2/2</td></tr>
+<tr><td>Add a second diagram</td><td>+64.4</td><td>8</td><td>43,185</td><td>268,705</td><td>2/2</td></tr>
+<tr><td>Two-diagram page</td><td>133.7</td><td>19</td><td>-</td><td>637,985</td><td>2/2</td></tr>
+<tr><td>Two separate pages</td><td>138.6</td><td>22</td><td>-</td><td>738,560</td><td>4/4</td></tr>
+</tbody></table>
+<p>The added section grows the page by 4.5 to 4.7 KB and leaves the 25 KB template alone. Adding a diagram to a finished page costs 64.4 s, mostly the page read and a fresh look at the checklist; planning three at once, as the current rounds do, costs 13.4 s per extra diagram. The difference is that the three-diagram agent never re-reads a page it just wrote.</p>
+<h2><span class="num">7</span>Checklist scan</h2>
+<div class="rule"></div>
+<p>The scan compared <code>testing-tools/validate.py</code> with manual section 12 and found ten unnamed rules and three ambiguities. All are in the manual now, and the rule set has since gained the merge pair, the budget margin, the command ban, the two-edit order and the repair cap.</p>
+<h2><span class="num">8</span>Final state</h2>
 <div class="rule"></div>
 <ul>
-<li>1.3.7 moved the page validator out of the skill to <code>testing-tools/validate.py</code>. The agent no longer reads the 14.6 KB source or runs the tool, and the payload no longer needs Python.</li>
-<li>1.5.0 removed the per-page browser pass. The template is checked once in the repository, the written part is checked by reading and the page is opened once for the reader.</li>
-<li>Step 7 now names the check method: read the page against the manual section 12 checklist, and do not write a checker script or run a separate check tool.</li>
-<li>The section 12 checklist was expanded after a comparison with the validator. It now covers page structure, the template copy, line endings, corners, side heights, text indents, budgets, accent classes, loop shape, marker prefixes, assets and storage.</li>
+<li>Skill: five files, no executable, no runtime, installed copy matching the repository.</li>
+<li>Static checks: 394, zero failures. Toolbar harness: ok. Demo validator: 245, zero failures.</li>
+<li>Nine test pages passed; the run before the merge and margin rules had two failures of four.</li>
+<li>No per-page browser pass. The template is checked in the repository, the written part is read once, the page is opened once.</li>
+<li>Test pages are kept in <code>test-runs/</code> until the user asks for their removal.</li>
 </ul>
-<h2><span class="num">4</span>Validator removal</h2>
-<div class="rule"></div>
-<p>The validator left the skill in 1.3.7. The table below compares the paired runs that read the validator source with the runs that did not. All four pages passed the validator on the first attempt.</p>
-<table><thead><tr><th>Arm</th><th>New input, run 1</th><th>New input, run 2</th><th>Mean new input</th><th>Wall s, run 1</th><th>Wall s, run 2</th><th>Mean wall s</th><th>Pages</th></tr></thead><tbody>
-<tr><td>With validator read</td><td>55,686</td><td>54,480</td><td>55,083</td><td>275.2</td><td>267.9</td><td>271.6</td><td>2/2</td></tr>
-<tr><td>Without</td><td>34,527</td><td>30,966</td><td>32,747</td><td>189.7</td><td>146.6</td><td>168.2</td><td>2/2</td></tr>
-<tr><td>Change</td><td></td><td></td><td>-22,336 (-40.5%)</td><td></td><td></td><td>-103.4 (-38.1%)</td><td>same</td></tr>
-</tbody></table>
-<p>The trial used paired runs on the order topic. The mean is the average of the two runs. The gain is in the fixed read and the tool work, not in page quality.</p>
-<h2><span class="num">5</span>Step 7 iterations</h2>
-<div class="rule"></div>
-<p>The clean pair comes from the 1.5.0 baseline, before step 7 changed. In that pair the check method was open: one agent wrote a private checker script and the other read the page. The v1 pair used the read-only step 7. v1 A missed the first arrow and its caption because the checklist had no connector item. The connector item was added for v2, and the full checklist for v3.</p>
-<table><thead><tr><th>Pair</th><th>Step 7</th><th>Wall s</th><th>Turns</th><th>Context</th><th>New input</th><th>Total</th><th>Pages</th></tr></thead><tbody>
-<tr><td>clean</td><td>free method, checker allowed</td><td>86.5</td><td>14.5</td><td>47,785</td><td>38,558</td><td>593,449</td><td>2/2</td></tr>
-<tr><td>v1</td><td>read-only, no connector item</td><td>78.3</td><td>11.5</td><td>44,936</td><td>35,252</td><td>398,827</td><td>1/2</td></tr>
-<tr><td>v2</td><td>plus connector item</td><td>104.4</td><td>13</td><td>47,767</td><td>38,212</td><td>498,147</td><td>2/2</td></tr>
-<tr><td>v3</td><td>plus full checklist</td><td>69.3</td><td>11</td><td>41,897</td><td>32,191</td><td>369,280</td><td>2/2</td></tr>
-</tbody></table>
-<p>The v1 A page failed on one missing arrow and its caption. The v2 and v3 pages pass. The v3 pair is the final one-diagram result.</p>
-<h2><span class="num">6</span>Final one-diagram runs</h2>
-<div class="rule"></div>
-<table><thead><tr><th>Run</th><th>Wall s</th><th>Turns</th><th>Tools</th><th>Context</th><th>New input</th><th>Output</th><th>Reasoning</th><th>Cache read</th><th>Total</th><th>Checks</th></tr></thead><tbody>
-<tr><td>A</td><td>78.4</td><td>13</td><td>14</td><td>42,990</td><td>33,411</td><td>4,210</td><td>9,120</td><td>410,752</td><td>457,493</td><td>pass 275</td></tr>
-<tr><td>B</td><td>60.2</td><td>9</td><td>12</td><td>40,803</td><td>30,971</td><td>2,826</td><td>7,525</td><td>239,744</td><td>281,066</td><td>pass 216</td></tr>
-<tr><td>Mean</td><td>69.3</td><td>11</td><td>13</td><td>41,897</td><td>32,191</td><td>3,518</td><td>8,323</td><td>325,248</td><td>369,280</td><td>2/2</td></tr>
-</tbody></table>
-<p>The A/B spread is 1.30x in wall time. The two pages are different DNS flows and both pass the contract.</p>
-<h2><span class="num">7</span>Second diagram on the same page</h2>
-<div class="rule"></div>
-<p>The base page was a seven-row DNS diagram of 25,163 bytes, validated at 275 checks. Two agents added a TLS 1.3 section to separate copies of that page and kept the DNS section.</p>
-<table><thead><tr><th>Case</th><th>Diagrams</th><th>Wall s</th><th>Turns</th><th>Context</th><th>New input</th><th>Total</th><th>Result</th></tr></thead><tbody>
-<tr><td>Fresh one-diagram page</td><td>1</td><td>69.3</td><td>11</td><td>41,897</td><td>32,191</td><td>369,280</td><td>2/2 pass</td></tr>
-<tr><td>Add a second diagram</td><td>+1</td><td>64.4</td><td>8</td><td>43,185</td><td>33,282</td><td>268,705</td><td>2/2 pass</td></tr>
-<tr><td>Two-diagram page, total</td><td>2</td><td>133.7</td><td>19</td><td>-</td><td>65,473</td><td>637,985</td><td>2/2 pass</td></tr>
-<tr><td>Two separate pages, total</td><td>2</td><td>138.6</td><td>22</td><td>-</td><td>64,382</td><td>738,560</td><td>4/4 pass</td></tr>
-</tbody></table>
-<p>The added section grows the page to 29,685 and 29,880 bytes, an increase of 4.5 to 4.7 KB. The template, theme table, toolbar script and print rules are unchanged.</p>
-<p>The second-diagram run reads the existing page instead of the template, so its context is 3.1% higher and its new input 3.4% higher than a fresh one-diagram run. The saving is in turns, output and cache reads. The TLS flow is a familiar protocol, so part of the lower turn count is topic familiarity rather than template reuse. The result supports the file claim: the added diagram writes about 4.6 KB and leaves the 25 KB template alone. It does not make a second diagram free.</p>
-<h2><span class="num">8</span>Checklist scan</h2>
-<div class="rule"></div>
-<p>The scan compared <code>testing-tools/validate.py</code> with manual section 12. It found ten rules that the checklist did not name and three manual ambiguities. All are now in the manual, and the static check count is 360.</p>
-<table><thead><tr><th>Area</th><th>Rule added</th></tr></thead><tbody>
-<tr><td>File endings</td><td>LF, not only ASCII</td></tr>
-<tr><td>Page structure</td><td>one main, at least one section, head, note, one SVG, role and aria-label</td></tr>
-<tr><td>Card geometry</td><td>rx 3, side height 70/90/100, side box on a row or 20 lower</td></tr>
-<tr><td>Text geometry</td><td>x+18 or x+16, one title per card, third line at +74 on side cards only</td></tr>
-<tr><td>Text budgets</td><td>65/28/26, title 24 on every card, caption 42/18, tag 78</td></tr>
-<tr><td>Connector classes</td><td><code>arrow-a</code> for accents, matching muted and accent markers</td></tr>
-<tr><td>Loop shape</td><td>four segments, upward, 12-character label</td></tr>
-<tr><td>Marker ids</td><td>prefixed by section and defined for every arrowhead</td></tr>
-<tr><td>Template and assets</td><td>template untouched, two inline scripts, no external assets, URLs or storage</td></tr>
-<tr><td>Manual ambiguities</td><td>split one-branch, 90/100 mid mark, 10 px input and 4 px output stubs</td></tr>
-</tbody></table>
-<h2><span class="num">9</span>Final state</h2>
+<h2><span class="num">9</span>Limits</h2>
 <div class="rule"></div>
 <ul>
-<li>Skill: five files, no executable, no runtime.</li>
-<li>Static checks: 360, zero failures.</li>
-<li>Toolbar test: ok.</li>
-<li>Demo validator: 245 checks, zero failures.</li>
-<li>Two-section test pages: 490 checks each, zero failures.</li>
-<li>Tested skill state: commit 94e4f6f, pushed; Pages built at that commit.</li>
-<li>Installed skill: synced with the repository.</li>
-<li>No per-page browser pass: the template is checked in the repository, the written part is read against the checklist and the page is opened once for the reader.</li>
-<li>The test pages were deleted after the figures were recorded. This report is the record.</li>
-</ul>
-<h2><span class="num">10</span>Limits</h2>
-<div class="rule"></div>
-<ul>
-<li>Two runs per case; the A/B spread remains 1.30x on the final one-diagram pair and 1.10x on the add pair.</li>
-<li>The add case uses a known TLS flow; the lower cost is partly topic familiarity.</li>
-<li>Context and total tokens measure different things; the report keeps them separate.</li>
-<li>The validator remains a maintainer tool; the skill no longer reads or runs it.</li>
-<li>The 360 px toolbar and the head-script theme application remain separate template findings. The text contrast shortfalls remain separate from the accepted mark deviations.</li>
+<li>Five and four runs per case, on one model and one topic, so the means are indicative and the spreads are wide.</li>
+<li>The three-diagram arm has no fresh-page comparison inside this round; the marginal figures come from the two means.</li>
+<li>Context and total measure different things and are kept apart in every table.</li>
+<li>The validator is a maintainer tool; the skill neither reads nor runs it.</li>
+<li>The 360 px toolbar and the head-script theme application remain open template findings, as do the text contrast shortfalls against the accepted mark deviations.</li>
 </ul>
   </main>
 </div>
@@ -465,7 +461,9 @@ pre code{background:none;color:inherit;padding:0}
         '--code-bg':'#eceae4',
         '--pre-bg':'#343433',
         '--shadow-color':'rgba(45,45,45,0.06)',
-        '--pre-ink':'#f2f2ef'
+        '--pre-ink':'#f2f2ef',
+        '--edge':'#b5b3ab',
+        '--node-bg':'#efeee8'
       },
       dark:{
         '--paper':'#0a0c10',
@@ -483,7 +481,9 @@ pre code{background:none;color:inherit;padding:0}
         '--code-bg':'#1a2030',
         '--pre-bg':'#0a0c10',
         '--shadow-color':'rgba(0,0,0,0.4)',
-        '--pre-ink':'#d0ccc0'
+        '--pre-ink':'#d0ccc0',
+        '--edge':'#8b97ab',
+        '--node-bg':'#222a3a'
       }
     },
     solarized:{
@@ -507,7 +507,9 @@ pre code{background:none;color:inherit;padding:0}
         '--code-bg':'#eee8d5',
         '--pre-bg':'#eee8d5',
         '--shadow-color':'rgba(0,0,0,0.05)',
-        '--pre-ink':'#586e75'
+        '--pre-ink':'#586e75',
+        '--edge':'#93a1a1',
+        '--node-bg':'#fdf6e3'
       },
       dark:{
         '--paper':'#002b36',
@@ -529,7 +531,9 @@ pre code{background:none;color:inherit;padding:0}
         '--code-bg':'#073642',
         '--pre-bg':'#073642',
         '--shadow-color':'rgba(0,0,0,0.3)',
-        '--pre-ink':'#93a1a1'
+        '--pre-ink':'#93a1a1',
+        '--edge':'#839496',
+        '--node-bg':'#0b3f4e'
       }
     },
     monochrome:{
@@ -549,7 +553,9 @@ pre code{background:none;color:inherit;padding:0}
         '--code-bg':'#e8e8e8',
         '--pre-bg':'#333333',
         '--shadow-color':'rgba(0,0,0,0.08)',
-        '--pre-ink':'#f0f0f0'
+        '--pre-ink':'#f0f0f0',
+        '--edge':'#c2c2c2',
+        '--node-bg':'#efefef'
       },
       dark:{
         '--paper':'#1a1a1a',
@@ -567,7 +573,9 @@ pre code{background:none;color:inherit;padding:0}
         '--code-bg':'#333333',
         '--pre-bg':'#111111',
         '--shadow-color':'rgba(0,0,0,0.3)',
-        '--pre-ink':'#cccccc'
+        '--pre-ink':'#cccccc',
+        '--edge':'#cccccc',
+        '--node-bg':'#2e2e2e'
       }
     }
   };
@@ -722,6 +730,155 @@ pre code{background:none;color:inherit;padding:0}
   }
 
   return{init,getValues,setValues,setMode,setPalette,setFont};
+})();</script>
+<script>const Diagrams=(function(){
+  var NS='http://www.w3.org/2000/svg';
+
+  function center(graph,el){
+    var a=el.getBoundingClientRect();
+    var b=graph.getBoundingClientRect();
+    return{
+      x:a.left-b.left+a.width/2,
+      y:a.top-b.top+a.height/2,
+      h:a.height,
+      w:a.width
+    };
+  }
+
+  function bez(t,p0,c1,c2,p3){
+    var mt=1-t,a=mt*mt*mt,b=3*mt*mt*t,c=3*mt*t*t,d=t*t*t;
+    return{
+      x:a*p0.x+b*c1.x+c*c2.x+d*p3.x,
+      y:a*p0.y+b*c1.y+c*c2.y+d*p3.y
+    };
+  }
+
+  function drawEdge(graph,svg,edge,sourceNode,targetNode){
+    var S=center(graph,sourceNode);
+    var T=center(graph,targetNode);
+    var dx=T.x-S.x;
+    var dy=T.y-S.y;
+    var up=edge.loop||T.y+S.h<S.y;
+
+    var p0,p3,c1,c2;
+    if(edge.h){
+      var dir=dx>=0?1:-1;
+      p0={x:S.x+dir*S.w/2,y:S.y};
+      p3={x:T.x-dir*T.w/2,y:T.y};
+      var midY=(p0.y+p3.y)/2;
+      var spread=Math.abs(dx)*0.4;
+      c1={x:p0.x+dir*spread,y:midY};
+      c2={x:p3.x-dir*spread,y:midY};
+    }else if(up){
+      p0={x:S.x,y:S.y-S.h/2};
+      p3={x:T.x,y:T.y+S.h/2};
+      var bulge=90;
+      c1={x:p0.x-bulge,y:p0.y-30};
+      c2={x:p3.x-bulge,y:p3.y+30};
+    }else if(edge.d&&Math.abs(dx)>=Math.abs(dy)){
+      var ddir=dx>=0?1:-1;
+      p0={x:S.x+ddir*S.w/2,y:S.y};
+      p3={x:T.x-ddir*T.w/2,y:T.y};
+      var mx=(p0.x+p3.x)/2;
+      c1={x:mx,y:p0.y};
+      c2={x:mx,y:p3.y};
+    }else{
+      p0={x:S.x,y:S.y+S.h/2};
+      p3={x:T.x,y:T.y-S.h/2};
+      var my=(p0.y+p3.y)/2;
+      c1={x:p0.x,y:my};
+      c2={x:p3.x,y:my};
+    }
+
+    var g=document.createElementNS(NS,'g');
+    g.dataset.from=edge.s;
+    g.dataset.to=edge.t;
+
+    var path=document.createElementNS(NS,'path');
+    var d='M '+p0.x+' '+p0.y+' C '+c1.x+' '+c1.y+' '+c2.x+' '+c2.y+' '+p3.x+' '+p3.y;
+    path.setAttribute('d',d);
+    path.setAttribute('class','diagram-edge'+(edge.loop?' loop':''));
+    g.appendChild(path);
+    svg.appendChild(g);
+  }
+
+  function renderDiagram(data){
+    var graph=document.getElementById(data.id);
+    if(!graph)return;
+    var svg=graph.querySelector('.diagram-edges');
+    var layers=graph.querySelector('.diagram-layers');
+    if(!svg||!layers)return;
+
+    while(svg.firstChild)svg.removeChild(svg.firstChild);
+
+    var nodeMap={};
+    var nodes=layers.querySelectorAll('.diagram-node');
+    for(var i=0;i<nodes.length;i++){
+      var n=nodes[i];
+      var key=n.getAttribute('data-dg-node');
+      if(key)nodeMap[key]=n;
+    }
+
+    for(var i=0;i<data.edges.length;i++){
+      var e=data.edges[i];
+      var s=nodeMap[e.s];
+      var t=nodeMap[e.t];
+      if(s&&t)drawEdge(graph,svg,e,s,t);
+    }
+
+    function setLit(id){
+      var gs=svg.querySelectorAll('g');
+      for(var j=0;j<gs.length;j++){
+        var on=gs[j].getAttribute('data-from')===id;
+        var p=gs[j].querySelector('path');
+        if(!p)continue;
+        p.classList.toggle('lit',on);
+        p.classList.toggle('dim',!on);
+      }
+    }
+    function clearLit(){
+      var ps=svg.querySelectorAll('path');
+      for(var j=0;j<ps.length;j++)ps[j].classList.remove('lit','dim');
+    }
+    var pinned=null;
+    for(var key in nodeMap){
+      (function(k){
+        nodeMap[k].addEventListener('mouseenter',function(){setLit(k);});
+        nodeMap[k].addEventListener('mouseleave',function(){if(pinned)setLit(pinned);else clearLit();});
+        nodeMap[k].addEventListener('click',function(){
+          pinned=(pinned===k)?null:k;
+          if(pinned)setLit(pinned);else clearLit();
+        });
+      })(key);
+    }
+    graph.addEventListener('click',function(ev){
+      if(!ev.target.closest||!ev.target.closest('.diagram-node')){pinned=null;clearLit();}
+    });
+  }
+
+  function initAll(){
+    var q=window.__diagramQueue||[];
+    for(var i=0;i<q.length;i++){
+      renderDiagram(q[i]);
+    }
+  }
+
+  function debounce(fn,ms){
+    var t;
+    return function(){
+      clearTimeout(t);
+      t=setTimeout(fn,ms);
+    };
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',initAll);
+  }else{
+    initAll();
+  }
+  window.addEventListener('resize',debounce(initAll,100));
+
+  return{initAll,renderDiagram};
 })();</script>
 <script>(function(){
   var prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;

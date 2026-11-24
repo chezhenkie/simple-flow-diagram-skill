@@ -259,21 +259,35 @@ def svg_checks(head, inner, tag):
 
     for i in range(len(rows) - 1):
         gap_top = rows[i] + HEIGHT
+        above = [c for c in main if c[2] == rows[i]]
         below = [c for c in main if c[2] == rows[i + 1]]
-        xs = [411, 659] if len(below) == 2 else [535]
+        merge = (len(below) == 1 and len(above) == 2
+                 and spine(411, gap_top) == 1 and spine(659, gap_top) == 1)
+        if len(below) == 2:
+            xs = [411, 659]
+        elif merge:
+            xs = []
+        else:
+            xs = [535]
         for cx in xs:
             check(spine(cx, gap_top) == 1, "one arrow at x=%d over y=%d" % (cx, gap_top), tag)
 
     # Captions sit on the caption lane of their arrow.
     for i in range(len(rows) - 1):
         gap_top = rows[i] + HEIGHT
+        above = [c for c in main if c[2] == rows[i]]
         below = [c for c in main if c[2] == rows[i + 1]]
-        xs = [425, 673] if len(below) == 2 else [549]
+        merge = (len(below) == 1 and len(above) == 2
+                 and spine(411, gap_top) == 1 and spine(659, gap_top) == 1)
+        xs = [425, 673] if len(below) == 2 or merge else [549]
         for cx in xs:
             hit = [t for t in texts
                    if t.get("class") == "cap" and num(t.get("x")) == cx
                    and num(t.get("y")) == gap_top + CAPTION_DY - HEIGHT]
-            check(len(hit) == 1, "one caption at x=%d over y=%d" % (cx, gap_top), tag)
+            if merge:
+                check(len(hit) <= 1, "at most one caption at x=%d over y=%d" % (cx, gap_top), tag)
+            else:
+                check(len(hit) == 1, "one caption at x=%d over y=%d" % (cx, gap_top), tag)
             for t in hit:
                 check(len(t["body"]) <= (18 if cx in (425, 673) else 42),
                       "caption budget at x=%d" % cx, tag)
