@@ -1,210 +1,62 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light" data-print="off">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>embedded page</title>
-<script>
-  (function () {
-    var p = /[?&]mode=(dark|light)\b/.exec(window.location.search || '');
-    var d = p ? p[1] === 'dark'
-              : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.documentElement.setAttribute('data-theme', d ? 'dark' : 'light');
-  })();
-</script>
+<title>how a name becomes an address</title>
 <style>
-  /* Default tokens: vercel theme for light, github for dark. The bar script replaces them. */
-  :root {
-    color-scheme: light;
-    --page-bg: #E1E2E7;
-    --page-ink: #B81F1F;
-    --page-muted: #333333;
-    --page-line: #333333;
-    --card: #FFFFFF;
-    --ink: #B81F1F;
-    --muted: #333333;
-    --line: #333333;
-    --accent: #AD720A;
-    --pick-ink: #000000;
-    --tb-ink: #333333;
-    --tb-line: #333333;
-    /* Print palette: written once here, aliased by the toggle and by the print stylesheet. */
-    --print-bg: #FFFFFF;
-    --print-ink: #000000;
-    --print-muted: #333333;
-    --print-line: #9A9A9A;
-  }
-  html[data-theme="dark"] {
-    color-scheme: dark;
-    --page-bg: #0D1117;
-    --page-ink: #C9D1D9;
-    --page-muted: #8B949E;
-    --page-line: #6E7681;
-    --card: #010409;
-    --ink: #C9D1D9;
-    --muted: #8B949E;
-    --line: #6E7681;
-    --accent: #3B82F6;
-    --pick-ink: #000000;
-    --tb-ink: #8B949E;
-    --tb-line: #6E7681;
-  }
-  html[data-print="on"] { color-scheme: light; }
-  * { box-sizing: border-box; }
   body {
-    margin: 0;
-    background: var(--card);
-    color: var(--page-ink);
-    font: 15px/1.45 "Segoe UI", system-ui, -apple-system, sans-serif;
-    transition: background .25s, color .25s;
+    margin: 0; background: #f3efe6; color: #26221c;
+    font: 17px/1.65 Georgia, "Times New Roman", serif;
   }
-  main { max-width: 1080px; margin: 0 auto; padding: 46px 20px 60px; }
-  h1 { font-size: 22px; font-weight: 400; margin: 0 0 4px; letter-spacing: 0.2px; }
-  .sub { color: var(--page-muted); font-size: 13px; margin: 0 0 32px; }
-  section { margin: 0 0 42px; }
-  .head { display: flex; align-items: center; margin: 0 0 10px; }
-  h2 {
-    display: inline-flex; align-items: center; height: 28px; padding: 0 12px 4px;
-    font-size: 16px; font-weight: 600; margin: 0; background: transparent;
-    color: var(--page-ink); border: 2px solid var(--accent); border-radius: 3px;
+  header, main, footer { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+  header {
+    padding-top: 26px; padding-bottom: 14px;
+    border-bottom: 1px solid #d8d1c3;
+    font: 13px/1.4 "Segoe UI", system-ui, sans-serif;
+    letter-spacing: 0.08em; text-transform: uppercase; color: #6b6357;
   }
-  .note { color: var(--page-muted); font-size: 13px; margin: 0 0 16px; }
-  svg { display: block; width: 100%; height: auto; }
-  .card { fill: var(--card); stroke: var(--line); stroke-width: 1.2; }
-  .focus { fill: var(--card); stroke: var(--accent); stroke-width: 2; }
-  .t { fill: var(--ink); font-size: 14.5px; font-weight: 600; }
-  .d { fill: var(--muted); font-size: 12.5px; }
-  .cap { fill: var(--muted); font-size: 11.5px; }
-  .side { fill: var(--muted); font-size: 11.5px; }
-  .arrow { stroke: var(--muted); stroke-width: 1.4; fill: none; }
-  .arrow-a { stroke: var(--accent); stroke-width: 1.6; fill: none; }
-  .dash { stroke: var(--muted); stroke-width: 1.2; fill: none; stroke-dasharray: 5 4; }
-  .loop { stroke: var(--muted); stroke-width: 1.6; fill: none; stroke-dasharray: 0.1 6; stroke-linecap: round; }
-  .tag { fill: var(--card); stroke: var(--line); stroke-width: 1; }
-  .card, .focus, .tag { transition: fill .25s, stroke .25s; }
-  .t, .d, .cap, .side { transition: fill .25s; }
-  h2 { transition: background .25s, color .25s, border-color .25s; }
+  main { padding-top: 40px; padding-bottom: 56px; }
+  h1 { font-size: 34px; line-height: 1.2; font-weight: 400; margin: 0 0 10px; }
+  .byline {
+    font: 14px/1.5 "Segoe UI", system-ui, sans-serif;
+    color: #6b6357; margin: 0 0 30px;
+  }
+  p { max-width: 660px; margin: 0 0 20px; }
+  figure { margin: 34px 0; }
+  iframe { display: block; width: 100%; height: 1030px; border: 0; }
+  figcaption {
+    max-width: 660px; margin-top: 10px;
+    font: 13px/1.5 "Segoe UI", system-ui, sans-serif; color: #6b6357;
+  }
   footer {
-    color: var(--page-muted); font-size: 12px;
-    border-top: 1px solid var(--page-line); padding-top: 12px;
-  }
-
-  #tb {
-    position: fixed; top: 0; left: 0; right: 0; height: 24px; z-index: 10;
-    display: flex; align-items: center; justify-content: flex-end; gap: 7px;
-    padding: 0 28px; background: var(--card); color: var(--tb-ink);
-    font: 10px/1 "Segoe UI", system-ui, -apple-system, sans-serif;
-    user-select: none; transition: background .25s, color .25s;
-  }
-  .s { width: 1px; height: 12px; background: var(--tb-line); }
-  .tb-btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
-    height: 18px; padding: 0 6px 3px; cursor: pointer;
-    color: inherit; background: transparent;
-    border: 1px solid var(--tb-line); border-radius: 2px;
-    white-space: nowrap;
-  }
-  .tb-btn svg { width: 13px; height: 13px; }
-  .tb-btn.on { background: var(--tb-ink); color: var(--page-bg); border-color: var(--tb-ink); }
-  .tb-btn.fold { min-width: 68px; }
-  .tb-btn.fold::after {
-    content: ""; width: 0; height: 0; margin-left: 4px;
-    border-left: 3px solid transparent; border-right: 3px solid transparent;
-    border-top: 4px solid currentColor;
-  }
-  .group { position: relative; display: inline-flex; }
-  .menu {
-    display: none; position: absolute; top: 21px; right: 0; z-index: 20;
-    flex-direction: column; min-width: 100%; padding: 2px;
-    background: var(--page-bg); border: 1px solid var(--tb-line); border-radius: 2px;
-  }
-  .menu.open { display: flex; }
-  .menu button {
-    height: 16px; padding: 0 6px; cursor: pointer; text-align: left;
-    font: inherit; color: inherit; background: transparent; border: 0; border-radius: 1px;
-    white-space: nowrap;
-  }
-  .menu button:hover, .menu button:focus-visible { background: var(--tb-line); }
-  .menu button[aria-checked="true"] { background: var(--accent); color: var(--pick-ink); }
-  .toggle {
-    position: relative; width: 44px; height: 20px; padding: 0; cursor: pointer;
-    background: transparent; border: 0; color: inherit;
-  }
-  .toggle-thumb {
-    position: absolute; top: 2px; left: 5px; width: 16px; height: 16px;
-    border-radius: 2px; background: var(--thumb); border: 1px solid var(--thumb-line);
-    transition: transform .25s cubic-bezier(.4, 0, .2, 1), background .25s, border-color .25s;
-  }
-  .toggle.on .toggle-thumb { transform: translateX(17px); }
-  .toggle svg {
-    position: absolute; top: 50%; width: 12px; height: 12px;
-    transform: translateY(-50%); pointer-events: none;
-    transition: opacity .25s;
-  }
-  .toggle .ico-l { left: 7px; opacity: 1; }
-  .toggle .ico-r { right: 8px; opacity: 0.45; }
-  .toggle.on .ico-l { opacity: 0.45; }
-  .toggle.on .ico-r { opacity: 1; }
-  .tb-btn:focus-visible, .toggle:focus-visible, .menu button:focus-visible {
-    outline: 2px solid var(--tb-ink); outline-offset: 1px;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    * { transition: none !important; }
-  }
-
-  @media print {
-    @page { margin: 12mm; }
-    :root {
-      color-scheme: light !important;
-      --page-bg: var(--print-bg) !important;
-      --page-ink: var(--print-ink) !important;
-      --page-muted: var(--print-muted) !important;
-      --page-line: var(--print-line) !important;
-      --card: var(--print-bg) !important;
-      --ink: var(--print-ink) !important;
-      --muted: var(--print-muted) !important;
-      --line: var(--print-line) !important;
-      --accent: var(--print-ink) !important;
-      --pick-ink: var(--print-bg) !important;
-      --tb-ink: var(--print-muted) !important;
-      --tb-line: var(--print-line) !important;
-    }
-    #tb { display: none; }
-    main { max-width: none; padding: 0; }
-    body { background: var(--page-bg) !important; color: var(--page-ink) !important; }
-    h1, .sub, .note, footer { color: var(--page-ink) !important; }
-    .card, .tag { fill: var(--card) !important; stroke: var(--line) !important; }
-    .focus { fill: var(--card) !important; stroke: var(--accent) !important; }
-    .t { fill: var(--ink) !important; }
-    .d, .cap, .side { fill: var(--muted) !important; }
-    .arrow, .dash, .loop { stroke: var(--muted) !important; }
-    .arrow-a { stroke: var(--accent) !important; }
-    footer { border-top-color: var(--line) !important; }
-    section { break-inside: avoid; margin-bottom: 24px; }
-    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    padding-top: 16px; padding-bottom: 44px;
+    border-top: 1px solid #d8d1c3;
+    font: 13px/1.5 "Segoe UI", system-ui, sans-serif; color: #6b6357;
   }
 </style>
 </head>
 <body>
 
+<header>field notes</header>
+
 <main>
+  <h1>How a name becomes an address</h1>
+  <p class="byline">Network notes, 24 November 2026</p>
 
-  <h1>how a name becomes an address</h1>
-  <p class="sub">A program asks for example.com, and the resolver walks the tree until a server returns an address.</p>
+  <p>Every program that opens a connection starts with a name. Before any packet leaves the machine, the stub resolver checks the local hosts file and then asks the resolver configured in resolv.conf.</p>
 
-  <section>
-    <div class="head">
-      <h2>the lookup</h2>
-    </div>
-    <p>The local check comes first, then the resolver cache, then one server per level of the tree.</p>
-    <iframe src="sample-one-diagram.html" title="DNS lookup flow" style="display:block;width:100%;height:1130px;border:0;margin-top:14px"></iframe>
-    <p>Each answer carries a TTL, so a warm lookup stops at the resolver and never reaches a server.</p>
-  </section>
+  <p>The resolver does the walking. On a cold cache it queries a root server, follows the referral to the TLD, and then to the zone that holds the record. Each step returns the next name to ask.</p>
 
-  <footer>The diagram is sample-one-diagram.html, embedded on this page as one iframe.</footer>
+  <figure>
+    <iframe src="sample-one-diagram.html" title="DNS lookup flow"></iframe>
+    <figcaption>The lookup from the application to the authoritative server.</figcaption>
+  </figure>
 
+  <p>The answer is cached for its TTL, so the next lookup usually stops at the resolver. The full walk happens again only after the record expires or the cache is cleared.</p>
 </main>
 
+<footer>Host sample for the simpleflow embed: the diagram above is sample-one-diagram.html, loaded unchanged.</footer>
 
 </body>
 </html>
