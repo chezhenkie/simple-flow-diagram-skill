@@ -53,7 +53,7 @@
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    background: var(--page-bg);
+    background: var(--card);
     color: var(--page-ink);
     font: 15px/1.45 "Segoe UI", system-ui, -apple-system, sans-serif;
     transition: background .25s, color .25s;
@@ -92,7 +92,7 @@
   #tb {
     position: fixed; top: 0; left: 0; right: 0; height: 24px; z-index: 10;
     display: flex; align-items: center; justify-content: flex-end; gap: 7px;
-    padding: 0 28px; background: var(--page-bg); color: var(--tb-ink);
+    padding: 0 28px; background: var(--card); color: var(--tb-ink);
     font: 10px/1 "Segoe UI", system-ui, -apple-system, sans-serif;
     user-select: none; transition: background .25s, color .25s;
   }
@@ -187,298 +187,24 @@
 </head>
 <body>
 
-<div id="tb" role="group" aria-label="Page controls">
-  <button class="tb-btn" id="print" type="button" aria-pressed="false" aria-label="Print friendly" title="Print friendly">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M6 9V3h12v6"/>
-      <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
-      <rect x="6" y="14" width="12" height="8" rx="1"/>
-    </svg>
-    <span>print friendly</span>
-  </button>
-  <span class="s" aria-hidden="true"></span>
-  <button class="toggle on" id="mode" type="button" role="switch" aria-checked="true" aria-label="Light mode" title="Light or dark mode">
-    <span class="toggle-thumb" aria-hidden="true"></span>
-    <svg class="ico-l" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-    </svg>
-    <svg class="ico-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="5"/>
-      <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-      <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-    </svg>
-  </button>
-  <span class="s" aria-hidden="true"></span>
-  <div class="group">
-    <button class="tb-btn fold" id="dark-theme" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="dark-menu" title="Dark theme">dark theme</button>
-    <div class="menu" id="dark-menu" role="menu" aria-label="Dark theme"></div>
-  </div>
-  <div class="group">
-    <button class="tb-btn fold" id="light-theme" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="light-menu" title="Light theme">light theme</button>
-    <div class="menu" id="light-menu" role="menu" aria-label="Light theme"></div>
-  </div>
-</div>
-
 <main>
 
-  <!-- Page copy: replace the title, subtitle and footer. -->
-  <h1>embedded page</h1>
-  <p class="sub">One diagram page inside another, toolbar and theme included.</p>
+  <h1>how a name becomes an address</h1>
+  <p class="sub">A program asks for example.com, and the resolver walks the tree until a server returns an address.</p>
 
   <section>
     <div class="head">
-      <h2>dns lookup, embedded</h2>
+      <h2>the lookup</h2>
     </div>
-    <iframe src="sample-one-diagram.html" title="DNS lookup flow" style="width:100%;height:1130px;border:1px solid var(--line);border-radius:2px;margin-top:10px"></iframe>
+    <p>The local check comes first, then the resolver cache, then one server per level of the tree.</p>
+    <iframe src="sample-one-diagram.html" title="DNS lookup flow" style="display:block;width:100%;height:1130px;border:0;margin-top:14px"></iframe>
+    <p>Each answer carries a TTL, so a warm lookup stops at the resolver and never reaches a server.</p>
   </section>
 
-  <footer>The file in the box is sample-one-diagram.html, unchanged; this page sets only its width and height.</footer>
+  <footer>The diagram is sample-one-diagram.html, embedded on this page as one iframe.</footer>
 
 </main>
 
-<script>
-  (function () {
-    var root = document.documentElement;
-    var modeBtn = document.getElementById('mode');
-    var printBtn = document.getElementById('print');
-    var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
-    var manual = false;
-    var savedMode = null;
 
-    var THEMES = {
-      dark: {
-        github:     { bg: '#0D1117', card: '#010409', ink: '#C9D1D9', muted: '#8B949E', line: '#6E7681', accent: '#3B82F6' },
-        harbor:     { bg: '#0F1A2B', card: '#212121', ink: '#C9C9C9', muted: '#999999', line: '#737373', accent: '#4FD1C5' },
-        solarized:  { bg: '#002B36', card: '#073642', ink: '#9DB0B0', muted: '#8FA5AA', line: '#93A1A1', accent: '#D96F3C' },
-        oledblack:  { bg: '#000000', card: '#1A1A1A', ink: '#EDEDED', muted: '#A8A8A8', line: '#6E6E6E', accent: '#D4D4D4' },
-        ayu:        { bg: '#0B0E14', card: '#0F131A', ink: '#AAD94C', muted: '#59C2FF', line: '#6C7380', accent: '#E6B450' }
-      },
-      light: {
-        vercel:      { bg: '#E1E2E7', card: '#FFFFFF', ink: '#B81F1F', muted: '#333333', line: '#333333', accent: '#AD720A' },
-        tokyonight:  { bg: '#E1E2E7', card: '#D5D6DB', ink: '#2655C2', muted: '#474F60', line: '#6B7280', accent: '#B15C00' },
-        cursor:      { bg: '#E1E2E7', card: '#F3F3F3', ink: '#2C5960', muted: '#58696D', line: '#687C80', accent: '#3A6F7C' },
-        orng:        { bg: '#E1E2E7', card: '#FFF7F1', ink: '#A63D1A', muted: '#333333', line: '#A86248', accent: '#C94D24' }
-      }
-    };
-    var chosen = { dark: 'github', light: 'vercel' };
-    var THUMB = {
-      dark: { bg: '#2E2E2E', line: '#777777' },
-      light: { bg: '#CBCBCB', line: '#888888' }
-    };
-
-    function readParams() {
-      var s = (window.location && window.location.search) || '';
-      if (s.charAt(0) === '?') s = s.slice(1);
-      if (!s) return null;
-      var out = {};
-      s.split('&').forEach(function (p) {
-        var i = p.indexOf('=');
-        if (i > 0) out[p.slice(0, i)] = p.slice(i + 1);
-      });
-      if (THEMES.dark[out.dark]) chosen.dark = out.dark;
-      if (THEMES.light[out.light]) chosen.light = out.light;
-      if (THEMES.dark[out.dark] || THEMES.light[out.light] ||
-          out.mode === 'dark' || out.mode === 'light') manual = true;
-      return out.mode === 'dark' || out.mode === 'light' ? out.mode : null;
-    }
-
-    function pickQuery() {
-      return '?mode=' + (isDark() ? 'dark' : 'light') +
-             '&dark=' + chosen.dark + '&light=' + chosen.light;
-    }
-
-    function syncLinks() {
-      var nodes = document.querySelectorAll ? document.querySelectorAll('a[href]') : [];
-      for (var i = 0; i < nodes.length; i++) {
-        var a = nodes[i];
-        var href = a.getAttribute('href') || '';
-        if (href.charAt(0) === '#' || href.slice(0, 2) === '//') continue;
-        if (/^[a-z][a-z0-9+.-]*:/i.test(href)) continue;
-        var cut = href.search(/[?#]/);
-        var path = cut < 0 ? href : href.slice(0, cut);
-        var hash = href.indexOf('#') < 0 ? '' : href.slice(href.indexOf('#'));
-        if (!/\.html$/.test(path)) continue;
-        a.setAttribute('href', path + pickQuery() + hash);
-      }
-    }
-
-    var startMode = readParams();
-
-    function isDark() { return root.getAttribute('data-theme') === 'dark'; }
-    function isPrint() { return root.getAttribute('data-print') === 'on'; }
-
-    function inkOn(hex) {
-      var s = hex.replace('#', '');
-      if (s.length === 3) s = s[0] + s[0] + s[1] + s[1] + s[2] + s[2];
-      var c = [0, 2, 4].map(function (i) {
-        var v = parseInt(s.slice(i, i + 2), 16) / 255;
-        return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-      });
-      var l = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
-      return l > 0.179 ? '#000000' : '#FFFFFF';
-    }
-
-    function applyTheme() {
-      if (isPrint()) return;
-      var mode = isDark() ? 'dark' : 'light';
-      var t = THEMES[mode][chosen[mode]];
-      var vars = {
-        '--page-bg': t.bg, '--page-ink': t.ink, '--page-muted': t.muted, '--page-line': t.line,
-        '--card': t.card, '--ink': t.ink, '--muted': t.muted, '--line': t.line,
-        '--accent': t.accent, '--pick-ink': inkOn(t.accent),
-        '--tb-ink': t.muted, '--tb-line': t.line,
-        '--thumb': THUMB[mode].bg, '--thumb-line': THUMB[mode].line
-      };
-      for (var k in vars) root.style.setProperty(k, vars[k]);
-      syncLinks();
-    }
-
-    function applyPrint() {
-      var vars = {
-        '--page-bg': 'var(--print-bg)', '--page-ink': 'var(--print-ink)',
-        '--page-muted': 'var(--print-muted)', '--page-line': 'var(--print-line)',
-        '--card': 'var(--print-bg)', '--ink': 'var(--print-ink)',
-        '--muted': 'var(--print-muted)', '--line': 'var(--print-line)',
-        '--accent': 'var(--print-ink)', '--pick-ink': 'var(--print-bg)',
-        '--tb-ink': 'var(--print-muted)', '--tb-line': 'var(--print-line)',
-        '--thumb': THUMB.light.bg, '--thumb-line': THUMB.light.line
-      };
-      for (var k in vars) root.style.setProperty(k, vars[k]);
-    }
-
-    function setMode(dark) {
-      root.setAttribute('data-theme', dark ? 'dark' : 'light');
-      modeBtn.setAttribute('aria-checked', String(!dark));
-      modeBtn.setAttribute('aria-label', dark ? 'Dark mode' : 'Light mode');
-      modeBtn.classList.toggle('on', !dark);
-      applyTheme();
-    }
-
-    function setPrint(on) {
-      if (on && savedMode === null) savedMode = isDark() ? 'dark' : 'light';
-      root.setAttribute('data-print', on ? 'on' : 'off');
-      printBtn.setAttribute('aria-pressed', String(on));
-      printBtn.classList.toggle('on', on);
-      if (on) applyPrint();
-      if (!on && savedMode !== null) {
-        setMode(savedMode === 'dark');
-        savedMode = null;
-      }
-    }
-
-    function buildMenu(id, mode) {
-      var menu = document.getElementById(id);
-      Object.keys(THEMES[mode]).forEach(function (name) {
-        var b = document.createElement('button');
-        b.type = 'button';
-        b.setAttribute('role', 'menuitemradio');
-        b.setAttribute('aria-checked', String(chosen[mode] === name));
-        b.textContent = name;
-        b.addEventListener('click', function () {
-          manual = true;
-          chosen[mode] = name;
-          syncMenus();
-          closeMenus();
-          setMode(mode === 'dark');
-          document.getElementById(mode === 'dark' ? 'dark-theme' : 'light-theme').focus();
-        });
-        menu.appendChild(b);
-      });
-    }
-
-    function syncMenus() {
-      [['dark', 'dark-menu'], ['light', 'light-menu']].forEach(function (pair) {
-        var menu = document.getElementById(pair[1]);
-        Array.prototype.forEach.call(menu.children, function (b) {
-          b.setAttribute('aria-checked', String(b.textContent === chosen[pair[0]]));
-        });
-      });
-    }
-
-    function closeMenus() {
-      [['dark-theme', 'dark-menu'], ['light-theme', 'light-menu']].forEach(function (pair) {
-        document.getElementById(pair[1]).classList.remove('open');
-        document.getElementById(pair[0]).setAttribute('aria-expanded', 'false');
-      });
-    }
-
-    function toggleMenu(btnId, menuId) {
-      var btn = document.getElementById(btnId);
-      var menu = document.getElementById(menuId);
-      var open = !menu.classList.contains('open');
-      closeMenus();
-      if (open) {
-        menu.classList.add('open');
-        btn.setAttribute('aria-expanded', 'true');
-        var items = Array.prototype.slice.call(menu.children);
-        var pick = items.filter(function (b) {
-          return b.getAttribute('aria-checked') === 'true';
-        })[0] || items[0];
-        if (pick) pick.focus();
-      }
-    }
-
-    function menuKey(e) {
-      var items = Array.prototype.slice.call(this.children);
-      var n = items.length;
-      var i = items.indexOf(document.activeElement);
-      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-        e.preventDefault();
-        items[(i + (e.key === 'ArrowDown' ? 1 : -1) + n) % n].focus();
-      } else if (e.key === 'Home' || e.key === 'End') {
-        e.preventDefault();
-        items[e.key === 'Home' ? 0 : n - 1].focus();
-      }
-    }
-
-    modeBtn.addEventListener('click', function () {
-      manual = true;
-      if (isPrint()) setPrint(false);
-      setMode(!isDark());
-    });
-    printBtn.addEventListener('click', function () {
-      setPrint(!isPrint());
-    });
-    document.getElementById('dark-theme').addEventListener('click', function (e) {
-      e.stopPropagation();
-      toggleMenu('dark-theme', 'dark-menu');
-    });
-    document.getElementById('light-theme').addEventListener('click', function (e) {
-      e.stopPropagation();
-      toggleMenu('light-theme', 'light-menu');
-    });
-    document.addEventListener('click', function (e) {
-      if (!e.target.closest('.group')) closeMenus();
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key !== 'Escape') return;
-      var openBtn = null;
-      [['dark-theme', 'dark-menu'], ['light-theme', 'light-menu']].forEach(function (pair) {
-        if (document.getElementById(pair[1]).classList.contains('open')) {
-          openBtn = document.getElementById(pair[0]);
-        }
-      });
-      closeMenus();
-      if (openBtn) openBtn.focus();
-    });
-
-    buildMenu('dark-menu', 'dark');
-    buildMenu('light-menu', 'light');
-    document.getElementById('dark-menu').addEventListener('keydown', menuKey);
-    document.getElementById('light-menu').addEventListener('keydown', menuKey);
-    applyTheme();
-
-    if (startMode) {
-      setMode(startMode === 'dark');
-    } else if (mq) {
-      setMode(mq.matches);
-      var onChange = function (e) { if (!manual) setMode(e.matches); };
-      if (mq.addEventListener) mq.addEventListener('change', onChange);
-      else if (mq.addListener) mq.addListener(onChange);
-    }
-  })();
-</script>
 </body>
 </html>
