@@ -1,6 +1,6 @@
 # simpleflow diagram
 
-An agent skill that turns a process into a flow diagram on one HTML page. The layout, the toolbar, 5 dark and 4 light themes plus print-friendly mode come ready-made in the template, so a run writes only the cards and captions. Most themes follow well-known programmer schemes; two are custom.
+An agent skill that turns a process into a flow diagram on one HTML page. The layout, the toolbar, 5 dark and 4 light themes plus print-friendly mode come ready-made in the template, so a run writes only the cards and captions. Seven themes start from a well-known programmer scheme and two are custom; in every case all the colours are retuned and placed for this page, then checked under colour-vision simulation and edited again.
 
 - Fast and Cheap: on the same model, building the same finished page freehand usually takes 4 to 8 times longer. Most of that time goes into checks and revisions. Each look costs a screenshot and a turn, changing the toolbar means looking again in both modes, and a theme check adds another round. The template is read once and copied, so a new page adds only a few hundred tokens of text, and a second diagram needs no extra setup.
 - Optional index page: it gathers several finished diagrams and documents onto one page, and a documents section can be added where needed. Demo: [GITHUB INDEX PAGE SIMPLE FLOW SKILL](https://chezhenkie.github.io/simpleflow-diagram-skill/).
@@ -54,11 +54,13 @@ The skill is five files. A diagram page copied from an older template still work
 
 ## Install
 
-The skill is five files in `agent-skill/`. Clone the repository, then copy that folder into the skills folder for your agent and name the copy `simpleflow`. The folder name must match the `name` in `SKILL.md`.
+The skill is five files in `agent-skill/`. Download the zip from the [latest release](https://github.com/chezhenkie/simpleflow-diagram-skill/releases/latest) and unpack it, or clone the repository:
 
 ```sh
 git clone https://github.com/chezhenkie/simpleflow-diagram-skill.git
 ```
+
+The release zip and the clone hold the same files; the zip unpacks to `simpleflow-diagram-skill-<version>/`.
 
 | Agent | All projects | One project |
 |---|---|---|
@@ -67,7 +69,7 @@ git clone https://github.com/chezhenkie/simpleflow-diagram-skill.git
 | Pi | `~/.pi/agent/skills` | `.pi/skills` |
 | OMP | `~/.omp/agent/skills` | `.omp/skills` |
 
-Copy `simpleflow-diagram-skill/agent-skill` to the path from the table as `simpleflow`. `~` is your home directory. If your shell does not expand it, use the full path.
+Copy `agent-skill` into the path from the table as `simpleflow`; in the clone the source is `simpleflow-diagram-skill/agent-skill`. The folder name must match the `name` in `SKILL.md`. `~` is your home directory. If your shell does not expand it, use the full path.
 
 Codex scans `.agents/skills` from the current folder up to the repository root. Pi and OMP scan one level under `skills/`. Restart the agent if the skill does not appear.
 
