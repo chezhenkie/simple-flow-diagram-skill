@@ -1,5 +1,5 @@
 ---
-name: simple-flow-diagram-skill
+name: simpleflow
 description: "Build a flow diagram as one standalone HTML page: one vertical main path, optional side channels, and a fixed toolbar with nine themes, light/dark switching and a print view already wired up. Built for repeatability: the template carries every repeated decision, so the agent writes only the cards and captions in one pass, and output stays consistent and short. Use when asked for a process flow, request path, pipeline, decision flow, state or lifecycle flow, or to restyle an existing flow diagram to this style. It also builds an index page that lists several diagrams and documents, with small inline SVG glyphs and the same toolbar."
 license: MIT
 ---

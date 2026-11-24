@@ -462,7 +462,7 @@ except ValueError:
 check(fm_end > 1, "skill frontmatter close")
 fields = [l.split(":", 1)[0] for l in lines[1:fm_end] if l and not l.startswith(" ")]
 check(fields == ["name", "description", "license"], "skill three fields")
-check(lines[1].startswith("name: simple-flow-diagram-skill"), "skill name")
+check(lines[1].startswith("name: simpleflow"), "skill name")
 desc_m = re.search(r'description:\s*"(.*)"', skill)
 check(desc_m is not None and 1 <= len(desc_m.group(1)) <= 1024, "skill description length")
 check(desc_m is not None and "repeatability" in desc_m.group(1), "skill description goal")
@@ -577,17 +577,17 @@ check(rd.count('width="400"') == 0, "readme closeups unscaled")
 check("docs/bar-dark.png" in rd and "docs/bar-light.png" in rd
       and "docs/bar-print-friendly.png" in rd, "readme bar closeups")
 check("docs/demo-dark.png" in rd and "docs/demo-print-friendly.png" in rd, "readme demo states")
-check("https://chezhenkie.github.io/simple-flow-diagram-skill/demo.html" in rd,
+check("https://chezhenkie.github.io/simpleflow-diagram-skill/demo.html" in rd,
       "readme live demo link")
-check("The project index is live at https://chezhenkie.github.io/simple-flow-diagram-skill/." in rd,
+check("The project index is live at https://chezhenkie.github.io/simpleflow-diagram-skill/." in rd,
       "readme live index link")
 check("<table>" in rd and "CLICK HERE TO OPEN THE LIVE, GITHUB-HOSTED INDEX PAGE" in rd,
       "readme live index box")
-check("@simple-flow-diagram-skill" in rd and "$simple-flow-diagram-skill" in rd
-      and rd.count("/skill:simple-flow-diagram-skill") == 2, "readme skill invocations")
+check("@simpleflow" in rd and "$simpleflow" in rd
+      and rd.count("/skill:simpleflow") == 2, "readme skill invocations")
 check("~/.agents/skills" in rd and "~/.pi/agent/skills" in rd
       and "~/.omp/agent/skills" in rd and ".opencode/skills" in rd, "readme agent install paths")
-check("simple-flow-diagram-skill/agent-skill" in rd, "readme install payload")
+check("simpleflow-diagram-skill/agent-skill" in rd and "as `simpleflow`" in rd, "readme install copy")
 check("Windows" not in rd and "PowerShell" not in rd and "%USERPROFILE%" not in rd,
       "readme no os specifics")
 check("palettes.html" not in rd and "palette pair" not in rd, "readme no palette sheet")

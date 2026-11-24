@@ -24,12 +24,12 @@ The page opens in the OS light or dark mode and follows it until the mode switch
 
 | Light | Dark | Print friendly |
 |:---:|:---:|:---:|
-| [<img src="docs/demo-light.png" width="280" alt="Demo page in light mode">](https://chezhenkie.github.io/simple-flow-diagram-skill/demo.html) | [<img src="docs/demo-dark.png" width="280" alt="Demo page in dark mode">](https://chezhenkie.github.io/simple-flow-diagram-skill/demo.html) | [<img src="docs/demo-print-friendly.png" width="280" alt="Demo page with print friendly on">](https://chezhenkie.github.io/simple-flow-diagram-skill/demo.html) |
+| [<img src="docs/demo-light.png" width="280" alt="Demo page in light mode">](https://chezhenkie.github.io/simpleflow-diagram-skill/demo.html) | [<img src="docs/demo-dark.png" width="280" alt="Demo page in dark mode">](https://chezhenkie.github.io/simpleflow-diagram-skill/demo.html) | [<img src="docs/demo-print-friendly.png" width="280" alt="Demo page with print friendly on">](https://chezhenkie.github.io/simpleflow-diagram-skill/demo.html) |
 | Demo, vercel light | Same page, github dark | White page, print tokens |
 
 <table>
   <tr>
-    <td><a href="https://chezhenkie.github.io/simple-flow-diagram-skill/">CLICK HERE TO OPEN THE LIVE, GITHUB-HOSTED INDEX PAGE</a></td>
+    <td><a href="https://chezhenkie.github.io/simpleflow-diagram-skill/">CLICK HERE TO OPEN THE LIVE, GITHUB-HOSTED INDEX PAGE</a></td>
   </tr>
 </table>
 
@@ -57,7 +57,7 @@ Print friendly on: the print control fills, the mode and theme stay unchanged.
 
 ## Several pages
 
-Several diagram pages and text documents can sit on one index page. `agent-skill/index.html` provides it: a title, one or more groups of link cards, and an optional table of documents. Each card carries a small inline SVG glyph, so the index loads no assets either. The project index is live at https://chezhenkie.github.io/simple-flow-diagram-skill/.
+Several diagram pages and text documents can sit on one index page. `agent-skill/index.html` provides it: a title, one or more groups of link cards, and an optional table of documents. Each card carries a small inline SVG glyph, so the index loads no assets either. The project index is live at https://chezhenkie.github.io/simpleflow-diagram-skill/.
 
 The toolbar passes the mode and both theme choices into every local `.html` link and reads them on load. A page opened from the index keeps the theme; print stays a preview and does not travel. Nothing is stored.
 
@@ -65,10 +65,10 @@ The skill is five files. A diagram page copied from an older template still work
 
 ## Install
 
-The skill is five files in `agent-skill/`. Clone the repository, then copy that folder into the skills folder for your agent and name the copy `simple-flow-diagram-skill`. The folder name must match the `name` in `SKILL.md`.
+The skill is five files in `agent-skill/`. Clone the repository, then copy that folder into the skills folder for your agent and name the copy `simpleflow`. The folder name must match the `name` in `SKILL.md`.
 
 ```sh
-git clone https://github.com/chezhenkie/simple-flow-diagram-skill.git
+git clone https://github.com/chezhenkie/simpleflow-diagram-skill.git
 ```
 
 | Agent | All projects | One project |
@@ -78,7 +78,7 @@ git clone https://github.com/chezhenkie/simple-flow-diagram-skill.git
 | Pi | `~/.pi/agent/skills` | `.pi/skills` |
 | OMP | `~/.omp/agent/skills` | `.omp/skills` |
 
-Copy `simple-flow-diagram-skill/agent-skill` to the path from the table as `simple-flow-diagram-skill`. `~` is your home directory. If your shell does not expand it, use the full path.
+Copy `simpleflow-diagram-skill/agent-skill` to the path from the table as `simpleflow`. `~` is your home directory. If your shell does not expand it, use the full path.
 
 Codex scans `.agents/skills` from the current folder up to the repository root. Pi and OMP scan one level under `skills/`. Restart the agent if the skill does not appear.
 
@@ -92,10 +92,10 @@ For an index of several pages and documents, the agent copies `agent-skill/index
 
 | Agent | Invocation |
 |---|---|
-| OpenCode | `@simple-flow-diagram-skill` |
-| Codex | `$simple-flow-diagram-skill` |
-| Pi | `/skill:simple-flow-diagram-skill` |
-| OMP | `/skill:simple-flow-diagram-skill` |
+| OpenCode | `@simpleflow` |
+| Codex | `$simpleflow` |
+| Pi | `/skill:simpleflow` |
+| OMP | `/skill:simpleflow` |
 
 Codex also lists installed skills with `/skills`.
 

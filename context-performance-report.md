@@ -20,7 +20,7 @@ The validator removal is the largest single gain: 40.5% fewer new input and 38.1
 
 The prompt was identical for every run except the destination path:
 
-> Use the simple-flow-diagram-skill to build a DNS lookup flow diagram and save it at <path>. Use Windows browsers only, never WSL.
+> Use the simpleflow skill to build a DNS lookup flow diagram and save it at <path>. Use Windows browsers only, never WSL.
 
 For the second-diagram case the prompt asked to add a TLS handshake section to an existing page and keep the DNS section. Each case used two agents in separate folders. No prompt asked for a report, a list of checks or a defect hunt. The installed skill was read from the OpenCode skills folder.
 
