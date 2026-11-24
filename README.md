@@ -1,3 +1,5 @@
+<img src="docs/top-toolbar.png" alt="Toolbar with print friendly, the mode switch, the two theme menus and the brightness and saturation sliders">
+
 # simpleflow diagram
 
 An agent skill that turns a process into a flow diagram on one HTML page. The layout, the toolbar, 5 dark and 4 light themes plus print-friendly mode come ready-made in the template, so a run writes only the cards and captions. Seven themes start from a well-known programmer scheme and two are custom; in every case all the colours are retuned and placed for this page, then checked under colour-vision simulation and edited again.
