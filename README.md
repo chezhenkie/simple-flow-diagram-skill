@@ -18,14 +18,12 @@ An agent skill that turns a process into a flow diagram on one HTML page. The la
 
 These are direct GitHub links to the two colour vision and readability documents.
 
-## Themes
+## Themes - OS mode following
 
 Nine themes ship with the template.
 
 - Dark: github, harbor, solarized, oledblack, ayu.
 - Light: vercel, tokyonight, cursor, orng.
-
-The page opens in the OS light or dark mode and follows it until the mode switch is used. Each menu switches theme, and each mode keeps its own choice, so the switch flips between the two. Every color on the page comes from the chosen theme, so a diagram carries no palette of its own.
 
 ## Sample page
 
