@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Card payment authorization - flow</title>
+<title>simple flow diagram: pages and documents</title>
 <script>
   (function () {
     var p = /[?&]mode=(dark|light)\b/.exec(window.location.search || '');
@@ -184,6 +184,49 @@
     body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
 </style>
+
+<style>
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px; margin: 0 0 32px; padding: 0;
+  }
+  .entry {
+    display: flex; flex-direction: column; gap: 12px;
+    padding: 18px; background: var(--card); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 3px; text-decoration: none;
+    transition: background .25s, color .25s, border-color .25s;
+  }
+  .entry:hover, .entry:focus-visible { border-color: var(--accent); }
+  .entry:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .glyph { display: block; width: 92px; height: 50px; }
+  .glyph * {
+    fill: none; stroke: var(--muted); stroke-width: 1.4;
+    stroke-linecap: round; stroke-linejoin: round; transition: stroke .25s;
+  }
+  .glyph .hot { stroke: var(--accent); stroke-width: 1.6; }
+  .name { font-size: 16px; font-weight: 600; }
+  .desc { font-size: 13px; color: var(--page-muted); }
+  .note + .grid { margin-top: -8px; }
+  .docs {
+    width: 100%; border-collapse: collapse; margin: 0 0 32px;
+    background: var(--card); border: 1px solid var(--line);
+    font-size: 13.5px; transition: background .25s, border-color .25s;
+  }
+  .docs th, .docs td { text-align: left; padding: 11px 14px; vertical-align: top; }
+  .docs thead th {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.7px; text-transform: uppercase;
+    color: var(--page-muted); border-bottom: 1px solid var(--line);
+  }
+  .docs tbody tr + tr th, .docs tbody tr + tr td { border-top: 1px solid var(--line); }
+  .docs tbody th { font-weight: 600; white-space: nowrap; }
+  .docs td { color: var(--page-muted); }
+  .docs a {
+    color: var(--page-ink); text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+  }
+  .docs a:hover { border-bottom-width: 2px; }
+  .docs a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
 </head>
 <body>
 
@@ -223,92 +266,63 @@
 
 <main>
 
-  <!-- Page copy: replace the title, subtitle and footer. -->
-  <h1>Card payment authorization</h1>
-  <p class="sub">From the Pay press to the receipt, through the payment request, the fraud check and the issuer decision.</p>
+  <h1>simple flow diagram</h1>
+  <p class="sub">One diagram page, its theme record and the documents behind the skill.</p>
 
-  <section>
-    <div class="head">
-      <h2>card payment: pay press to receipt</h2>
-    </div>
-    <p class="note">The issuer decides and the shop acts on the response code. A decline holds no funds, so the basket stays intact and the customer picks another card.</p>
-    <svg viewBox="0 0 1040 592" role="img" aria-label="Card payment authorization: checkout and payment request cards, fraud check side channel, issuer response focus card forking into approved and declined branches, receipt and retry cards, return to checkout">
-      <defs>
-        <marker id="payHead" viewBox="0 0 10 10" refX="9" refY="5"
-                markerWidth="7" markerHeight="7" orient="auto">
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)"/>
-        </marker>
-        <marker id="payHeadA" viewBox="0 0 10 10" refX="9" refY="5"
-                markerWidth="7" markerHeight="7" orient="auto">
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
-        </marker>
-      </defs>
+  <p class="note">pages</p>
+  <nav class="grid" aria-label="pages">
 
-      <path class="loop" d="M 770 482 H 824 V 80 H 770" marker-end="url(#payHead)"/>
-      <text class="side" x="830" y="122">retry card</text>
+    <a class="entry" href="demo.html">
+      <svg class="glyph" viewBox="0 0 104 56" aria-hidden="true" focusable="false">
+        <rect x="34" y="4" width="36" height="12" rx="2"/>
+        <rect x="34" y="22" width="36" height="12" rx="2"/>
+        <rect x="34" y="40" width="36" height="12" rx="2"/>
+        <path d="M 52 16 V 22 M 52 34 V 40"/>
+        <path class="hot" d="M 70 28 H 88 V 10 H 70"/>
+      </svg>
+      <span class="name">card payment flow</span>
+      <span class="desc">Checkout, fraud check, issuer decision and a return lane.</span>
+    </a>
 
-      <rect class="card" x="300" y="30" width="470" height="70" rx="3"/>
-      <text class="t" x="318" y="56">Checkout</text>
-      <text class="d" x="318" y="74">pay pressed; browser posts card form and amount</text>
+    <a class="entry" href="color-vision-audit-comparison.html">
+      <svg class="glyph" viewBox="0 0 104 56" aria-hidden="true" focusable="false">
+        <rect x="2" y="10" width="42" height="36" rx="2"/>
+        <rect x="60" y="10" width="42" height="36" rx="2"/>
+        <path d="M 10 19 H 36 M 10 28 H 36 M 10 37 H 26"/>
+        <path d="M 68 19 H 94 M 68 28 H 94 M 68 37 H 84"/>
+        <path class="hot" d="M 46 28 H 58"/>
+      </svg>
+      <span class="name">theme corrections</span>
+      <span class="desc">Palette samples before and after the 1.4.0 pass.</span>
+    </a>
 
-      <line class="arrow" x1="535" y1="100" x2="535" y2="128" marker-end="url(#payHead)"/>
-      <text class="cap" x="549" y="118">checkout form post</text>
+  </nav>
 
-      <rect class="card" x="300" y="138" width="470" height="70" rx="3"/>
-      <text class="t" x="318" y="164">Payment request</text>
-      <text class="d" x="318" y="182">POST /payments: amount, currency, card token</text>
-
-      <rect class="card" x="40" y="138" width="210" height="70" rx="3"/>
-      <text class="t" x="56" y="164">Fraud check</text>
-      <text class="d" x="56" y="182">risk rules on the request</text>
-      <text class="d" x="56" y="197">score gates approval</text>
-      <path class="dash" d="M 300 173 H 254" marker-end="url(#payHead)"/>
-      <path class="dash" d="M 145 208 V 296 H 290" marker-end="url(#payHead)"/>
-      <text class="side" x="156" y="288">risk score</text>
-
-      <line class="arrow-a" x1="535" y1="208" x2="535" y2="236" marker-end="url(#payHeadA)"/>
-      <text class="cap" x="549" y="226">authorization request</text>
-
-      <rect class="focus" x="300" y="246" width="470" height="70" rx="3"/>
-      <text class="t" x="318" y="272">Issuer response</text>
-      <text class="d" x="318" y="290">approval code or decline reason from the issuer</text>
-
-      <line class="arrow-a" x1="411" y1="316" x2="411" y2="344" marker-end="url(#payHeadA)"/>
-      <text class="cap" x="425" y="334">approved</text>
-      <line class="arrow" x1="659" y1="316" x2="659" y2="344" marker-end="url(#payHead)"/>
-      <text class="cap" x="673" y="334">declined</text>
-
-      <rect class="card" x="300" y="354" width="222" height="70" rx="3"/>
-      <text class="t" x="318" y="380">Approved</text>
-      <text class="d" x="318" y="398">auth code returned</text>
-      <text class="d" x="318" y="413">funds held 7 days</text>
-
-      <rect class="card" x="548" y="354" width="222" height="70" rx="3"/>
-      <text class="t" x="566" y="380">Declined</text>
-      <text class="d" x="566" y="398">no funds held</text>
-      <text class="d" x="566" y="413">reason code logged</text>
-
-      <line class="arrow" x1="411" y1="424" x2="411" y2="452" marker-end="url(#payHead)"/>
-      <text class="cap" x="425" y="442">capture and email</text>
-      <line class="arrow" x1="659" y1="424" x2="659" y2="452" marker-end="url(#payHead)"/>
-      <text class="cap" x="673" y="442">no charge</text>
-
-      <rect class="card" x="300" y="462" width="222" height="70" rx="3"/>
-      <text class="t" x="318" y="488">Receipt</text>
-      <text class="d" x="318" y="506">capture, order placed</text>
-      <text class="d" x="318" y="521">email sent to customer</text>
-
-      <rect class="card" x="548" y="462" width="222" height="70" rx="3"/>
-      <text class="t" x="566" y="488">Another card</text>
-      <text class="d" x="566" y="506">card list reopened</text>
-      <text class="d" x="566" y="521">basket left intact</text>
-
-      <rect class="tag" x="300" y="560" width="470" height="26" rx="3"/>
-      <text class="side" x="318" y="577">one attempt ends in one issuer verdict: approved or declined</text>
-    </svg>
+  <section aria-labelledby="documents">
+    <div class="head"><h2 id="documents">documents</h2></div>
+    <p class="note">The skill contract, the palette audit and the measured cost of one page.</p>
+    <table class="docs" aria-labelledby="documents">
+      <thead>
+        <tr><th scope="col">Document</th><th scope="col">Covers</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row"><a href="SKILL.html">Skill instructions</a></th>
+          <td>The entry point: page types, the eight-step workflow and the hard rules.</td>
+        </tr>
+        <tr>
+          <th scope="row"><a href="color-vision-audit.html">Colour vision audit</a></th>
+          <td>The nine themes under four simulations, ratios and accepted deviations.</td>
+        </tr>
+        <tr>
+          <th scope="row"><a href="context-performance-report.html">Context and performance</a></th>
+          <td>The measured cost of one page and the step 7 read check trial.</td>
+        </tr>
+      </tbody>
+    </table>
   </section>
 
-  <footer>Only an approval reserves funds and produces a receipt; a declined attempt leaves no charge behind.</footer>
+  <footer>Every page copies the same shell: one grid, nine fixed themes, light and dark, and a print view.</footer>
 
 </main>
 

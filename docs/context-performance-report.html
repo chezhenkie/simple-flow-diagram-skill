@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>context-performance-report</title>
+<style>
+#tb{
+  position:fixed;top:0;left:0;right:0;height:24px;z-index:10;
+  display:flex;align-items:center;gap:5px;padding:0 8px;justify-content:flex-end;
+  background:var(--paper);transition:background .3s;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  font:10px/1 var(--font-ui);color:#888;
+  user-select:none;
+}
+#tb.lt{border-bottom-color:rgba(0,0,0,0.08);color:#666}
+#tb .g{display:flex;align-items:center;gap:3px}
+#tb .s{width:1px;height:12px;background:rgba(255,255,255,0.08)}
+#tb.lt .s{background:rgba(0,0,0,0.1)}
+.toggle{position:relative;width:44px;height:20px;cursor:pointer;background:transparent}
+.toggle-thumb{position:absolute;top:2px;left:6px;width:16px;height:16px;border-radius:2px;background:#2e2e2e;border:1px solid #777;transition:transform .3s cubic-bezier(.4,0,.2,1),background .3s ease}
+#tb.lt .toggle-thumb{background:#cbcbcb;border-color:#888}
+.toggle.on .toggle-thumb{transform:translateX(16px)}
+.toggle svg{position:absolute;top:50%;transform:translateY(-50%);transition:opacity .3s ease;pointer-events:none;width:12px;height:12px}
+.toggle .ico-l{left:8px;opacity:1}
+.toggle .ico-r{right:8px;opacity:0.5}
+.toggle.on .ico-l{opacity:0.5}
+.toggle.on .ico-r{opacity:1}
+.pal-ctrl{display:flex;border:1px solid rgba(255,255,255,0.15);border-radius:2px;overflow:hidden}
+#tb.lt .pal-ctrl{border-color:rgba(0,0,0,0.15)}
+.pal-btn{
+  height:18px;padding:0 5px;background:transparent;color:inherit;
+  border:none;border-right:1px solid rgba(255,255,255,0.15);cursor:pointer;
+  font:8px/1 var(--font-ui);text-transform:uppercase;
+  letter-spacing:0.4px;transition:background .2s ease,color .2s ease;
+}
+.pal-btn:last-child{border-right:none}
+.pal-btn.active{background:#2e2e2e;color:#ccc}
+#tb.lt .pal-btn.active{background:#cbcbcb;color:#333}
+.ico-slider{width:10px;height:10px;flex-shrink:0}
+#tb input[type=range]{-webkit-appearance:none;appearance:none;width:48px;height:3px;background:#4e4e4e;border-radius:2px;outline:none;cursor:pointer;border:1px solid rgba(255,255,255,0.12)}
+#tb input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:10px;height:10px;background:#2e2e2e;border:1px solid #777;border-radius:2px;cursor:pointer}
+#tb input[type=range]::-moz-range-thumb{width:10px;height:10px;background:#2e2e2e;border:none;border-radius:2px;cursor:pointer}
+#tb.lt input[type=range]{background:#cbcbcb;border-color:rgba(0,0,0,0.15)}
+#tb.lt input[type=range]::-webkit-slider-thumb{background:#cbcbcb}
+#tb.lt input[type=range]::-moz-range-thumb{background:#cbcbcb}
+#tb .v{min-width:14px;text-align:center;font-variant-numeric:tabular-nums;font-size:10px}
+#g-sat.disabled{opacity:0.3;pointer-events:none}
+#g-sat.disabled .ico-slider{opacity:0.5}
+:root{
+  --paper:#f4f3ef;
+  --ink:#2b2b2a;
+  --ink-soft:#575756;
+  --espresso:#383837;
+  --accent:#b08a2e;
+  --accent-deep:#8a6a24;
+  --bronze:#7a746b;
+  --blue:#4a6d8c;
+  --brick:#a84a3a;
+  --line:#d9d8d3;
+  --card:#fafaf8;
+  --zebra:#f7f7f4;
+  --code-bg:#eceae4;
+  --pre-bg:#343433;
+  --shadow-color:rgba(45,45,45,0.06);
+  --pre-ink:#f2f2ef;
+  --font-serif:Georgia,'Times New Roman',serif;
+  --font-ui:'Segoe UI',Helvetica,Arial,sans-serif;
+  --font-mono:'Cascadia Code',Consolas,monospace;
+}
+[data-os="windows"]{
+  --font-ui:"Segoe UI Variable Text","Segoe UI",sans-serif;
+  --font-serif:Georgia,"Times New Roman",serif;
+  --font-mono:"Cascadia Mono","Cascadia Code",Consolas,monospace;
+}
+[data-os="mac"]{
+  --font-ui:-apple-system,"SF Pro Text","Helvetica Neue",sans-serif;
+  --font-serif:"New York","Times New Roman",Times,serif;
+  --font-mono:"SF Mono",Menlo,Monaco,monospace;
+}
+[data-os="ios"]{
+  --font-ui:-apple-system,"SF Pro Text","Helvetica Neue",sans-serif;
+  --font-serif:"New York",Georgia,"Times New Roman",serif;
+  --font-mono:"SF Mono",Menlo,monospace;
+}
+[data-os="android"]{
+  --font-ui:Roboto,"Noto Sans",sans-serif;
+  --font-serif:"Noto Serif",serif;
+  --font-mono:"Roboto Mono","Droid Sans Mono","Noto Sans Mono",monospace;
+}
+[data-os="linux"]{
+  --font-ui:Ubuntu,"Cantarell","Noto Sans",sans-serif;
+  --font-serif:"Liberation Serif","Noto Serif",serif;
+  --font-mono:"Ubuntu Mono","DejaVu Sans Mono",monospace;
+}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-serif);
+  font-size:16px;
+  line-height:1.6;
+  transition:background .3s,color .3s;
+}
+h1,h2,h3,h4,h5,h6{
+  color:var(--espresso);
+  font-family:var(--font-serif);
+  font-weight:400;
+  line-height:1.3;
+  margin-bottom:0.5em;
+}
+h1{font-size:2.5rem;letter-spacing:0.02em}
+h2{font-size:1.8rem}
+h3{font-size:1.4rem}
+p{margin-bottom:1em;color:var(--ink)}
+p.soft{color:var(--ink-soft)}
+a{color:var(--accent);text-decoration:none;transition:color .2s}
+a:hover{color:var(--accent-deep)}
+em{color:var(--accent-deep);font-style:italic;font-family:var(--font-serif)}
+hr{border:none;border-top:1px solid var(--line);margin:2em 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 1px 3px var(--shadow-color)}
+.card h3{margin-bottom:0.75rem}
+table{width:100%;border-collapse:collapse;margin-bottom:1.5rem;font-family:var(--font-ui);font-size:1rem}
+table th{background:var(--espresso);color:var(--paper);padding:0.75rem 1rem;text-align:left;font-weight:500}
+table td{padding:0.75rem 1rem;border-bottom:1px solid var(--line)}
+table tr:nth-child(even){background:var(--zebra)}
+table tr:hover{background:var(--line)}
+code{background:var(--code-bg);padding:0.15em 0.4em;border-radius:3px;font-family:var(--font-mono);font-size:0.95em;color:var(--ink)}
+pre{background:var(--pre-bg);color:var(--pre-ink);padding:1rem 1.25rem;border-radius:4px;overflow-x:auto;margin-bottom:1.5rem;font-family:var(--font-mono);font-size:0.95rem;line-height:1.5}
+pre code{background:transparent;padding:0;color:inherit}
+.kicker{font-family:var(--font-ui);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.22em;color:var(--bronze);margin-bottom:0.5rem}
+.header-rule{width:60px;height:2px;background:var(--accent);margin:1rem 0 2rem}
+[data-font="sans-serif"] body{font-family:var(--font-ui)}
+[data-font="sans-serif"] h1,
+[data-font="sans-serif"] h2,
+[data-font="sans-serif"] h3,
+[data-font="sans-serif"] h4,
+[data-font="sans-serif"] h5,
+[data-font="sans-serif"] h6{font-family:var(--font-ui)}
+*{box-sizing:border-box}
+.wrap{max-width:990px;margin:0 auto;padding:64px 32px 96px}
+header{border-top:6px solid var(--accent);padding-top:28px;margin-bottom:8px;transition:border-color .3s}
+h1{font-size:38px;font-weight:400;line-height:1.2;color:var(--espresso);margin:0 0 12px;letter-spacing:-.01em;transition:color .3s}
+h1 em{font-style:italic;color:var(--accent-deep);transition:color .3s}
+.lede{font-size:17px;color:var(--ink-soft);margin:0 0 4px;font-style:italic;transition:color .3s}
+.lede small{display:block;font-style:normal;font-family:var(--font-ui);font-size:12.5px;color:var(--bronze);margin-top:10px;transition:color .3s}
+h2{font-size:26px;font-weight:400;color:var(--espresso);margin:56px 0 6px;letter-spacing:-.01em;transition:color .3s}
+h2 .num{font-family:var(--font-ui);font-size:14px;color:var(--accent-deep);vertical-align:super;margin-right:8px;transition:color .3s}
+h2+.rule{height:1px;background:var(--line);margin:0 0 22px;transition:background .3s}
+h3{font-weight:600;color:var(--espresso);font-size:19px;margin:26px 0 6px;transition:color .3s}
+p{margin:0 0 16px}
+em{color:var(--accent-deep);transition:color .3s}
+strong{color:var(--accent-deep);font-weight:600;transition:color .3s}
+table{width:100%;border-collapse:collapse;margin:20px 0 28px;background:var(--card);border:1px solid var(--line);box-shadow:0 1px 0 var(--shadow-color);transition:background .3s,border-color .3s,box-shadow .3s}
+th,td{text-align:left;padding:10px 14px;vertical-align:top}
+th{font-family:var(--font-ui);font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--card);background:var(--espresso);border-bottom:2px solid var(--accent);font-weight:600;transition:background .3s,color .3s,border-color .3s}
+td{font-size:14.5px;border-bottom:1px solid var(--line);color:var(--ink);transition:background .3s,border-color .3s,color .3s}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--zebra)}
+.callout{border-left:4px solid var(--accent);background:var(--card);padding:16px 20px;margin:22px 0;font-style:italic;color:var(--ink-soft);transition:background .3s,border-color .3s,color .3s}
+.callout strong{font-style:normal}
+ul,ol{margin:0 0 18px;padding-left:26px}
+li{margin:0 0 8px}
+li::marker{color:var(--accent-deep)}
+code{font-family:var(--font-mono);font-size:13px;background:var(--code-bg);color:var(--espresso);padding:1px 6px;border-radius:3px;transition:background .3s,color .3s}
+pre{background:var(--pre-bg);color:var(--pre-ink);padding:16px 20px;border-radius:4px;overflow-x:auto;margin:18px 0 24px;font-family:var(--font-mono);font-size:13px;line-height:1.6;transition:background .3s,color .3s}
+pre code{background:none;color:inherit;padding:0}
+.lede,em,.callout{font-family:var(--font-serif)!important}
+@media(max-width:620px){.wrap{padding:40px 18px 72px}h1{font-size:28px}}
+</style>
+<script>(function(){
+  var ua=navigator.userAgent;
+  var os='unknown';
+  if(/Android/i.test(ua))os='android';
+  else if(/iPhone|iPad|iPod/i.test(ua))os='ios';
+  else if(/Windows/i.test(ua))os='windows';
+  else if(/Macintosh|Mac OS X/i.test(ua))os='mac';
+  else if(/Linux/i.test(ua))os='linux';
+  document.documentElement.dataset.os=os;
+})();</script>
+</head>
+<body>
+<div id="tb">
+  <div class="g">
+    <div class="toggle" id="i-mode" tabindex="0" role="switch" aria-checked="false" aria-label="Toggle dark/light mode">
+      <span class="toggle-thumb"></span>
+      <svg class="ico-l" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <svg class="ico-r" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </div>
+  </div>
+  <div class="g">
+    <div class="toggle on" id="i-font" tabindex="0" role="switch" aria-checked="true" aria-label="Toggle serif/sans-serif">
+      <span class="toggle-thumb"></span>
+      <svg class="ico-l" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#888" stroke-width="1.2">
+        <line x1="3" y1="3" x2="11" y2="3"/>
+        <line x1="7" y1="3" x2="7" y2="11"/>
+        <line x1="3" y1="11" x2="11" y2="11"/>
+      </svg>
+      <svg class="ico-r" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#888" stroke-width="1.2">
+        <line x1="7" y1="3" x2="7" y2="11"/>
+      </svg>
+    </div>
+  </div>
+  <div class="s"></div>
+  <div class="g">
+    <div class="pal-ctrl" id="i-palette">
+      <button class="pal-btn active" data-palette="regular">Regular</button>
+      <button class="pal-btn" data-palette="monochrome">Mono</button>
+      <button class="pal-btn" data-palette="solarized">Solarized</button>
+    </div>
+  </div>
+  <div class="s"></div>
+  <div class="g">
+    <svg class="ico-slider" viewBox="0 0 12 12" fill="none" stroke="#888" stroke-width="1">
+      <rect x="1" y="1" width="10" height="10"/>
+      <polygon points="1,1 11,1 1,11" fill="#888"/>
+    </svg>
+    <input type="range" id="i-bri" min="-3" max="3" step="1" value="0">
+    <span class="v" id="v-bri">0</span>
+  </div>
+  <div class="s"></div>
+  <div class="g" id="g-sat">
+    <svg class="ico-slider" viewBox="0 0 12 12" fill="#888">
+      <circle cx="6" cy="3" r="1.8"/>
+      <circle cx="3.5" cy="7.5" r="1.8"/>
+      <circle cx="8.5" cy="7.5" r="1.8"/>
+    </svg>
+    <input type="range" id="i-sat" min="-3" max="3" step="1" value="0">
+    <span class="v" id="v-sat">0</span>
+  </div>
+</div>
+<div class="wrap">
+  <header>
+    <h1>context-performance-report</h1>  </header>
+  <main>
+<h1>Flow diagram skill: context and performance report</h1>
+<h2><span class="num">1</span>Summary</h2>
+<div class="rule"></div>
+<p>The test measures the cost of a single diagram page and the cost of adding a second diagram to that page, using the installed 1.5.0 skill and a bare task prompt. The final workflow builds a one-diagram page in 69.3 s with 41,897 context and 369,280 total tokens, averaged over two runs, with both pages passing the validator. Adding a second diagram to the same page costs 64.4 s, 43,185 context and 268,705 total tokens, with the 25 KB shell untouched.</p>
+<p>Each gain below was built on the previous workflow, but each row compares a different pair, so the percentages do not add.</p>
+<table><thead><tr><th>Change</th><th>Comparison</th><th>Reduction</th></tr></thead><tbody>
+<tr><td>Validator out of the payload</td><td>new input and wall, paired trial</td><td>40.5% input, 38.1% time</td></tr>
+<tr><td>Checker script removed</td><td>A, final against the old clean A</td><td>46.8% total, 27.2% time</td></tr>
+<tr><td>Read-only step 7 plus full checklist</td><td>pair, against the clean pair</td><td>37.8% total, 19.9% time</td></tr>
+<tr><td>Second diagram on the same page</td><td>against a fresh one-diagram page</td><td>27.2% total, 7.1% time</td></tr>
+<tr><td>Two-diagram page</td><td>against two separate pages</td><td>13.6% total, 3.5% time</td></tr>
+</tbody></table>
+<p>The validator removal is the largest single gain: 40.5% fewer new input and 38.1% less wall time, with the same pass rate. The 1.5.0 no-render workflow and the index shell are part of the baseline; their cost was not isolated in this test.</p>
+<h2><span class="num">2</span>Method</h2>
+<div class="rule"></div>
+<p>The prompt was identical for every run except the destination path:</p>
+<div class="callout"><p>Use the simple-flow-diagram-skill to build a DNS lookup flow diagram and save it at &lt;path&gt;. Use Windows browsers only, never WSL.</p></div>
+<p>For the second-diagram case the prompt asked to add a TLS handshake section to an existing page and keep the DNS section. Each case used two agents in separate folders. No prompt asked for a report, a list of checks or a defect hunt. The installed skill was read from the OpenCode skills folder.</p>
+<p>Measurements come from the session store. Wall time is idle time minus creation time. Context is the last turn&#39;s input plus the cached prefix, the number the agent UI shows. Total tokens is new input plus output plus reasoning plus cache reads across the session; it is a cumulative billing figure, not the context of one turn.</p>
+<p>A maintainer ran the page validator after each run:</p>
+<pre><code class="language-sh">python testing-tools/validate.py &lt;page&gt;.html agent-skill/template.html</code></pre>
+<p>The validator is a maintainer tool outside the skill payload.</p>
+<h2><span class="num">3</span>Changes under test</h2>
+<div class="rule"></div>
+<ul>
+<li>1.3.7 moved the page validator out of the skill payload to <code>testing-tools/validate.py</code>. The agent no longer reads the 14.6 KB source or runs the tool, and the payload no longer needs Python.</li>
+<li>1.5.0 removed the per-page browser pass. The shell is checked once in the repository, the written part is checked by reading and the page is opened once for the reader.</li>
+<li>Step 7 now names the check method: read the page against the manual section 12 checklist, and do not write a checker script or run a separate check tool.</li>
+<li>The section 12 checklist was expanded after a comparison with the validator. It now covers page structure, shell parity, line endings, corners, side heights, text indents, budgets, accent classes, loop shape, marker prefixes, assets and storage.</li>
+</ul>
+<h2><span class="num">4</span>Validator removal</h2>
+<div class="rule"></div>
+<p>The validator left the skill payload in 1.3.7. The table below compares the paired runs that read the validator source with the runs that did not. All four pages passed the validator on the first attempt.</p>
+<table><thead><tr><th>Arm</th><th>New input, run 1</th><th>New input, run 2</th><th>Mean new input</th><th>Wall s, run 1</th><th>Wall s, run 2</th><th>Mean wall s</th><th>Pages</th></tr></thead><tbody>
+<tr><td>With validator read</td><td>55,686</td><td>54,480</td><td>55,083</td><td>275.2</td><td>267.9</td><td>271.6</td><td>2/2</td></tr>
+<tr><td>Without</td><td>34,527</td><td>30,966</td><td>32,747</td><td>189.7</td><td>146.6</td><td>168.2</td><td>2/2</td></tr>
+<tr><td>Change</td><td></td><td></td><td>-22,336 (-40.5%)</td><td></td><td></td><td>-103.4 (-38.1%)</td><td>same</td></tr>
+</tbody></table>
+<p>The trial used paired runs on the order topic. The mean is the average of the two runs. The gain is in the fixed read and the tool work, not in page quality.</p>
+<h2><span class="num">5</span>Step 7 iterations</h2>
+<div class="rule"></div>
+<p>The clean pair is the 1.5.0 baseline before step 7 changed. In that pair the check method was open: one agent wrote a private checker script and the other read the page. The v1 pair used the read-only step 7. v1 A missed the first arrow and its caption because the checklist had no connector item. The connector item was added for v2, and the full checklist for v3.</p>
+<table><thead><tr><th>Pair</th><th>Step 7</th><th>Wall s</th><th>Turns</th><th>Context</th><th>New input</th><th>Total</th><th>Pages</th></tr></thead><tbody>
+<tr><td>clean</td><td>free method, checker allowed</td><td>86.5</td><td>14.5</td><td>47,785</td><td>38,558</td><td>593,449</td><td>2/2</td></tr>
+<tr><td>v1</td><td>read-only, no connector item</td><td>78.3</td><td>11.5</td><td>44,936</td><td>35,252</td><td>398,827</td><td>1/2</td></tr>
+<tr><td>v2</td><td>plus connector item</td><td>104.4</td><td>13</td><td>47,767</td><td>38,212</td><td>498,147</td><td>2/2</td></tr>
+<tr><td>v3</td><td>plus full checklist</td><td>69.3</td><td>11</td><td>41,897</td><td>32,191</td><td>369,280</td><td>2/2</td></tr>
+</tbody></table>
+<p>The v1 A page failed two checks, both the same missing arrow and its caption. The v2 and v3 pages pass. The v3 pair is the final one-diagram result.</p>
+<h2><span class="num">6</span>Final one-diagram runs</h2>
+<div class="rule"></div>
+<table><thead><tr><th>Run</th><th>Wall s</th><th>Turns</th><th>Tools</th><th>Context</th><th>New input</th><th>Output</th><th>Reasoning</th><th>Cache read</th><th>Total</th><th>Checks</th></tr></thead><tbody>
+<tr><td>A</td><td>78.4</td><td>13</td><td>14</td><td>42,990</td><td>33,411</td><td>4,210</td><td>9,120</td><td>410,752</td><td>457,493</td><td>pass 275</td></tr>
+<tr><td>B</td><td>60.2</td><td>9</td><td>12</td><td>40,803</td><td>30,971</td><td>2,826</td><td>7,525</td><td>239,744</td><td>281,066</td><td>pass 216</td></tr>
+<tr><td>Mean</td><td>69.3</td><td>11</td><td>13</td><td>41,897</td><td>32,191</td><td>3,518</td><td>8,323</td><td>325,248</td><td>369,280</td><td>2/2</td></tr>
+</tbody></table>
+<p>The A/B spread is 1.30x in wall time. The two pages are different DNS flows and both pass the contract.</p>
+<h2><span class="num">7</span>Second diagram on the same page</h2>
+<div class="rule"></div>
+<p>The base page was a seven-row DNS diagram of 25,163 bytes, validated at 275 checks. Two agents added a TLS 1.3 section to separate copies of that page and kept the DNS section.</p>
+<table><thead><tr><th>Case</th><th>Diagrams</th><th>Wall s</th><th>Turns</th><th>Context</th><th>New input</th><th>Total</th><th>Result</th></tr></thead><tbody>
+<tr><td>Fresh one-diagram page</td><td>1</td><td>69.3</td><td>11</td><td>41,897</td><td>32,191</td><td>369,280</td><td>2/2 pass</td></tr>
+<tr><td>Add a second diagram</td><td>+1</td><td>64.4</td><td>8</td><td>43,185</td><td>33,282</td><td>268,705</td><td>2/2 pass</td></tr>
+<tr><td>Two-diagram page, total</td><td>2</td><td>133.7</td><td>19</td><td>-</td><td>65,473</td><td>637,985</td><td>2/2 pass</td></tr>
+<tr><td>Two separate pages, total</td><td>2</td><td>138.6</td><td>22</td><td>-</td><td>64,382</td><td>738,560</td><td>4/4 pass</td></tr>
+</tbody></table>
+<p>The added section grows the page to 29,685 and 29,880 bytes, an increase of 4.5 to 4.7 KB. The shell, theme table, bar script and print rules are unchanged.</p>
+<p>The add run reads the existing page instead of the template, so its context is 3.1% higher and its new input 3.4% higher than a fresh one-diagram run. The saving is in turns, output and cache reads. The TLS flow is a familiar protocol, so part of the lower turn count is topic familiarity rather than shell reuse. The result supports the file claim: the added diagram writes about 4.6 KB and leaves the 25 KB shell alone. It does not make a second diagram free.</p>
+<h2><span class="num">8</span>Checklist scan</h2>
+<div class="rule"></div>
+<p>The scan compared <code>testing-tools/validate.py</code> with manual section 12. It found ten rules that the checklist did not name and three manual ambiguities. All are now in the manual, and the static check count is 360.</p>
+<table><thead><tr><th>Area</th><th>Rule added</th></tr></thead><tbody>
+<tr><td>File endings</td><td>LF, not only ASCII</td></tr>
+<tr><td>Page structure</td><td>one main, at least one section, head, note, one SVG, role and aria-label</td></tr>
+<tr><td>Card geometry</td><td>rx 3, side height 70/90/100, side box on a row or 20 lower</td></tr>
+<tr><td>Text geometry</td><td>x+18 or x+16, one title per card, third line at +74 on side cards only</td></tr>
+<tr><td>Text budgets</td><td>65/28/26, title 24 on every card, caption 42/18, tag 78</td></tr>
+<tr><td>Connector classes</td><td><code>arrow-a</code> for accents, matching muted and accent markers</td></tr>
+<tr><td>Loop shape</td><td>four segments, upward, 12-character label</td></tr>
+<tr><td>Marker ids</td><td>prefixed by section and defined for every arrowhead</td></tr>
+<tr><td>Shell and assets</td><td>shell parity, two inline scripts, no external assets, URLs or storage</td></tr>
+<tr><td>Manual ambiguities</td><td>split one-branch, 90/100 mid mark, 10 px input and 4 px output stubs</td></tr>
+</tbody></table>
+<h2><span class="num">9</span>Final state</h2>
+<div class="rule"></div>
+<ul>
+<li>Skill payload: five files, no executable, no runtime.</li>
+<li>Static checks: 360, zero failures.</li>
+<li>Bar harness: ok.</li>
+<li>Demo validator: 245 checks, zero failures.</li>
+<li>Two-section test pages: 490 checks each, zero failures.</li>
+<li>Tested skill state: commit 94e4f6f, pushed; Pages built at that commit.</li>
+<li>Installed skill: synced with the repository.</li>
+<li>No per-page render pass: the shell is checked in the repository, the written part is read against the checklist and the page is opened once for the reader.</li>
+<li>The test pages were deleted after the figures were recorded. This report is the record.</li>
+</ul>
+<h2><span class="num">10</span>Limits</h2>
+<div class="rule"></div>
+<ul>
+<li>Two runs per case; the A/B spread remains 1.30x on the final one-diagram pair and 1.10x on the add pair.</li>
+<li>The add case uses a known TLS flow; the lower cost is partly topic familiarity.</li>
+<li>Context and total tokens measure different things; the report keeps them separate.</li>
+<li>The validator remains a maintainer tool; the skill no longer reads or runs it.</li>
+<li>The 360 px bar and the head-script theme application remain separate shell findings. The text contrast shortfalls remain separate from the accepted mark deviations.</li>
+</ul>
+  </main>
+</div>
+<script>const ThemeEngine=(function(){
+
+  function hexToRgb(hex){
+    if(typeof hex!=='string'||hex[0]!=='#'){
+      throw new Error('hexToRgb: expected a hex color string starting with "#"');
+    }
+    const h=hex.substring(1);
+    if(h.length!==6||!/^[0-9a-fA-F]{6}$/.test(h)){
+      throw new Error('hexToRgb: expected 6 hex digits after "#" (got "'+hex+'")');
+    }
+    return[
+      parseInt(h.substring(0,2),16),
+      parseInt(h.substring(2,4),16),
+      parseInt(h.substring(4,6),16)
+    ];
+  }
+
+  function rgbToHex(r,g,b){
+    const c=v=>Math.max(0,Math.min(255,Math.round(v)));
+    return'#'+[c(r),c(g),c(b)].map(v=>v.toString(16).padStart(2,'0')).join('');
+  }
+
+  function rgbToHsl(r,g,b){
+    r/=255;g/=255;b/=255;
+    const max=Math.max(r,g,b),min=Math.min(r,g,b);
+    let h,s;
+    const l=(max+min)/2;
+    if(max===min){
+      h=s=0;
+    }else{
+      const d=max-min;
+      s=l>0.5?d/(2-max-min):d/(max+min);
+      switch(max){
+        case r:h=((g-b)/d+(g<b?6:0))/6;break;
+        case g:h=((b-r)/d+2)/6;break;
+        case b:h=((r-g)/d+4)/6;break;
+      }
+    }
+    return[h*360,s,l];
+  }
+
+  function hslToRgb(h,s,l){
+    h/=360;
+    let r,g,b;
+    if(s===0){
+      r=g=b=l;
+    }else{
+      const hue2rgb=(p,q,t)=>{
+        if(t<0)t+=1;
+        if(t>1)t-=1;
+        if(t<1/6)return p+(q-p)*6*t;
+        if(t<1/2)return q;
+        if(t<2/3)return p+(q-p)*(2/3-t)*6;
+        return p;
+      };
+      const q=l<0.5?l*(1+s):l+s-l*s;
+      const p=2*l-q;
+      r=hue2rgb(p,q,h+1/3);
+      g=hue2rgb(p,q,h);
+      b=hue2rgb(p,q,h-1/3);
+    }
+    return[Math.round(r*255),Math.round(g*255),Math.round(b*255)];
+  }
+
+  function clampStep(step){
+    return Math.max(-3,Math.min(3,Number(step)||0));
+  }
+
+  function adjustBrightness(rgb,step){
+    step=clampStep(step);
+    if(!step)return rgb.slice();
+    const factor=1+step*0.08;
+    return rgb.map(v=>Math.max(0,Math.min(255,Math.round(v*factor))));
+  }
+
+  function adjustSaturation(rgb,step){
+    step=clampStep(step);
+    if(!step)return rgb.slice();
+    const[h,s,l]=rgbToHsl(rgb[0],rgb[1],rgb[2]);
+    const newS=Math.max(0,Math.min(1,s*(1+step*0.15)));
+    return hslToRgb(h,newS,l);
+  }
+
+  function adjustColor(hex,brightness,saturation){
+    let rgb=hexToRgb(hex);
+    rgb=adjustBrightness(rgb,brightness);
+    rgb=adjustSaturation(rgb,saturation);
+    return rgbToHex(rgb[0],rgb[1],rgb[2]);
+  }
+
+  function adjustRgba(rgba,brightness,saturation){
+    const match=rgba.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+    if(!match)return rgba;
+    let rgb=[parseInt(match[1]),parseInt(match[2]),parseInt(match[3])];
+    const alpha=match[4]!==undefined?match[4]:'1';
+    rgb=adjustBrightness(rgb,brightness);
+    rgb=adjustSaturation(rgb,saturation);
+    return'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+','+alpha+')';
+  }
+
+  const PALETTES={
+    regular:{
+      light:{
+        '--paper':'#f4f3ef',
+        '--ink':'#2b2b2a',
+        '--ink-soft':'#575756',
+        '--espresso':'#383837',
+        '--accent':'#b08a2e',
+        '--accent-deep':'#8a6a24',
+        '--bronze':'#7a746b',
+        '--blue':'#4a6d8c',
+        '--brick':'#a84a3a',
+        '--line':'#d9d8d3',
+        '--card':'#fafaf8',
+        '--zebra':'#f7f7f4',
+        '--code-bg':'#eceae4',
+        '--pre-bg':'#343433',
+        '--shadow-color':'rgba(45,45,45,0.06)',
+        '--pre-ink':'#f2f2ef'
+      },
+      dark:{
+        '--paper':'#0a0c10',
+        '--ink':'#d0ccc0',
+        '--ink-soft':'#9a9688',
+        '--espresso':'#a8b4c8',
+        '--accent':'#4a6d8c',
+        '--accent-deep':'#5a7d9c',
+        '--bronze':'#7a8a9c',
+        '--blue':'#4a6d8c',
+        '--brick':'#8c6a6a',
+        '--line':'#1a2030',
+        '--card':'#141820',
+        '--zebra':'#1c2230',
+        '--code-bg':'#1a2030',
+        '--pre-bg':'#0a0c10',
+        '--shadow-color':'rgba(0,0,0,0.4)',
+        '--pre-ink':'#d0ccc0'
+      }
+    },
+    solarized:{
+      light:{
+        '--paper':'#fdf6e3',
+        '--ink':'#657b83',
+        '--ink-soft':'#93a1a1',
+        '--espresso':'#586e75',
+        '--accent':'#b58900',
+        '--accent-deep':'#cb4b16',
+        '--bronze':'#93a1a1',
+        '--blue':'#268bd2',
+        '--cyan':'#2aa198',
+        '--green':'#859900',
+        '--red':'#dc322f',
+        '--magenta':'#d33682',
+        '--violet':'#6c71c4',
+        '--line':'#eee8d5',
+        '--card':'#eee8d5',
+        '--zebra':'#eee8d5',
+        '--code-bg':'#eee8d5',
+        '--pre-bg':'#eee8d5',
+        '--shadow-color':'rgba(0,0,0,0.05)',
+        '--pre-ink':'#586e75'
+      },
+      dark:{
+        '--paper':'#002b36',
+        '--ink':'#839496',
+        '--ink-soft':'#586e75',
+        '--espresso':'#93a1a1',
+        '--accent':'#b58900',
+        '--accent-deep':'#cb4b16',
+        '--bronze':'#586e75',
+        '--blue':'#268bd2',
+        '--cyan':'#2aa198',
+        '--green':'#859900',
+        '--red':'#dc322f',
+        '--magenta':'#d33682',
+        '--violet':'#6c71c4',
+        '--line':'#073642',
+        '--card':'#073642',
+        '--zebra':'#073642',
+        '--code-bg':'#073642',
+        '--pre-bg':'#073642',
+        '--shadow-color':'rgba(0,0,0,0.3)',
+        '--pre-ink':'#93a1a1'
+      }
+    },
+    monochrome:{
+      light:{
+        '--paper':'#f5f5f5',
+        '--ink':'#333333',
+        '--ink-soft':'#666666',
+        '--espresso':'#222222',
+        '--accent':'#555555',
+        '--accent-deep':'#222222',
+        '--bronze':'#777777',
+        '--blue':'#555555',
+        '--brick':'#555555',
+        '--line':'#dddddd',
+        '--card':'#fafafa',
+        '--zebra':'#f0f0f0',
+        '--code-bg':'#e8e8e8',
+        '--pre-bg':'#333333',
+        '--shadow-color':'rgba(0,0,0,0.08)',
+        '--pre-ink':'#f0f0f0'
+      },
+      dark:{
+        '--paper':'#1a1a1a',
+        '--ink':'#cccccc',
+        '--ink-soft':'#999999',
+        '--espresso':'#dddddd',
+        '--accent':'#aaaaaa',
+        '--accent-deep':'#e0e0e0',
+        '--bronze':'#888888',
+        '--blue':'#aaaaaa',
+        '--brick':'#aaaaaa',
+        '--line':'#444444',
+        '--card':'#222222',
+        '--zebra':'#2a2a2a',
+        '--code-bg':'#333333',
+        '--pre-bg':'#111111',
+        '--shadow-color':'rgba(0,0,0,0.3)',
+        '--pre-ink':'#cccccc'
+      }
+    }
+  };
+
+  function apply(palette,mode,brightness,saturation,font){
+    palette=palette||'regular';
+    mode=mode||'light';
+    brightness=brightness||0;
+    saturation=saturation||0;
+    font=font||'sans-serif';
+
+    const theme=PALETTES[palette]&&PALETTES[palette][mode];
+    if(!theme){
+      console.error('ThemeEngine: unknown palette/mode combination:',palette,mode);
+      return;
+    }
+
+    const root=document.documentElement;
+    root.setAttribute('data-theme',mode);
+    root.setAttribute('data-palette',palette);
+    root.setAttribute('data-font',font);
+
+    for(const[prop,value]of Object.entries(theme)){
+      let adjusted;
+      if(value.startsWith('rgba')){
+        adjusted=adjustRgba(value,brightness,saturation);
+      }else if(value.startsWith('#')){
+        adjusted=adjustColor(value,brightness,saturation);
+      }else{
+        adjusted=value;
+      }
+      root.style.setProperty(prop,adjusted);
+    }
+  }
+
+  return{apply,PALETTES};
+})();</script>
+<script>const MenuBar=(function(){
+  let tb,modeToggle,fontToggle,palCtrl,palBtns,iBri,vBri,iSat,vSat,gSat;
+  let currentMode='light',currentPalette='regular',currentFont='sans-serif';
+  let onChange=null;
+
+  const FONT_DEFAULTS={
+    regular:'sans-serif',
+    monochrome:'sans-serif',
+    solarized:'serif'
+  };
+
+  function init(opts){
+    opts=opts||{};
+    onChange=opts.onChange||null;
+    currentMode=opts.mode||'light';
+    currentPalette=opts.palette||'regular';
+    currentFont=FONT_DEFAULTS[currentPalette]||'sans-serif';
+
+    tb=document.getElementById('tb');
+    modeToggle=document.getElementById('i-mode');
+    fontToggle=document.getElementById('i-font');
+    palCtrl=document.getElementById('i-palette');
+    palBtns=palCtrl.querySelectorAll('.pal-btn');
+    iBri=document.getElementById('i-bri');
+    vBri=document.getElementById('v-bri');
+    iSat=document.getElementById('i-sat');
+    vSat=document.getElementById('v-sat');
+    gSat=document.getElementById('g-sat');
+
+    modeToggle.addEventListener('click',()=>setMode(currentMode==='dark'?'light':'dark'));
+    modeToggle.addEventListener('keydown',e=>{
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();modeToggle.click();}
+    });
+    fontToggle.addEventListener('click',()=>setFont(currentFont==='sans-serif'?'serif':'sans-serif'));
+    fontToggle.addEventListener('keydown',e=>{
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();fontToggle.click();}
+    });
+    palBtns.forEach(b=>b.addEventListener('click',()=>setPalette(b.dataset.palette)));
+    iBri.addEventListener('input',()=>vBri.textContent=iBri.value);
+    iBri.addEventListener('change',emit);
+    iSat.addEventListener('input',()=>vSat.textContent=iSat.value);
+    iSat.addEventListener('change',emit);
+
+    iBri.value=0;
+    iSat.value=0;
+    vBri.textContent='0';
+    vSat.textContent='0';
+
+    syncUI();
+  }
+
+  function syncUI(){
+    const isLight=currentMode==='light';
+    const isSans=currentFont==='sans-serif';
+    const isMono=currentPalette==='monochrome';
+    modeToggle.classList.toggle('on',isLight);
+    modeToggle.setAttribute('aria-checked',String(isLight));
+    fontToggle.classList.toggle('on',isSans);
+    fontToggle.setAttribute('aria-checked',String(isSans));
+    tb.classList.toggle('lt',isLight);
+    gSat.classList.toggle('disabled',isMono);
+    palBtns.forEach(b=>{
+      const pl=b.dataset.palette;
+      b.classList.toggle('active',pl===currentPalette);
+    });
+  }
+
+  function setMode(m){
+    currentMode=m;
+    syncUI();
+    emit();
+  }
+
+  function setFont(f){
+    currentFont=f;
+    syncUI();
+    emit();
+  }
+
+  function setPalette(pl){
+    currentPalette=pl;
+    currentFont=FONT_DEFAULTS[pl]||'sans-serif';
+    syncUI();
+    emit();
+  }
+
+  function emit(){
+    if(onChange)onChange({
+      mode:currentMode,
+      palette:currentPalette,
+      font:currentFont,
+      brightness:parseInt(iBri.value),
+      saturation:parseInt(iSat.value)
+    });
+  }
+
+  function getValues(){
+    return{
+      mode:currentMode,
+      palette:currentPalette,
+      font:currentFont,
+      brightness:parseInt(iBri.value),
+      saturation:parseInt(iSat.value)
+    };
+  }
+
+  function setValues(opts){
+    if(opts.mode!==undefined)currentMode=opts.mode;
+    if(opts.palette!==undefined)currentPalette=opts.palette;
+    if(opts.font!==undefined)currentFont=opts.font;
+    if(opts.brightness!==undefined){iBri.value=opts.brightness;vBri.textContent=opts.brightness;}
+    if(opts.saturation!==undefined){iSat.value=opts.saturation;vSat.textContent=opts.saturation;}
+    syncUI();
+    emit();
+  }
+
+  return{init,getValues,setValues,setMode,setPalette,setFont};
+})();</script>
+<script>(function(){
+  var prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var initialMode=prefersDark?'dark':'light';
+  MenuBar.init({
+    mode:initialMode,
+    palette:'regular',
+    onChange:function(opts){
+      ThemeEngine.apply(opts.palette,opts.mode,opts.brightness,opts.saturation,opts.font);
+    }
+  });
+  var initial=MenuBar.getValues();
+  ThemeEngine.apply(initial.palette,initial.mode,initial.brightness,initial.saturation,initial.font);
+})();</script>
+</body>
+</html>

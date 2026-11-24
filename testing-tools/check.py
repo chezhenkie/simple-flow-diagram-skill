@@ -37,7 +37,10 @@ def one_hex(css, name):
 
 
 files = ["README.md", "agent-skill/SKILL.md", "agent-skill/template.html",
-         "agent-skill/demo.html", "agent-skill/index.html", "docs/index.html", "CHANGELOG.md", "LICENSE",
+         "agent-skill/demo.html", "agent-skill/index.html", "docs/index.html",
+         "docs/demo.html", "docs/SKILL.html", "docs/color-vision-audit.html",
+         "docs/context-performance-report.html", "docs/color-vision-audit-comparison.html",
+         "CHANGELOG.md", "LICENSE",
          "agent-skill/style-manual.md", "testing-tools/check.py", "testing-tools/validate.py",
          "testing-tools/harness.js", "testing-tools/README.md"]
 for f in files:
@@ -54,7 +57,7 @@ skill = text("agent-skill/SKILL.md")
 man = text("agent-skill/style-manual.md")
 cl = text("CHANGELOG.md")
 rd = text("README.md")
-pages = text("docs/index.html")
+pages = text("docs/demo.html")
 
 # Page structure
 check(demo.count("<h1") == 1, "demo one h1")
@@ -292,6 +295,32 @@ check("'?mode=' + (isDark() ? 'dark' : 'light')" in script
       and "'&dark=' + chosen.dark" in script and "'&light=' + chosen.light" in script,
       "link query carries mode and both picks")
 check("syncLinks();" in script, "theme change rewrites the links")
+
+# Pages index: the filled index shell served from docs.
+live = text("docs/index.html")
+lstyle = re.findall(r"<style>(.*?)</style>", live, re.S)
+check(len(lstyle) == 2 and lstyle == istyles, "pages index styles match shell")
+check(re.findall(r"<script>(.*?)</script>", live, re.S) == scripts, "pages index scripts match shell")
+check(live.count("<h1") == 1 and live.count('<p class="sub">') == 1 and live.count("<footer") == 1,
+      "pages index copy")
+check('href="demo.html"' in live, "pages index demo link")
+for doc in ("SKILL.html", "color-vision-audit.html", "context-performance-report.html"):
+    check('href="%s"' % doc in live, "pages index document " + doc)
+check(live.count('<nav class="grid" aria-label="pages">') == 1, "pages index one group")
+check(live.count('class="entry"') == 2 and live.count('class="glyph"') == 2, "pages index two entries")
+check(live.count('class="hot"') == 2, "pages index two accent glyph paths")
+check(live.count('class="docs"') == 1 and ">Document<" in live and ">Covers<" in live,
+      "pages index documents table")
+check("localStorage" not in live and "sessionStorage" not in live, "pages index no storage")
+check(not hexes(live.split("<body>")[1].split("</main>")[0]), "pages index no hex colors in body")
+check(not re.search(r'<script[^>]+src=|<link\b|@import|https?://', live),
+      "pages index no external assets")
+for n, s in enumerate(re.findall(r'<svg class="glyph".*?</svg>', live, re.S)):
+    try:
+        ET.fromstring(s)
+        check(True, "pages index glyph %d parses" % n)
+    except Exception:
+        check(False, "pages index glyph %d parses" % n)
 
 # SVGs, markers, geometry, budgets
 svgs = re.findall(r"<svg\b.*?</svg>", demo, re.S)
@@ -548,7 +577,10 @@ check(rd.count('width="400"') == 3, "readme closeup sizes")
 check("docs/bar-dark.png" in rd and "docs/bar-light.png" in rd
       and "docs/bar-print-friendly.png" in rd, "readme bar closeups")
 check("docs/demo-dark.png" in rd and "docs/demo-print-friendly.png" in rd, "readme demo states")
-check("https://chezhenkie.github.io/simple-flow-diagram-skill/" in rd, "readme live demo link")
+check("https://chezhenkie.github.io/simple-flow-diagram-skill/demo.html" in rd,
+      "readme live demo link")
+check("The project index is live at https://chezhenkie.github.io/simple-flow-diagram-skill/." in rd,
+      "readme live index link")
 check("<table>" in rd and "CLICK HERE TO OPEN THE LIVE, GITHUB-HOSTED DEMO PAGE" in rd,
       "readme live demo box")
 check("@simple-flow-diagram-skill" in rd and "$simple-flow-diagram-skill" in rd

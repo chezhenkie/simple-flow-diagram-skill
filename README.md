@@ -23,12 +23,12 @@ The 1.4.0 palette pass raises the weak borders and accents. Four mark pairs keep
 
 | Light | Dark | Print friendly |
 |:---:|:---:|:---:|
-| [<img src="docs/demo-light.png" width="280" alt="Demo page in light mode">](https://chezhenkie.github.io/simple-flow-diagram-skill/) | [<img src="docs/demo-dark.png" width="280" alt="Demo page in dark mode">](https://chezhenkie.github.io/simple-flow-diagram-skill/) | [<img src="docs/demo-print-friendly.png" width="280" alt="Demo page with print friendly on">](https://chezhenkie.github.io/simple-flow-diagram-skill/) |
+| [<img src="docs/demo-light.png" width="280" alt="Demo page in light mode">](https://chezhenkie.github.io/simple-flow-diagram-skill/demo.html) | [<img src="docs/demo-dark.png" width="280" alt="Demo page in dark mode">](https://chezhenkie.github.io/simple-flow-diagram-skill/demo.html) | [<img src="docs/demo-print-friendly.png" width="280" alt="Demo page with print friendly on">](https://chezhenkie.github.io/simple-flow-diagram-skill/demo.html) |
 | Demo, vercel light | Same page, github dark | White page, print tokens |
 
 <table>
   <tr>
-    <td><a href="https://chezhenkie.github.io/simple-flow-diagram-skill/">CLICK HERE TO OPEN THE LIVE, GITHUB-HOSTED DEMO PAGE</a></td>
+    <td><a href="https://chezhenkie.github.io/simple-flow-diagram-skill/demo.html">CLICK HERE TO OPEN THE LIVE, GITHUB-HOSTED DEMO PAGE</a></td>
   </tr>
 </table>
 
@@ -56,7 +56,7 @@ Print friendly on: the print control fills, the mode and theme stay unchanged.
 
 ## Several pages
 
-A folder with several diagram pages and text documents can open on one index page. `agent-skill/index.html` is the second shell: a title, one or more groups of link cards, and an optional table of documents. Each card carries a small inline SVG glyph, so the index loads no assets either.
+A folder with several diagram pages and text documents can open on one index page. `agent-skill/index.html` is the second shell: a title, one or more groups of link cards, and an optional table of documents. Each card carries a small inline SVG glyph, so the index loads no assets either. The project index is live at https://chezhenkie.github.io/simple-flow-diagram-skill/.
 
 The bar writes the mode and both theme picks into every local `.html` link and reads them on load. A page opened from the index keeps the theme; print stays a preview and does not travel. This is link state, not storage.
 
@@ -110,7 +110,7 @@ Example request: `Draw the request path as a flow diagram in the house style.`
 | `agent-skill/demo.html` | Filled reference page: card payment flow with a side channel, a split and a return |
 | `agent-skill/style-manual.md` | Theme rules, grid, type scale, card anatomy, connectors, validation |
 | `testing-tools/` | Static checks, page validator and bar behavior checks |
-| `docs/` | Screenshots and the GitHub Pages entry |
+| `docs/` | GitHub Pages index, demo copy and screenshots |
 | `color-vision-audit.md` | Colour vision audit of the nine themes |
 | `CHANGELOG.md` | Version history |
 
