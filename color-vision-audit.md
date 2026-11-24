@@ -92,7 +92,7 @@ The 1.4.0 palette pass raised the weak line and accent values. Four mark pairs r
 | tokyonight | checked label | 4.31 | 4.5 | deuteranopia |
 | orng | checked label | 4.00 | 4.5 | deuteranopia |
 
-These are accepted. The shortfalls are small and affect emphasis and a menu label, not the diagram structure: the focus card still reads by 2 px width, the line marks clear the floor, and the labels are text. Solarized and vercel accents sit between their original and fully passing values; tokyonight and orng accents are unchanged. Github accent and line, harbor line, solarized accent and line, oledblack line, vercel accent, tokyonight line, cursor accent and line, and orng line changed in the pass. The palettes are otherwise fixed at 1.4.0.
+These are accepted. The shortfalls are small and affect emphasis and a menu label, not the diagram structure: the focus card still reads by 2 px width, the line marks clear the floor, and the labels are text. They stay because raising them to the floor would drift the colors too far outside their fixed schemes and disrupt the overall color balance of the theme. Solarized and vercel accents sit between their original and fully passing values; tokyonight and orng accents are unchanged. Github accent and line, harbor line, solarized accent and line, oledblack line, vercel accent, tokyonight line, cursor accent and line, and orng line changed in the pass. The palettes are otherwise fixed at 1.4.0.
 
 ## Conclusions
 
