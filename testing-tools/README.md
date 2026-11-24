@@ -3,7 +3,7 @@
 Three tools check the repository: a static checker, a toolbar test that runs the page script without a browser, and a page validator. Run them from the repository root or by absolute path.
 
 ```sh
-python testing-tools/check.py        # 395 static checks, prints failures only
+python testing-tools/check.py        # 397 static checks, prints failures only
 python testing-tools/check.py -v     # same run, prints every PASS line
 node testing-tools/harness.js        # toolbar script against a fake page
 ```

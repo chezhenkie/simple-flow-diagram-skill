@@ -266,54 +266,55 @@
 
 <main>
 
-  <h1>simpleflow diagram</h1>
-  <p class="sub">Two diagram pages, a theme record and the documents behind the skill.</p>
+  <h1>simpleflow diagram samples and user info</h1>
 
-  <p class="note">pages</p>
-  <nav class="grid" aria-label="pages">
+  <section aria-labelledby="samples" style="margin-top:26px">
+    <div class="head"><h2 id="samples">sample pages</h2></div>
+    <nav class="grid" aria-label="sample pages">
 
-    <a class="entry" href="demo.html">
-      <svg class="glyph" viewBox="0 0 104 56" aria-hidden="true" focusable="false">
-        <rect x="34" y="4" width="36" height="12" rx="2"/>
-        <rect x="34" y="22" width="36" height="12" rx="2"/>
-        <rect x="34" y="40" width="36" height="12" rx="2"/>
-        <path d="M 52 16 V 22 M 52 34 V 40"/>
-        <path class="hot" d="M 70 28 H 88 V 10 H 70"/>
-      </svg>
-      <span class="name">card payment flow</span>
-      <span class="desc">Checkout, fraud check, issuer decision and a return lane.</span>
-    </a>
+      <a class="entry" href="demo.html">
+        <svg class="glyph" viewBox="0 0 104 56" aria-hidden="true" focusable="false">
+          <rect x="34" y="4" width="36" height="12" rx="2"/>
+          <rect x="34" y="22" width="36" height="12" rx="2"/>
+          <rect x="34" y="40" width="36" height="12" rx="2"/>
+          <path d="M 52 16 V 22 M 52 34 V 40"/>
+          <path class="hot" d="M 70 28 H 88 V 10 H 70"/>
+        </svg>
+        <span class="name">card payment flow</span>
+        <span class="desc">Checkout, fraud check, issuer decision and a return lane.</span>
+      </a>
 
-    <a class="entry" href="color-vision-audit-comparison.html">
-      <svg class="glyph" viewBox="0 0 104 56" aria-hidden="true" focusable="false">
-        <rect x="2" y="10" width="42" height="36" rx="2"/>
-        <rect x="60" y="10" width="42" height="36" rx="2"/>
-        <path d="M 10 19 H 36 M 10 28 H 36 M 10 37 H 26"/>
-        <path d="M 68 19 H 94 M 68 28 H 94 M 68 37 H 84"/>
-        <path class="hot" d="M 46 28 H 58"/>
-      </svg>
-      <span class="name">colour vision corrections</span>
-      <span class="desc">Palette samples before and after the 1.4.0 pass.</span>
-    </a>
+      <a class="entry" href="embed-sample.html">
+        <svg class="glyph" viewBox="0 0 104 56" aria-hidden="true" focusable="false">
+          <rect x="2" y="4" width="66" height="46" rx="2"/>
+          <path d="M 2 13 H 68"/>
+          <path d="M 10 22 H 44 M 10 30 H 36 M 10 38 H 42"/>
+          <rect x="44" y="18" width="58" height="32" rx="2"/>
+          <path d="M 52 27 H 94 M 52 35 H 78"/>
+          <path class="hot" d="M 30 44 H 52 V 25 H 66"/>
+        </svg>
+        <span class="name">embedded page</span>
+        <span class="desc">The DNS lookup page inside a host page, toolbar and theme included.</span>
+      </a>
 
-    <a class="entry" href="sample-one-diagram.html">
-      <svg class="glyph" viewBox="0 0 104 56" aria-hidden="true" focusable="false">
-        <rect x="2" y="4" width="66" height="46" rx="2"/>
-        <path d="M 2 13 H 68"/>
-        <path d="M 10 22 H 44 M 10 30 H 36 M 10 38 H 42"/>
-        <rect x="44" y="18" width="58" height="32" rx="2"/>
-        <path d="M 52 27 H 94 M 52 35 H 78"/>
-        <path class="hot" d="M 30 44 H 52 V 25 H 66"/>
-      </svg>
-      <span class="name">embedded sample</span>
-      <span class="desc">The measured DNS run, embedded at the end of the cost report.</span>
-    </a>
-
-  </nav>
+    </nav>
+  </section>
 
   <section aria-labelledby="documents">
     <div class="head"><h2 id="documents">documents</h2></div>
-    <p class="note">The skill contract, the palette audit and the measured cost of one and three diagrams.</p>
+    <nav class="grid" aria-label="documents" style="grid-template-columns:minmax(260px, 320px)">
+      <a class="entry" href="color-vision-audit-comparison.html">
+        <svg class="glyph" viewBox="0 0 104 56" aria-hidden="true" focusable="false">
+          <rect x="2" y="10" width="42" height="36" rx="2"/>
+          <rect x="60" y="10" width="42" height="36" rx="2"/>
+          <path d="M 10 19 H 36 M 10 28 H 36 M 10 37 H 26"/>
+          <path d="M 68 19 H 94 M 68 28 H 94 M 68 37 H 84"/>
+          <path class="hot" d="M 46 28 H 58"/>
+        </svg>
+        <span class="name">colour vision corrections</span>
+        <span class="desc">Palette samples before and after the 1.4.0 pass.</span>
+      </a>
+    </nav>
     <table class="docs" aria-labelledby="documents">
       <thead>
         <tr><th scope="col">Document</th><th scope="col">Covers</th></tr>
@@ -321,7 +322,7 @@
       <tbody>
         <tr>
           <th scope="row"><a href="SKILL.html">Skill instructions</a></th>
-          <td>The entry point: page types, the eight-step workflow and the hard rules.</td>
+          <td>Page types, the eight-step workflow and the hard rules.</td>
         </tr>
         <tr>
           <th scope="row"><a href="color-vision-audit.html">Colour vision audit</a></th>
@@ -329,7 +330,7 @@
         </tr>
         <tr>
           <th scope="row"><a href="context-performance-report.html">Context and performance</a></th>
-          <td>The cost of one and three diagrams, end context and the trials behind the rules.</td>
+          <td>Time, turns and end context for one and three diagrams, with the runs behind the numbers.</td>
         </tr>
       </tbody>
     </table>
