@@ -2,8 +2,7 @@
 
 An agent skill that turns a process into a flow diagram on one HTML page. The layout, the toolbar, 5 dark and 4 light themes plus print-friendly mode come ready-made in the template, so a run writes only the cards and captions.
 
-- Fast: one diagram in under two minutes, a dozen to fifteen turns.
-- Cheap: the template is read once and copied, so a page adds a few hundred tokens of new text and a second diagram needs no extra setup.
+- Fast and Cheap: the template is read once and copied, so a page adds a few hundred tokens of new text and a second diagram needs no extra setup.
 - Readable: the type scale, spacing and card grid are tuned for reading, and the palettes are retuned for colour-vision impaired readers. Light themes use a soft background against overall glare, and certain dark themes use light grey instead of white text against contrast glare.
 - Consistent: one of nine fixed themes and the same grid on every run, so pages from different models match.
 - Token efficient: one main path per diagram, up to seven rows, with a fork or side boxes only where needed. The cap keeps the output small, and a longer flow becomes a second diagram on the same page without reading the template again.
