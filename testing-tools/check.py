@@ -615,13 +615,13 @@ check("colour-vision impaired" in rd and "a few hundred tokens" in rd and "seven
       and "run, evaluate, compare, edit, repeat" in rd
       and "multiple sub-agent runs" in rd, "readme value bullets")
 check("gathers several finished diagrams and documents onto one page" in rd
-      and rd.count("Optional index page") == 1, "readme index bullet")
+      and rd.count("- Optional index page:") == 1, "readme index bullet")
 check("one of nine fixed themes" in rd and "nine installed themes" in rd, "readme theme count")
 check("## Readability and colour vision" in rd
       and "color-vision-audit.html" in rd and "color-vision-audit-comparison.html" in rd
       and "two colour vision and readability documents" in rd,
       "readme colour vision section")
-check("## Several pages" in rd, "readme index section")
+check("## Optional index page" in rd, "readme index section")
 check("agent-skill/index.html" in rd, "readme index shell")
 check("The skill is five files" in rd and "payload" not in rd, "readme five files")
 check("keeps the theme" in rd, "readme theme carry")

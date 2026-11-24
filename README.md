@@ -58,9 +58,9 @@ Light mode: vercel theme, print off.
 
 Print friendly on: the print control fills, the mode and theme stay unchanged.
 
-## Several pages
+## Optional index page
 
-Several diagram pages and text documents can sit on one index page. `agent-skill/index.html` provides it: a title, one or more groups of link cards, and an optional table of documents. Each card carries a small inline SVG glyph, so the index loads no assets either. The project index is live at https://chezhenkie.github.io/simpleflow-diagram-skill/.
+An index page lists the diagram pages and documents in a folder. `agent-skill/index.html` is the template; every page gets a link card with a small inline SVG glyph, so the page loads nothing external. The project index is live at https://chezhenkie.github.io/simpleflow-diagram-skill/.
 
 The toolbar passes the mode and both theme choices into every local `.html` link and reads them on load. A page opened from the index keeps the theme; print stays a preview and does not travel. Nothing is stored.
 
