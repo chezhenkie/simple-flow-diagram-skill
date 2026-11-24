@@ -577,12 +577,11 @@ check(rd.count('width="400"') == 0, "readme closeups unscaled")
 check("docs/bar-dark.png" in rd and "docs/bar-light.png" in rd
       and "docs/bar-print-friendly.png" in rd, "readme bar closeups")
 check("docs/demo-dark.png" in rd and "docs/demo-print-friendly.png" in rd, "readme demo states")
-check("https://chezhenkie.github.io/simpleflow-diagram-skill/demo.html" in rd,
-      "readme live demo link")
+check(rd.count('href="https://chezhenkie.github.io/simpleflow-diagram-skill/"') == 3,
+      "readme thumbnails link to the live index")
 check("The project index is live at https://chezhenkie.github.io/simpleflow-diagram-skill/." in rd,
       "readme live index link")
-check("<table>" in rd and "CLICK HERE TO OPEN THE LIVE, GITHUB-HOSTED INDEX PAGE" in rd,
-      "readme live index box")
+check("CLICK HERE" not in rd and "<table>" not in rd, "readme no index box")
 check("@simpleflow" in rd and "$simpleflow" in rd
       and rd.count("/skill:simpleflow") == 2, "readme skill invocations")
 check("~/.agents/skills" in rd and "~/.pi/agent/skills" in rd

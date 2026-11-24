@@ -22,16 +22,9 @@ The page opens in the OS light or dark mode and follows it until the mode switch
 
 ## Sample page
 
-| Light | Dark | Print friendly |
-|:---:|:---:|:---:|
-| [<img src="docs/demo-light.png" width="280" alt="Demo page in light mode">](https://chezhenkie.github.io/simpleflow-diagram-skill/demo.html) | [<img src="docs/demo-dark.png" width="280" alt="Demo page in dark mode">](https://chezhenkie.github.io/simpleflow-diagram-skill/demo.html) | [<img src="docs/demo-print-friendly.png" width="280" alt="Demo page with print friendly on">](https://chezhenkie.github.io/simpleflow-diagram-skill/demo.html) |
-| Demo, vercel light | Same page, github dark | White page, print tokens |
+Light, dark and print-friendly theming:
 
-<table>
-  <tr>
-    <td><a href="https://chezhenkie.github.io/simpleflow-diagram-skill/">CLICK HERE TO OPEN THE LIVE, GITHUB-HOSTED INDEX PAGE</a></td>
-  </tr>
-</table>
+<a href="https://chezhenkie.github.io/simpleflow-diagram-skill/"><img src="docs/demo-light.png" width="280" alt="Card payment flow in light mode"></a> <a href="https://chezhenkie.github.io/simpleflow-diagram-skill/"><img src="docs/demo-dark.png" width="280" alt="Card payment flow in dark mode"></a> <a href="https://chezhenkie.github.io/simpleflow-diagram-skill/"><img src="docs/demo-print-friendly.png" width="280" alt="Card payment flow in print friendly mode"></a>
 
 ## Page controls
 
