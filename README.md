@@ -2,7 +2,7 @@
 
 An agent skill that turns a process into a flow diagram on one HTML page. The layout, the toolbar, 5 dark and 4 light themes plus print-friendly mode come ready-made in the template, so a run writes only the cards and captions.
 
-- Fast and Cheap: the template is read once and copied, so a page adds a few hundred tokens of new text and a second diagram needs no extra setup.
+- Fast and Cheap: on the same model, building the same finished page freehand usually takes 4 to 8 times longer. The writing is not what costs; the loop is. Every look costs a screenshot plus a turn, a toolbar change needs a fresh look in both modes, and a theme check multiplies it again, so a freehand page with a working toolbar can cost more than 8 times the tokens while the clock still lands inside the time range. The template is read once and copied, so a page adds only a few hundred tokens of new text and a second diagram needs no extra setup.
 - Optional index page: it gathers several finished diagrams and documents onto one page, and a documents section can be added where needed. Demo: [GITHUB INDEX PAGE SIMPLE FLOW SKILL](https://chezhenkie.github.io/simpleflow-diagram-skill/).
 - Readable: the type scale, spacing and card grid are tuned for reading, and the palettes are retuned for colour-vision impaired readers. Light themes use a soft background against overall glare, and certain dark themes use light grey instead of white text against contrast glare.
 - Consistent: one of nine fixed themes and the same grid on every run, so pages from different models match.
