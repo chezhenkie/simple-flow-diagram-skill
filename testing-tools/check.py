@@ -605,10 +605,8 @@ check("written part stays small" in man, "manual cost note")
 
 # Script syntax and behavior
 artifacts = os.path.join("testing-tools", ".artifacts")
-os.makedirs(artifacts, exist_ok=True)
-for old in os.listdir(artifacts):
-    if re.match(r"s\d\.js$", old):
-        os.remove(os.path.join(artifacts, old))
+shutil.rmtree(artifacts, ignore_errors=True)
+os.makedirs(artifacts)
 paths = []
 for i, body in enumerate(scripts):
     p = os.path.join(artifacts, "s%d.js" % i)
@@ -627,6 +625,9 @@ if node:
     check(r.returncode == 0, "bar behavior harness")
     if r.returncode != 0:
         print(r.stdout.strip()[:800])
+
+if not fails:
+    shutil.rmtree(artifacts, ignore_errors=True)
 
 print("checks:", count, "failures:", len(fails))
 sys.exit(1 if fails else 0)

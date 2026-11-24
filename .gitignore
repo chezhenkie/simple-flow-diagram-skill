@@ -3,6 +3,8 @@ scratch/
 .tmp/
 # test artifacts
 testing-tools/.artifacts/
+# python bytecode
+__pycache__/
 # logs
 *.log
 # OS noise

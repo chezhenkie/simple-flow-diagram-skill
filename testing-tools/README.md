@@ -14,6 +14,6 @@ node testing-tools/harness.js        # toolbar script against a fake page
 
 `testing-tools/validate.py` is the page validator. It stays in the repository and is not part of the installed skill. `check.py` runs it on the demo page and requires a clean exit, then moves a card off the grid and requires a failure.
 
-Test output goes to `testing-tools/.artifacts`, which is ignored by git. The tool files are ASCII with LF endings.
+The checker writes its probe files to `testing-tools/.artifacts` and removes the folder when the run is clean; a failed run keeps them for inspection. The folder is ignored by git. The tool files are ASCII with LF endings.
 
 The checker asserts that `docs/demo.html` is byte-identical to `agent-skill/demo.html`, that `docs/index.html` is a filled copy of the index page with working links, and that the `:root` and dark color blocks match the first theme of each mode, so a theme or default change means updating the table, the blocks, the README name lists, and the `DARK` and `LIGHT` lists in both tool files.
