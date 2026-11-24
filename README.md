@@ -38,13 +38,7 @@ Light, dark and print-friendly theming:
 
 ## Page controls
 
-Four native controls, all keyboard operable.
-
-`print friendly` previews the printed look; off restores the theme.
-
-The mode switch picks light or dark and follows the OS.
-
-`dark theme` and `light theme` open a menu; each mode keeps its own pick.
+Four native controls, all keyboard operable: `print friendly` previews the printed look and restores the theme when off, the mode switch picks light or dark and follows the OS, and `dark theme` and `light theme` open a menu where each mode keeps its own pick.
 
 <img src="docs/bar-dark.png" alt="Toolbar in dark mode"><br>
 <img src="docs/bar-light.png" alt="Toolbar in light mode"><br>
