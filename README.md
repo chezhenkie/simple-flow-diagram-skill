@@ -60,6 +60,8 @@ The toolbar passes the mode and both theme choices into every local `.html` link
 
 The skill is five files. A diagram page copied from an older template still works but ignores the query until its toolbar script is updated.
 
+<hr>
+
 ## Install
 
 The skill is five files in `agent-skill/`. Download the zip from the [latest release](https://github.com/chezhenkie/simpleflow-diagram-skill/releases/latest) and unpack it, or clone the repository:
