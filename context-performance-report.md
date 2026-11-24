@@ -61,7 +61,7 @@ The 4 of 4 result follows the merge rule, the three-character budget margin and 
 - Static checks: 394, zero failures. Toolbar harness: ok. Demo validator: 245, zero failures.
 - Nine test pages passed; the run before the merge and margin rules had two failures of four.
 - No per-page browser pass. The template is checked in the repository, the written part is read once, the page is opened once.
-- Test pages are kept in `test-runs/` until the user asks for their removal.
+- The test pages were removed after the figures were recorded; this report is the record.
 
 ## Limits
 
@@ -70,3 +70,14 @@ The 4 of 4 result follows the merge rule, the three-character budget margin and 
 - End context is the last request's prompt, not the sum of every turn; the two are kept apart.
 - The validator is a maintainer tool; the skill neither reads nor runs it.
 - The 360 px toolbar and the head-script theme application remain open template findings, as do the text contrast shortfalls against the accepted mark deviations.
+
+## One run
+
+The prompt for the page below, with the destination shortened:
+
+```text
+Draw the DNS lookup flow as a simpleflow diagram. Save it as dns.html in the workspace. Then open it once as a new tab in the Firefox that is already running. No second browser, no screenshots, no validator, no report. Reply with the file path only.
+```
+
+The page the agent wrote is `sample-one-diagram.html`, embedded at the end of this document. It is the f4 run: 67.5 s, 8 turns, 38,384 end context, 254 checks.
+
