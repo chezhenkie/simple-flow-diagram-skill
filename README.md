@@ -24,7 +24,8 @@ The page opens in the OS light or dark mode and follows it until the mode switch
 
 Light, dark and print-friendly theming:
 
-<a href="https://chezhenkie.github.io/simpleflow-diagram-skill/"><img src="docs/demo-light.png" width="280" alt="Card payment flow in light mode"></a> <a href="https://chezhenkie.github.io/simpleflow-diagram-skill/"><img src="docs/demo-dark.png" width="280" alt="Card payment flow in dark mode"></a> <a href="https://chezhenkie.github.io/simpleflow-diagram-skill/"><img src="docs/demo-print-friendly.png" width="280" alt="Card payment flow in print friendly mode"></a>
+<a href="https://chezhenkie.github.io/simpleflow-diagram-skill/"><img src="docs/demo-light.png" width="280" alt="Card payment flow in vercel light"></a> <a href="https://chezhenkie.github.io/simpleflow-diagram-skill/"><img src="docs/demo-dark.png" width="280" alt="Card payment flow in ayu dark"></a><br>
+<a href="https://chezhenkie.github.io/simpleflow-diagram-skill/"><img src="docs/demo-github.png" width="280" alt="Card payment flow in github dark"></a> <a href="https://chezhenkie.github.io/simpleflow-diagram-skill/"><img src="docs/demo-print-friendly.png" width="280" alt="Card payment flow in print friendly mode"></a>
 
 ## Page controls
 
