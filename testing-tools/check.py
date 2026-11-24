@@ -619,8 +619,9 @@ check("theme" in cl.lower() and "menu" in cl.lower(), "changelog theme wording")
 # README
 check("## Page controls" in rd, "readme page controls")
 rimgs = [a or b for a, b in re.findall(r'!\[[^\]]*\]\(([^)]+)\)|<img[^>]+src="([^"]+)"', rd)]
-check(len(rimgs) == 10 and all(os.path.isfile(x) for x in rimgs), "readme images")
+check(len(rimgs) == 11 and all(os.path.isfile(x) for x in rimgs), "readme images")
 check(rd.startswith('<img src="docs/top-toolbar.png"'), "readme opens with the toolbar strip")
+check('<img src="docs/top-diagram.png" alt=' in rd.split('\n\n')[0], "readme diagram strip under the bar")
 check(rd.count('width="280"') == 4, "readme sample thumbnails")
 check(rd.count('width="400"') == 0, "readme closeups unscaled")
 check("docs/bar-dark.png" in rd and "docs/bar-light.png" in rd

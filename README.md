@@ -1,4 +1,5 @@
 <img src="docs/top-toolbar.png" alt="Toolbar with print friendly, the mode switch, the two theme menus and the brightness and saturation sliders">
+<img src="docs/top-diagram.png" alt="Card payment flow with a risk score side channel and the issuer response card">
 
 # simpleflow diagram
 
