@@ -57,7 +57,7 @@ Print friendly on: the print control fills, the mode and theme stay unchanged.
 
 ## Several pages
 
-A folder with several diagram pages and text documents can open on one index page. `agent-skill/index.html` is the second shell: a title, one or more groups of link cards, and an optional table of documents. Each card carries a small inline SVG glyph, so the index loads no assets either. The project index is live at https://chezhenkie.github.io/simple-flow-diagram-skill/.
+A folder with several diagram pages and text documents can open on one index page. `agent-skill/index.html` provides it: a title, one or more groups of link cards, and an optional table of documents. Each card carries a small inline SVG glyph, so the index loads no assets either. The project index is live at https://chezhenkie.github.io/simple-flow-diagram-skill/.
 
 The bar writes the mode and both theme picks into every local `.html` link and reads them on load. A page opened from the index keeps the theme; print stays a preview and does not travel. This is link state, not storage.
 
@@ -106,8 +106,8 @@ Example request: `Draw the request path as a flow diagram in the house style.`
 | File | Purpose |
 |---|---|
 | `agent-skill/SKILL.md` | Agent entry point, workflow and hard rules |
-| `agent-skill/template.html` | Page shell to copy; marked diagram slot |
-| `agent-skill/index.html` | Index shell to copy; link cards with inline glyphs and a documents table |
+| `agent-skill/template.html` | Starting page to copy; marked diagram slot |
+| `agent-skill/index.html` | Starting page for an index; link cards with inline glyphs and a documents table |
 | `agent-skill/demo.html` | Filled reference page: card payment flow with a side channel, a split and a return |
 | `agent-skill/style-manual.md` | Theme rules, grid, type scale, card anatomy, connectors, validation |
 | `testing-tools/` | Static checks, page validator and bar behavior checks |
