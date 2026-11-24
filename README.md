@@ -1,4 +1,4 @@
-# Simple flow diagram
+# simpleflow diagram
 
 An agent skill that turns a process into a flow diagram on one HTML page. The layout, nine themes, light and dark, print and the toolbar come ready-made in the template, so a run writes only the cards and captions.
 

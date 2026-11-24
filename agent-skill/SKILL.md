@@ -4,7 +4,7 @@ description: "Build a flow diagram as one standalone HTML page: one vertical mai
 license: MIT
 ---
 
-# Simple flow diagram
+# simpleflow diagram
 
 One self-contained `.html` page per topic, or one page with several diagrams. Start from [template.html](template.html): the layout, the themes, the mode switch and the print view are already in it. A folder of finished pages and documents can open on [index.html](index.html), a second template with link cards and a document table.
 
