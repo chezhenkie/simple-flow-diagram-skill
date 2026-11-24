@@ -592,7 +592,7 @@ check("Windows" not in rd and "PowerShell" not in rd and "%USERPROFILE%" not in 
       "readme no os specifics")
 check("palettes.html" not in rd and "palette pair" not in rd, "readme no palette sheet")
 check("dark theme" in rd and "light theme" in rd, "readme theme foldouts")
-check("colour-vision impaired" in rd and "under two minutes" in rd and "no shell work" in rd,
+check("colour-vision impaired" in rd and "under two minutes" in rd and "no extra setup" in rd,
       "readme value bullets")
 check("one of nine fixed themes" in rd and "nine installed themes" in rd, "readme theme count")
 check("## Several pages" in rd, "readme index section")
