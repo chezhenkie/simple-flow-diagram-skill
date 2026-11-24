@@ -592,13 +592,14 @@ check("Windows" not in rd and "PowerShell" not in rd and "%USERPROFILE%" not in 
       "readme no os specifics")
 check("palettes.html" not in rd and "palette pair" not in rd, "readme no palette sheet")
 check("dark theme" in rd and "light theme" in rd, "readme theme foldouts")
-check("## Token cost and consistency" in rd and "fixed cost" in rd.lower(), "readme cost section")
+check("colour-vision impaired" in rd and "under two minutes" in rd and "no shell work" in rd,
+      "readme value bullets")
 check("one of nine fixed themes" in rd and "nine installed themes" in rd, "readme theme count")
 check("## Several pages" in rd, "readme index section")
 check("agent-skill/index.html" in rd, "readme index shell")
 check("payload is five files" in rd, "readme five files")
 check("keeps the theme" in rd, "readme theme carry")
-check("No screenshots" in rd and "no PDFs" in rd, "readme no render pass")
+check("no screenshots" in rd.lower() and "no pdfs" in rd.lower(), "readme no render pass")
 check("a few hundred tokens" in rd, "readme token figure")
 check("written part stays small" in man, "manual cost note")
 

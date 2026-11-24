@@ -1,23 +1,24 @@
 # Simple flow diagram
 
-An agent skill that turns a process into a flow diagram on one HTML page. Every run produces a spec based formatted diagram. Layout, themes, the light and dark switch and the print view are fixed in the template, so the agent writes the cards and the captions and nothing else. Consistent results every time with token economy in mind. An index shell lists a folder of finished pages and documents, with the same bar and small inline SVG glyphs.
+An agent skill that turns a process into a flow diagram on one HTML page. The grid, nine themes, light and dark, print and the toolbar already sit in the shell, so a run writes only the cards and captions.
 
-The nine themes start from well-known programmer palettes. Text, color, border, muted, accent and the section outline are tuned until each one reads in light, dark and print. The light themes have been specially tuned to prevent glare.
+- Fast: one diagram in under two minutes, a dozen to fifteen turns.
+- Cheap: the shell is read once and copied, so a page adds a few hundred tokens of new text and a second diagram adds no shell work.
+- Readable: the type scale, spacing and card grid are tuned for reading, and the palettes are retuned for colour-vision impaired readers.
+- Consistent: one of nine fixed themes and the same grid on every run, so pages from different models match.
+- Switch: light, dark and print friendly are one click away, and the pick carries into linked pages.
+- No render pass: no screenshots, no PDFs, no theme-by-theme renders. The agent checks the written cards by reading and opens the page once for you.
+
+An index page gathers several finished diagrams and documents onto one page.
 
 ## Themes
 
-Nine themes ship in the template: five dark and four light. Dark: github, harbor, solarized, oledblack, ayu. Light: vercel, tokyonight, cursor, orng. The page opens on theme dependent on OS light/dark mode. The two foldouts switch themes, each mode keeping its own pick. Every color on the page comes from the chosen theme, so a diagram carries no palette of its own.
+Nine themes ship with the template.
 
-The 1.4.0 palette pass raises the weak borders and accents. Four mark pairs keep a small shortfall under simulation and are accepted deviations: vercel accent on page, tokyonight accent on card, and the tokyonight and orng checked labels. They affect emphasis and a menu label, not the diagram structure. They stay because raising them to the floor would drift the colors too far outside their fixed schemes and disrupt the overall color balance of the theme.
+- Dark: github, harbor, solarized, oledblack, ayu.
+- Light: vercel, tokyonight, cursor, orng.
 
-## Token cost and consistency
-
-- Fixed cost: one read of the manual and the shell, then the cards. The page shell, the theme table, the bar script and the print rules are copied as they are, so a second diagram on the page adds no shell work.
-- Written part: the title, the subtitle, the sections and the footer; a one-diagram page is a few hundred tokens of new text. The shell is read once and copied, not written.
-- Consistency: every run uses the same grid and one of nine fixed themes, so pages from different models look the same, toolbar included.
-- Verification: no per-page browser pass. The shell is checked once in the repository; the agent checks the written cards against the manual by reading and opens the page once for you. No screenshots, no PDFs, no theme-by-theme renders.
-- Measure: context cost is one number, the prompt of the current turn, new input plus cached prefix, as the agent UI shows it. It is not the sum of cache reads across turns.
-- Scope: one self-contained file that opens from disk, with no build step, network access or assets.
+The page opens in the OS light or dark mode and follows it until the mode switch is used. Each foldout switches theme, and each mode keeps its own pick, so the switch flips between the two. Every color on the page comes from the chosen theme, so a diagram carries no palette of its own.
 
 ## Sample page
 
