@@ -165,7 +165,20 @@ code{font-family:var(--font-mono);font-size:13px;background:var(--code-bg);color
 pre{background:var(--pre-bg);color:var(--pre-ink);padding:16px 20px;border-radius:4px;overflow-x:auto;margin:18px 0 24px;font-family:var(--font-mono);font-size:13px;line-height:1.6;transition:background .3s,color .3s}
 pre code{background:none;color:inherit;padding:0}
 .lede,em,.callout{font-family:var(--font-serif)!important}
-@media(max-width:620px){.wrap{padding:40px 18px 72px}h1{font-size:28px}}
+.svg-diagram{display:block;text-align:center;margin:24px 0;padding:20px;background:var(--card);border:1px solid var(--line);border-radius:4px;transition:background .3s,border-color .3s}
+.svg-diagram svg{max-width:100%;height:auto}
+.diagram-graph{position:relative;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:30px 24px 34px;overflow-x:auto;min-height:120px}
+.diagram-edges{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:0}
+.diagram-layers{position:relative;z-index:1;display:flex;flex-direction:column;gap:38px}
+.diagram-row{display:flex;justify-content:space-evenly;align-items:flex-start;padding:0 12px;gap:46px}
+.diagram-node{background:var(--node-bg, var(--card));border:1px solid var(--line);border-top:4px solid var(--accent);width:160px;min-height:64px;padding:12px 14px;display:flex;flex-direction:column;justify-content:center;font-family:var(--font-ui);font-size:14px;font-weight:600;color:var(--espresso);text-align:center;box-shadow:0 1px 0 var(--shadow-color);border-radius:3px;overflow:hidden;transition:box-shadow .15s ease,transform .15s ease,border-color .15s ease,background .35s ease}
+.diagram-node:hover{box-shadow:0 3px 10px var(--shadow-hover);transform:translateY(-1px)}
+.diagram-edge{fill:none;stroke:var(--edge, var(--line));stroke-width:2.8;transition:stroke .35s ease}
+.diagram-edge.loop{stroke-dasharray:5 4}
+.diagram-edge.lit{stroke:var(--accent);stroke-width:2.7;stroke-dasharray:8 5;animation:dg-dash .9s linear infinite}
+.diagram-edge.dim{opacity:.25}
+@keyframes dg-dash{to{stroke-dashoffset:-26}}
+@media(max-width:620px){.wrap{padding:40px 18px 72px}h1{font-size:28px}.diagram-node{width:120px;min-height:54px;padding:10px;font-size:12px}.diagram-row{gap:24px}}
 </style>
 <script>(function(){
   var ua=navigator.userAgent;
@@ -250,7 +263,7 @@ pre code{background:none;color:inherit;padding:0}
 <ul>
 <li>Text at 4.5:1: ink on page, ink on card, muted on page, muted on card.</li>
 <li>Marks at 3:1: accent on page, accent on card, line on card (the card border) and line on page (the toolbar borders and the footer divider).</li>
-<li>Menu label at 4.5:1: the checked row&#39;s ink on the accent, using the page&#39;s own <code>inkOn</code> rule.</li>
+<li>Menu label at 4.5:1: the checked row's ink on the accent, using the page's own <code>inkOn</code> rule.</li>
 </ul>
 <p>The accent carries emphasis, not meaning. The focus card is also 2 px wide against 1.2 px, and the checked menu row keeps <code>aria-checked</code> for assistive technology.</p>
 <h2><span class="num">2</span>Text contrast</h2>
@@ -277,7 +290,7 @@ pre code{background:none;color:inherit;padding:0}
 <tr><td>cursor</td><td>normal, protanopia, tritanopia, achromatopsia</td><td>muted on page</td><td>4.34-4.44</td></tr>
 <tr><td>orng</td><td>deuteranopia</td><td>ink on page</td><td>4.32</td></tr>
 </tbody></table>
-<p>The normal-vision minimum is cursor&#39;s muted text at 4.44:1, 0.06 under the floor. Among the lowest pairs the largest loss is 0.79:1 on vercel ink on page, from 4.99 to 4.20. Across all four pairs the largest loss is 1.01:1, vercel ink on card from 6.45 to 5.44 under deuteranopia. No text pair falls below 3.9:1.</p>
+<p>The normal-vision minimum is cursor's muted text at 4.44:1, 0.06 under the floor. Among the lowest pairs the largest loss is 0.79:1 on vercel ink on page, from 4.99 to 4.20. Across all four pairs the largest loss is 1.01:1, vercel ink on card from 6.45 to 5.44 under deuteranopia. No text pair falls below 3.9:1.</p>
 <p>Github and solarized move by up to 0.14 on their minima and up to 0.19 on any pair; those themes stay above the floor in every case.</p>
 <h2><span class="num">3</span>Mark contrast</h2>
 <div class="rule"></div>
@@ -293,8 +306,8 @@ pre code{background:none;color:inherit;padding:0}
 <tr><td>cursor</td><td>1.17</td><td>3.96</td><td>3.39</td><td>4.34</td><td>5.05</td></tr>
 <tr><td>orng</td><td>1.22</td><td>4.40</td><td>3.60</td><td>3.55</td><td>4.34</td></tr>
 </tbody></table>
-<p>The accent on page moves under simulation: vercel falls to 2.91 (deuteranopia), tokyonight to 3.33 (deuteranopia), solarized to 3.55 (protanopia) and cursor to 4.07 (protanopia). Vercel&#39;s 2.91 is the only accent on page under 3:1 and is an accepted deviation; every other theme stays at or above 3.09. Achromatopsia leaves these ratios unchanged.</p>
-<p>Every line clears 3:1 on card and on page in all simulations. The lowest are tokyonight 3.29 on card, cursor 3.31 on page, orng 3.33 on page, harbor 3.40 on card and oledblack 3.41 on card. Solarized&#39;s line is <code>#93A1A1</code>, so its card border is visible; the fill difference remains 1.15:1.</p>
+<p>The accent on page moves under simulation: vercel falls to 2.91 (deuteranopia), tokyonight to 3.33 (deuteranopia), solarized to 3.55 (protanopia) and cursor to 4.07 (protanopia). Vercel's 2.91 is the only accent on page under 3:1 and is an accepted deviation; every other theme stays at or above 3.09. Achromatopsia leaves these ratios unchanged.</p>
+<p>Every line clears 3:1 on card and on page in all simulations. The lowest are tokyonight 3.29 on card, cursor 3.31 on page, orng 3.33 on page, harbor 3.40 on card and oledblack 3.41 on card. Solarized's line is <code>#93A1A1</code>, so its card border is visible; the fill difference remains 1.15:1.</p>
 <p>The accent marks are thin: a 2 px outline, a 2 px focus border and a 1.6 px connector. Below 3:1 they are faint for every reader, not only for readers with a colour vision deficiency.</p>
 <h2><span class="num">4</span>Checked menu row</h2>
 <div class="rule"></div>
@@ -319,10 +332,10 @@ pre code{background:none;color:inherit;padding:0}
 <ol>
 <li>No information is carried by hue. Every simulated reader keeps the row order, the arrowheads, the dash and dot patterns, the 1.2 and 2 px widths and the labels. A colour vision deficiency cannot remove a step, a split or a return from these pages.</li>
 <li>Text remains legible under full-severity simulation. The worst pair is 3.96:1, 0.54 under the normal-text floor; the five themes that stay above 4.5 in every simulation are github, harbor, solarized, oledblack and ayu. The affected light themes sit between 3.96 and 4.48.</li>
-<li>The text shortfall is not specific to colour vision deficiency. Cursor&#39;s muted text is 4.44:1 in normal vision; the simulations move the other themes&#39; minima by at most 0.79 and any text pair by at most 1.01.</li>
-<li>The accent is the weakest emphasis mark. Vercel&#39;s accent on page is 2.91 under deuteranopia and tokyonight&#39;s accent on card is 2.97; both are accepted deviations. The title outline, the focus border and the accent connectors are emphasis; the structure survives without them, and the focus card still reads by width.</li>
+<li>The text shortfall is not specific to colour vision deficiency. Cursor's muted text is 4.44:1 in normal vision; the simulations move the other themes' minima by at most 0.79 and any text pair by at most 1.01.</li>
+<li>The accent is the weakest emphasis mark. Vercel's accent on page is 2.91 under deuteranopia and tokyonight's accent on card is 2.97; both are accepted deviations. The title outline, the focus border and the accent connectors are emphasis; the structure survives without them, and the focus card still reads by width.</li>
 <li>The checked row keeps its label at 4.00-4.31 in two simulated cases, both accepted deviations. The row remains identifiable, at reduced contrast.</li>
-<li>Every line clears 3:1 in all simulations. The palette pass raised the weak borders; solarized&#39;s line is <code>#93A1A1</code> and its card border is visible. No line shortfall is accepted.</li>
+<li>Every line clears 3:1 in all simulations. The palette pass raised the weak borders; solarized's line is <code>#93A1A1</code> and its card border is visible. No line shortfall is accepted.</li>
 <li>The palettes are fixed at 1.4.0. The accepted deviations are listed above; no further colour change is proposed.</li>
 </ol>
 <h2><span class="num">7</span>Limits</h2>
@@ -462,7 +475,9 @@ tritanopia     1.255528 -0.076749 -0.178779
         '--code-bg':'#eceae4',
         '--pre-bg':'#343433',
         '--shadow-color':'rgba(45,45,45,0.06)',
-        '--pre-ink':'#f2f2ef'
+        '--pre-ink':'#f2f2ef',
+        '--edge':'#b5b3ab',
+        '--node-bg':'#efeee8'
       },
       dark:{
         '--paper':'#0a0c10',
@@ -480,7 +495,9 @@ tritanopia     1.255528 -0.076749 -0.178779
         '--code-bg':'#1a2030',
         '--pre-bg':'#0a0c10',
         '--shadow-color':'rgba(0,0,0,0.4)',
-        '--pre-ink':'#d0ccc0'
+        '--pre-ink':'#d0ccc0',
+        '--edge':'#8b97ab',
+        '--node-bg':'#222a3a'
       }
     },
     solarized:{
@@ -504,7 +521,9 @@ tritanopia     1.255528 -0.076749 -0.178779
         '--code-bg':'#eee8d5',
         '--pre-bg':'#eee8d5',
         '--shadow-color':'rgba(0,0,0,0.05)',
-        '--pre-ink':'#586e75'
+        '--pre-ink':'#586e75',
+        '--edge':'#93a1a1',
+        '--node-bg':'#fdf6e3'
       },
       dark:{
         '--paper':'#002b36',
@@ -526,7 +545,9 @@ tritanopia     1.255528 -0.076749 -0.178779
         '--code-bg':'#073642',
         '--pre-bg':'#073642',
         '--shadow-color':'rgba(0,0,0,0.3)',
-        '--pre-ink':'#93a1a1'
+        '--pre-ink':'#93a1a1',
+        '--edge':'#839496',
+        '--node-bg':'#0b3f4e'
       }
     },
     monochrome:{
@@ -546,7 +567,9 @@ tritanopia     1.255528 -0.076749 -0.178779
         '--code-bg':'#e8e8e8',
         '--pre-bg':'#333333',
         '--shadow-color':'rgba(0,0,0,0.08)',
-        '--pre-ink':'#f0f0f0'
+        '--pre-ink':'#f0f0f0',
+        '--edge':'#c2c2c2',
+        '--node-bg':'#efefef'
       },
       dark:{
         '--paper':'#1a1a1a',
@@ -564,7 +587,9 @@ tritanopia     1.255528 -0.076749 -0.178779
         '--code-bg':'#333333',
         '--pre-bg':'#111111',
         '--shadow-color':'rgba(0,0,0,0.3)',
-        '--pre-ink':'#cccccc'
+        '--pre-ink':'#cccccc',
+        '--edge':'#cccccc',
+        '--node-bg':'#2e2e2e'
       }
     }
   };
@@ -719,6 +744,155 @@ tritanopia     1.255528 -0.076749 -0.178779
   }
 
   return{init,getValues,setValues,setMode,setPalette,setFont};
+})();</script>
+<script>const Diagrams=(function(){
+  var NS='http://www.w3.org/2000/svg';
+
+  function center(graph,el){
+    var a=el.getBoundingClientRect();
+    var b=graph.getBoundingClientRect();
+    return{
+      x:a.left-b.left+a.width/2,
+      y:a.top-b.top+a.height/2,
+      h:a.height,
+      w:a.width
+    };
+  }
+
+  function bez(t,p0,c1,c2,p3){
+    var mt=1-t,a=mt*mt*mt,b=3*mt*mt*t,c=3*mt*t*t,d=t*t*t;
+    return{
+      x:a*p0.x+b*c1.x+c*c2.x+d*p3.x,
+      y:a*p0.y+b*c1.y+c*c2.y+d*p3.y
+    };
+  }
+
+  function drawEdge(graph,svg,edge,sourceNode,targetNode){
+    var S=center(graph,sourceNode);
+    var T=center(graph,targetNode);
+    var dx=T.x-S.x;
+    var dy=T.y-S.y;
+    var up=edge.loop||T.y+S.h<S.y;
+
+    var p0,p3,c1,c2;
+    if(edge.h){
+      var dir=dx>=0?1:-1;
+      p0={x:S.x+dir*S.w/2,y:S.y};
+      p3={x:T.x-dir*T.w/2,y:T.y};
+      var midY=(p0.y+p3.y)/2;
+      var spread=Math.abs(dx)*0.4;
+      c1={x:p0.x+dir*spread,y:midY};
+      c2={x:p3.x-dir*spread,y:midY};
+    }else if(up){
+      p0={x:S.x,y:S.y-S.h/2};
+      p3={x:T.x,y:T.y+S.h/2};
+      var bulge=90;
+      c1={x:p0.x-bulge,y:p0.y-30};
+      c2={x:p3.x-bulge,y:p3.y+30};
+    }else if(edge.d&&Math.abs(dx)>=Math.abs(dy)){
+      var ddir=dx>=0?1:-1;
+      p0={x:S.x+ddir*S.w/2,y:S.y};
+      p3={x:T.x-ddir*T.w/2,y:T.y};
+      var mx=(p0.x+p3.x)/2;
+      c1={x:mx,y:p0.y};
+      c2={x:mx,y:p3.y};
+    }else{
+      p0={x:S.x,y:S.y+S.h/2};
+      p3={x:T.x,y:T.y-S.h/2};
+      var my=(p0.y+p3.y)/2;
+      c1={x:p0.x,y:my};
+      c2={x:p3.x,y:my};
+    }
+
+    var g=document.createElementNS(NS,'g');
+    g.dataset.from=edge.s;
+    g.dataset.to=edge.t;
+
+    var path=document.createElementNS(NS,'path');
+    var d='M '+p0.x+' '+p0.y+' C '+c1.x+' '+c1.y+' '+c2.x+' '+c2.y+' '+p3.x+' '+p3.y;
+    path.setAttribute('d',d);
+    path.setAttribute('class','diagram-edge'+(edge.loop?' loop':''));
+    g.appendChild(path);
+    svg.appendChild(g);
+  }
+
+  function renderDiagram(data){
+    var graph=document.getElementById(data.id);
+    if(!graph)return;
+    var svg=graph.querySelector('.diagram-edges');
+    var layers=graph.querySelector('.diagram-layers');
+    if(!svg||!layers)return;
+
+    while(svg.firstChild)svg.removeChild(svg.firstChild);
+
+    var nodeMap={};
+    var nodes=layers.querySelectorAll('.diagram-node');
+    for(var i=0;i<nodes.length;i++){
+      var n=nodes[i];
+      var key=n.getAttribute('data-dg-node');
+      if(key)nodeMap[key]=n;
+    }
+
+    for(var i=0;i<data.edges.length;i++){
+      var e=data.edges[i];
+      var s=nodeMap[e.s];
+      var t=nodeMap[e.t];
+      if(s&&t)drawEdge(graph,svg,e,s,t);
+    }
+
+    function setLit(id){
+      var gs=svg.querySelectorAll('g');
+      for(var j=0;j<gs.length;j++){
+        var on=gs[j].getAttribute('data-from')===id;
+        var p=gs[j].querySelector('path');
+        if(!p)continue;
+        p.classList.toggle('lit',on);
+        p.classList.toggle('dim',!on);
+      }
+    }
+    function clearLit(){
+      var ps=svg.querySelectorAll('path');
+      for(var j=0;j<ps.length;j++)ps[j].classList.remove('lit','dim');
+    }
+    var pinned=null;
+    for(var key in nodeMap){
+      (function(k){
+        nodeMap[k].addEventListener('mouseenter',function(){setLit(k);});
+        nodeMap[k].addEventListener('mouseleave',function(){if(pinned)setLit(pinned);else clearLit();});
+        nodeMap[k].addEventListener('click',function(){
+          pinned=(pinned===k)?null:k;
+          if(pinned)setLit(pinned);else clearLit();
+        });
+      })(key);
+    }
+    graph.addEventListener('click',function(ev){
+      if(!ev.target.closest||!ev.target.closest('.diagram-node')){pinned=null;clearLit();}
+    });
+  }
+
+  function initAll(){
+    var q=window.__diagramQueue||[];
+    for(var i=0;i<q.length;i++){
+      renderDiagram(q[i]);
+    }
+  }
+
+  function debounce(fn,ms){
+    var t;
+    return function(){
+      clearTimeout(t);
+      t=setTimeout(fn,ms);
+    };
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',initAll);
+  }else{
+    initAll();
+  }
+  window.addEventListener('resize',debounce(initAll,100));
+
+  return{initAll,renderDiagram};
 })();</script>
 <script>(function(){
   var prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
