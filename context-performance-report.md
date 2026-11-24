@@ -6,17 +6,15 @@ Nine runs on the current skill, all with a bare task prompt and Windows Firefox:
 
 End context is the figure the agent interface shows in its footer: the input plus the cached prefix of the last request. It stays between 38 and 56k in every run, 4 to 6 percent of a million-token window.
 
-Earlier trials, kept as the record of how the workspace got here:
+The trials that shaped the workflow, each against its own comparison, so the percentages do not add:
 
-| Change | Comparison | Reduction |
-|---|---|---|
-| Validator out of the skill | new input and wall, paired trial | 40.5% input, 38.1% time |
-| Checker script removed | A, final against the old clean A | 46.8% total, 27.2% time |
-| Read-only step 7 plus full checklist | pair, against the clean pair | 37.8% total, 19.9% time |
-| Second diagram on the same page | against a fresh one-diagram page | 27.2% total, 7.1% time |
-| Two-diagram page | against two separate pages | 13.6% total, 3.5% time |
-
-Each row compares a different pair, so the percentages do not add.
+| Change | Reduction |
+|---|---|
+| Validator out of the skill | 40.5% input, 38.1% time |
+| Checker script removed | 46.8% total, 27.2% time |
+| Read-only step 7 plus full checklist | 37.8% total, 19.9% time |
+| Second diagram on the same page | 27.2% total, 7.1% time |
+| Two-diagram page against two pages | 13.6% total, 3.5% time |
 
 ## Method
 
@@ -57,42 +55,6 @@ Three diagrams per page lower the cost of a diagram to 41.8 s, against 98.5 s fo
 
 The 4 of 4 result follows the merge rule, the three-character budget margin and the one-repair cap. The round before them, on the same task, had four runs with two failures: a merge drawn as two arrows that the validator refused, and side-card lines one character over budget. Both are now contract, and the margin is what a read can see.
 
-## Earlier trials
-
-The validator left the skill in 1.3.7. The paired trial below read the validator source in one arm and not the other; all four pages passed on the first attempt.
-
-| Arm | Mean new input | Mean wall s | Pages |
-|---|---:|---:|---|
-| With validator read | 55,083 | 271.6 | 2/2 |
-| Without | 32,747 | 168.2 | 2/2 |
-| Change | -40.5% | -38.1% | same |
-
-The step 7 pairs, from the 1.5.0 baseline onward. The check method was open in the clean pair, read-only in v1, and grew the connector item and the full checklist for v2 and v3. v1 A missed the first arrow and its caption, which exposed the gap.
-
-| Pair | Step 7 | Wall s | Turns | End context | Pages |
-|---|---|---:|---:|---:|---|
-| clean | free method | 86.5 | 14.5 | 47,785 | 2/2 |
-| v1 | read-only | 78.3 | 11.5 | 44,936 | 1/2 |
-| v2 | plus connectors | 104.4 | 13 | 47,767 | 2/2 |
-| v3 | plus full checklist | 69.3 | 11 | 41,897 | 2/2 |
-
-## Second diagram on the same page
-
-A 1.5.0 record. Two agents added a TLS 1.3 section to separate copies of a seven-row DNS page and kept the DNS section.
-
-| Case | Wall s | Turns | End context | Result |
-|---|---:|---:|---:|---|
-| Fresh one-diagram page | 69.3 | 11 | 41,897 | 2/2 |
-| Add a second diagram | +64.4 | 8 | 43,185 | 2/2 |
-| Two-diagram page | 133.7 | 19 | - | 2/2 |
-| Two separate pages | 138.6 | 22 | - | 4/4 |
-
-The added section grows the page by 4.5 to 4.7 KB and leaves the 25 KB template alone. Adding a diagram to a finished page costs 64.4 s, mostly the page read and a fresh look at the checklist; planning three at once, as the current rounds do, costs 13.4 s per extra diagram. The difference is that the three-diagram agent never re-reads a page it just wrote.
-
-## Checklist scan
-
-The scan compared `testing-tools/validate.py` with manual section 12 and found ten unnamed rules and three ambiguities. All are in the manual now, and the rule set has since gained the merge pair, the budget margin, the command ban, the two-edit order and the repair cap.
-
 ## Final state
 
 - Skill: five files, no executable, no runtime, installed copy matching the repository.
@@ -105,6 +67,6 @@ The scan compared `testing-tools/validate.py` with manual section 12 and found t
 
 - Five and four runs per case, on one model and one topic, so the means are indicative and the spreads are wide.
 - The three-diagram arm has no fresh-page comparison inside this round; the marginal figures come from the two means.
-- End context is the last request's prompt, not the sum of every turn; the tooling report keeps the two apart.
+- End context is the last request's prompt, not the sum of every turn; the two are kept apart.
 - The validator is a maintainer tool; the skill neither reads nor runs it.
 - The 360 px toolbar and the head-script theme application remain open template findings, as do the text contrast shortfalls against the accepted mark deviations.
