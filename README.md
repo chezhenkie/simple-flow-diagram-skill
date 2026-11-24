@@ -36,7 +36,7 @@ Light, dark and print-friendly theming:
 <a href="https://chezhenkie.github.io/simpleflow-diagram-skill/"><img src="docs/demo-light.png" width="280" alt="Card payment flow in vercel light"></a> <a href="https://chezhenkie.github.io/simpleflow-diagram-skill/"><img src="docs/demo-dark.png" width="280" alt="Card payment flow in ayu dark"></a><br>
 <a href="https://chezhenkie.github.io/simpleflow-diagram-skill/"><img src="docs/demo-github.png" width="280" alt="Card payment flow in github dark"></a> <a href="https://chezhenkie.github.io/simpleflow-diagram-skill/"><img src="docs/demo-print-friendly.png" width="280" alt="Card payment flow in print friendly mode"></a>
 
-## Page controls
+## Page controls - Tool Bar
 
 Four native controls, all keyboard operable: `print friendly` previews the printed look and restores the theme when off, the mode switch picks light or dark and follows the OS, and `dark theme` and `light theme` open a menu where each mode keeps its own pick.
 
