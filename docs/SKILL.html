@@ -321,7 +321,17 @@ pre code{background:none;color:inherit;border:0;padding:0}
 </ul>
 <p>Do not choose colors or restyle controls; the page follows whichever theme the reader picks.</p>
 <p>The full contract lives in <a href="style-manual.md">style-manual.md</a>. <a href="demo.html">demo.html</a> is the same template with one filled diagram.</p>
-<h2><span class="num">3</span>Workflow</h2>
+<h2><span class="num">3</span>Writing rules</h2>
+<div class="rule"></div>
+<p>The page copy follows the project&#39;s writing rules: the subtitle, the group names, the entry names and descriptions, the document rows and the footer. They hold for this skill, its manual, the README and the changelog.</p>
+<ul>
+<li>Plain professional English: dry, product focused, without owner or user references and without decisions and dates scattered through the text. A header names its subject.</li>
+<li>Short: no big prose, no long explanations, no filler and no bloat.</li>
+<li>No drama, slogans, &quot;X, not Y&quot; contrasts, punchline fragments, superlatives or sales comparisons.</li>
+<li>Never insert a manual line break inside a sentence or a paragraph; text wraps by itself in every viewer. Break only between paragraphs, and in a file wrap only when a line exceeds 500 characters.</li>
+<li>ASCII only, 0x20 to 0x7E plus newline and tab. No em or en dashes, curly quotes, arrows, bullets, box characters or emojis; a dash is a plain hyphen and a quote is straight.</li>
+</ul>
+<h2><span class="num">4</span>Workflow</h2>
 <div class="rule"></div>
 <ol>
 <li>Read <code>style-manual.md</code> before writing; it carries every number and rule the page needs. Copy <code>template.html</code> to <code>&lt;topic&gt;-flow.html</code> in the workspace root unless the user or project rules name another folder. Copy the template as it is. Replace the title, subtitle and footer, then insert diagram sections at the marked space. <code>demo.html</code> is an optional filled example.</li>
@@ -333,7 +343,7 @@ pre code{background:none;color:inherit;border:0;padding:0}
 <li>Check the written part by reading it once, by eye, against the manual section 12 checklist: page structure, geometry, arrows and captions, text budgets, focus and accents, loop lanes and marker ids. Do not write a checker script, run a separate check tool, or count, grep, diff or hash the page with commands; a check is a read, not a measurement. The template is copied byte for byte and is already checked in the repository, so do not compare the page against it and do not test the toolbar, themes or print. On a page that already holds a diagram, read only the new section and leave the earlier ones alone. A defect found in the read gets one repair edit; a defect that survives that edit is named in the reply to the user, never chased in another pass. Open the page once for the user when it is done; if it is already open from an earlier pass, do not open another window or tab, and let the user refresh.</li>
 <li>After the user has viewed the page, ask whether the diagram file can be deleted. Do not delete it unasked.</li>
 </ol>
-<h2><span class="num">4</span>Themes and modes</h2>
+<h2><span class="num">5</span>Themes and modes</h2>
 <div class="rule"></div>
 <ul>
 <li>One theme covers the page and every diagram on it. Sections carry no class, no token block and no color of their own.</li>
@@ -343,7 +353,7 @@ pre code{background:none;color:inherit;border:0;padding:0}
 <li>Brightness and saturation sliders adjust the applied palette in seven steps; they never change the saved pick and print ignores them.</li>
 <li>Never hardcode a fill or stroke outside the template&#39;s classes and <code>var(--...)</code> tokens.</li>
 </ul>
-<h2><span class="num">5</span>Hard rules</h2>
+<h2><span class="num">6</span>Hard rules</h2>
 <div class="rule"></div>
 <ul>
 <li>ASCII only. Straight quotes, hyphen for dash, no arrows, bullets or other Unicode.</li>
@@ -354,7 +364,7 @@ pre code{background:none;color:inherit;border:0;padding:0}
 <li>Marker ids unique per page, prefixed by section. Pair each line class with the matching arrowhead.</li>
 <li>Open a finished page once for the user. No screenshots, no PDFs, no theme-by-theme renders; the template is checked in the repository, not on every page.</li>
 </ul>
-<h2><span class="num">6</span>Files</h2>
+<h2><span class="num">7</span>Files</h2>
 <div class="rule"></div>
 <ul>
 <li><code>style-manual.md</code>: file contract, theme rules, type scale, grid, card anatomy, connectors, branch and loop patterns, diagram body, validation, checklist, toolbar rules, index pages and embeds.</li>
@@ -362,7 +372,7 @@ pre code{background:none;color:inherit;border:0;padding:0}
 <li><code>index.html</code>: index template to copy; grid of link cards with inline glyphs, documents table, same toolbar. Fill the marked copy spaces.</li>
 <li><code>demo.html</code>: filled reference page with the toolbar, one card payment diagram and the print theme.</li>
 </ul>
-<h2><span class="num">7</span>Limits</h2>
+<h2><span class="num">8</span>Limits</h2>
 <div class="rule"></div>
 <p>More than seven main rows: split into two sections. Text that does not fit the budgets: cut it or split the step. Do not invent fills, sizes or spacing outside the manual. An index lists pages; it is not a dashboard and carries no counts or status.</p>
   </main>

@@ -299,7 +299,9 @@ The template, the toolbar, the themes and the print view are fixed and checked o
 
 A set of finished diagram pages and documents may open on one index page. It is a separate page type: copy `index.html` instead of `template.html`. Sections 1 to 13 keep their rules for the diagram pages the index links; this chapter covers the index itself.
 
-Order: toolbar, h1, `.sub`, one or more groups, an optional documents section, footer. A group is a `.note` label and a `nav.grid`; the label is lowercase and names the group, as in `maps` or `paths`. Two to six entries per group.
+Order: toolbar, h1, `.sub`, one or more page sections, zero or more document sections, footer. The subtitle is one sentence at 15 px on the muted ink, larger than the diagram page subtitle; it names the set and its reach and is the only intro. No second note sits under it.
+
+A section opens with a `.head`, an h2 pill naming its group in lowercase, as in `sample pages` or `setup`, then its cards or its table. The pill is the only label. Two to six entries per page section.
 
 An entry is one link card:
 
@@ -319,7 +321,8 @@ An entry is one link card:
 - `href` is the page file name. The toolbar script appends the theme query to every local `.html` link; do not write a query by hand.
 - Name: 1 to 4 words, sentence case, up to 28 characters. Description: up to 70 characters, one line.
 - Glyph: 104 x 56, shapes between x 2 and 102 and y 4 and 52. Rects and paths only, no text. Muted stroke 1.4; zero or one `.hot` path in accent at 1.6. A few objects that suggest the page, not a legend.
-- Documents are optional: the h2 pill, a `.note`, and a `.docs` table with `Document` and `Covers` columns, one row per file. The file name links the file.
+- Documents: one section per group, the h2 pill and a `.docs` table with `Document` and `Covers` columns, one row per file. The file name links the file. The table is laid out fixed with the first column at 32 percent, so the Document and Covers columns line up across every section on the page whatever the text is; a long name wraps inside its column instead of widening it.
+- The copy follows the writing rules in SKILL.md: plain and dry, no owner or user references, no slogans, "X, not Y" contrasts or superlatives, no manual line breaks, ASCII only. A group name and a document name state their subject.
 - The entries, glyphs, names and descriptions are checked by reading against the bounds above. The template is fixed and checked in the repository; do not re-test the toolbar, both modes or print on the index. Open the index once for the user.
 - Limits: an index lists pages; it does not explain them. No counts, badges, status rows or diagrams inside a glyph.
 

@@ -24,6 +24,16 @@ Do not choose colors or restyle controls; the page follows whichever theme the r
 
 The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.html) is the same template with one filled diagram.
 
+## Writing rules
+
+The page copy follows the project's writing rules: the subtitle, the group names, the entry names and descriptions, the document rows and the footer. They hold for this skill, its manual, the README and the changelog.
+
+- Plain professional English: dry, product focused, without owner or user references and without decisions and dates scattered through the text. A header names its subject.
+- Short: no big prose, no long explanations, no filler and no bloat.
+- No drama, slogans, "X, not Y" contrasts, punchline fragments, superlatives or sales comparisons.
+- Never insert a manual line break inside a sentence or a paragraph; text wraps by itself in every viewer. Break only between paragraphs, and in a file wrap only when a line exceeds 500 characters.
+- ASCII only, 0x20 to 0x7E plus newline and tab. No em or en dashes, curly quotes, arrows, bullets, box characters or emojis; a dash is a plain hyphen and a quote is straight.
+
 ## Workflow
 
 1. Read `style-manual.md` before writing; it carries every number and rule the page needs. Copy `template.html` to `<topic>-flow.html` in the workspace root unless the user or project rules name another folder. Copy the template as it is. Replace the title, subtitle and footer, then insert diagram sections at the marked space. `demo.html` is an optional filled example.

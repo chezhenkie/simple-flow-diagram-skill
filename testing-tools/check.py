@@ -40,7 +40,7 @@ files = ["README.md", "agent-skill/SKILL.md", "agent-skill/template.html",
          "agent-skill/demo.html", "agent-skill/index.html", "docs/index.html",
          "docs/demo.html", "docs/SKILL.html", "docs/color-vision-audit.html",
          "docs/context-performance-report.html", "docs/color-vision-audit-comparison.html",
-         "docs/embed-sample.html",
+         "docs/sample-one-diagram.html",
          "CHANGELOG.md", "LICENSE",
          "agent-skill/style-manual.md", "testing-tools/check.py", "testing-tools/validate.py",
          "testing-tools/harness.js", "testing-tools/README.md"]
@@ -282,6 +282,9 @@ check(bool(istyles) and istyles[0] == re.search(r"<style>(.*?)</style>", demo, r
       "index shared style matches demo")
 check(len(istyles) == 2 and all(k in istyles[1] for k in (".grid {", ".entry {", ".glyph {", ".docs {")),
       "index grid, entry, glyph and docs styles")
+check(".sub { font-size: 15px; line-height: 1.5; }" in istyles[1], "index subtitle larger than the page subtitle")
+check("table-layout: fixed" in istyles[1] and "width: 32%" in istyles[1],
+      "index document columns fixed and shared")
 check(re.search(r'<div id="tb".*?\n</div>', idx, re.S).group(0) == tb,
       "index bar matches demo")
 check(re.findall(r"<script>(.*?)</script>", idx, re.S) == scripts, "index scripts match demo")
@@ -292,7 +295,10 @@ check(idx.count('<nav class="grid" aria-label="group label">') == 1, "index one 
 check(idx.count('class="entry"') == 1 and idx.count('class="glyph"') == 1, "index one example entry")
 check(idx.count('class="hot"') == 1, "index one accent glyph path")
 check('href="first-page.html"' in idx and 'href="notes.md"' in idx, "index example links")
-check(idx.count("<section") == 1 and 'aria-labelledby="documents"' in idx, "index documents section")
+check(idx.count("<section") == 2 and 'aria-labelledby="group-label"' in idx
+      and 'aria-labelledby="documents"' in idx, "index two sections")
+check("note" not in idx.split("<body>")[1].split("</main>")[0].replace("notes.md", ""),
+      "index no note labels")
 check(idx.count('class="docs"') == 1 and ">Document<" in idx and ">Covers<" in idx,
       "index documents table")
 check("localStorage" not in idx and "sessionStorage" not in idx, "index no storage")
@@ -324,17 +330,16 @@ check(len(lstyle) == 2 and lstyle == istyles, "pages index styles match shell")
 check(re.findall(r"<script>(.*?)</script>", live, re.S) == scripts, "pages index scripts match shell")
 check(live.count("<h1") == 1 and live.count('<p class="sub">') == 1 and live.count("<footer") == 1,
       "pages index copy with subtitle")
-check('href="demo.html"' in live and 'href="embed-sample.html"' in live
-      and 'href="sample-one-diagram.html"' in live
-      and 'src="demo.html"' in text("docs/embed-sample.html"),
+check('href="demo.html"' in live and 'href="sample-one-diagram.html"' in live,
       "pages index page links")
 for doc in ("SKILL.html", "color-vision-audit.html", "color-vision-audit-comparison.html",
             "context-performance-report.html"):
     check('href="%s"' % doc in live, "pages index document " + doc)
 check(live.count('<nav class="grid" aria-label="sample pages">') == 1
-      and live.count('<section aria-labelledby="documents">') == 1, "pages index group and documents")
-check(live.count('class="entry"') == 3 and live.count('class="glyph"') == 3, "pages index three entries")
-check(live.count('class="hot"') == 3, "pages index three accent glyph paths")
+      and live.count('<section aria-labelledby="sample-pages">') == 1
+      and live.count('<section aria-labelledby="documents">') == 1, "pages index two sections")
+check(live.count('class="entry"') == 2 and live.count('class="glyph"') == 2, "pages index two entries")
+check(live.count('class="hot"') == 2, "pages index two accent glyph paths")
 check(live.count('class="docs"') == 1 and ">Document<" in live and ">Covers<" in live,
       "pages index documents table")
 check("localStorage" not in live and "sessionStorage" not in live, "pages index no storage")
@@ -524,6 +529,8 @@ check("ascii only" in low, "skill ascii rule")
 check("diagram body in manual section 10" in low, "skill diagram body")
 check("fill the copy in two edits" in low and "do not edit one section at a time" in low
       and "do not rewrite the whole page" in low, "skill two-edit rule")
+check("## Writing rules" in skill and "no big prose" in skill
+      and "ASCII only, 0x20 to 0x7E" in skill, "skill writing rules chapter")
 check("## Page types" in skill, "skill page types")
 check("manual section 14" in skill and "index.html" in skill and "iframe" in skill,
       "skill index chapter and embed")
@@ -563,6 +570,10 @@ check("copy `index.html` instead of `template.html`" in man, "manual index shell
 check('class="glyph"' in man and "104 x 56" in man, "manual glyph rules")
 check("?mode=...&dark=...&light=..." in man, "manual index link query")
 check("Two to six entries" in man, "manual index group size")
+check("first column at 32 percent" in man and "line up across every section" in man,
+      "manual shared document columns")
+check("## Writing rules" in skill and "writing rules in SKILL.md" in man,
+      "skill and manual name the writing rules")
 check("screenshots" in man.lower() and "pdfs" in man.lower(), "manual no render pass")
 check("Switch light and dark" not in man, "manual no per-page theme pass")
 check("both foldouts opened" not in man, "manual checklist no per-page render")
@@ -612,7 +623,7 @@ check(r.returncode == 1 and "main row" in r.stdout, "validator catches an off-gr
 
 # Changelog
 versions = re.findall(r"^## (\d+\.\d+\.\d+)$", cl, re.M)
-check(versions == ["1.6.0", "1.5.2", "1.5.1", "1.5.0", "1.4.0", "1.3.7", "1.3.6", "1.3.5", "1.3.4", "1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
+check(versions == ["1.6.1", "1.6.0", "1.5.2", "1.5.1", "1.5.0", "1.4.0", "1.3.7", "1.3.6", "1.3.5", "1.3.4", "1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
       "changelog versions newest first")
 check(not re.search(r"\b(19|20)\d\d\b", cl), "changelog no dates")
 check(not re.search(r"\bv\d+\.\d+", cl), "changelog bare versions")

@@ -203,9 +203,10 @@
 </style>
 
 <style>
+  .sub { font-size: 15px; line-height: 1.5; }
   .grid {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 16px; margin: 0 0 32px; padding: 0;
+    gap: 16px; margin: 0; padding: 0;
   }
   .entry {
     display: flex; flex-direction: column; gap: 12px;
@@ -223,9 +224,8 @@
   .glyph .hot { stroke: var(--accent); stroke-width: 1.6; }
   .name { font-size: 16px; font-weight: 600; }
   .desc { font-size: 13px; color: var(--page-muted); }
-  .note + .grid { margin-top: -8px; }
   .docs {
-    width: 100%; border-collapse: collapse; margin: 0 0 32px;
+    width: 100%; border-collapse: collapse; table-layout: fixed; margin: 0;
     background: var(--card); border: 1px solid var(--line);
     font-size: 13.5px; transition: background .25s, border-color .25s;
   }
@@ -234,8 +234,9 @@
     font-size: 11px; font-weight: 600; letter-spacing: 0.7px; text-transform: uppercase;
     color: var(--page-muted); border-bottom: 1px solid var(--line);
   }
+  .docs thead th:first-child { width: 32%; }
   .docs tbody tr + tr th, .docs tbody tr + tr td { border-top: 1px solid var(--line); }
-  .docs tbody th { font-weight: 600; white-space: nowrap; }
+  .docs tbody th { font-weight: 600; }
   .docs td { color: var(--page-muted); }
   .docs a {
     color: var(--page-ink); text-decoration: none;
@@ -305,28 +306,29 @@
   <h1>index title</h1>
   <p class="sub">one sentence naming the set of pages and documents</p>
 
-  <!-- Group: one note and one nav.grid, repeated or removed. -->
-  <p class="note">group label</p>
-  <nav class="grid" aria-label="group label">
+  <!-- Group: one section per group of pages, an h2 pill and a nav.grid. Repeat the section. -->
+  <section aria-labelledby="group-label">
+    <div class="head"><h2 id="group-label">group label</h2></div>
+    <nav class="grid" aria-label="group label">
 
-    <!-- Entry: one link card per page, with a small inline glyph. -->
-    <a class="entry" href="first-page.html">
-      <svg class="glyph" viewBox="0 0 104 56" aria-hidden="true" focusable="false">
-        <rect x="2" y="20" width="24" height="16" rx="2"/>
-        <rect x="40" y="20" width="24" height="16" rx="2"/>
-        <rect x="78" y="20" width="24" height="16" rx="2"/>
-        <path class="hot" d="M 6 20 V 10 H 98 V 20 M 52 10 V 20"/>
-      </svg>
-      <span class="name">first page</span>
-      <span class="desc">what the page shows, in one line</span>
-    </a>
+      <!-- Entry: one link card per page, with a small inline glyph. -->
+      <a class="entry" href="first-page.html">
+        <svg class="glyph" viewBox="0 0 104 56" aria-hidden="true" focusable="false">
+          <rect x="2" y="20" width="24" height="16" rx="2"/>
+          <rect x="40" y="20" width="24" height="16" rx="2"/>
+          <rect x="78" y="20" width="24" height="16" rx="2"/>
+          <path class="hot" d="M 6 20 V 10 H 98 V 20 M 52 10 V 20"/>
+        </svg>
+        <span class="name">first page</span>
+        <span class="desc">what the page shows, in one line</span>
+      </a>
 
-  </nav>
+    </nav>
+  </section>
 
-  <!-- Documents: one section with the h2 pill and a table. Optional. -->
+  <!-- Documents: one section per group, an h2 pill and a table. The fixed column widths keep every table on the page aligned. -->
   <section aria-labelledby="documents">
     <div class="head"><h2 id="documents">text documents</h2></div>
-    <p class="note">what the documents cover and the order to read them</p>
     <table class="docs" aria-labelledby="documents">
       <thead>
         <tr><th scope="col">Document</th><th scope="col">Covers</th></tr>
