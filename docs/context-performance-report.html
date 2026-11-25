@@ -228,9 +228,10 @@ pre code{background:none;color:inherit;border:0;padding:0}
   document.documentElement.dataset.os=os;
 })();</script>
 <script>(function(){
+  var p=/[?&]mode=(dark|light)\b/.exec(window.location.search||'');
   var mq=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)');
   var root=document.documentElement;
-  root.setAttribute('data-theme',mq&&mq.matches?'dark':'light');
+  root.setAttribute('data-theme',p?p[1]:(mq&&mq.matches?'dark':'light'));
   root.setAttribute('data-font','sans-serif');
   root.setAttribute('data-print','off');
 })();</script>
@@ -546,6 +547,45 @@ pre code{background:none;color:inherit;border:0;padding:0}
 
   return{apply,THEMES,inkOn};
 })();</script>
+<script>const LinkState=(function(){
+  function readParams(){
+    var s=(window.location&&window.location.search)||'';
+    if(s.charAt(0)==='?')s=s.slice(1);
+    if(!s)return null;
+    var out={};
+    s.split('&').forEach(function(p){
+      var i=p.indexOf('=');
+      if(i>0)out[p.slice(0,i)]=p.slice(i+1);
+    });
+    var mode=(out.mode==='dark'||out.mode==='light')?out.mode:null;
+    var dark=ThemeEngine.THEMES.dark[out.dark]?out.dark:null;
+    var light=ThemeEngine.THEMES.light[out.light]?out.light:null;
+    if(!mode&&!dark&&!light)return null;
+    return{mode:mode,dark:dark,light:light};
+  }
+
+  function pickQuery(state){
+    return '?mode='+(state.mode==='dark'?'dark':'light')+
+           '&dark='+state.dark+'&light='+state.light;
+  }
+
+  function syncLinks(state){
+    var nodes=document.querySelectorAll?document.querySelectorAll('a[href]'):[];
+    for(var i=0;i<nodes.length;i++){
+      var a=nodes[i];
+      var href=a.getAttribute('href')||'';
+      if(href.charAt(0)==='#'||href.slice(0,2)==='//')continue;
+      if(/^[a-z][a-z0-9+.-]*:/i.test(href))continue;
+      var cut=href.search(/[?#]/);
+      var path=cut<0?href:href.slice(0,cut);
+      var hash=href.indexOf('#')<0?'':href.slice(href.indexOf('#'));
+      if(!/\.html$/.test(path))continue;
+      a.setAttribute('href',path+pickQuery(state)+hash);
+    }
+  }
+
+  return{readParams:readParams,syncLinks:syncLinks};
+})();</script>
 <script>const MenuBar=(function(){
   let printBtn,modeBtn,fontBtn,bri,sat,briOut,satOut;
   let state={mode:'light',dark:'github',light:'vercel',font:'sans-serif',print:false};
@@ -561,6 +601,7 @@ pre code{background:none;color:inherit;border:0;padding:0}
       :(mq&&mq.matches?'dark':'light');
     if(opts.dark&&ThemeEngine.THEMES.dark[opts.dark])state.dark=opts.dark;
     if(opts.light&&ThemeEngine.THEMES.light[opts.light])state.light=opts.light;
+    if(opts.manual)manual=true;
     if(opts.font)state.font=opts.font;
 
     printBtn=document.getElementById('print');
@@ -773,9 +814,19 @@ pre code{background:none;color:inherit;border:0;padding:0}
   return{init,getValues,setValues,setMode,setTheme,setFont,setPrint};
 })();</script>
 <script>(function(){
+  var params=LinkState.readParams()||{};
+  var manual=!!(params.mode||params.dark||params.light);
   MenuBar.init({
-    onChange:function(state){ThemeEngine.apply(state);}
+    mode:params.mode||undefined,
+    dark:params.dark||undefined,
+    light:params.light||undefined,
+    manual:manual,
+    onChange:function(state){
+      ThemeEngine.apply(state);
+      LinkState.syncLinks(state);
+    }
   });
+  LinkState.syncLinks(MenuBar.getValues());
 })();</script>
 </body>
 </html>
