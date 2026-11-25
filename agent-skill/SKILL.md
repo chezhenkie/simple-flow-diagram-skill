@@ -11,7 +11,7 @@ One self-contained `.html` page per topic, or one page with several diagrams. St
 ## Page types
 
 - Diagram page: copy `template.html`; the workflow below applies.
-- Index page: copy `index.html`; manual section 14 applies. It lists the diagram pages and documents of one folder, one link card each with a small inline glyph, and keeps the same toolbar, themes and print rules. The mode and both theme choices travel in every local page link.
+- Index page: copy `index.html`; manual section 14 applies. It lists the diagram pages and documents of one folder, one link card each with a small inline glyph, and keeps the same toolbar, themes and print rules. The mode and both theme names travel in every local page link.
 - Embedded page: one finished page can sit inside another HTML page as one iframe placed before the host's closing `</main>`. It keeps its own toolbar and theme, sits in the same folder or below, and takes a height from manual section 14. No second copy.
 
 ## Goals
@@ -40,6 +40,7 @@ The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.
 - One theme covers the page and every diagram on it. Sections carry no class, no token block and no color of their own.
 - The reader picks the theme: five dark names and four light names in the two menus, each mode remembering its own choice.
 - The mode switch chooses light or dark and starts from the OS preference. Print is a separate toggle with fixed values.
+- A link between pages carries the mode and both theme names, never the six values. Each page resolves the names through its own table, so pages from different projects can share the choice while each keeps its own palette.
 - Brightness and saturation sliders adjust the applied palette in seven steps; they never change the saved pick and print ignores them.
 - Never hardcode a fill or stroke outside the template's classes and `var(--...)` tokens.
 

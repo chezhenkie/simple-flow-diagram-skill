@@ -293,7 +293,7 @@ The template, the toolbar, the themes and the print view are fixed and checked o
 - Initial mode comes from `prefers-color-scheme`, followed until the mode switch or a theme pick. No storage.
 - Tokens live on `:root`; the theme script writes the six adjusted values and `--pick-ink` on every change, and print aliases its fixed values there too, so it wins without a cascade trick.
 - One inline head script sets the initial `data-theme` before paint; one script before `</body>` holds the theme table, builds the menus, applies the theme and follows OS changes.
-- A link to a local `.html` page carries the reader's state. The toolbar script writes `?mode=...&dark=...&light=...` into every local page link on load and after each pick, and reads those values on load. A page opened from an index therefore keeps the mode and both theme choices. No storage; a link with no query opens on the OS mode and the default choices.
+- A link to a local `.html` page carries the reader's state. The toolbar script writes `?mode=...&dark=...&light=...` into every local page link on load and after each pick, and reads those values on load. The query carries the mode and two names, never the six values; each page resolves them through its own theme table, so pages from different projects can keep the same names with different palettes. A page opened from an index therefore keeps the mode and both theme choices. No storage; a link with no query opens on the OS mode and the default choices.
 
 ## 14. Index pages
 

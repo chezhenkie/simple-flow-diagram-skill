@@ -56,7 +56,7 @@ The sliders in dark, and in light at -1 and +2:
 
 An index page lists the diagram pages and documents in a folder. `agent-skill/index.html` is the template; every page gets a link card with a small inline SVG glyph, so the page loads nothing external. The project index is live at https://chezhenkie.github.io/simpleflow-diagram-skill/.
 
-The toolbar passes the mode and both theme choices into every local `.html` link and reads them on load. A page opened from the index keeps the theme; print stays a preview and does not travel. Nothing is stored.
+The toolbar passes the mode and both theme names into every local `.html` link and reads them on load. The link carries names, not colours, and each page resolves them through its own theme table, so a project can tune its palette while the linked pages stay in sync by name. A page opened from the index keeps the theme; print stays a preview and does not travel. Nothing is stored.
 
 The skill is five files. A diagram page copied from an older template still works but ignores the query until its toolbar script is updated.
 
