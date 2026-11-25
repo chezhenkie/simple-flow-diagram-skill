@@ -64,7 +64,7 @@ pages = text("docs/demo.html")
 # Page structure
 check(demo.count("<h1") == 1, "demo one h1")
 check(demo.count('<p class="sub">') == 1, "demo one sub")
-check(demo.count("<footer") == 1, "demo one footer")
+check(demo.count("<footer") == 0, "demo no footer")
 check(pages == demo, "pages demo matches demo")
 check(re.search(r'<html[^>]*data-theme="light"[^>]*data-print="off"', demo[:200]),
       "demo initial state attributes")
@@ -265,8 +265,8 @@ check("if (!manual)" in script, "os follow until manual")
 check("setMode(savedMode" in script, "print restores saved mode")
 
 # Template
-check(tpl.count("<h1") == 1 and tpl.count('<p class="sub">') == 1 and tpl.count("<footer") == 1,
-      "template page copy slots")
+check(tpl.count("<h1") == 1 and tpl.count('<p class="sub">') == 1 and tpl.count("<footer") == 0,
+      "template page copy slots, no footer")
 check("<section" not in tpl and tpl.count("<svg") == 5, "template no diagrams")
 check("Diagram slot:" in tpl, "template diagram slot")
 check(re.search(r'<div id="tb".*?\n</div>', tpl, re.S).group(0) == tb,
@@ -289,8 +289,8 @@ check("table-layout: fixed" in istyles[1] and "width: 32%" in istyles[1],
 check(re.search(r'<div id="tb".*?\n</div>', idx, re.S).group(0) == tb,
       "index bar matches demo")
 check(re.findall(r"<script>(.*?)</script>", idx, re.S) == scripts, "index scripts match demo")
-check(idx.count("<h1") == 1 and idx.count('<p class="sub">') == 1 and idx.count("<footer") == 1,
-      "index page copy slots")
+check(idx.count("<h1") == 1 and idx.count('<p class="sub">') == 1 and idx.count("<footer") == 0,
+      "index page copy slots, no footer")
 check("Index copy:" in idx and "Entry:" in idx and "Documents:" in idx, "index marked slots")
 check(idx.count('<nav class="grid" aria-label="group label">') == 1, "index one example group")
 check(idx.count('class="entry"') == 1 and idx.count('class="glyph"') == 1, "index one example entry")
@@ -330,7 +330,7 @@ live = text("docs/index.html")
 lstyle = re.findall(r"<style>(.*?)</style>", live, re.S)
 check(len(lstyle) == 2 and lstyle == istyles, "pages index styles match shell")
 check(re.findall(r"<script>(.*?)</script>", live, re.S) == scripts, "pages index scripts match shell")
-check(live.count("<h1") == 1 and live.count('<p class="sub">') == 1 and live.count("<footer") == 1,
+check(live.count("<h1") == 1 and live.count('<p class="sub">') == 1,
       "pages index copy with subtitle")
 check('href="demo.html"' in live and 'href="sample-one-diagram.html"' in live
       and 'href="sample-build-release.html"' in live,
@@ -367,7 +367,7 @@ check(len(sstyle) == 1
 check(re.findall(r"<script>(.*?)</script>", samp, re.S) == scripts, "sample page scripts match shell")
 check(re.search(r'<div id="tb".*?\n</div>', samp, re.S).group(0) == tb,
       "sample page bar matches shell")
-check(samp.count("<h1") == 1 and samp.count("<footer") == 1, "sample page structure")
+check(samp.count("<h1") == 1 and samp.count("<footer") == 0, "sample page structure")
 
 # SVGs, markers, geometry, budgets
 svgs = re.findall(r"<svg\b.*?</svg>", demo, re.S)
@@ -383,7 +383,7 @@ sections = [s for s in re.findall(r"<section>(.*?)</section>", demo, re.S)]
 ids = re.findall(r'<marker id="([^"]+)"', demo)
 check(len(ids) == 2 and len(set(ids)) == 2, "two unique marker ids")
 check(set(re.findall(r"url\(#([^)]+)\)", demo)) <= set(ids), "marker refs resolve")
-check(not hexes(re.sub(r"<script>.*?</script>", "", demo.split("<body>")[1].split("<footer>")[0])),
+check(not hexes(re.sub(r"<script>.*?</script>", "", demo.split("<body>")[1].split("</main>")[0])),
       "no hex colors in body markup")
 
 split_seen = False
@@ -574,6 +574,8 @@ check("## 14. Index pages" in man and "### Embedding a page" in man, "manual ind
 check("copy `index.html` instead of `template.html`" in man, "manual index shell")
 check('class="glyph"' in man and "104 x 56" in man, "manual glyph rules")
 check("?mode=...&dark=...&light=..." in man, "manual index link query")
+check("No footer by default" in man and "No footer by default" in skill,
+      "skill and manual drop the footer")
 check("Two to six entries" in man, "manual index group size")
 check("No description" in man and "up to 44 characters" in man, "manual index card label")
 check("Two to eight rows per table" in man and "Split documents by subject" in man,

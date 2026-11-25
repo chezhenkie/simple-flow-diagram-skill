@@ -26,7 +26,7 @@ The full contract lives in [style-manual.md](style-manual.md). [demo.html](demo.
 
 ## Writing rules
 
-The page copy follows the project's writing rules: the subtitle, the group names, the entry names and descriptions, the document rows and the footer. They hold for this skill, its manual, the README and the changelog.
+The page copy follows the project's writing rules: the subtitle, the group names, the entry names, the document rows and a footer where one is used. They hold for this skill, its manual, the README and the changelog.
 
 - Plain professional English: dry, product focused, without owner or user references and without decisions and dates scattered through the text. A header names its subject.
 - Short: no big prose, no long explanations, no filler and no bloat.
@@ -36,9 +36,9 @@ The page copy follows the project's writing rules: the subtitle, the group names
 
 ## Workflow
 
-1. Read `style-manual.md` before writing; it carries every number and rule the page needs. Copy `template.html` to `<topic>-flow.html` in the workspace root unless the user or project rules name another folder. Copy the template as it is. Replace the title, subtitle and footer, then insert diagram sections at the marked space. `demo.html` is an optional filled example.
+1. Read `style-manual.md` before writing; it carries every number and rule the page needs. Copy `template.html` to `<topic>-flow.html` in the workspace root unless the user or project rules name another folder. Copy the template as it is. Replace the title and subtitle, then insert diagram sections at the marked space. `demo.html` is an optional filled example.
 2. Keep the page template as it is: head script, token block, toolbar, toolbar script and print rules. Change only the page copy and the diagram bodies.
-3. Fill the copy in two edits. The first replaces the title, h1, p.sub and footer; the second inserts every diagram section at the marked space in order, head with h2 pill, p.note and svg. Use the diagram body in manual section 10. Do not edit one section at a time and do not rewrite the whole page, because edits keep the template byte for byte; a further edit is only for a defect found in the read.
+3. Fill the copy in two edits. The first replaces the title, h1 and p.sub; the second inserts every diagram section at the marked space in order, head with h2 pill, p.note and svg. Use the diagram body in manual section 10. Do not edit one section at a time and do not rewrite the whole page, because edits keep the template byte for byte; a further edit is only for a defect found in the read.
 4. Keep the grid: viewBox `0 0 1040 H`, main column x=300 width=470, card top `30 + 108n`, card height 70, arrow 28, caption x=549 at y+88. The tag is optional at last card top + 98 with a viewBox of `tag + 32`, or none with a viewBox of last top + 102. Up to seven main rows; the tag and side boxes do not count. Side boxes are fixed at 210 wide on x=40 and 220 wide on x=800. A decision may fork into two 222 cards at x=300 and x=548, with arrows at 411 and 659 and captions at 425 and 673. A merge back into one 470 card keeps that pair, captions optional.
 5. Fill text within the budgets: 65 characters per main line, 28 or 26 per split or side line, card title 24, caption 42 or 18 on a split, tag line 78. Write three characters under each limit, so a read can see the slack. A 70-high card takes two lines, a 90/100-high side card three.
 6. Mark one focus card and zero to two accent connectors per diagram. Solid for the main path, dashed for side channels, dotted for returns.
@@ -57,7 +57,7 @@ The page copy follows the project's writing rules: the subtitle, the group names
 ## Hard rules
 
 - ASCII only. Straight quotes, hyphen for dash, no arrows, bullets or other Unicode.
-- One `h1`, one `.sub`, one footer per page.
+- One `h1` and one `.sub` per page. No footer by default; add one only when the page needs a closing line.
 - Inline scripts are limited to the head mode script and the toolbar script. No external JavaScript, CSS, fonts, images or icon sets. Must open from `file://`.
 - Toolbar: fixed, 24 px high, right aligned, page background fill, no divider. Print toggle labelled `print friendly`, mode switch, then the `dark theme` and `light theme` menus, then the brightness and saturation sliders. Native controls, keyboard operable, labeled.
 - Colors only through `var(--...)`. Tokens live on `:root`; the print override comes last.

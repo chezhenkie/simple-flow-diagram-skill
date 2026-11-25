@@ -8,7 +8,7 @@ Specsheet for hand-written, single-file flow diagrams with a small toolbar for m
 - UTF-8, printable ASCII only. No typographic quotes, dashes, arrows or bullets.
 - Inline scripts limited to the toolbar and its initial mode. No external CSS, fonts, images or icon sets. Must open from `file://`.
 - Light and dark from the toolbar switch, initial state from `prefers-color-scheme`; two menus pick a theme per mode; print is a separate toggle.
-- One `<main>` wrapper, max width 1080 px, centered; one `<h1>`, one `.sub`, one or more `<section>` blocks, one `<footer>`. The SVG scales with the page, no fixed width or height attributes.
+- One `<main>` wrapper, max width 1080 px, centered; one `<h1>`, one `.sub`, one or more `<section>` blocks. No footer by default; add one only when the page needs a closing line. The SVG scales with the page, no fixed width or height attributes.
 
 ## 2. Page order
 
@@ -21,7 +21,7 @@ section
   p.note        one or two sentences with the driving rule
   svg           the diagram, viewBox 0 0 1040 H
 section         optional further diagrams, same shape
-footer          shared infrastructure or invariant, 1-2 sentences
+footer          optional closing line, 1-2 sentences; omit it by default
 ```
 
 ## 3. Theme
@@ -262,7 +262,7 @@ The template, the toolbar, the themes and the print view are fixed and checked o
 ## 12. Checklist
 
 - [ ] ASCII only, LF endings, straight quotes, hyphen for dashes.
-- [ ] One main, one h1, one sub, one footer; h2 pill reads `subject: outcome`.
+- [ ] One main, one h1, one sub; at most one footer, added only when the page needs a closing line; h2 pill reads `subject: outcome`.
 - [ ] One or more sections, each with a head, a note and one SVG; `role="img"` and an aria-label on the SVG; no fixed width or height.
 - [ ] Main column x=300 width 470, or two 222 cards at 300 and 548; pitch 108, height 70; viewBox `0 0 1040 H`; card and tag corners rx 3.
 - [ ] Arrows and captions: one arrow at x=535 in a row gap, caption at x=549 at y+18; split arrows at 411 and 659, captions at 425 and 673; a merge back into one 470 card keeps the 411 and 659 pair, captions optional; if one branch ends, the gap holds one arrow at 535.
@@ -299,7 +299,7 @@ The template, the toolbar, the themes and the print view are fixed and checked o
 
 A set of finished diagram pages and documents may open on one index page. It is a separate page type: copy `index.html` instead of `template.html`. Sections 1 to 13 keep their rules for the diagram pages the index links; this chapter covers the index itself.
 
-Order: toolbar, h1, `.sub`, one or more page sections, zero or more document sections, footer. The subtitle is one sentence at 15 px on the muted ink, larger than the diagram page subtitle; it names the set and its reach and is the only intro. No second note sits under it.
+Order: toolbar, h1, `.sub`, one or more page sections, zero or more document sections. No footer by default. The subtitle is one sentence at 15 px on the muted ink, larger than the diagram page subtitle; it names the set and its reach and is the only intro. No second note sits under it.
 
 A section opens with a `.head`, an h2 pill naming its group in lowercase, as in `sample pages` or `setup`, then its cards or its table. The pill is the only label. Two to six entries per page section.
 
@@ -335,6 +335,6 @@ A finished diagram page can sit inside another HTML page, toolbar and theme incl
 ```
 
 - The embedded page sits in the host's folder or below it, because a page opened from `file://` frames only its own tree. `title` names it for a screen reader.
-- Height comes from the viewBox, not from the eye: `330 + (iframe width - 42) * H / 1040`, rounded up to the next 20, where `H` is the viewBox height. The 330 is the page chrome outside the svg: main padding, title, subtitle, section head, note and footer. An 808-high diagram in a 926 px column lands on 1020.
+- Height comes from the viewBox, not from the eye: `330 + (iframe width - 42) * H / 1040`, rounded up to the next 20, where `H` is the viewBox height. The 330 is the page chrome outside the svg: main padding, title, subtitle, section head and note, with room for an optional footer. An 808-high diagram in a 926 px column lands on 1020.
 - The box keeps the page's own toolbar and theme. The host's mode is not pushed into it, and the toolbar scrolls with the box, not the window.
 - A host rebuilt from Markdown loses the line, so it is added again after conversion. No print variant and no second copy.

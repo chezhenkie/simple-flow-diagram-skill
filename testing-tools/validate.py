@@ -84,7 +84,7 @@ def page_checks(raw, body, text):
     check(b.count("<") == 0, "no unclosed tags", "file")
     check(len(re.findall(r"<h1\b", body)) == 1, "one h1")
     check(len(re.findall(r'class="sub"', body)) == 1, "one subtitle")
-    check(len(re.findall(r"<footer\b", body)) == 1, "one footer")
+    check(len(re.findall(r"<footer\b", body)) <= 1, "at most one footer")
     check(len(re.findall(r"<main\b", body)) == 1, "one main")
     check(not re.search(r"<script[^>]+src=|<link\b|@import", body), "no external assets")
     check(not re.search(r"https?://", body), "no network urls")
