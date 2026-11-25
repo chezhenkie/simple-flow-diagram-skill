@@ -41,6 +41,7 @@ files = ["README.md", "agent-skill/SKILL.md", "agent-skill/template.html",
          "docs/demo.html", "docs/SKILL.html", "docs/color-vision-audit.html",
          "docs/context-performance-report.html", "docs/color-vision-audit-comparison.html",
          "docs/sample-one-diagram.html",
+         "docs/sample-build-release.html",
          "CHANGELOG.md", "LICENSE",
          "agent-skill/style-manual.md", "testing-tools/check.py", "testing-tools/validate.py",
          "testing-tools/harness.js", "testing-tools/README.md"]
@@ -330,7 +331,8 @@ check(len(lstyle) == 2 and lstyle == istyles, "pages index styles match shell")
 check(re.findall(r"<script>(.*?)</script>", live, re.S) == scripts, "pages index scripts match shell")
 check(live.count("<h1") == 1 and live.count('<p class="sub">') == 1 and live.count("<footer") == 1,
       "pages index copy with subtitle")
-check('href="demo.html"' in live and 'href="sample-one-diagram.html"' in live,
+check('href="demo.html"' in live and 'href="sample-one-diagram.html"' in live
+      and 'href="sample-build-release.html"' in live,
       "pages index page links")
 for doc in ("SKILL.html", "color-vision-audit.html", "color-vision-audit-comparison.html",
             "context-performance-report.html"):
@@ -338,8 +340,8 @@ for doc in ("SKILL.html", "color-vision-audit.html", "color-vision-audit-compari
 check(live.count('<nav class="grid" aria-label="sample pages">') == 1
       and live.count('<section aria-labelledby="sample-pages">') == 1
       and live.count('<section aria-labelledby="documents">') == 1, "pages index two sections")
-check(live.count('class="entry"') == 2 and live.count('class="glyph"') == 2, "pages index two entries")
-check(live.count('class="hot"') == 2, "pages index two accent glyph paths")
+check(live.count('class="entry"') == 3 and live.count('class="glyph"') == 3, "pages index three entries")
+check(live.count('class="hot"') == 3, "pages index three accent glyph paths")
 check(live.count('class="docs"') == 1 and ">Document<" in live and ">Covers<" in live,
       "pages index documents table")
 check("localStorage" not in live and "sessionStorage" not in live, "pages index no storage")
