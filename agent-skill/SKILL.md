@@ -11,7 +11,7 @@ One self-contained `.html` page per topic, or one page with several diagrams. St
 ## Page types
 
 - Diagram page: copy `template.html`; the workflow below applies.
-- Index page: copy `index.html`; manual section 14 applies. It lists the diagram pages and documents of one folder, one link card each with a small inline glyph, and keeps the same toolbar, themes and print rules. The mode and both theme names travel in every local page link.
+- Index page: copy `index.html`; manual section 14 applies. It lists the diagram pages and documents of one folder in sections by subject: one link card each with a small inline glyph and its name, no description, and a document table per group. The mode and both theme names travel in every local page link.
 - Embedded page: one finished page can sit inside another HTML page as one iframe placed before the host's closing `</main>`. It keeps its own toolbar and theme, sits in the same folder or below, and takes a height from manual section 14. No second copy.
 
 ## Goals

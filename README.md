@@ -3,10 +3,10 @@
 
 # simpleflow diagram
 
-An agent skill that turns a process into a flow diagram on one HTML page. The layout, the toolbar, 5 dark and 4 light themes plus print-friendly mode come ready-made in the template, so a run writes only the cards and captions. Seven themes start from a well-known programmer scheme and two are custom; in every case all the colours are retuned and placed for this page, then checked under colour-vision simulation and edited again.
+An agent skill that turns a process into a flow diagram on one HTML page. The layout, the toolbar, 5 dark and 4 light themes plus print-friendly mode come ready-made in the template, so a run writes only the cards and captions. Seven themes start from a well-known programmer scheme and two are custom; in every case all the colours are retuned and placed for this page, then checked under colour-vision simulation and edited again. The written copy follows one set of writing rules, carried as its own chapter in the skill: plain professional English, short, ASCII only, no manual line breaks.
 
 - Fast and Cheap: on the same model, building the same finished page freehand usually takes 4 to 8 times longer. Most of that time goes into checks and revisions. Each look costs a screenshot and a turn, changing the toolbar means looking again in both modes, and a theme check adds another round. The template is read once and copied, so a new page adds only a few hundred tokens of text, and a second diagram needs no extra setup.
-- Optional index page: it gathers several finished diagrams and documents onto one page, and a documents section can be added where needed. Demo: [GITHUB INDEX PAGE SIMPLE FLOW SKILL](https://chezhenkie.github.io/simpleflow-diagram-skill/).
+- Optional index page: it gathers several finished diagrams and documents onto one page in sections by subject. Each card is a glyph and a name, with no description, and the document tables share one column grid. Demo: [GITHUB INDEX PAGE SIMPLE FLOW SKILL](https://chezhenkie.github.io/simpleflow-diagram-skill/).
 - Readable: the type scale, spacing and card grid are tuned for reading, and the palettes are retuned for colour-vision impaired readers. Light themes use a soft background against overall glare, and certain dark themes use light grey instead of white text against contrast glare.
 - Consistent: one of nine fixed themes and the same grid on every run, so pages from different models match.
 - Iterated under test: many rounds of multiple sub-agent runs, each a run, evaluate, compare, edit, repeat loop; the misses from those runs became the rules, budgets and checklist lines.
@@ -54,7 +54,7 @@ The sliders in dark, and in light at -1 and +2:
 
 ## Optional index page
 
-An index page lists the diagram pages and documents in a folder. `agent-skill/index.html` is the template; every page gets a link card with a small inline SVG glyph, so the page loads nothing external. The project index is live at https://chezhenkie.github.io/simpleflow-diagram-skill/.
+An index page lists the diagram pages and documents in a folder. `agent-skill/index.html` is the template; every page gets a link card with a small inline SVG glyph and its name, so the page loads nothing external. Pages and documents sit in sections by subject, each with a boxed heading; a document list splits into groups such as skill files and other docs. Every document table uses the same fixed column rule, so the Document and Covers columns line up down the page. The project index is live at https://chezhenkie.github.io/simpleflow-diagram-skill/.
 
 The toolbar passes the mode and both theme names into every local `.html` link and reads them on load. The link carries names, not colours, and each page resolves them through its own theme table, so a project can tune its palette while the linked pages stay in sync by name. A page opened from the index keeps the theme; print stays a preview and does not travel. Nothing is stored.
 
@@ -89,7 +89,7 @@ Codex scans `.agents/skills` from the current folder up to the repository root. 
 
 Ask for a flow diagram in this style. The agent reads `agent-skill/SKILL.md`, copies `agent-skill/template.html`, fills the copy and inserts one section per diagram. The diagram body in `agent-skill/style-manual.md` section 10 is the starting block.
 
-For an index of several pages and documents, the agent copies `agent-skill/index.html` and fills the link cards and the documents table; manual section 14 covers the glyph rules and the budgets.
+For an index of several pages and documents, the agent copies `agent-skill/index.html` and fills the page sections and the document tables; manual section 14 covers the glyph rules, the group split and the budgets.
 
 ### Call the skill
 
@@ -108,9 +108,9 @@ Example request: `Draw the request path as a flow diagram in the house style.`
 
 | File | Purpose |
 |---|---|
-| `agent-skill/SKILL.md` | Agent entry point, workflow and hard rules |
+| `agent-skill/SKILL.md` | Agent entry point, writing rules, workflow and hard rules |
 | `agent-skill/template.html` | Starting page to copy; marked space for the diagram |
-| `agent-skill/index.html` | Starting page for an index; link cards with inline glyphs and a documents table |
+| `agent-skill/index.html` | Starting page for an index; sectioned groups of link cards and document tables |
 | `agent-skill/demo.html` | Filled reference page: card payment flow with a side channel, a split and a return |
 | `agent-skill/style-manual.md` | Theme rules, grid, type scale, card anatomy, connectors, validation |
 | `testing-tools/` | Static checks, page validator and toolbar test |

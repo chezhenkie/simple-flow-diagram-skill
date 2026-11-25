@@ -38,7 +38,7 @@ def one_hex(css, name):
 
 files = ["README.md", "agent-skill/SKILL.md", "agent-skill/template.html",
          "agent-skill/demo.html", "agent-skill/index.html", "docs/index.html",
-         "docs/demo.html", "docs/SKILL.html", "docs/color-vision-audit.html",
+         "docs/demo.html", "docs/SKILL.html", "docs/style-manual.html", "docs/color-vision-audit.html",
          "docs/context-performance-report.html", "docs/color-vision-audit-comparison.html",
          "docs/sample-one-diagram.html",
          "docs/sample-build-release.html",
@@ -335,16 +335,18 @@ check(live.count("<h1") == 1 and live.count('<p class="sub">') == 1 and live.cou
 check('href="demo.html"' in live and 'href="sample-one-diagram.html"' in live
       and 'href="sample-build-release.html"' in live,
       "pages index page links")
-for doc in ("SKILL.html", "color-vision-audit.html", "color-vision-audit-comparison.html",
-            "context-performance-report.html"):
+for doc in ("SKILL.html", "style-manual.html", "color-vision-audit.html",
+            "color-vision-audit-comparison.html", "context-performance-report.html"):
     check('href="%s"' % doc in live, "pages index document " + doc)
 check(live.count('<nav class="grid" aria-label="sample pages">') == 1
       and live.count('<section aria-labelledby="sample-pages">') == 1
-      and live.count('<section aria-labelledby="documents">') == 1, "pages index two sections")
+      and live.count('<section aria-labelledby="skill-files">') == 1
+      and live.count('<section aria-labelledby="other-docs">') == 1, "pages index three sections")
 check(live.count('class="entry"') == 3 and live.count('class="glyph"') == 3, "pages index three entries")
 check(live.count('class="hot"') == 3, "pages index three accent glyph paths")
-check(live.count('class="docs"') == 1 and ">Document<" in live and ">Covers<" in live,
-      "pages index documents table")
+check(live.count('class="docs"') == 2 and ">Document<" in live and ">Covers<" in live,
+      "pages index two document tables")
+check('class="desc"' not in live and ".desc {" not in istyles[1], "pages index cards carry no description")
 check("localStorage" not in live and "sessionStorage" not in live, "pages index no storage")
 check(not hexes(live.split("<body>")[1].split("</main>")[0]), "pages index no hex colors in body")
 check(not re.search(r'<script[^>]+src=|<link\b|@import|https?://', live),
@@ -573,6 +575,7 @@ check("copy `index.html` instead of `template.html`" in man, "manual index shell
 check('class="glyph"' in man and "104 x 56" in man, "manual glyph rules")
 check("?mode=...&dark=...&light=..." in man, "manual index link query")
 check("Two to six entries" in man, "manual index group size")
+check("No description" in man and "up to 44 characters" in man, "manual index card label")
 check("Two to eight rows per table" in man and "Split documents by subject" in man,
       "manual document group split")
 check("first column at 32 percent" in man and "line up across every section" in man,

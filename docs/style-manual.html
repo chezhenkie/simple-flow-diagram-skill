@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flow diagram style manual</title>
+<style>
+#tb{
+  position:fixed;top:0;left:0;right:0;height:24px;z-index:10;
+  display:flex;align-items:center;justify-content:flex-end;gap:7px;
+  padding:0 28px;background:var(--page-bg);color:var(--tb-ink);
+  font:10px/1 var(--font-ui);
+  user-select:none;transition:background .25s,color .25s;
+}
+#tb .s{width:1px;height:12px;background:var(--tb-line)}
+#tb .tb-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:4px;
+  height:18px;padding:0 6px 3px;cursor:pointer;
+  color:inherit;background:transparent;
+  border:1px solid var(--tb-line);border-radius:2px;
+  white-space:nowrap;
+}
+#tb .tb-btn svg{width:13px;height:13px}
+#tb .tb-btn.on{background:var(--tb-ink);color:var(--page-bg);border-color:var(--tb-ink)}
+#tb .tb-btn.fold{min-width:68px}
+#tb .tb-btn.fold::after{
+  content:"";width:0;height:0;margin-left:4px;
+  border-left:3px solid transparent;border-right:3px solid transparent;
+  border-top:4px solid currentColor;
+}
+#tb .group{position:relative;display:inline-flex}
+#tb .menu{
+  display:none;position:absolute;top:21px;right:0;z-index:20;
+  flex-direction:column;min-width:100%;padding:2px;
+  background:var(--page-bg);border:1px solid var(--tb-line);border-radius:2px;
+}
+#tb .menu.open{display:flex}
+#tb .menu button{
+  height:16px;padding:0 6px;cursor:pointer;text-align:left;
+  font:inherit;color:inherit;background:transparent;border:0;border-radius:1px;
+  white-space:nowrap;
+}
+#tb .menu button:hover,#tb .menu button:focus-visible{background:var(--tb-line)}
+#tb .menu button[aria-checked="true"]{background:var(--accent);color:var(--pick-ink)}
+#tb .toggle{
+  position:relative;width:44px;height:20px;padding:0;cursor:pointer;
+  background:transparent;border:0;color:inherit;
+}
+#tb .toggle-thumb{
+  position:absolute;top:2px;left:5px;width:16px;height:16px;
+  border-radius:2px;background:var(--thumb);border:1px solid var(--thumb-line);
+  transition:transform .25s cubic-bezier(.4,0,.2,1),background .25s,border-color .25s;
+}
+#tb .toggle.on .toggle-thumb{transform:translateX(17px)}
+#tb .toggle svg{
+  position:absolute;top:50%;width:12px;height:12px;
+  transform:translateY(-50%);pointer-events:none;
+  transition:opacity .25s;
+}
+#tb .toggle .ico-l{left:7px;opacity:1}
+#tb .toggle .ico-r{right:8px;opacity:.45}
+#tb .toggle.on .ico-l{opacity:.45}
+#tb .toggle.on .ico-r{opacity:1}
+#tb .sl{display:inline-flex;align-items:center;gap:4px}
+#tb .sl svg{width:10px;height:10px;flex-shrink:0}
+#tb .sl input[type=range]{
+  -webkit-appearance:none;appearance:none;width:48px;height:3px;
+  padding:0;margin:0;cursor:pointer;outline:none;
+  background:var(--tb-line);border:1px solid var(--tb-line);border-radius:2px;
+}
+#tb .sl input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;width:10px;height:10px;
+  background:var(--page-bg);border:1px solid var(--tb-ink);border-radius:2px;
+  cursor:pointer;
+}
+#tb .sl input[type=range]::-moz-range-thumb{
+  width:10px;height:10px;background:var(--page-bg);
+  border:1px solid var(--tb-ink);border-radius:2px;cursor:pointer;
+}
+#tb .sl .v{min-width:14px;text-align:center;font-variant-numeric:tabular-nums}
+#tb .tb-btn:focus-visible,#tb .toggle:focus-visible,#tb .sl input:focus-visible,#tb .menu button:focus-visible{
+  outline:2px solid var(--tb-ink);outline-offset:1px;
+}
+@media(prefers-reduced-motion:reduce){
+  #tb *{transition:none!important}
+}
+:root{
+  color-scheme:light;
+  --page-bg:#F3F3F1;
+  --page-ink:#20242A;
+  --page-muted:#4E545C;
+  --page-line:#C9CCD1;
+  --card:#FFFFFF;
+  --accent:#9A6400;
+  --pick-ink:#000000;
+  --tb-ink:#4E545C;
+  --tb-line:#C9CCD1;
+  --thumb:#CBCBCB;
+  --thumb-line:#888888;
+  --print-bg:#FFFFFF;
+  --print-ink:#000000;
+  --print-muted:#333333;
+  --print-line:#9A9A9A;
+  --font-serif:Georgia,'Times New Roman',serif;
+  --font-ui:'Segoe UI',Helvetica,Arial,sans-serif;
+  --font-mono:'Cascadia Code',Consolas,monospace;
+}
+html[data-theme="dark"]{
+  color-scheme:dark;
+  --page-bg:#0D1117;
+  --page-ink:#C9D1D9;
+  --page-muted:#8B949E;
+  --page-line:#6E7681;
+  --card:#010409;
+  --accent:#3B82F6;
+  --pick-ink:#000000;
+  --tb-ink:#8B949E;
+  --tb-line:#6E7681;
+  --thumb:#2E2E2E;
+  --thumb-line:#777777;
+}
+html[data-print="on"]{color-scheme:light}
+[data-os="windows"]{
+  --font-ui:"Segoe UI Variable Text","Segoe UI",sans-serif;
+  --font-serif:Georgia,"Times New Roman",serif;
+  --font-mono:"Cascadia Mono","Cascadia Code",Consolas,monospace;
+}
+[data-os="mac"]{
+  --font-ui:-apple-system,"SF Pro Text","Helvetica Neue",sans-serif;
+  --font-serif:"New York","Times New Roman",Times,serif;
+  --font-mono:"SF Mono",Menlo,Monaco,monospace;
+}
+[data-os="ios"]{
+  --font-ui:-apple-system,"SF Pro Text","Helvetica Neue",sans-serif;
+  --font-serif:"New York",Georgia,"Times New Roman",serif;
+  --font-mono:"SF Mono",Menlo,monospace;
+}
+[data-os="android"]{
+  --font-ui:Roboto,"Noto Sans",sans-serif;
+  --font-serif:"Noto Serif",serif;
+  --font-mono:"Roboto Mono","Droid Sans Mono","Noto Sans Mono",monospace;
+}
+[data-os="linux"]{
+  --font-ui:Ubuntu,"Cantarell","Noto Sans",sans-serif;
+  --font-serif:"Liberation Serif","Noto Serif",serif;
+  --font-mono:"Ubuntu Mono","DejaVu Sans Mono",monospace;
+}
+body{
+  margin:0;
+  background:var(--page-bg);
+  color:var(--page-ink);
+  font-family:var(--font-ui);
+  font-size:16px;
+  line-height:1.6;
+  transition:background .25s,color .25s;
+}
+[data-font="serif"] body{font-family:var(--font-serif)}
+h1,h2,h3,h4,h5,h6{
+  color:var(--page-ink);
+  font-family:inherit;
+  font-weight:400;
+  line-height:1.3;
+  margin:0 0 .5em;
+  transition:color .25s;
+}
+a{color:var(--accent);text-decoration:none;transition:color .2s}
+a:hover{text-decoration:underline}
+hr{border:none;border-top:1px solid var(--line);margin:2em 0}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{
+  @page{margin:12mm}
+  :root{
+    color-scheme:light!important;
+    --page-bg:var(--print-bg)!important;
+    --page-ink:var(--print-ink)!important;
+    --page-muted:var(--print-muted)!important;
+    --page-line:var(--print-line)!important;
+    --card:var(--print-bg)!important;
+    --accent:var(--print-ink)!important;
+    --pick-ink:var(--print-bg)!important;
+    --tb-ink:var(--print-muted)!important;
+    --tb-line:var(--print-line)!important;
+  }
+  #tb{display:none}
+  .wrap{max-width:none;padding:0}
+  body{background:var(--page-bg)!important;color:var(--page-ink)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  header,table,pre,.callout,.kicker,.lede,.rule{break-inside:avoid}
+}
+*{box-sizing:border-box}
+.wrap{max-width:990px;margin:0 auto;padding:64px 32px 96px}
+header{border-top:6px solid var(--accent);padding-top:28px;margin-bottom:8px;transition:border-color .25s}
+.kicker{font-family:var(--font-ui);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--page-muted);margin:0 0 14px;transition:color .25s}
+h1{font-size:38px;font-weight:400;line-height:1.2;color:var(--page-ink);margin:0 0 12px;letter-spacing:-.01em;transition:color .25s}
+h1 em{font-style:italic;color:var(--accent);transition:color .25s}
+.lede{font-family:var(--font-serif);font-size:18px;line-height:1.5;color:var(--accent);margin:0 0 4px;font-style:italic;transition:color .25s}
+.lede small{display:block;font-style:normal;font-family:var(--font-ui);font-size:12.5px;color:var(--page-muted);margin-top:10px;transition:color .25s}
+h2{font-size:26px;font-weight:400;color:var(--page-ink);margin:56px 0 6px;letter-spacing:-.01em;transition:color .25s}
+h2 .num{font-family:var(--font-ui);font-size:14px;color:var(--accent);vertical-align:super;margin-right:8px;transition:color .25s}
+h2+.rule{height:1px;background:var(--page-line);margin:0 0 22px;transition:background .25s}
+h3{font-weight:600;color:var(--page-ink);font-size:19px;margin:26px 0 6px;transition:color .25s}
+p{margin:0 0 16px}
+em{font-family:var(--font-serif);color:var(--accent);transition:color .25s}
+strong{color:var(--accent);font-weight:600;transition:color .25s}
+table{width:100%;border-collapse:collapse;margin:20px 0 28px;background:var(--card);border:1px solid var(--page-line);transition:background .25s,border-color .25s}
+th,td{text-align:left;padding:10px 14px;vertical-align:top}
+th{font-family:var(--font-ui);font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--page-muted);background:var(--card);border-bottom:2px solid var(--accent);font-weight:600;transition:background .25s,color .25s,border-color .25s}
+td{font-size:14.5px;border-bottom:1px solid var(--page-line);color:var(--page-ink);transition:background .25s,border-color .25s,color .25s}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--page-bg)}
+.callout{border-left:4px solid var(--accent);background:var(--card);padding:16px 20px;margin:22px 0;font-family:var(--font-serif);font-style:italic;color:var(--page-muted);transition:background .25s,border-color .25s,color .25s}
+.callout strong{font-family:var(--font-ui);font-style:normal}
+ul,ol{margin:0 0 18px;padding-left:26px}
+li{margin:0 0 8px}
+li::marker{color:var(--accent)}
+code{font-family:var(--font-mono);font-size:13px;background:transparent;color:var(--page-ink);border:1px solid var(--page-line);padding:1px 5px;border-radius:3px;transition:background .25s,color .25s,border-color .25s}
+pre{background:var(--card);color:var(--page-ink);border:1px solid var(--page-line);padding:16px 20px;border-radius:4px;overflow-x:auto;margin:18px 0 24px;font-family:var(--font-mono);font-size:13px;line-height:1.6;transition:background .25s,color .25s,border-color .25s}
+pre code{background:none;color:inherit;border:0;padding:0}
+@media(max-width:620px){.wrap{padding:40px 18px 72px}h1{font-size:28px}}
+</style>
+<script>(function(){
+  var ua=navigator.userAgent;
+  var os='unknown';
+  if(/Android/i.test(ua))os='android';
+  else if(/iPhone|iPad|iPod/i.test(ua))os='ios';
+  else if(/Windows/i.test(ua))os='windows';
+  else if(/Macintosh|Mac OS X/i.test(ua))os='mac';
+  else if(/Linux/i.test(ua))os='linux';
+  document.documentElement.dataset.os=os;
+})();</script>
+<script>(function(){
+  var p=/[?&]mode=(dark|light)\b/.exec(window.location.search||'');
+  var mq=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)');
+  var root=document.documentElement;
+  root.setAttribute('data-theme',p?p[1]:(mq&&mq.matches?'dark':'light'));
+  root.setAttribute('data-font','sans-serif');
+  root.setAttribute('data-print','off');
+})();</script>
+</head>
+<body>
+<div id="tb" role="group" aria-label="Page controls">
+  <button class="tb-btn" id="print" type="button" aria-pressed="false" aria-label="Print friendly" title="Print friendly">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M6 9V3h12v6"/>
+      <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+      <rect x="6" y="14" width="12" height="8" rx="1"/>
+    </svg>
+    <span>print friendly</span>
+  </button>
+  <span class="s" aria-hidden="true"></span>
+  <button class="toggle on" id="mode" type="button" role="switch" aria-checked="true" aria-label="Light mode" title="Light or dark mode">
+    <span class="toggle-thumb" aria-hidden="true"></span>
+    <svg class="ico-l" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+    <svg class="ico-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+  </button>
+  <button class="toggle on" id="font" type="button" role="switch" aria-checked="true" aria-label="Sans-serif" title="Serif or sans-serif">
+    <span class="toggle-thumb" aria-hidden="true"></span>
+    <svg class="ico-l" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+      <line x1="3" y1="3" x2="11" y2="3"/>
+      <line x1="7" y1="3" x2="7" y2="11"/>
+      <line x1="3" y1="11" x2="11" y2="11"/>
+    </svg>
+    <svg class="ico-r" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+      <line x1="7" y1="3" x2="7" y2="11"/>
+    </svg>
+  </button>
+  <span class="s" aria-hidden="true"></span>
+  <div class="group">
+    <button class="tb-btn fold" id="dark-theme" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="dark-menu" title="Dark theme">dark theme</button>
+    <div class="menu" id="dark-menu" role="menu" aria-label="Dark theme"></div>
+  </div>
+  <div class="group">
+    <button class="tb-btn fold" id="light-theme" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="light-menu" title="Light theme">light theme</button>
+    <div class="menu" id="light-menu" role="menu" aria-label="Light theme"></div>
+  </div>
+  <span class="s" aria-hidden="true"></span>
+  <div class="sl">
+    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+      <rect x="1" y="1" width="10" height="10"/>
+      <polygon points="1,1 11,1 1,11" fill="currentColor"/>
+    </svg>
+    <input type="range" id="brightness" min="-3" max="3" step="1" value="0" aria-label="Brightness">
+    <span class="v" id="brightness-value" aria-hidden="true">0</span>
+  </div>
+  <div class="sl">
+    <svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
+      <circle cx="6" cy="3" r="1.8"/>
+      <circle cx="3.5" cy="7.5" r="1.8"/>
+      <circle cx="8.5" cy="7.5" r="1.8"/>
+    </svg>
+    <input type="range" id="saturation" min="-3" max="3" step="1" value="0" aria-label="Saturation">
+    <span class="v" id="saturation-value" aria-hidden="true">0</span>
+  </div>
+</div>
+<div class="wrap">
+  <header>
+    <h1>Flow diagram style manual</h1>
+  </header>
+  <main>
+<p>Specsheet for hand-written, single-file flow diagrams with a small toolbar for mode, theme and print. One vertical main path, optional side blocks, one theme for the page, no external dependencies. The template is copied, not rebuilt; the written part stays small because the grid, the type scale, the themes and the budgets are fixed.</p>
+<h2><span class="num">1</span>1. File contract</h2>
+<div class="rule"></div>
+<ul>
+<li>One <code>.html</code> file per topic, <code>&lt;topic&gt;-flow.html</code>, copied from <code>template.html</code>.</li>
+<li>UTF-8, printable ASCII only. No typographic quotes, dashes, arrows or bullets.</li>
+<li>Inline scripts limited to the toolbar and its initial mode. No external CSS, fonts, images or icon sets. Must open from <code>file://</code>.</li>
+<li>Light and dark from the toolbar switch, initial state from <code>prefers-color-scheme</code>; two menus pick a theme per mode; print is a separate toggle.</li>
+<li>One <code>&lt;main&gt;</code> wrapper, max width 1080 px, centered; one <code>&lt;h1&gt;</code>, one <code>.sub</code>, one or more <code>&lt;section&gt;</code> blocks, one <code>&lt;footer&gt;</code>. The SVG scales with the page, no fixed width or height attributes.</li>
+</ul>
+<h2><span class="num">2</span>2. Page order</h2>
+<div class="rule"></div>
+<pre><code>div#tb          fixed 24px toolbar: print toggle, mode switch, dark theme, light theme
+h1              page title, 22px
+p.sub           one sentence naming the whole path, 13px
+section
+  div.head      h2 pill
+  p.note        one or two sentences with the driving rule
+  svg           the diagram, viewBox 0 0 1040 H
+section         optional further diagrams, same shape
+footer          shared infrastructure or invariant, 1-2 sentences</code></pre>
+<h2><span class="num">3</span>3. Theme</h2>
+<div class="rule"></div>
+<p>A theme is six values: <code>bg</code> page, <code>card</code> card and tag fill, <code>ink</code> page text and card titles, <code>muted</code> descriptions, captions, connectors, footer and toolbar ink, <code>line</code> card and tag borders and toolbar lines, <code>accent</code> pill outline, focus border and action arrow.</p>
+<p>Nine themes ship in the template: five dark and four light. Dark: <code>github</code>, <code>harbor</code>, <code>solarized</code>, <code>oledblack</code>, <code>ayu</code>. Light: <code>vercel</code>, <code>tokyonight</code>, <code>cursor</code>, <code>orng</code>. Light opens on <code>vercel</code>, dark on <code>github</code>.</p>
+<p>The 1.4.0 palette pass raised the weak line and accent values. Four mark pairs keep a small shortfall under deuteranopia and are accepted deviations: vercel accent on page 2.91:1, tokyonight accent on card 2.97:1, tokyonight checked label 4.31:1 and orng checked label 4.00:1. Solarized and vercel accents sit between their original and fully passing values; tokyonight and orng accents are unchanged. The shortfalls affect emphasis and a menu label; the focus card still reads by 2 px width, the line marks clear 3:1 and the labels are text. They stay because raising them to the floor would drift the colors too far outside their fixed schemes and disrupt the overall color balance of the theme. Do not retune these tokens without an explicit request.</p>
+<ul>
+<li>The agent does not pick, mix or author colors. The theme script in <code>template.html</code> writes the six values as CSS custom properties.</li>
+<li>A diagram carries no colors of its own: no class on a section, no per-section token block, no inline <code>fill</code> or <code>stroke</code> with a color value.</li>
+<li>The pill is transparent with a 2 px accent outline and takes the page ink for its text, in both modes. No theme fills the title box.</li>
+<li>One theme per page; two diagrams use the same tokens and contrast comes from layout and copy.</li>
+<li>Print is a separate state with fixed tokens: white page, black ink, <code>#333333</code> muted, <code>#9a9a9a</code> line, black accent, and the same transparent pill with a 2 px black outline and black text.</li>
+</ul>
+<h2><span class="num">4</span>4. Type scale</h2>
+<div class="rule"></div>
+<p>Class sizes: h1 22/400, <code>.sub</code> 13, h2 16/600, <code>.note</code> 13, <code>.t</code> 14.5/600, <code>.d</code> 12.5, <code>.cap</code> 11.5, <code>.side</code> 11.5, footer 12. Body stack <code>&quot;Segoe UI&quot;, system-ui, -apple-system, sans-serif</code>, 15px/1.45. The budgets leave 10 percent headroom for wider fallback fonts; a size change invalidates them.</p>
+<h2><span class="num">5</span>5. Grid</h2>
+<div class="rule"></div>
+<p>Coordinates are integers in a <code>1040 x H</code> viewBox.</p>
+<table><thead><tr><th>element</th><th>x</th><th>width</th><th>notes</th></tr></thead><tbody>
+<tr><td>main column</td><td>300</td><td>470</td><td>center line at 535</td></tr>
+<tr><td>split card, left</td><td>300</td><td>222</td><td>text at 318</td></tr>
+<tr><td>split card, right</td><td>548</td><td>222</td><td>text at 566</td></tr>
+<tr><td>side card, left</td><td>40</td><td>210</td><td>text at x+16, 40 px left margin</td></tr>
+<tr><td>side card, right</td><td>800</td><td>220</td><td>text at x+16, 20 px right margin</td></tr>
+<tr><td>main text</td><td>318</td><td>to 752</td><td>card padding 18</td></tr>
+<tr><td>caption lane</td><td>549</td><td>to 790</td><td>14 px right of the spine</td></tr>
+<tr><td>split caption</td><td>425, 673</td><td>18 characters</td><td>one per branch, 14 px right of its arrow</td></tr>
+<tr><td>tag</td><td>300</td><td>470</td><td>same width as the main column</td></tr>
+</tbody></table>
+<p>Vertical rhythm:</p>
+<pre><code>card top        y = 30 + 108 * n
+card height     70 main, 70 / 90 / 100 side
+split row       two 222 cards at x 300 and x 548, 26 gap
+gap between     38
+arrow between   y+70 to y+98 (28 long)
+caption         y+88 (x 549)
+tag             last card top + 98, optional
+viewBox height  tag y + 32, or last card top + 102 without a tag</code></pre>
+<p>A split row replaces the main card on that row; the parent above and any merged card below stay 470 wide. Six main rows put the last top at 570, the tag at 668 and the height at 700; two rows put the tag at 236 and the height at 268, or 240 without a tag.</p>
+<p>Side marks, from a card or side box top, where <code>h</code> is the height:</p>
+<table><thead><tr><th>mark</th><th>y</th><th>use</th></tr></thead><tbody>
+<tr><td><code>hi</code></td><td>top + 20</td><td>loopback exit on the lower card</td></tr>
+<tr><td><code>mid</code></td><td>top + h/2</td><td>side channel stub</td></tr>
+<tr><td><code>lo</code></td><td>top + h - 20</td><td>loopback entry on the upper card</td></tr>
+</tbody></table>
+<p>A 70-high card puts the marks at 20, 35 and 50; a 90-high side box at 20, 45 and 70; a 100-high box at 20, 50 and 80.</p>
+<p>Baselines:</p>
+<ul>
+<li>70-high card: title <code>y+26</code>, up to two description lines at <code>y+44</code> and <code>y+59</code>.</li>
+<li>90/100-high side card: title <code>y+26</code>, up to three description lines at <code>y+44</code>, <code>y+59</code>, <code>y+74</code>.</li>
+<li>Tag text: <code>y+17</code>.</li>
+</ul>
+<p>Do not change the 108 pitch. If a card needs more text, cut the text or split the step. A diagram carries up to seven main rows; the tag and side boxes do not count, and a longer path becomes two sections.</p>
+<h2><span class="num">6</span>6. Card anatomy</h2>
+<div class="rule"></div>
+<p>A card is <code>&lt;rect class=&quot;card&quot;&gt;</code> or <code>&lt;rect class=&quot;focus&quot;&gt;</code> with <code>rx=&quot;3&quot;</code>, plus <code>.t</code>: 1 to 4 words, sentence case, the actor or stage, no punctuation and no verbs in title case; and <code>.d</code>: the concrete mechanism, with real flags, endpoints, file names, sizes, no marketing, no restatement of the title, no trailing period. A 70-high card takes two description lines, a 90/100-high side card three. <code>focus</code> marks the component that does the work or coordinates the branch; one per diagram, with a 2 px accent border against 1.2 for a card.</p>
+<p>Text limits, per line:</p>
+<table><thead><tr><th>element</th><th>usable px</th><th>practical characters</th><th>budget</th></tr></thead><tbody>
+<tr><td>main description</td><td>434</td><td>72</td><td>65</td></tr>
+<tr><td>split description, 222 card</td><td>186</td><td>31</td><td>28</td></tr>
+<tr><td>side description, 220 card</td><td>186</td><td>31</td><td>28</td></tr>
+<tr><td>side description, 210 card</td><td>176</td><td>29</td><td>26</td></tr>
+<tr><td>card title, every card</td><td>204</td><td>28</td><td>24</td></tr>
+<tr><td>arrow caption</td><td>241</td><td>44</td><td>42</td></tr>
+<tr><td>split caption</td><td>113</td><td>20</td><td>18</td></tr>
+<tr><td>tag line</td><td>434</td><td>86</td><td>78</td></tr>
+</tbody></table>
+<p>SVG text does not wrap; an overlong line runs into the border. Every line is written three characters under its budget: main 62, split 25, side 25 or 23, title 21, caption 39 or 15, tag 75. The table keeps the hard limits, and a line that just fits is a rewrite. The title budget is 24 on every card; a 470 main card has more room but keeps the same limit.</p>
+<h2><span class="num">7</span>7. Connectors</h2>
+<div class="rule"></div>
+<p>Solid arrows connect consecutive main cards. The caption states the condition, protocol or payload that crosses the boundary, and does not repeat either card title.</p>
+<pre><code class="language-html">&lt;line class=&quot;arrow&quot; x1=&quot;535&quot; y1=&quot;100&quot; x2=&quot;535&quot; y2=&quot;128&quot; marker-end=&quot;url(#flowHead)&quot;/&gt;
+&lt;text class=&quot;cap&quot; x=&quot;549&quot; y=&quot;118&quot;&gt;first http(s) link wins&lt;/text&gt;</code></pre>
+<table><thead><tr><th>class</th><th>look</th><th>use</th></tr></thead><tbody>
+<tr><td><code>arrow</code></td><td>solid, 1.4, <code>--muted</code></td><td>main path between cards</td></tr>
+<tr><td><code>arrow-a</code></td><td>solid, 1.6, <code>--accent</code></td><td>into or out of the focus card, zero to two per diagram</td></tr>
+<tr><td><code>dash</code></td><td>dashed, 5 bar with a 4 gap, 1.2, <code>--muted</code></td><td>side channel or alternate branch</td></tr>
+<tr><td><code>loop</code></td><td>dotted, round 1.6, 6 apart, <code>--muted</code></td><td>return edge</td></tr>
+</tbody></table>
+<p>Line and arrowhead are separate objects; the marker path carries the color. Pair <code>arrow</code> and <code>dash</code> with the muted marker, <code>arrow-a</code> with the accent marker. Marker ids are unique per page, prefixed by section (<code>vidHead</code>, <code>sumHead</code>).</p>
+<p>Marker definition, once per color per diagram:</p>
+<pre><code class="language-html">&lt;defs&gt;
+  &lt;marker id=&quot;flowHead&quot; viewBox=&quot;0 0 10 10&quot; refX=&quot;9&quot; refY=&quot;5&quot;
+          markerWidth=&quot;7&quot; markerHeight=&quot;7&quot; orient=&quot;auto&quot;&gt;
+    &lt;path d=&quot;M 0 0 L 10 5 L 0 10 z&quot; fill=&quot;var(--muted)&quot;/&gt;
+  &lt;/marker&gt;
+  &lt;marker id=&quot;flowHeadA&quot; viewBox=&quot;0 0 10 10&quot; refX=&quot;9&quot; refY=&quot;5&quot;
+          markerWidth=&quot;7&quot; markerHeight=&quot;7&quot; orient=&quot;auto&quot;&gt;
+    &lt;path d=&quot;M 0 0 L 10 5 L 0 10 z&quot; fill=&quot;var(--accent)&quot;/&gt;
+  &lt;/marker&gt;
+&lt;/defs&gt;</code></pre>
+<h2><span class="num">8</span>8. Branch and loop patterns</h2>
+<div class="rule"></div>
+<p>Side input, dashed into the main column: <code>&lt;path class=&quot;dash&quot; d=&quot;M 250 173 H 290&quot; marker-end=&quot;url(#flowHead)&quot;/&gt;</code></p>
+<p>Side output: <code>&lt;path class=&quot;dash&quot; d=&quot;M 770 399 H 796&quot; marker-end=&quot;url(#flowHead)&quot;/&gt;</code></p>
+<p>A side input stops 10 px before the main card; a side output stops 4 px before the side box. A side stub uses <code>mid</code> at top + h/2 on 70-, 90- and 100-high boxes.</p>
+<p>Exit branch with no return, such as a missing prerequisite: <code>&lt;path class=&quot;dash&quot; d=&quot;M 300 173 H 254&quot; marker-end=&quot;url(#flowHead)&quot;/&gt;</code></p>
+<p>Fallback that rejoins a lower card: <code>&lt;path class=&quot;dash&quot; d=&quot;M 910 454 V 605 H 780&quot; marker-end=&quot;url(#flowHead)&quot;/&gt;</code> with its <code>.side</code> label.</p>
+<p>Loopback, a later card feeding an earlier one. Four lanes per side, 24 px inside the side box edge and 20 apart: left 226, 206, 186, 166; right 824, 844, 864, 884. The spine runs under the side box band and is written before the first card rect.</p>
+<pre><code class="language-html">&lt;path class=&quot;loop&quot; d=&quot;M 300 266 H 226 V 80 H 300&quot; marker-end=&quot;url(#flowHead)&quot;/&gt;</code></pre>
+<p>That is card 3 (top 246) back to card 1 (top 30): out at <code>hi</code> 266, up lane 1, in at <code>lo</code> 80. The spine covers the rows between the cards and disappears under a side box that sits on them.</p>
+<ul>
+<li>Dashed is optional, alternate or side; dotted is a return; solid is the main path. A loopback runs upward only; a forward jump stays <code>dash</code>.</li>
+<li>Route around cards, never across them. Only a loop spine passes under a side box, by paint order. Labels stay 10 px from a card border.</li>
+<li>Lane 1 carries the shortest span, lane 2 the next; spans nest or stay disjoint.</li>
+<li>A loopback joins main cards: out of the lower card at <code>hi</code>, into the upper at <code>lo</code>; <code>mid</code> belongs to a side stub. Two connectors on one edge take different marks.</li>
+<li>The joined rows must be free of a side box on that side, and a spine passes at most one box.</li>
+<li>One loopback per lane, at most four per side; more than two per diagram reads better as two sections.</li>
+<li>An optional label names the returning payload in up to 12 characters, in the row gap nearest the arrowhead, 6 px from the spine, never over a card.</li>
+</ul>
+<p>Split row, a decision card forking into two cards on the next row:</p>
+<pre><code class="language-html">&lt;line class=&quot;arrow&quot; x1=&quot;411&quot; y1=&quot;208&quot; x2=&quot;411&quot; y2=&quot;236&quot; marker-end=&quot;url(#flowHead)&quot;/&gt;
+&lt;text class=&quot;cap&quot; x=&quot;425&quot; y=&quot;226&quot;&gt;musl target&lt;/text&gt;
+&lt;line class=&quot;arrow&quot; x1=&quot;659&quot; y1=&quot;208&quot; x2=&quot;659&quot; y2=&quot;236&quot; marker-end=&quot;url(#flowHead)&quot;/&gt;
+&lt;text class=&quot;cap&quot; x=&quot;673&quot; y=&quot;226&quot;&gt;msvc target&lt;/text&gt;
+
+&lt;rect class=&quot;card&quot; x=&quot;300&quot; y=&quot;246&quot; width=&quot;222&quot; height=&quot;70&quot; rx=&quot;3&quot;/&gt;
+&lt;text class=&quot;t&quot; x=&quot;318&quot; y=&quot;272&quot;&gt;Linux&lt;/text&gt;
+&lt;text class=&quot;d&quot; x=&quot;318&quot; y=&quot;290&quot;&gt;x86_64-unknown-linux-musl&lt;/text&gt;
+
+&lt;rect class=&quot;card&quot; x=&quot;548&quot; y=&quot;246&quot; width=&quot;222&quot; height=&quot;70&quot; rx=&quot;3&quot;/&gt;
+&lt;text class=&quot;t&quot; x=&quot;566&quot; y=&quot;272&quot;&gt;Windows&lt;/text&gt;
+&lt;text class=&quot;d&quot; x=&quot;566&quot; y=&quot;290&quot;&gt;x86_64-pc-windows-msvc&lt;/text&gt;</code></pre>
+<p>Two arrows leave the parent bottom at the card centres, 411 and 659, and enter the children at the same x. No horizontal fork line, no elbows. A merge back into a 470 card keeps the same pair, two arrows at 411 and 659 with captions at 425 and 673 where they add something. When one branch ends and only one continues, the gap carries one arrow at x=535 and one caption at x=549.</p>
+<ul>
+<li>The single column stays the default. A split needs a decision with two named outcomes, and the decision card is the focus.</li>
+<li>Both children leave the same row and are normal cards with a title and up to two description lines.</li>
+<li>Both take 28 characters, the 186 px width of a 220 side card, with text at 318 and 566.</li>
+<li>Captions sit at 425 and 673 and take 18 characters, so each stays inside x=790.</li>
+<li>The inner edges at 522 and 548 carry no connector. A loop attaches at the outer edge, x=300 or x=770, at a free mark.</li>
+<li>A side box may sit on a split row, one per side: the left box feeds the left card, the right box the right card.</li>
+<li>Split arrows stay muted, and take the accent only when the focus card is the decision and one branch is the main action.</li>
+</ul>
+<h2><span class="num">9</span>9. Section copy</h2>
+<div class="rule"></div>
+<ul>
+<li>h2 pattern: <code>subject: outcome</code>, lowercase, as in <code>video download: url to file</code>.</li>
+<li>Note: the rule that drives the diagram, not a walkthrough.</li>
+<li>Tag: the invariant or verdict shape in one line, as in <code>one run ends in one verdict: finished, failed rc, or stopped by escape</code>.</li>
+<li>Footer: what the paths share, or the one guarantee that holds across them.</li>
+<li>Plain technical English. No sales words, slogans, &quot;not X but Y&quot; contrasts or meta commentary. Keys and literal input render in straight single quotes: &#39;s&#39;, &#39;0&#39;, &#39;ready&#39;.</li>
+</ul>
+<h2><span class="num">10</span>10. Diagram body</h2>
+<div class="rule"></div>
+<p>Start from <code>template.html</code>: theme tokens, toolbar, theme script, toolbar script and print rules. The block below is one section body for the diagram area; repeat it per diagram. No class on the section.</p>
+<pre><code class="language-html">&lt;section&gt;
+  &lt;div class=&quot;head&quot;&gt;
+    &lt;h2&gt;main path: start to finish&lt;/h2&gt;
+  &lt;/div&gt;
+  &lt;p class=&quot;note&quot;&gt;The rule that drives the diagram, in one or two sentences.&lt;/p&gt;
+  &lt;svg viewBox=&quot;0 0 1040 268&quot; role=&quot;img&quot; aria-label=&quot;Start and work cards with one side channel&quot;&gt;
+    &lt;defs&gt;
+      &lt;marker id=&quot;flowHead&quot; viewBox=&quot;0 0 10 10&quot; refX=&quot;9&quot; refY=&quot;5&quot;
+              markerWidth=&quot;7&quot; markerHeight=&quot;7&quot; orient=&quot;auto&quot;&gt;
+        &lt;path d=&quot;M 0 0 L 10 5 L 0 10 z&quot; fill=&quot;var(--muted)&quot;/&gt;
+      &lt;/marker&gt;
+      &lt;marker id=&quot;flowHeadA&quot; viewBox=&quot;0 0 10 10&quot; refX=&quot;9&quot; refY=&quot;5&quot;
+              markerWidth=&quot;7&quot; markerHeight=&quot;7&quot; orient=&quot;auto&quot;&gt;
+        &lt;path d=&quot;M 0 0 L 10 5 L 0 10 z&quot; fill=&quot;var(--accent)&quot;/&gt;
+      &lt;/marker&gt;
+    &lt;/defs&gt;
+
+    &lt;rect class=&quot;card&quot; x=&quot;300&quot; y=&quot;30&quot; width=&quot;470&quot; height=&quot;70&quot; rx=&quot;3&quot;/&gt;
+    &lt;text class=&quot;t&quot; x=&quot;318&quot; y=&quot;56&quot;&gt;Start&lt;/text&gt;
+    &lt;text class=&quot;d&quot; x=&quot;318&quot; y=&quot;74&quot;&gt;what arrives, and from where&lt;/text&gt;
+
+    &lt;rect class=&quot;focus&quot; x=&quot;300&quot; y=&quot;138&quot; width=&quot;470&quot; height=&quot;70&quot; rx=&quot;3&quot;/&gt;
+    &lt;text class=&quot;t&quot; x=&quot;318&quot; y=&quot;164&quot;&gt;Work&lt;/text&gt;
+    &lt;text class=&quot;d&quot; x=&quot;318&quot; y=&quot;182&quot;&gt;the mechanism: flags, files, endpoints&lt;/text&gt;
+
+    &lt;line class=&quot;arrow-a&quot; x1=&quot;535&quot; y1=&quot;100&quot; x2=&quot;535&quot; y2=&quot;128&quot; marker-end=&quot;url(#flowHeadA)&quot;/&gt;
+    &lt;text class=&quot;cap&quot; x=&quot;549&quot; y=&quot;118&quot;&gt;condition or payload&lt;/text&gt;
+
+    &lt;rect class=&quot;card&quot; x=&quot;40&quot; y=&quot;138&quot; width=&quot;210&quot; height=&quot;70&quot; rx=&quot;3&quot;/&gt;
+    &lt;text class=&quot;t&quot; x=&quot;56&quot; y=&quot;164&quot;&gt;Side note&lt;/text&gt;
+    &lt;text class=&quot;d&quot; x=&quot;56&quot; y=&quot;182&quot;&gt;an optional channel,&lt;/text&gt;
+    &lt;text class=&quot;d&quot; x=&quot;56&quot; y=&quot;197&quot;&gt;kept to two lines&lt;/text&gt;
+    &lt;path class=&quot;dash&quot; d=&quot;M 250 173 H 290&quot; marker-end=&quot;url(#flowHead)&quot;/&gt;
+
+    &lt;rect class=&quot;tag&quot; x=&quot;300&quot; y=&quot;236&quot; width=&quot;470&quot; height=&quot;26&quot; rx=&quot;3&quot;/&gt;
+    &lt;text class=&quot;side&quot; x=&quot;318&quot; y=&quot;253&quot;&gt;the invariant stated in one line&lt;/text&gt;
+  &lt;/svg&gt;
+&lt;/section&gt;</code></pre>
+<p>For a decision, replace one row with a split row: two 222 cards at x=300 and x=548, two arrows at 411 and 659, captions at 425 and 673 of 18 characters. Section 8 holds the rules.</p>
+<h2><span class="num">11</span>11. Validation</h2>
+<div class="rule"></div>
+<p>The page is right when it follows the numbers in sections 5 to 8 and keeps <code>template.html</code> unchanged: head script, token block, toolbar, toolbar script and print rules. Check the written part by reading it once, by eye: geometry, arrows and captions, text baselines and budgets, the tag and viewBox height, the focus and accents, the loop lanes and the marker ids. Do not count, grep, diff or hash the page with commands, and do not compare it against the template; a check is a read, not a measurement. A diagram added to a page that already holds one needs only its own section checked. A defect found in the read gets one repair edit, and a defect that survives that edit is named in the reply to the user rather than chased in another pass.</p>
+<p>The template, the toolbar, the themes and the print view are fixed and checked once in the repository. Do not re-check them per page, take screenshots or make PDFs. Open the finished page once for the user; the user&#39;s eye is the last check.</p>
+<h2><span class="num">12</span>12. Checklist</h2>
+<div class="rule"></div>
+<ul>
+<li>[ ] ASCII only, LF endings, straight quotes, hyphen for dashes.</li>
+<li>[ ] One main, one h1, one sub, one footer; h2 pill reads <code>subject: outcome</code>.</li>
+<li>[ ] One or more sections, each with a head, a note and one SVG; <code>role=&quot;img&quot;</code> and an aria-label on the SVG; no fixed width or height.</li>
+<li>[ ] Main column x=300 width 470, or two 222 cards at 300 and 548; pitch 108, height 70; viewBox <code>0 0 1040 H</code>; card and tag corners rx 3.</li>
+<li>[ ] Arrows and captions: one arrow at x=535 in a row gap, caption at x=549 at y+18; split arrows at 411 and 659, captions at 425 and 673; a merge back into one 470 card keeps the 411 and 659 pair, captions optional; if one branch ends, the gap holds one arrow at 535.</li>
+<li>[ ] Title at +26, descriptions at +44 and +59, a third line at +74 only on a 90/100 side card; text at x+18, or x+16 on a side box; one title per card.</li>
+<li>[ ] Budgets: written three under, main 62, split 25, side 25 or 23, title 21, caption 39 or 15, tag 75; the hard limits stay main 65, split 28, side 28 or 26, title 24 on every card, caption 42 or 18, tag 78.</li>
+<li>[ ] Up to seven main rows; side boxes 210 at x=40 and 220 at x=800, 70/90/100 high on a row or 20 lower; a side stub uses mid at top + h/2 and stops 10 px before the main card or 4 px before the side box.</li>
+<li>[ ] One focus card, zero to two accent connectors (<code>arrow-a</code>); <code>arrow</code> and <code>dash</code> use the muted marker, <code>arrow-a</code> the accent marker; <code>dash</code> for sides, <code>loop</code> for returns.</li>
+<li>[ ] Loop lanes at 226/206/186/166 and 824/844/864/884, four segments and upward, free marks, path before the cards; loop label 12 characters.</li>
+<li>[ ] Tag optional at 300, 470 wide, 26 high, last top + 98 with viewBox at tag y + 32, or last top + 102; tag text at y+17.</li>
+<li>[ ] Marker ids unique on the page, prefixed by section, and defined for every arrowhead.</li>
+<li>[ ] One theme for the page, no section class, no per-diagram colors; two inline scripts, template copied byte for byte; no external assets, network URLs or storage.</li>
+<li>[ ] Written part checked by reading; the page opened once for the user; no per-page theme, menu or print pass.</li>
+</ul>
+<h2><span class="num">13</span>13. Toolbar and modes</h2>
+<div class="rule"></div>
+<p><code>demo.html</code> is the reference implementation. Copy its toolbar, token blocks and scripts; do not invent a second control style.</p>
+<ul>
+<li>Fixed, 24 px high, right aligned, 28 px inset, fill <code>var(--page-bg)</code>, no bottom divider.</li>
+<li>Print toggle: auto width, 18 px high, printer icon plus <code>print friendly</code>, <code>aria-pressed</code>; active fill is the toolbar ink.</li>
+<li>Mode switch: 44 x 20 px, moon left, sun right, 16 px thumb, <code>aria-checked</code> true in light.</li>
+<li>Theme buttons: text plus a solid caret, 18 px high, 68 px minimum width, a menu below each.</li>
+<li>Brightness and saturation sliders follow the two theme buttons: an icon, a 48 px track with a 10 px thumb, and the step readout. Seven steps from -3 to +3; 0 is the shipped palette. Each step scales brightness by 8 percent and saturation by 15 percent, applied to the six theme values after the theme pick.</li>
+<li>The sliders change the applied palette only. The saved pick, the print palette and the link state are untouched, and a reload starts both at 0.</li>
+<li>A menu lists its mode&#39;s names in <code>role=&quot;menu&quot;</code> rows with <code>menuitemradio</code> and the current name marked <code>aria-checked</code>. Picking one applies it and switches mode.</li>
+<li>Native <code>&lt;button&gt;</code> controls, so Enter and Space work. Opening a menu focuses its checked row; arrows move, Home and End jump, Escape closes the menu and returns focus to its button, a click outside closes it.</li>
+<li><code>html[data-theme=&quot;light&quot;|&quot;dark&quot;]</code> selects the mode and its list. Each mode remembers its own theme; the switch flips between the two picks.</li>
+<li><code>html[data-print=&quot;on&quot;]</code> forces the print tokens on a white page and leaves <code>data-theme</code> alone; off restores the previous mode.</li>
+<li>Initial mode comes from <code>prefers-color-scheme</code>, followed until the mode switch or a theme pick. No storage.</li>
+<li>Tokens live on <code>:root</code>; the theme script writes the six adjusted values and <code>--pick-ink</code> on every change, and print aliases its fixed values there too, so it wins without a cascade trick.</li>
+<li>One inline head script sets the initial <code>data-theme</code> before paint; one script before <code>&lt;/body&gt;</code> holds the theme table, builds the menus, applies the theme and follows OS changes.</li>
+<li>A link to a local <code>.html</code> page carries the reader&#39;s state. The toolbar script writes <code>?mode=...&amp;dark=...&amp;light=...</code> into every local page link on load and after each pick, and reads those values on load. The query carries the mode and two names, never the six values; each page resolves them through its own theme table, so pages from different projects can keep the same names with different palettes. A page opened from an index therefore keeps the mode and both theme choices. No storage; a link with no query opens on the OS mode and the default choices.</li>
+</ul>
+<h2><span class="num">14</span>14. Index pages</h2>
+<div class="rule"></div>
+<p>A set of finished diagram pages and documents may open on one index page. It is a separate page type: copy <code>index.html</code> instead of <code>template.html</code>. Sections 1 to 13 keep their rules for the diagram pages the index links; this chapter covers the index itself.</p>
+<p>Order: toolbar, h1, <code>.sub</code>, one or more page sections, zero or more document sections, footer. The subtitle is one sentence at 15 px on the muted ink, larger than the diagram page subtitle; it names the set and its reach and is the only intro. No second note sits under it.</p>
+<p>A section opens with a <code>.head</code>, an h2 pill naming its group in lowercase, as in <code>sample pages</code> or <code>setup</code>, then its cards or its table. The pill is the only label. Two to six entries per page section.</p>
+<p>An entry is one link card:</p>
+<pre><code class="language-html">&lt;a class=&quot;entry&quot; href=&quot;page-one.html&quot;&gt;
+  &lt;svg class=&quot;glyph&quot; viewBox=&quot;0 0 104 56&quot; aria-hidden=&quot;true&quot; focusable=&quot;false&quot;&gt;
+    &lt;rect x=&quot;2&quot; y=&quot;20&quot; width=&quot;24&quot; height=&quot;16&quot; rx=&quot;2&quot;/&gt;
+    &lt;rect x=&quot;40&quot; y=&quot;20&quot; width=&quot;24&quot; height=&quot;16&quot; rx=&quot;2&quot;/&gt;
+    &lt;rect x=&quot;78&quot; y=&quot;20&quot; width=&quot;24&quot; height=&quot;16&quot; rx=&quot;2&quot;/&gt;
+    &lt;path class=&quot;hot&quot; d=&quot;M 6 20 V 10 H 98 V 20 M 52 10 V 20&quot;/&gt;
+  &lt;/svg&gt;
+  &lt;span class=&quot;name&quot;&gt;Page one&lt;/span&gt;
+&lt;/a&gt;</code></pre>
+<ul>
+<li><code>href</code> is the page file name. The toolbar script appends the theme query to every local <code>.html</code> link; do not write a query by hand.</li>
+<li>Name: 1 to 7 words, sentence case, up to 44 characters. No description: the glyph and the name carry the page.</li>
+<li>Glyph: 104 x 56, shapes between x 2 and 102 and y 4 and 52. Rects and paths only, no text. Muted stroke 1.4; zero or one <code>.hot</code> path in accent at 1.6. A few objects that suggest the page, not a legend.</li>
+<li>Documents: one section per group, the h2 pill and a <code>.docs</code> table with <code>Document</code> and <code>Covers</code> columns, one row per file. The file name links the file. The table is laid out fixed with the first column at 32 percent, so the Document and Covers columns line up across every section on the page whatever the text is; a long name wraps inside its column instead of widening it.</li>
+<li>Split documents by subject once the list passes about six rows or covers more than one subject, as in <code>user manuals</code>, <code>setup</code>, <code>operation</code> and <code>reference</code>. Two to eight rows per table; a group below two rows joins its neighbour.</li>
+<li>The copy follows the writing rules in SKILL.md: plain and dry, no owner or user references, no slogans, &quot;X, not Y&quot; contrasts or superlatives, no manual line breaks, ASCII only. A group name and a document name state their subject.</li>
+<li>The entries, glyphs and names are checked by reading against the bounds above. The template is fixed and checked in the repository; do not re-test the toolbar, both modes or print on the index. Open the index once for the user.</li>
+<li>Limits: an index lists pages; it does not explain them. No counts, badges, status rows or diagrams inside a glyph.</li>
+</ul>
+<h3>Embedding a page</h3>
+<p>A finished diagram page can sit inside another HTML page, toolbar and theme included, as one iframe with no second copy. Place the line at the end of the host content, just before <code>&lt;/main&gt;</code>:</p>
+<pre><code class="language-html">&lt;iframe src=&quot;sample-one-diagram.html&quot; title=&quot;DNS lookup flow&quot; style=&quot;width:100%;height:1040px;border:1px solid #9a9a9a;margin-top:18px&quot;&gt;&lt;/iframe&gt;</code></pre>
+<ul>
+<li>The embedded page sits in the host&#39;s folder or below it, because a page opened from <code>file://</code> frames only its own tree. <code>title</code> names it for a screen reader.</li>
+<li>Height comes from the viewBox, not from the eye: <code>330 + (iframe width - 42) * H / 1040</code>, rounded up to the next 20, where <code>H</code> is the viewBox height. The 330 is the page chrome outside the svg: main padding, title, subtitle, section head, note and footer. An 808-high diagram in a 926 px column lands on 1020.</li>
+<li>The box keeps the page&#39;s own toolbar and theme. The host&#39;s mode is not pushed into it, and the toolbar scrolls with the box, not the window.</li>
+<li>A host rebuilt from Markdown loses the line, so it is added again after conversion. No print variant and no second copy.</li>
+</ul>
+  </main>
+</div>
+<script>const ThemeEngine=(function(){
+
+  function hexToRgb(hex){
+    if(typeof hex!=='string'||hex[0]!=='#'){
+      throw new Error('hexToRgb: expected a hex color string starting with "#"');
+    }
+    const h=hex.substring(1);
+    if(h.length!==6||!/^[0-9a-fA-F]{6}$/.test(h)){
+      throw new Error('hexToRgb: expected 6 hex digits after "#" (got "'+hex+'")');
+    }
+    return[
+      parseInt(h.substring(0,2),16),
+      parseInt(h.substring(2,4),16),
+      parseInt(h.substring(4,6),16)
+    ];
+  }
+
+  function rgbToHex(r,g,b){
+    const c=v=>Math.max(0,Math.min(255,Math.round(v)));
+    return'#'+[c(r),c(g),c(b)].map(v=>v.toString(16).padStart(2,'0')).join('');
+  }
+
+  function rgbToHsl(r,g,b){
+    r/=255;g/=255;b/=255;
+    const max=Math.max(r,g,b),min=Math.min(r,g,b);
+    let h,s;
+    const l=(max+min)/2;
+    if(max===min){
+      h=s=0;
+    }else{
+      const d=max-min;
+      s=l>0.5?d/(2-max-min):d/(max+min);
+      switch(max){
+        case r:h=((g-b)/d+(g<b?6:0))/6;break;
+        case g:h=((b-r)/d+2)/6;break;
+        case b:h=((r-g)/d+4)/6;break;
+      }
+    }
+    return[h*360,s,l];
+  }
+
+  function hslToRgb(h,s,l){
+    h/=360;
+    let r,g,b;
+    if(s===0){
+      r=g=b=l;
+    }else{
+      const hue2rgb=(p,q,t)=>{
+        if(t<0)t+=1;
+        if(t>1)t-=1;
+        if(t<1/6)return p+(q-p)*6*t;
+        if(t<1/2)return q;
+        if(t<2/3)return p+(q-p)*(2/3-t)*6;
+        return p;
+      };
+      const q=l<0.5?l*(1+s):l+s-l*s;
+      const p=2*l-q;
+      r=hue2rgb(p,q,h+1/3);
+      g=hue2rgb(p,q,h);
+      b=hue2rgb(p,q,h-1/3);
+    }
+    return[Math.round(r*255),Math.round(g*255),Math.round(b*255)];
+  }
+
+  function clampStep(step){
+    return Math.max(-3,Math.min(3,Number(step)||0));
+  }
+
+  function adjustBrightness(rgb,step){
+    step=clampStep(step);
+    if(!step)return rgb.slice();
+    const factor=1+step*0.08;
+    return rgb.map(v=>Math.max(0,Math.min(255,Math.round(v*factor))));
+  }
+
+  function adjustSaturation(rgb,step){
+    step=clampStep(step);
+    if(!step)return rgb.slice();
+    const[h,s,l]=rgbToHsl(rgb[0],rgb[1],rgb[2]);
+    const newS=Math.max(0,Math.min(1,s*(1+step*0.15)));
+    return hslToRgb(h,newS,l);
+  }
+
+  function adjustColor(hex,brightness,saturation){
+    let rgb=hexToRgb(hex);
+    rgb=adjustBrightness(rgb,brightness);
+    rgb=adjustSaturation(rgb,saturation);
+    return rgbToHex(rgb[0],rgb[1],rgb[2]);
+  }
+
+  function inkOn(hex){
+    const rgb=hexToRgb(hex);
+    const c=rgb.map(v=>{
+      const p=v/255;
+      return p<=0.04045?p/12.92:Math.pow((p+0.055)/1.055,2.4);
+    });
+    const l=0.2126*c[0]+0.7152*c[1]+0.0722*c[2];
+    return l>0.179?'#000000':'#FFFFFF';
+  }
+
+  const THEMES={
+    dark:{
+      github:{bg:'#0D1117',card:'#010409',ink:'#C9D1D9',muted:'#8B949E',line:'#6E7681',accent:'#3B82F6'},
+      harbor:{bg:'#0F1A2B',card:'#212121',ink:'#C9C9C9',muted:'#999999',line:'#737373',accent:'#4FD1C5'},
+      solarized:{bg:'#002B36',card:'#073642',ink:'#9DB0B0',muted:'#8FA5AA',line:'#93A1A1',accent:'#D96F3C'},
+      oledblack:{bg:'#000000',card:'#1A1A1A',ink:'#EDEDED',muted:'#A8A8A8',line:'#6E6E6E',accent:'#D4D4D4'},
+      ayu:{bg:'#0B0E14',card:'#0F131A',ink:'#BFBDB6',muted:'#59C2FF',line:'#6C7380',accent:'#E6B450'}
+    },
+    light:{
+      vercel:{bg:'#F3F3F1',card:'#FFFFFF',ink:'#20242A',muted:'#4E545C',line:'#C9CCD1',accent:'#9A6400'},
+      tokyonight:{bg:'#F3F3F1',card:'#F0F4FC',ink:'#232A3D',muted:'#4B5468',line:'#C6CEDF',accent:'#2F5BB7'},
+      cursor:{bg:'#F3F3F1',card:'#F0F7F1',ink:'#212A24',muted:'#4C5850',line:'#C5D2C7',accent:'#2A6350'},
+      orng:{bg:'#F3F3F1',card:'#FFF6EE',ink:'#2A2420',muted:'#5C4F46',line:'#DBC8B9',accent:'#B4471E'}
+    }
+  };
+
+  const THUMB={
+    dark:{bg:'#2E2E2E',line:'#777777'},
+    light:{bg:'#CBCBCB',line:'#888888'}
+  };
+
+  function apply(state){
+    state=state||{};
+    const mode=state.mode==='dark'?'dark':'light';
+    const dark=THEMES.dark[state.dark]?state.dark:'github';
+    const light=THEMES.light[state.light]?state.light:'vercel';
+    const theme=THEMES[mode][mode==='dark'?dark:light];
+    const print=!!state.print;
+    const font=state.font==='serif'?'serif':'sans-serif';
+    const b=clampStep(state.brightness),s=clampStep(state.saturation);
+
+    const root=document.documentElement;
+    root.setAttribute('data-theme',mode);
+    root.setAttribute('data-font',font);
+    root.setAttribute('data-print',print?'on':'off');
+    root.setAttribute('data-dark',dark);
+    root.setAttribute('data-light',light);
+
+    const vars={};
+    if(print){
+      vars['--page-bg']='var(--print-bg)';
+      vars['--page-ink']='var(--print-ink)';
+      vars['--page-muted']='var(--print-muted)';
+      vars['--page-line']='var(--print-line)';
+      vars['--card']='var(--print-bg)';
+      vars['--accent']='var(--print-ink)';
+      vars['--pick-ink']='var(--print-bg)';
+      vars['--tb-ink']='var(--print-muted)';
+      vars['--tb-line']='var(--print-line)';
+      vars['--thumb']=THUMB.light.bg;
+      vars['--thumb-line']=THUMB.light.line;
+    }else{
+      const bg=adjustColor(theme.bg,b,s);
+      const card=adjustColor(theme.card,b,s);
+      const ink=adjustColor(theme.ink,b,s);
+      const muted=adjustColor(theme.muted,b,s);
+      const line=adjustColor(theme.line,b,s);
+      const accent=adjustColor(theme.accent,b,s);
+      vars['--page-bg']=bg;
+      vars['--page-ink']=ink;
+      vars['--page-muted']=muted;
+      vars['--page-line']=line;
+      vars['--card']=card;
+      vars['--accent']=accent;
+      vars['--pick-ink']=inkOn(accent);
+      vars['--tb-ink']=muted;
+      vars['--tb-line']=line;
+      vars['--thumb']=THUMB[mode].bg;
+      vars['--thumb-line']=THUMB[mode].line;
+    }
+    for(const[prop,value]of Object.entries(vars)){
+      root.style.setProperty(prop,value);
+    }
+  }
+
+  return{apply,THEMES,inkOn};
+})();</script>
+<script>const LinkState=(function(){
+  function readParams(){
+    var s=(window.location&&window.location.search)||'';
+    if(s.charAt(0)==='?')s=s.slice(1);
+    if(!s)return null;
+    var out={};
+    s.split('&').forEach(function(p){
+      var i=p.indexOf('=');
+      if(i>0)out[p.slice(0,i)]=p.slice(i+1);
+    });
+    var mode=(out.mode==='dark'||out.mode==='light')?out.mode:null;
+    var dark=ThemeEngine.THEMES.dark[out.dark]?out.dark:null;
+    var light=ThemeEngine.THEMES.light[out.light]?out.light:null;
+    if(!mode&&!dark&&!light)return null;
+    return{mode:mode,dark:dark,light:light};
+  }
+
+  function pickQuery(state){
+    return '?mode='+(state.mode==='dark'?'dark':'light')+
+           '&dark='+state.dark+'&light='+state.light;
+  }
+
+  function syncLinks(state){
+    var nodes=document.querySelectorAll?document.querySelectorAll('a[href]'):[];
+    for(var i=0;i<nodes.length;i++){
+      var a=nodes[i];
+      var href=a.getAttribute('href')||'';
+      if(href.charAt(0)==='#'||href.slice(0,2)==='//')continue;
+      if(/^[a-z][a-z0-9+.-]*:/i.test(href))continue;
+      var cut=href.search(/[?#]/);
+      var path=cut<0?href:href.slice(0,cut);
+      var hash=href.indexOf('#')<0?'':href.slice(href.indexOf('#'));
+      if(!/\.html$/.test(path))continue;
+      a.setAttribute('href',path+pickQuery(state)+hash);
+    }
+  }
+
+  return{readParams:readParams,syncLinks:syncLinks};
+})();</script>
+<script>const MenuBar=(function(){
+  let printBtn,modeBtn,fontBtn,bri,sat,briOut,satOut;
+  let state={mode:'light',dark:'github',light:'vercel',font:'sans-serif',print:false};
+  let onChange=null,manual=false,mq=null;
+
+  function init(opts){
+    opts=opts||{};
+    onChange=opts.onChange||null;
+    mq=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
+
+    state.mode=opts.mode==='dark'||opts.mode==='light'
+      ?opts.mode
+      :(mq&&mq.matches?'dark':'light');
+    if(opts.dark&&ThemeEngine.THEMES.dark[opts.dark])state.dark=opts.dark;
+    if(opts.light&&ThemeEngine.THEMES.light[opts.light])state.light=opts.light;
+    if(opts.manual)manual=true;
+    if(opts.font)state.font=opts.font;
+
+    printBtn=document.getElementById('print');
+    modeBtn=document.getElementById('mode');
+    fontBtn=document.getElementById('font');
+    bri=document.getElementById('brightness');
+    briOut=document.getElementById('brightness-value');
+    sat=document.getElementById('saturation');
+    satOut=document.getElementById('saturation-value');
+
+    printBtn.addEventListener('click',()=>setPrint(!state.print));
+    modeBtn.addEventListener('click',()=>{
+      manual=true;
+      setPrint(false,true);
+      setMode(state.mode==='dark'?'light':'dark');
+    });
+    fontBtn.addEventListener('click',()=>setFont(state.font==='serif'?'sans-serif':'serif'));
+    bri.addEventListener('input',()=>{syncSliders();emit();});
+    sat.addEventListener('input',()=>{syncSliders();emit();});
+
+    buildMenu('dark-menu','dark');
+    buildMenu('light-menu','light');
+    document.getElementById('dark-theme').addEventListener('click',e=>{
+      e.stopPropagation();
+      toggleMenu('dark-theme','dark-menu');
+    });
+    document.getElementById('light-theme').addEventListener('click',e=>{
+      e.stopPropagation();
+      toggleMenu('light-theme','light-menu');
+    });
+    document.getElementById('dark-menu').addEventListener('keydown',menuKey);
+    document.getElementById('light-menu').addEventListener('keydown',menuKey);
+    document.addEventListener('click',e=>{
+      if(!e.target.closest||!e.target.closest('.group'))closeMenus();
+    });
+    document.addEventListener('keydown',e=>{
+      if(e.key!=='Escape')return;
+      let openBtn=null;
+      [['dark-theme','dark-menu'],['light-theme','light-menu']].forEach(pair=>{
+        if(document.getElementById(pair[1]).classList.contains('open')){
+          openBtn=document.getElementById(pair[0]);
+        }
+      });
+      closeMenus();
+      if(openBtn)openBtn.focus();
+    });
+
+    if(mq){
+      const follow=e=>{if(!manual)setMode(e.matches?'dark':'light');};
+      if(mq.addEventListener)mq.addEventListener('change',follow);
+      else if(mq.addListener)mq.addListener(follow);
+    }
+
+    bri.value='0';
+    sat.value='0';
+    syncUI();
+    emit();
+  }
+
+  function syncSliders(){
+    const b=stepOf(bri),s=stepOf(sat);
+    bri.value=String(b);
+    sat.value=String(s);
+    briOut.textContent=String(b);
+    satOut.textContent=String(s);
+  }
+
+  function syncMenus(){
+    [['dark','dark-menu'],['light','light-menu']].forEach(pair=>{
+      const menu=document.getElementById(pair[1]);
+      Array.prototype.forEach.call(menu.children,row=>{
+        row.setAttribute('aria-checked',String(row.textContent===state[pair[0]]));
+      });
+    });
+  }
+
+  function syncUI(){
+    const light=state.mode==='light';
+    const sans=state.font==='sans-serif';
+    modeBtn.classList.toggle('on',light);
+    modeBtn.setAttribute('aria-checked',String(light));
+    modeBtn.setAttribute('aria-label',light?'Light mode':'Dark mode');
+    fontBtn.classList.toggle('on',sans);
+    fontBtn.setAttribute('aria-checked',String(sans));
+    fontBtn.setAttribute('aria-label',sans?'Sans-serif':'Serif');
+    printBtn.classList.toggle('on',state.print);
+    printBtn.setAttribute('aria-pressed',String(state.print));
+    syncSliders();
+    syncMenus();
+  }
+
+  function stepOf(el){
+    const n=parseInt(el.value,10);
+    return isNaN(n)?0:Math.max(-3,Math.min(3,n));
+  }
+
+  function copy(){
+    return{
+      mode:state.mode,
+      dark:state.dark,
+      light:state.light,
+      font:state.font,
+      print:state.print,
+      brightness:stepOf(bri),
+      saturation:stepOf(sat)
+    };
+  }
+
+  function emit(){
+    if(onChange)onChange(copy());
+  }
+
+  function setMode(mode){
+    state.mode=mode==='dark'?'dark':'light';
+    syncUI();
+    emit();
+  }
+
+  function setTheme(mode,name){
+    if(!ThemeEngine.THEMES[mode]||!ThemeEngine.THEMES[mode][name])return;
+    manual=true;
+    setPrint(false,true);
+    state[mode]=name;
+    state.mode=mode;
+    syncUI();
+    emit();
+  }
+
+  function setFont(font){
+    state.font=font==='serif'?'serif':'sans-serif';
+    syncUI();
+    emit();
+  }
+
+  function setPrint(on,quiet){
+    state.print=!!on;
+    if(!quiet)syncUI();
+    if(!quiet)emit();
+  }
+
+  function buildMenu(id,mode){
+    const menu=document.getElementById(id);
+    Object.keys(ThemeEngine.THEMES[mode]).forEach(name=>{
+      const row=document.createElement('button');
+      row.type='button';
+      row.setAttribute('role','menuitemradio');
+      row.setAttribute('aria-checked',String(state[mode]===name));
+      row.textContent=name;
+      row.addEventListener('click',()=>{
+        setTheme(mode,name);
+        closeMenus();
+        document.getElementById(mode==='dark'?'dark-theme':'light-theme').focus();
+      });
+      menu.appendChild(row);
+    });
+  }
+
+  function closeMenus(){
+    [['dark-theme','dark-menu'],['light-theme','light-menu']].forEach(pair=>{
+      document.getElementById(pair[1]).classList.remove('open');
+      document.getElementById(pair[0]).setAttribute('aria-expanded','false');
+    });
+  }
+
+  function toggleMenu(btnId,menuId){
+    const btn=document.getElementById(btnId);
+    const menu=document.getElementById(menuId);
+    const open=!menu.classList.contains('open');
+    closeMenus();
+    if(open){
+      menu.classList.add('open');
+      btn.setAttribute('aria-expanded','true');
+      const rows=Array.prototype.slice.call(menu.children);
+      const pick=rows.filter(row=>row.getAttribute('aria-checked')==='true')[0]||rows[0];
+      if(pick)pick.focus();
+    }
+  }
+
+  function menuKey(e){
+    const rows=Array.prototype.slice.call(this.children);
+    const n=rows.length;
+    if(!n)return;
+    const i=rows.indexOf(document.activeElement);
+    if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+      e.preventDefault();
+      rows[(i+(e.key==='ArrowDown'?1:-1)+n)%n].focus();
+    }else if(e.key==='Home'||e.key==='End'){
+      e.preventDefault();
+      rows[e.key==='Home'?0:n-1].focus();
+    }
+  }
+
+  function getValues(){
+    return copy();
+  }
+
+  function setValues(opts){
+    opts=opts||{};
+    if(opts.mode==='dark'||opts.mode==='light')state.mode=opts.mode;
+    if(opts.dark&&ThemeEngine.THEMES.dark[opts.dark])state.dark=opts.dark;
+    if(opts.light&&ThemeEngine.THEMES.light[opts.light])state.light=opts.light;
+    if(opts.font)state.font=opts.font;
+    if(opts.print!==undefined)state.print=!!opts.print;
+    if(opts.brightness!==undefined)bri.value=String(Math.max(-3,Math.min(3,Number(opts.brightness)||0)));
+    if(opts.saturation!==undefined)sat.value=String(Math.max(-3,Math.min(3,Number(opts.saturation)||0)));
+    syncUI();
+    emit();
+  }
+
+  return{init,getValues,setValues,setMode,setTheme,setFont,setPrint};
+})();</script>
+<script>(function(){
+  var params=LinkState.readParams()||{};
+  var manual=!!(params.mode||params.dark||params.light);
+  MenuBar.init({
+    mode:params.mode||undefined,
+    dark:params.dark||undefined,
+    light:params.light||undefined,
+    manual:manual,
+    onChange:function(state){
+      ThemeEngine.apply(state);
+      LinkState.syncLinks(state);
+    }
+  });
+  LinkState.syncLinks(MenuBar.getValues());
+})();</script>
+</body>
+</html>

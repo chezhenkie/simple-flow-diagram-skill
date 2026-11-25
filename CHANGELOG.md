@@ -6,6 +6,7 @@
 
 * The index template follows one shape for every group: a section, an h2 pill and either a card grid or a documents table. The subtitle is one sentence at 15 px and no note sits under the pill. Documents split by subject once the list passes about six rows, two to eight rows per table.
 * The documents table is laid out fixed with the first column at 32 percent, so the Document and Covers columns line up across every section on the page whatever the text is. A long name wraps inside its column.
+* Index cards carry a glyph and a name, no description. Documents split into skill files and other docs, and the style manual is published beside the skill page.
 * The skill gains a Writing rules chapter copied from the project rules: plain and dry, short, no slogans or contrasts, no manual line breaks, ASCII only. Manual section 14 points at it for the index copy.
 
 ## 1.6.0
