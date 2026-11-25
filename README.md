@@ -16,10 +16,9 @@ An agent skill that turns a process into a flow diagram on one HTML page. The la
 
 ## Readability and colour vision
 
-- [Colour vision audit](https://chezhenkie.github.io/simpleflow-diagram-skill/color-vision-audit.html)
 - [color-vision impaired theme corrections](https://chezhenkie.github.io/simpleflow-diagram-skill/color-vision-audit-comparison.html)
 
-These are direct GitHub links to the two colour vision and readability documents.
+The direct link to the palette corrections under colour vision simulation.
 
 ## Themes - OS mode following
 
@@ -115,7 +114,6 @@ Example request: `Draw the request path as a flow diagram in the house style.`
 | `agent-skill/style-manual.md` | Theme rules, grid, type scale, card anatomy, connectors, validation |
 | `testing-tools/` | Static checks, page validator and toolbar test |
 | `docs/` | GitHub Pages index, demo copy and screenshots |
-| `color-vision-audit.md` | Colour vision audit of the nine themes |
 | `CHANGELOG.md` | Version history |
 
 ## Check

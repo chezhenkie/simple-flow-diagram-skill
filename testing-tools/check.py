@@ -38,7 +38,7 @@ def one_hex(css, name):
 
 files = ["README.md", "agent-skill/SKILL.md", "agent-skill/template.html",
          "agent-skill/demo.html", "agent-skill/index.html", "docs/index.html",
-         "docs/demo.html", "docs/SKILL.html", "docs/style-manual.html", "docs/color-vision-audit.html",
+         "docs/demo.html", "docs/SKILL.html", "docs/style-manual.html",
          "docs/context-performance-report.html", "docs/color-vision-audit-comparison.html",
          "docs/sample-one-diagram.html",
          "docs/sample-build-release.html",
@@ -339,7 +339,7 @@ check(live.count("<h1") == 1 and live.count('<p class="sub">') == 1,
 check('href="demo.html"' in live and 'href="sample-one-diagram.html"' in live
       and 'href="sample-build-release.html"' in live,
       "pages index page links")
-for doc in ("SKILL.html", "style-manual.html", "color-vision-audit.html",
+for doc in ("SKILL.html", "style-manual.html",
             "color-vision-audit-comparison.html", "context-performance-report.html"):
     check('href="%s"' % doc in live, "pages index document " + doc)
 check(live.count('<nav class="grid" aria-label="sample pages">') == 1
@@ -683,8 +683,8 @@ check("gathers several finished diagrams and documents onto one page" in rd
       and rd.count("- Optional index page:") == 1, "readme index bullet")
 check("one of nine fixed themes" in rd and "nine installed themes" in rd, "readme theme count")
 check("## Readability and colour vision" in rd
-      and "color-vision-audit.html" in rd and "color-vision-audit-comparison.html" in rd
-      and "two colour vision and readability documents" in rd,
+      and "color-vision-audit-comparison.html" in rd
+      and "color-vision-audit.html" not in rd,
       "readme colour vision section")
 check("## Optional index page" in rd, "readme index section")
 check("agent-skill/index.html" in rd, "readme index shell")
