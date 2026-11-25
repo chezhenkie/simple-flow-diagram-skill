@@ -253,6 +253,8 @@ Start from `template.html`: theme tokens, toolbar, theme script, toolbar script 
 
 For a decision, replace one row with a split row: two 222 cards at x=300 and x=548, two arrows at 411 and 659, captions at 425 and 673 of 18 characters. Section 8 holds the rules.
 
+Below the last diagram the page has free space. Fill it only when the content needs it: a table, two tables side by side, a paragraph with its own header, an inline chart, or any mix. The only constraint is the content width; there is no class set and no further rule. `docs/sample-build-release.html` is one use.
+
 ## 11. Validation
 
 The page is right when it follows the numbers in sections 5 to 8 and keeps `template.html` unchanged: head script, token block, toolbar, toolbar script and print rules. Check the written part by reading it once, by eye: geometry, arrows and captions, text baselines and budgets, the tag and viewBox height, the focus and accents, the loop lanes and the marker ids. Do not count, grep, diff or hash the page with commands, and do not compare it against the template; a check is a read, not a measurement. A diagram added to a page that already holds one needs only its own section checked. A defect found in the read gets one repair edit, and a defect that survives that edit is named in the reply to the user rather than chased in another pass.
@@ -280,7 +282,7 @@ The template, the toolbar, the themes and the print view are fixed and checked o
 
 `demo.html` is the reference implementation. Copy its toolbar, token blocks and scripts; do not invent a second control style.
 
-- Fixed, 24 px high, right aligned, 28 px inset, fill `var(--page-bg)`, no bottom divider.
+- Fixed, 24 px high, right aligned, 28 px inset, fill `var(--page-bg)`, no bottom divider. Below 600 px the bar wraps to two rows, the controls first and the two sliders second; the print label and the dividers drop away and main top padding rises to 66 px.
 - Print toggle: auto width, 18 px high, printer icon plus `print friendly`, `aria-pressed`; active fill is the toolbar ink.
 - Mode switch: 44 x 20 px, moon left, sun right, 16 px thumb, `aria-checked` true in light.
 - Theme buttons: text plus a solid caret, 18 px high, 68 px minimum width, a menu below each.

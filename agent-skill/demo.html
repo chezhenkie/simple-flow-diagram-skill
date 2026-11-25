@@ -97,6 +97,7 @@
     user-select: none; transition: background .25s, color .25s;
   }
   .s { width: 1px; height: 12px; background: var(--tb-line); }
+  .brk { display: none; }
   .tb-btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 4px;
     height: 18px; padding: 0 6px 3px; cursor: pointer;
@@ -164,6 +165,16 @@
   .sl .v { min-width: 14px; text-align: center; font-variant-numeric: tabular-nums; }
   .tb-btn:focus-visible, .toggle:focus-visible, .sl input:focus-visible, .menu button:focus-visible {
     outline: 2px solid var(--tb-ink); outline-offset: 1px;
+  }
+  @media (max-width: 600px) {
+    #tb {
+      height: auto; min-height: 44px; flex-wrap: wrap;
+      justify-content: flex-start; padding: 3px 10px; gap: 4px;
+    }
+    #tb .s { display: none; }
+    #tb .tb-btn span { display: none; }
+    #tb .brk { display: block; flex-basis: 100%; height: 0; }
+    main { padding-top: 66px; }
   }
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
@@ -237,6 +248,7 @@
     <div class="menu" id="light-menu" role="menu" aria-label="Light theme"></div>
   </div>
   <span class="s" aria-hidden="true"></span>
+  <span class="brk" aria-hidden="true"></span>
   <div class="sl">
     <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
       <rect x="1" y="1" width="10" height="10"/>

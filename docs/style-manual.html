@@ -509,6 +509,7 @@ viewBox height  tag y + 32, or last card top + 102 without a tag</code></pre>
   &lt;/svg&gt;
 &lt;/section&gt;</code></pre>
 <p>For a decision, replace one row with a split row: two 222 cards at x=300 and x=548, two arrows at 411 and 659, captions at 425 and 673 of 18 characters. Section 8 holds the rules.</p>
+<p>Below the last diagram the page has free space. Fill it only when the content needs it: a table, two tables side by side, a paragraph with its own header, an inline chart, or any mix. The only constraint is the content width; there is no class set and no further rule. <code>docs/sample-build-release.html</code> is one use.</p>
 <h2><span class="num">11</span>11. Validation</h2>
 <div class="rule"></div>
 <p>The page is right when it follows the numbers in sections 5 to 8 and keeps <code>template.html</code> unchanged: head script, token block, toolbar, toolbar script and print rules. Check the written part by reading it once, by eye: geometry, arrows and captions, text baselines and budgets, the tag and viewBox height, the focus and accents, the loop lanes and the marker ids. Do not count, grep, diff or hash the page with commands, and do not compare it against the template; a check is a read, not a measurement. A diagram added to a page that already holds one needs only its own section checked. A defect found in the read gets one repair edit, and a defect that survives that edit is named in the reply to the user rather than chased in another pass.</p>
@@ -535,7 +536,7 @@ viewBox height  tag y + 32, or last card top + 102 without a tag</code></pre>
 <div class="rule"></div>
 <p><code>demo.html</code> is the reference implementation. Copy its toolbar, token blocks and scripts; do not invent a second control style.</p>
 <ul>
-<li>Fixed, 24 px high, right aligned, 28 px inset, fill <code>var(--page-bg)</code>, no bottom divider.</li>
+<li>Fixed, 24 px high, right aligned, 28 px inset, fill <code>var(--page-bg)</code>, no bottom divider. Below 600 px the bar wraps to two rows, the controls first and the two sliders second; the print label and the dividers drop away and main top padding rises to 66 px.</li>
 <li>Print toggle: auto width, 18 px high, printer icon plus <code>print friendly</code>, <code>aria-pressed</code>; active fill is the toolbar ink.</li>
 <li>Mode switch: 44 x 20 px, moon left, sun right, 16 px thumb, <code>aria-checked</code> true in light.</li>
 <li>Theme buttons: text plus a solid caret, 18 px high, 68 px minimum width, a menu below each.</li>

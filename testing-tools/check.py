@@ -128,6 +128,10 @@ check(re.search(r"#tb\s*\{[^}]*background:\s*var\(--page-bg\)", demo) is not Non
 tb_css = re.search(r"#tb\s*\{.*?\}", demo, re.S).group(0)
 check("border-bottom" not in tb_css, "bar no divider")
 check(re.search(r"#tb\s*\{[^}]*padding:\s*0 28px", demo) is not None, "bar inset")
+check("@media (max-width: 600px)" in demo and "flex-wrap: wrap" in demo,
+      "bar wraps on a narrow screen")
+check(".brk { display: none; }" in demo and "#tb .brk { display: block" in demo
+      and "#tb .tb-btn span { display: none; }" in demo, "bar sliders start a second row")
 check(re.search(r"\.tb-btn\s*\{[^}]*height:\s*18px", demo) is not None
       and re.search(r"\.tb-btn\s*\{[^}]*padding:\s*0 6px", demo) is not None
       and re.search(r"\.tb-btn\s*\{[^}]*gap:\s*4px", demo) is not None, "bar button size")
@@ -576,6 +580,8 @@ check('class="glyph"' in man and "104 x 56" in man, "manual glyph rules")
 check("?mode=...&dark=...&light=..." in man, "manual index link query")
 check("empty `footer`" in skill and "empty `<footer>`" in man,
       "skill and manual keep the footer line")
+check("space below the diagrams is free" in skill.lower() and "free space" in man.lower(),
+      "skill and manual leave free space below the diagrams")
 check("Two to six entries" in man, "manual index group size")
 check("No description" in man and "up to 44 characters" in man, "manual index card label")
 check("Two to eight rows per table" in man and "Split documents by subject" in man,
