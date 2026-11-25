@@ -296,11 +296,12 @@ check(idx.count('<nav class="grid" aria-label="group label">') == 1, "index one 
 check(idx.count('class="entry"') == 1 and idx.count('class="glyph"') == 1, "index one example entry")
 check(idx.count('class="hot"') == 1, "index one accent glyph path")
 check('href="first-page.html"' in idx and 'href="notes.md"' in idx, "index example links")
-check(idx.count("<section") == 2 and 'aria-labelledby="group-label"' in idx
+idxc = re.sub(r"<!--.*?-->", "", idx, flags=re.S)
+check(idxc.count("<section") == 2 and 'aria-labelledby="group-label"' in idxc
       and 'aria-labelledby="documents"' in idx, "index two sections")
 check("note" not in idx.split("<body>")[1].split("</main>")[0].replace("notes.md", ""),
       "index no note labels")
-check(idx.count('class="docs"') == 1 and ">Document<" in idx and ">Covers<" in idx,
+check(idxc.count('class="docs"') == 1 and ">Document<" in idxc and ">Covers<" in idxc,
       "index documents table")
 check("localStorage" not in idx and "sessionStorage" not in idx, "index no storage")
 check(not hexes(idx.split("<body>")[1].split("</main>")[0]), "no hex colors in index body markup")
@@ -572,6 +573,8 @@ check("copy `index.html` instead of `template.html`" in man, "manual index shell
 check('class="glyph"' in man and "104 x 56" in man, "manual glyph rules")
 check("?mode=...&dark=...&light=..." in man, "manual index link query")
 check("Two to six entries" in man, "manual index group size")
+check("Two to eight rows per table" in man and "Split documents by subject" in man,
+      "manual document group split")
 check("first column at 32 percent" in man and "line up across every section" in man,
       "manual shared document columns")
 check("## Writing rules" in skill and "writing rules in SKILL.md" in man,

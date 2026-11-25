@@ -322,6 +322,7 @@ An entry is one link card:
 - Name: 1 to 4 words, sentence case, up to 28 characters. Description: up to 70 characters, one line.
 - Glyph: 104 x 56, shapes between x 2 and 102 and y 4 and 52. Rects and paths only, no text. Muted stroke 1.4; zero or one `.hot` path in accent at 1.6. A few objects that suggest the page, not a legend.
 - Documents: one section per group, the h2 pill and a `.docs` table with `Document` and `Covers` columns, one row per file. The file name links the file. The table is laid out fixed with the first column at 32 percent, so the Document and Covers columns line up across every section on the page whatever the text is; a long name wraps inside its column instead of widening it.
+- Split documents by subject once the list passes about six rows or covers more than one subject, as in `user manuals`, `setup`, `operation` and `reference`. Two to eight rows per table; a group below two rows joins its neighbour.
 - The copy follows the writing rules in SKILL.md: plain and dry, no owner or user references, no slogans, "X, not Y" contrasts or superlatives, no manual line breaks, ASCII only. A group name and a document name state their subject.
 - The entries, glyphs, names and descriptions are checked by reading against the bounds above. The template is fixed and checked in the repository; do not re-test the toolbar, both modes or print on the index. Open the index once for the user.
 - Limits: an index lists pages; it does not explain them. No counts, badges, status rows or diagrams inside a glyph.
