@@ -312,7 +312,7 @@ pre code{background:none;color:inherit;border:0;padding:0}
 <li>UTF-8, printable ASCII only. No typographic quotes, dashes, arrows or bullets.</li>
 <li>Inline scripts limited to the toolbar and its initial mode. No external CSS, fonts, images or icon sets. Must open from <code>file://</code>.</li>
 <li>Light and dark from the toolbar switch, initial state from <code>prefers-color-scheme</code>; two menus pick a theme per mode; print is a separate toggle.</li>
-<li>One <code>&lt;main&gt;</code> wrapper, max width 1080 px, centered; one <code>&lt;h1&gt;</code>, one <code>.sub</code>, one or more <code>&lt;section&gt;</code> blocks. No footer by default; add one only when the page needs a closing line. The SVG scales with the page, no fixed width or height attributes.</li>
+<li>One <code>&lt;main&gt;</code> wrapper, max width 1080 px, centered; one <code>&lt;h1&gt;</code>, one <code>.sub</code>, one or more <code>&lt;section&gt;</code> blocks, then an empty <code>&lt;footer&gt;</code> that draws the closing rule. Footer text is optional. The SVG scales with the page, no fixed width or height attributes.</li>
 </ul>
 <h2><span class="num">2</span>2. Page order</h2>
 <div class="rule"></div>
@@ -324,7 +324,7 @@ section
   p.note        one or two sentences with the driving rule
   svg           the diagram, viewBox 0 0 1040 H
 section         optional further diagrams, same shape
-footer          optional closing line, 1-2 sentences; omit it by default</code></pre>
+footer          empty, draws the closing rule; text is optional</code></pre>
 <h2><span class="num">3</span>3. Theme</h2>
 <div class="rule"></div>
 <p>A theme is six values: <code>bg</code> page, <code>card</code> card and tag fill, <code>ink</code> page text and card titles, <code>muted</code> descriptions, captions, connectors, footer and toolbar ink, <code>line</code> card and tag borders and toolbar lines, <code>accent</code> pill outline, focus border and action arrow.</p>
@@ -517,7 +517,7 @@ viewBox height  tag y + 32, or last card top + 102 without a tag</code></pre>
 <div class="rule"></div>
 <ul>
 <li>[ ] ASCII only, LF endings, straight quotes, hyphen for dashes.</li>
-<li>[ ] One main, one h1, one sub; at most one footer, added only when the page needs a closing line; h2 pill reads <code>subject: outcome</code>.</li>
+<li>[ ] One main, one h1, one sub, one empty footer that draws the closing rule; h2 pill reads <code>subject: outcome</code>.</li>
 <li>[ ] One or more sections, each with a head, a note and one SVG; <code>role=&quot;img&quot;</code> and an aria-label on the SVG; no fixed width or height.</li>
 <li>[ ] Main column x=300 width 470, or two 222 cards at 300 and 548; pitch 108, height 70; viewBox <code>0 0 1040 H</code>; card and tag corners rx 3.</li>
 <li>[ ] Arrows and captions: one arrow at x=535 in a row gap, caption at x=549 at y+18; split arrows at 411 and 659, captions at 425 and 673; a merge back into one 470 card keeps the 411 and 659 pair, captions optional; if one branch ends, the gap holds one arrow at 535.</li>
@@ -553,7 +553,7 @@ viewBox height  tag y + 32, or last card top + 102 without a tag</code></pre>
 <h2><span class="num">14</span>14. Index pages</h2>
 <div class="rule"></div>
 <p>A set of finished diagram pages and documents may open on one index page. It is a separate page type: copy <code>index.html</code> instead of <code>template.html</code>. Sections 1 to 13 keep their rules for the diagram pages the index links; this chapter covers the index itself.</p>
-<p>Order: toolbar, h1, <code>.sub</code>, one or more page sections, zero or more document sections. No footer by default. The subtitle is one sentence at 15 px on the muted ink, larger than the diagram page subtitle; it names the set and its reach and is the only intro. No second note sits under it.</p>
+<p>Order: toolbar, h1, <code>.sub</code>, one or more page sections, zero or more document sections, then an empty footer that draws the closing rule. The subtitle is one sentence at 15 px on the muted ink, larger than the diagram page subtitle; it names the set and its reach and is the only intro. No second note sits under it.</p>
 <p>A section opens with a <code>.head</code>, an h2 pill naming its group in lowercase, as in <code>sample pages</code> or <code>setup</code>, then its cards or its table. The pill is the only label. Two to six entries per page section.</p>
 <p>An entry is one link card:</p>
 <pre><code class="language-html">&lt;a class=&quot;entry&quot; href=&quot;page-one.html&quot;&gt;

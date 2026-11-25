@@ -57,7 +57,7 @@ The page copy follows the project's writing rules: the subtitle, the group names
 ## Hard rules
 
 - ASCII only. Straight quotes, hyphen for dash, no arrows, bullets or other Unicode.
-- One `h1` and one `.sub` per page. No footer by default; add one only when the page needs a closing line.
+- One `h1`, one `.sub` and one empty `footer` that draws the closing rule. Footer text is optional.
 - Inline scripts are limited to the head mode script and the toolbar script. No external JavaScript, CSS, fonts, images or icon sets. Must open from `file://`.
 - Toolbar: fixed, 24 px high, right aligned, page background fill, no divider. Print toggle labelled `print friendly`, mode switch, then the `dark theme` and `light theme` menus, then the brightness and saturation sliders. Native controls, keyboard operable, labeled.
 - Colors only through `var(--...)`. Tokens live on `:root`; the print override comes last.
