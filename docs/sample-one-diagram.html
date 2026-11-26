@@ -665,9 +665,14 @@
     });
     var backBtn = document.getElementById('back');
     if (backBtn) {
-      if (window.navigation ? window.navigation.canGoBack : window.history.length > 1) {
-        backBtn.disabled = false;
-      }
+      var syncBack = function () {
+        var can = window.history.length > 1;
+        backBtn.disabled = !can;
+        backBtn.title = can ? 'Go back' : 'No earlier page';
+        backBtn.setAttribute('aria-label', backBtn.title);
+      };
+      syncBack();
+      if (window.addEventListener) window.addEventListener('pageshow', syncBack);
       backBtn.addEventListener('click', function () { window.history.back(); });
     }
     bri.addEventListener('input', function () { syncSliders(); applyTheme(); });

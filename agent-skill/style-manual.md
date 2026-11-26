@@ -283,7 +283,7 @@ The template, the toolbar, the themes and the print view are fixed and checked o
 `demo.html` is the reference implementation. Copy its toolbar, token blocks and scripts; do not invent a second control style.
 
 - Fixed, 24 px high, 28 px inset, fill `var(--page-bg)`, no bottom divider; the back button sits at the left end and the other controls stay right aligned. Below 680 px the bar wraps to two rows, the controls first and the two sliders second; the print and back labels and the dividers drop away and main top padding rises to 66 px.
-- Back button: at the left end of the bar, thin left arrow 1 px below centre plus lowercase `go back` at weight 300, 18 px high. It follows browser history and is disabled at opacity 0.4 when the tab has no earlier page; the Navigation API decides where present and `history.length` otherwise.
+- Back button: at the left end of the bar, thin left arrow 1 px below centre plus lowercase `go back` at weight 300, 18 px high. It follows browser history, rechecks when the page is shown and is disabled at opacity 0.4 when the tab has no earlier page; `history.length` decides.
 - Print toggle: auto width, 18 px high, printer icon plus `print friendly`, `aria-pressed`; active fill is the toolbar ink.
 - Mode switch: 44 x 20 px, moon left, sun right, 16 px thumb, `aria-checked` true in light.
 - Theme buttons: text plus a solid caret, 18 px high, 68 px minimum width, a menu below each.

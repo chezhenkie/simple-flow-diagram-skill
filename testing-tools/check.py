@@ -278,8 +278,10 @@ check("menuitemradio" in script, "menu rows are menuitemradio")
 check("prefers-color-scheme" in scripts[0] and "prefers-color-scheme" in script, "os preference read")
 check("if (!manual)" in script, "os follow until manual")
 check("setMode(savedMode" in script, "print restores saved mode")
-check("window.navigation ? window.navigation.canGoBack : window.history.length > 1" in script
-      and "window.history.back()" in script, "back follows history and greys when empty")
+check("window.history.length > 1" in script
+      and "window.history.back()" in script
+      and "addEventListener('pageshow'" in script,
+      "back follows history and greys when empty")
 
 # Template
 check(tpl.count("<h1") == 1 and tpl.count('<p class="sub">') == 1

@@ -537,7 +537,7 @@ viewBox height  tag y + 32, or last card top + 102 without a tag</code></pre>
 <p><code>demo.html</code> is the reference implementation. Copy its toolbar, token blocks and scripts; do not invent a second control style.</p>
 <ul>
 <li>Fixed, 24 px high, 28 px inset, fill <code>var(--page-bg)</code>, no bottom divider; the back button sits at the left end and the other controls stay right aligned. Below 680 px the bar wraps to two rows, the controls first and the two sliders second; the print and back labels and the dividers drop away and main top padding rises to 66 px.</li>
-<li>Back button: at the left end of the bar, thin left arrow 1 px below centre plus lowercase <code>go back</code> at weight 300, 18 px high. It follows browser history and is disabled at opacity 0.4 when the tab has no earlier page; the Navigation API decides where present and <code>history.length</code> otherwise.</li>
+<li>Back button: at the left end of the bar, thin left arrow 1 px below centre plus lowercase <code>go back</code> at weight 300, 18 px high. It follows browser history, rechecks when the page is shown and is disabled at opacity 0.4 when the tab has no earlier page; <code>history.length</code> decides.</li>
 <li>Print toggle: auto width, 18 px high, printer icon plus <code>print friendly</code>, <code>aria-pressed</code>; active fill is the toolbar ink.</li>
 <li>Mode switch: 44 x 20 px, moon left, sun right, 16 px thumb, <code>aria-checked</code> true in light.</li>
 <li>Theme buttons: text plus a solid caret, 18 px high, 68 px minimum width, a menu below each.</li>

@@ -85,7 +85,9 @@ function makeContext(osDark, search, backLen) {
   var window = {
     matchMedia: function () { return mq; },
     location: { search: search || '', hash: '' },
-    history: history
+    history: history,
+    handlers: {},
+    addEventListener: function (k, fn) { window.handlers[k] = fn; }
   };
   return {
     root: root, mode: mode, print: print, back: back,
@@ -240,6 +242,14 @@ run(b);
 ok(b.back.disabled === false, 'back enabled with an earlier page');
 b.back.click();
 ok(b.window.history.backCalled === true, 'back calls browser history');
+
+var s = makeContext(false, '', 1);
+run(s);
+ok(s.back.disabled === true, 'back disabled before an entry arrives');
+s.window.history.length = 2;
+s.window.handlers.pageshow();
+ok(s.back.disabled === false, 'back rechecks when the page is shown');
+ok(s.back.title === 'Go back', 'back title follows the state');
 
 var d = makeContext(true);
 run(d);
