@@ -3,16 +3,16 @@
 
 # simpleflow diagram
 
-An agent skill that turns a process into a flow diagram on one HTML page. The layout, the toolbar, 5 dark and 4 light themes plus print-friendly mode come ready-made in the template, so a run writes only the cards and captions. Seven themes start from a well-known programmer scheme and two are custom; in every case all the colours are retuned and placed for this page, then checked under colour-vision simulation and edited again. The written copy follows one set of writing rules, carried as its own chapter in the skill: plain professional English, short, ASCII only, no manual line breaks.
+An agent skill that turns a process into a flow diagram on one HTML page. The template already provides everything around the diagram, with nine themes and a print-friendly mode, so a run writes only the cards and captions. Seven themes start from a well-known programmer scheme and two are custom; in every case all the colours are retuned and placed for this page, then checked under colour-vision simulation and edited again. The written copy follows one set of writing rules, carried as its own chapter in the skill: plain professional English, short, ASCII only, no manual line breaks.
 
-- Fast and Cheap: on the same model, freehand takes 4 to 8 times longer, mostly in checks and revisions. The template is read once and copied, so a page adds a few hundred tokens of text and a second diagram needs no extra setup.
-- Optional index page: gathers several finished diagrams and documents onto one page in sections by subject, each card a glyph and a name. Demo: [GITHUB INDEX PAGE SIMPLE FLOW SKILL](https://chezhenkie.github.io/simpleflow-diagram-skill/).
-- Readable: the type scale, spacing and card grid are tuned for reading, and the palettes for colour-vision impaired readers; dark themes use light grey instead of white text against contrast glare.
-- Consistent: one of nine fixed themes and the same grid on every run, so pages from different models match.
-- Iterated under test: multiple sub-agent runs in a run, evaluate, compare, edit, repeat loop; the misses became the rules, budgets and checklist lines.
-- Token efficient: one main path of up to seven rows, with a fork or side boxes only where needed; a longer flow becomes a second diagram on the same page without reading the template again.
-- Switch: light, dark and print friendly are one click away, and the choice carries into linked pages.
-- No browser pass: no screenshots, no PDFs, no renders per theme; the agent checks the cards by reading and opens the page once for you.
+- Speed and token cost: on the same model, a page built freehand takes 4 to 8 times longer, mostly in checks and revisions. The template is read once and copied, so a page adds a few hundred tokens of text and a second diagram needs no extra setup.
+- Optional index page: gathers several finished diagrams and documents onto one page in sections by subject, with each card a glyph and a name. Demo: [GITHUB INDEX PAGE SIMPLE FLOW SKILL](https://chezhenkie.github.io/simpleflow-diagram-skill/).
+- Readability: the type scale, spacing and card grid are tuned for reading, and the palettes are tuned for colour-vision impaired readers; dark themes use light grey instead of white text against contrast glare.
+- Consistency: one of nine fixed themes and the same grid on every run, so pages from different models match.
+- Testing: multiple sub-agent runs followed a fixed cycle of run, evaluate, compare, edit, repeat, and the defects became rules, budgets and checklist lines.
+- Diagram size: one main path of up to seven rows, with a fork or side boxes only where needed; a longer flow becomes a second diagram on the same page without reading the template again.
+- Switching themes: light, dark and print friendly are one click away, and the choice carries into linked pages.
+- Checks: no screenshots, no PDFs, no renders per theme; the agent checks the cards by reading and opens the page once for you.
 
 ## Readability and colour vision
 

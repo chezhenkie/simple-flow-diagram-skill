@@ -30,6 +30,9 @@ The page copy follows the project's writing rules: the subtitle, the group names
 
 - Plain professional English: dry, product focused, without owner or user references and without decisions and dates scattered through the text. A header names its subject.
 - Short: no big prose, no long explanations, no filler and no bloat.
+- State what a thing does as a whole. "The layout, the toolbar, five dark and four light themes" is a spec dump; name the whole instead, and keep inventories in lists and tables.
+- Labels name the subject in plain nouns, such as speed, testing or diagram size; no taglines such as "Fast and Cheap".
+- A sentence needs a subject and a verb. A bare chain such as "run, evaluate, compare, edit, repeat" is a fragment; write the steps into a sentence.
 - No drama, slogans, "X, not Y" contrasts, punchline fragments, superlatives or sales comparisons.
 - Never insert a manual line break inside a sentence or a paragraph; text wraps by itself in every viewer. Break only between paragraphs, and in a file wrap only when a line exceeds 500 characters.
 - ASCII only, 0x20 to 0x7E plus newline and tab. No em or en dashes, curly quotes, arrows, bullets, box characters or emojis; a dash is a plain hyphen and a quote is straight.
