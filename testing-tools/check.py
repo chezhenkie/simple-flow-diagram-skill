@@ -76,10 +76,12 @@ check('<span class="meta">' not in demo, "no palette meta labels")
 tb_m = re.search(r'<div id="tb".*?\n</div>', demo, re.S)
 tb = tb_m.group(0) if tb_m else ""
 check(bool(tb), "demo top bar")
-order = [tb.find(x) for x in ('id="print"', 'id="mode"', 'id="dark-theme"', 'id="light-theme"',
-                              'id="brightness"', 'id="saturation"')]
+order = [tb.find(x) for x in ('id="back"', 'id="print"', 'id="mode"', 'id="dark-theme"',
+                              'id="light-theme"', 'id="brightness"', 'id="saturation"')]
 check(all(v >= 0 for v in order) and order == sorted(order),
-      "bar order print, mode, dark, light, brightness, saturation")
+      "bar order back, print, mode, dark, light, brightness, saturation")
+check(re.search(r'<button class="tb-btn back" id="back"[^>]*disabled[^>]*aria-label="Go back"', tb) is not None,
+      "back control starts disabled")
 check(re.search(r'<button class="tb-btn" id="print"[^>]*aria-pressed="false"', tb) is not None,
       "print control")
 check(re.search(r'<button class="toggle on" id="mode"[^>]*role="switch"[^>]*aria-checked="true"', tb) is not None,
@@ -94,7 +96,7 @@ check(re.search(r'<div class="menu" id="dark-menu" role="menu" aria-label="Dark 
       "dark menu empty shell")
 check(re.search(r'<div class="menu" id="light-menu" role="menu" aria-label="Light theme"></div>', tb) is not None,
       "light menu empty shell")
-for bid in ("print", "mode"):
+for bid in ("back", "print", "mode"):
     m = re.search(r'<button[^>]*id="%s"[^>]*>' % bid, tb)
     tag = m.group(0) if m else ""
     check('aria-label="' in tag and 'title="' in tag, "bar label " + bid)
@@ -102,12 +104,15 @@ for bid in ("dark-theme", "light-theme"):
     m = re.search(r'<button[^>]*id="%s"[^>]*>' % bid, tb)
     tag = m.group(0) if m else ""
     check('title="' in tag, "bar title " + bid)
-check(tb.count("<svg") == 5 and len(re.findall(r'<svg[^>]*aria-hidden="true"', tb)) == 5,
-      "bar five icons")
+check(tb.count("<svg") == 6 and len(re.findall(r'<svg[^>]*aria-hidden="true"', tb)) == 6,
+      "bar six icons")
+check('stroke-width="1.4"' in tb and '<path d="M20 12H5M11 6l-6 6 6 6"/>' in tb,
+      "back thin left arrow")
 check(">dark theme</button>" in tb and ">light theme</button>" in tb, "theme button text")
 theme_btns = re.findall(r'<button class="tb-btn fold".*?</button>', tb, re.S)
 check(len(theme_btns) == 2 and all("<svg" not in b for b in theme_btns), "no icons in theme buttons")
-check(re.sub(r"<[^>]+>", "", tb).split() == ["print", "friendly", "dark", "theme", "light", "theme", "0", "0"],
+check(re.sub(r"<[^>]+>", "", tb).split() == ["go", "back", "print", "friendly", "dark", "theme",
+                                             "light", "theme", "0", "0"],
       "bar visible text")
 for sid in ("brightness", "saturation"):
     m = re.search(r'<input[^>]*id="%s"[^>]*>' % sid, tb)
@@ -128,13 +133,19 @@ check(re.search(r"#tb\s*\{[^}]*background:\s*var\(--page-bg\)", demo) is not Non
 tb_css = re.search(r"#tb\s*\{.*?\}", demo, re.S).group(0)
 check("border-bottom" not in tb_css, "bar no divider")
 check(re.search(r"#tb\s*\{[^}]*padding:\s*0 28px", demo) is not None, "bar inset")
-check("@media (max-width: 600px)" in demo and "flex-wrap: wrap" in demo,
+check("@media (max-width: 680px)" in demo and "flex-wrap: wrap" in demo,
       "bar wraps on a narrow screen")
 check(".brk { display: none; }" in demo and "#tb .brk { display: block" in demo
       and "#tb .tb-btn span { display: none; }" in demo, "bar sliders start a second row")
 check(re.search(r"\.tb-btn\s*\{[^}]*height:\s*18px", demo) is not None
       and re.search(r"\.tb-btn\s*\{[^}]*padding:\s*0 6px", demo) is not None
       and re.search(r"\.tb-btn\s*\{[^}]*gap:\s*4px", demo) is not None, "bar button size")
+check(re.search(r"\.tb-btn:disabled\s*\{\s*opacity:\s*0\.4;\s*cursor:\s*default;\s*\}", demo) is not None,
+      "back greys out when disabled")
+check(re.search(r"\.tb-btn\.back\s*\{\s*font-weight:\s*300;", demo) is not None,
+      "back thin lettering")
+check(re.search(r"\.tb-btn\.back\s*\{[^}]*margin-right:\s*auto", demo) is not None,
+      "back sits at the left end")
 check(re.search(r"\.tb-btn\.fold\s*\{\s*min-width:\s*68px;\s*\}", demo) is not None,
       "theme buttons equal width")
 check(re.search(r"\.tb-btn\.fold::after\s*\{[^}]*border-top:\s*4px solid currentColor", demo)
@@ -267,11 +278,13 @@ check("menuitemradio" in script, "menu rows are menuitemradio")
 check("prefers-color-scheme" in scripts[0] and "prefers-color-scheme" in script, "os preference read")
 check("if (!manual)" in script, "os follow until manual")
 check("setMode(savedMode" in script, "print restores saved mode")
+check("window.navigation ? window.navigation.canGoBack : window.history.length > 1" in script
+      and "window.history.back()" in script, "back follows history and greys when empty")
 
 # Template
 check(tpl.count("<h1") == 1 and tpl.count('<p class="sub">') == 1
       and tpl.count("<footer></footer>") == 1, "template page copy slots and footer line")
-check("<section" not in tpl and tpl.count("<svg") == 5, "template no diagrams")
+check("<section" not in tpl and tpl.count("<svg") == 6, "template no diagrams")
 check("Diagram slot:" in tpl, "template diagram slot")
 check(re.search(r'<div id="tb".*?\n</div>', tpl, re.S).group(0) == tb,
       "template bar matches demo")
@@ -328,6 +341,8 @@ check("'?mode=' + (isDark() ? 'dark' : 'light')" in script
       and "'&dark=' + chosen.dark" in script and "'&light=' + chosen.light" in script,
       "link query carries mode and both picks")
 check("syncLinks();" in script, "theme change rewrites the links")
+check("function syncUrl" in script and "history.replaceState" in script
+      and script.count("syncUrl();") == 2, "theme change rewrites the history entry")
 
 # Pages index: the filled index shell served from docs.
 live = text("docs/index.html")
@@ -375,7 +390,7 @@ check(samp.count("<h1") == 1 and samp.count("<footer></footer>") == 1, "sample p
 
 # SVGs, markers, geometry, budgets
 svgs = re.findall(r"<svg\b.*?</svg>", demo, re.S)
-check(len(svgs) == 6, "demo six inline svgs")
+check(len(svgs) == 7, "demo seven inline svgs")
 for n, s in enumerate(svgs):
     try:
         ET.fromstring(s)
@@ -639,7 +654,7 @@ check(r.returncode == 1 and "main row" in r.stdout, "validator catches an off-gr
 
 # Changelog
 versions = re.findall(r"^## (\d+\.\d+\.\d+)$", cl, re.M)
-check(versions == ["1.6.1", "1.6.0", "1.5.2", "1.5.1", "1.5.0", "1.4.0", "1.3.7", "1.3.6", "1.3.5", "1.3.4", "1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
+check(versions == ["1.7.0", "1.6.1", "1.6.0", "1.5.2", "1.5.1", "1.5.0", "1.4.0", "1.3.7", "1.3.6", "1.3.5", "1.3.4", "1.3.3", "1.3.2", "1.3.1", "1.3.0", "1.2.0", "1.1.0", "1.0.0", "0.7.0", "0.6.0", "0.5.0", "0.4.0", "0.3.0", "0.2.0", "0.1.0"],
       "changelog versions newest first")
 check(not re.search(r"\b(19|20)\d\d\b", cl), "changelog no dates")
 check(not re.search(r"\bv\d+\.\d+", cl), "changelog bare versions")

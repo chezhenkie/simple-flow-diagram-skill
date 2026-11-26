@@ -13,7 +13,7 @@ Specsheet for hand-written, single-file flow diagrams with a small toolbar for m
 ## 2. Page order
 
 ```
-div#tb          fixed 24px toolbar: print toggle, mode switch, dark theme, light theme
+div#tb          fixed 24px toolbar: back, print toggle, mode switch, dark theme, light theme
 h1              page title, 22px
 p.sub           one sentence naming the whole path, 13px
 section
@@ -282,7 +282,8 @@ The template, the toolbar, the themes and the print view are fixed and checked o
 
 `demo.html` is the reference implementation. Copy its toolbar, token blocks and scripts; do not invent a second control style.
 
-- Fixed, 24 px high, right aligned, 28 px inset, fill `var(--page-bg)`, no bottom divider. Below 600 px the bar wraps to two rows, the controls first and the two sliders second; the print label and the dividers drop away and main top padding rises to 66 px.
+- Fixed, 24 px high, 28 px inset, fill `var(--page-bg)`, no bottom divider; the back button sits at the left end and the other controls stay right aligned. Below 680 px the bar wraps to two rows, the controls first and the two sliders second; the print and back labels and the dividers drop away and main top padding rises to 66 px.
+- Back button: at the left end of the bar, thin left arrow 1 px below centre plus lowercase `go back` at weight 300, 18 px high. It follows browser history and is disabled at opacity 0.4 when the tab has no earlier page; the Navigation API decides where present and `history.length` otherwise.
 - Print toggle: auto width, 18 px high, printer icon plus `print friendly`, `aria-pressed`; active fill is the toolbar ink.
 - Mode switch: 44 x 20 px, moon left, sun right, 16 px thumb, `aria-checked` true in light.
 - Theme buttons: text plus a solid caret, 18 px high, 68 px minimum width, a menu below each.
@@ -295,7 +296,7 @@ The template, the toolbar, the themes and the print view are fixed and checked o
 - Initial mode comes from `prefers-color-scheme`, followed until the mode switch or a theme pick. No storage.
 - Tokens live on `:root`; the theme script writes the six adjusted values and `--pick-ink` on every change, and print aliases its fixed values there too, so it wins without a cascade trick.
 - One inline head script sets the initial `data-theme` before paint; one script before `</body>` holds the theme table, builds the menus, applies the theme and follows OS changes.
-- A link to a local `.html` page carries the reader's state. The toolbar script writes `?mode=...&dark=...&light=...` into every local page link on load and after each pick, and reads those values on load. The query carries the mode and two names, never the six values; each page resolves them through its own theme table, so pages from different projects can keep the same names with different palettes. A page opened from an index therefore keeps the mode and both theme choices. No storage; a link with no query opens on the OS mode and the default choices.
+- A link to a local `.html` page carries the reader's state. The toolbar script writes `?mode=...&dark=...&light=...` into every local page link on load and after each pick, and reads those values on load. The query carries the mode and two names, never the six values; each page resolves them through its own theme table, so pages from different projects can keep the same names with different palettes. A page opened from an index therefore keeps the mode and both theme choices. A user change rewrites the current history entry with the same query through `history.replaceState`, so browser Back and a reload keep the pick. No storage; a link with no query opens on the OS mode and the default choices.
 
 ## 14. Index pages
 

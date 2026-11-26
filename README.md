@@ -38,7 +38,7 @@ Light, dark and print-friendly theming:
 
 ## Page controls - Tool Bar
 
-Six native controls, all keyboard operable: `print friendly` previews the printed look and restores the theme when off, the mode switch picks light or dark and follows the OS, `dark theme` and `light theme` open a menu where each mode keeps its own pick, and brightness and saturation shift the current theme in seven steps each. The sliders leave the saved theme pick alone. On a phone the bar wraps to two rows, the controls first and the sliders second; the print label and the dividers drop away.
+Seven native controls, all keyboard operable: `go back` at the left end follows browser history and greys out when the tab has no earlier page, `print friendly` previews the printed look and restores the theme when off, the mode switch picks light or dark and follows the OS, `dark theme` and `light theme` open a menu where each mode keeps its own pick, and brightness and saturation shift the current theme in seven steps each. The sliders leave the saved theme pick alone. On a phone the bar wraps to two rows, the controls first and the sliders second; the print and back labels and the dividers drop away.
 
 <img src="docs/bar-dark.png" alt="Toolbar in dark mode"><br>
 <img src="docs/bar-light.png" alt="Toolbar in light mode"><br>
@@ -55,7 +55,7 @@ The sliders in dark, and in light at -1 and +2:
 
 An index page lists the diagram pages and documents in a folder. `agent-skill/index.html` is the template; every page gets a link card with a small inline SVG glyph and its name, so the page loads nothing external. Pages and documents sit in sections by subject, each with a boxed heading; a document list splits into groups such as skill files and other docs. Every document table uses the same fixed column rule, so the Document and Covers columns line up down the page. The project index is live at https://chezhenkie.github.io/simpleflow-diagram-skill/.
 
-The toolbar passes the mode and both theme names into every local `.html` link and reads them on load. The link carries names, not colours, and each page resolves them through its own theme table, so a project can tune its palette while the linked pages stay in sync by name. A page opened from the index keeps the theme; print stays a preview and does not travel. Nothing is stored.
+The toolbar passes the mode and both theme names into every local `.html` link and reads them on load. The link carries names, not colours, and each page resolves them through its own theme table, so a project can tune its palette while the linked pages stay in sync by name. A page opened from the index keeps the theme; print stays a preview and does not travel. A user change rewrites the current history entry, so Back and a reload keep the pick. Nothing is stored.
 
 The skill is five files. A diagram page copied from an older template still works but ignores the query until its toolbar script is updated.
 

@@ -31,10 +31,12 @@ function El(attrs) {
   return el;
 }
 
-function makeContext(osDark, search) {
+function makeContext(osDark, search, backLen) {
   var root = El({ 'data-theme': 'light', 'data-print': 'off' });
   var mode = El({ 'aria-checked': 'true' });
   var print = El({ 'aria-pressed': 'false' });
+  var back = El({});
+  back.disabled = true;
   var bri = El({});
   bri.value = '0';
   var sat = El({});
@@ -47,7 +49,7 @@ function makeContext(osDark, search) {
   var lightMenu = El({});
   mode.classes.on = true;
   var byId = {
-    mode: mode, print: print,
+    back: back, mode: mode, print: print,
     brightness: bri, saturation: sat,
     'brightness-value': briOut, 'saturation-value': satOut,
     'dark-theme': darkBtn, 'light-theme': lightBtn,
@@ -73,12 +75,21 @@ function makeContext(osDark, search) {
     querySelectorAll: function () { return [link, docLink]; },
     addEventListener: function (k, fn) { document.handlers[k] = fn; }
   };
+  var history = {
+    length: backLen === undefined ? 1 : backLen,
+    backCalled: false,
+    url: '',
+    back: function () { history.backCalled = true; },
+    replaceState: function (state, title, url) { history.url = url; }
+  };
   var window = {
     matchMedia: function () { return mq; },
-    location: { search: search || '' }
+    location: { search: search || '', hash: '' },
+    history: history
   };
   return {
-    root: root, mode: mode, print: print, darkBtn: darkBtn, lightBtn: lightBtn,
+    root: root, mode: mode, print: print, back: back,
+    darkBtn: darkBtn, lightBtn: lightBtn,
     bri: bri, sat: sat, briOut: briOut, satOut: satOut,
     darkMenu: darkMenu, lightMenu: lightMenu, mq: mq, document: document, window: window,
     link: link, docLink: docLink,
@@ -132,6 +143,7 @@ ok(c.lightMenu.children[1].getAttribute('aria-checked') === 'false', 'tokyonight
 ok(c.link.getAttribute('href') === 'other-page.html?mode=light&dark=github&light=vercel',
    'link carries the initial picks');
 ok(c.docLink.getAttribute('href') === 'notes.md', 'non-page links untouched');
+ok(c.back.disabled === true, 'back disabled with no earlier page');
 
 ok(c.briOut.textContent === '0' && c.satOut.textContent === '0', 'slider readouts start at 0');
 c.bri.value = '2';
@@ -184,13 +196,19 @@ ok(c.darkBtn.getAttribute('aria-expanded') === 'false', 'button collapsed after 
 
 c.mode.click();
 ok(c.bg() === '#E1E2E7', 'mode switch returns to vercel');
+ok(c.window.history.url === '?mode=light&dark=github&light=vercel',
+   'mode change rewrites the history entry');
 c.lightBtn.click();
 c.lightMenu.children[1].click();
 ok(c.root.style.props['--line'] === '#6B7280', 'tokyonight light line applied');
 ok(c.link.getAttribute('href') === 'other-page.html?mode=light&dark=github&light=tokyonight',
    'link follows a theme pick');
+ok(c.window.history.url === '?mode=light&dark=github&light=tokyonight',
+   'theme pick rewrites the history entry');
 c.mode.click();
 ok(c.bg() === '#0D1117', 'github remembered across mode switch');
+ok(c.window.history.url === '?mode=dark&dark=github&light=tokyonight',
+   'mode change from a pick rewrites the entry');
 c.mq.set(true);
 c.mq.set(false);
 ok(c.root.getAttribute('data-theme') === 'dark', 'os ignored after manual toggle');
@@ -216,6 +234,12 @@ ok(c.print.getAttribute('aria-pressed') === 'false', 'print aria off');
 c.darkBtn.click();
 c.darkMenu.children[4].click();
 ok(c.bg() === '#0B0E14', 'ayu selected again');
+
+var b = makeContext(false, '', 2);
+run(b);
+ok(b.back.disabled === false, 'back enabled with an earlier page');
+b.back.click();
+ok(b.window.history.backCalled === true, 'back calls browser history');
 
 var d = makeContext(true);
 run(d);

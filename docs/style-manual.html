@@ -316,7 +316,7 @@ pre code{background:none;color:inherit;border:0;padding:0}
 </ul>
 <h2><span class="num">2</span>2. Page order</h2>
 <div class="rule"></div>
-<pre><code>div#tb          fixed 24px toolbar: print toggle, mode switch, dark theme, light theme
+<pre><code>div#tb          fixed 24px toolbar: back, print toggle, mode switch, dark theme, light theme
 h1              page title, 22px
 p.sub           one sentence naming the whole path, 13px
 section
@@ -536,7 +536,8 @@ viewBox height  tag y + 32, or last card top + 102 without a tag</code></pre>
 <div class="rule"></div>
 <p><code>demo.html</code> is the reference implementation. Copy its toolbar, token blocks and scripts; do not invent a second control style.</p>
 <ul>
-<li>Fixed, 24 px high, right aligned, 28 px inset, fill <code>var(--page-bg)</code>, no bottom divider. Below 600 px the bar wraps to two rows, the controls first and the two sliders second; the print label and the dividers drop away and main top padding rises to 66 px.</li>
+<li>Fixed, 24 px high, 28 px inset, fill <code>var(--page-bg)</code>, no bottom divider; the back button sits at the left end and the other controls stay right aligned. Below 680 px the bar wraps to two rows, the controls first and the two sliders second; the print and back labels and the dividers drop away and main top padding rises to 66 px.</li>
+<li>Back button: at the left end of the bar, thin left arrow 1 px below centre plus lowercase <code>go back</code> at weight 300, 18 px high. It follows browser history and is disabled at opacity 0.4 when the tab has no earlier page; the Navigation API decides where present and <code>history.length</code> otherwise.</li>
 <li>Print toggle: auto width, 18 px high, printer icon plus <code>print friendly</code>, <code>aria-pressed</code>; active fill is the toolbar ink.</li>
 <li>Mode switch: 44 x 20 px, moon left, sun right, 16 px thumb, <code>aria-checked</code> true in light.</li>
 <li>Theme buttons: text plus a solid caret, 18 px high, 68 px minimum width, a menu below each.</li>
@@ -549,7 +550,7 @@ viewBox height  tag y + 32, or last card top + 102 without a tag</code></pre>
 <li>Initial mode comes from <code>prefers-color-scheme</code>, followed until the mode switch or a theme pick. No storage.</li>
 <li>Tokens live on <code>:root</code>; the theme script writes the six adjusted values and <code>--pick-ink</code> on every change, and print aliases its fixed values there too, so it wins without a cascade trick.</li>
 <li>One inline head script sets the initial <code>data-theme</code> before paint; one script before <code>&lt;/body&gt;</code> holds the theme table, builds the menus, applies the theme and follows OS changes.</li>
-<li>A link to a local <code>.html</code> page carries the reader&#39;s state. The toolbar script writes <code>?mode=...&amp;dark=...&amp;light=...</code> into every local page link on load and after each pick, and reads those values on load. The query carries the mode and two names, never the six values; each page resolves them through its own theme table, so pages from different projects can keep the same names with different palettes. A page opened from an index therefore keeps the mode and both theme choices. No storage; a link with no query opens on the OS mode and the default choices.</li>
+<li>A link to a local <code>.html</code> page carries the reader&#39;s state. The toolbar script writes <code>?mode=...&amp;dark=...&amp;light=...</code> into every local page link on load and after each pick, and reads those values on load. The query carries the mode and two names, never the six values; each page resolves them through its own theme table, so pages from different projects can keep the same names with different palettes. A page opened from an index therefore keeps the mode and both theme choices. A user change rewrites the current history entry with the same query through <code>history.replaceState</code>, so browser Back and a reload keep the pick. No storage; a link with no query opens on the OS mode and the default choices.</li>
 </ul>
 <h2><span class="num">14</span>14. Index pages</h2>
 <div class="rule"></div>

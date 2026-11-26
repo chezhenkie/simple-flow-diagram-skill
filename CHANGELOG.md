@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.7.0
+
+### New features
+
+* The toolbar gains a back button at its left end: a thin left arrow plus lowercase `go back` at weight 300 in the standard 18 px box. It follows browser history and starts disabled at opacity 0.4 when the tab has no earlier page; the Navigation API decides where present, `history.length` otherwise.
+
+### Changes
+
+* A theme or mode change rewrites the current history entry with the mode and both theme names, so browser Back and a reload keep the pick. No storage is used.
+
 ## 1.6.1
 
 ### Changes

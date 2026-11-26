@@ -105,6 +105,9 @@ def page_checks(raw, body, text):
     for key in ("--page-bg", "--page-ink", "--accent", "--card", "--line", "--muted"):
         check(key in text[:text.find("</style>")], "token " + key)
     check('id="print"' in body and 'id="mode"' in body, "print and mode controls")
+    check(body.find('id="back"') >= 0 and body.find('id="back"') < body.find('id="print"'),
+          "back control first")
+    check(re.search(r'id="back"[^>]*disabled', body) is not None, "back starts disabled")
     check(body.find('id="print"') < body.find('id="mode"') < body.find('id="dark-theme"')
           < body.find('id="light-theme"'), "bar control order")
     check(re.search(r'id="mode"[^>]*role="switch"', body) is not None, "mode is a switch")

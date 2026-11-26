@@ -349,7 +349,7 @@ pre code{background:none;color:inherit;border:0;padding:0}
 <li>One theme covers the page and every diagram on it. Sections carry no class, no token block and no color of their own.</li>
 <li>The reader picks the theme: five dark names and four light names in the two menus, each mode remembering its own choice.</li>
 <li>The mode switch chooses light or dark and starts from the OS preference. Print is a separate toggle with fixed values.</li>
-<li>A link between pages carries the mode and both theme names, never the six values. Each page resolves the names through its own table, so pages from different projects can share the choice while each keeps its own palette.</li>
+<li>A link between pages carries the mode and both theme names, never the six values. Each page resolves the names through its own table, so pages from different projects can share the choice while each keeps its own palette. A user change rewrites the current history entry, so Back and a reload keep the pick.</li>
 <li>Brightness and saturation sliders adjust the applied palette in seven steps; they never change the saved pick and print ignores them.</li>
 <li>Never hardcode a fill or stroke outside the template&#39;s classes and <code>var(--...)</code> tokens.</li>
 </ul>
@@ -359,7 +359,7 @@ pre code{background:none;color:inherit;border:0;padding:0}
 <li>ASCII only. Straight quotes, hyphen for dash, no arrows, bullets or other Unicode.</li>
 <li>One <code>h1</code>, one <code>.sub</code> and one empty <code>footer</code> that draws the closing rule. Footer text is optional.</li>
 <li>Inline scripts are limited to the head mode script and the toolbar script. No external JavaScript, CSS, fonts, images or icon sets. Must open from <code>file://</code>.</li>
-<li>Toolbar: fixed, 24 px high, right aligned, page background fill, no divider. Print toggle labelled <code>print friendly</code>, mode switch, then the <code>dark theme</code> and <code>light theme</code> menus, then the brightness and saturation sliders. Native controls, keyboard operable, labeled.</li>
+<li>Toolbar: fixed, 24 px high, page background fill, no divider. Back button with a thin left arrow and lowercase <code>go back</code> at the left end, disabled until the tab has an earlier page; the other controls right aligned: print toggle labelled <code>print friendly</code>, mode switch, the <code>dark theme</code> and <code>light theme</code> menus, and the brightness and saturation sliders. Native controls, keyboard operable, labeled.</li>
 <li>Colors only through <code>var(--...)</code>. Tokens live on <code>:root</code>; the print override comes last.</li>
 <li>Marker ids unique per page, prefixed by section. Pair each line class with the matching arrowhead.</li>
 <li>Open a finished page once for the user. No screenshots, no PDFs, no theme-by-theme renders; the template is checked in the repository, not on every page.</li>
