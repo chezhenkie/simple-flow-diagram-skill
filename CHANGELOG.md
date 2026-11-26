@@ -4,11 +4,11 @@
 
 ### New features
 
-* The toolbar gains a back button at its left end: a thin left arrow plus lowercase `go back` at weight 300 in the standard 18 px box. It follows browser history, rechecks its state when the page is shown and starts disabled at opacity 0.4 when the tab has no earlier page; `history.length` decides.
+* The toolbar gains a back button at its left end: a thin left arrow plus lowercase `go back` at weight 300 in the standard 18 px box. The Navigation API decides whether an earlier page exists. On a `file:` page that the API reports as the first entry, a `?via=1` marker on the arrival link and a `history.length` above 1 prove the Back entry, which covers Firefox local files where each file is its own origin. Browsers without the API fall back to `history.length`. The button rechecks when the page is shown and starts disabled at opacity 0.4 when there is no earlier page.
 
 ### Changes
 
-* A theme or mode change rewrites the current history entry with the mode and both theme names, so browser Back and a reload keep the pick. No storage is used.
+* A theme or mode change rewrites the current history entry with the mode and both theme names, so browser Back and a reload keep the pick. The entry keeps the arrival marker. No storage is used.
 
 ## 1.6.1
 

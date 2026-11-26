@@ -467,7 +467,8 @@
     function syncUrl() {
       try {
         if (window.history && window.history.replaceState) {
-          window.history.replaceState(null, '', pickQuery() + window.location.hash);
+          var via = /[?&]via=1\b/.test(window.location.search) ? '&via=1' : '';
+          window.history.replaceState(null, '', pickQuery() + via + window.location.hash);
         }
       } catch (e) {}
     }
@@ -483,7 +484,7 @@
         var path = cut < 0 ? href : href.slice(0, cut);
         var hash = href.indexOf('#') < 0 ? '' : href.slice(href.indexOf('#'));
         if (!/\.html$/.test(path)) continue;
-        a.setAttribute('href', path + pickQuery() + hash);
+        a.setAttribute('href', path + pickQuery() + '&via=1' + hash);
       }
     }
 
@@ -706,7 +707,19 @@
     var backBtn = document.getElementById('back');
     if (backBtn) {
       var syncBack = function () {
-        var can = window.history.length > 1;
+        var nav = window.navigation;
+        var can;
+        if (nav && typeof nav.canGoBack === 'boolean') {
+          can = nav.canGoBack;
+          // Firefox gives each file:// page its own origin, so a page opened
+          // from a local link reports no back entry. The via marker proves the
+          // link; history.length proves it did not open in a new tab.
+          if (!can && window.location.protocol === 'file:' &&
+              window.history.length > 1 &&
+              /[?&]via=1\b/.test(window.location.search)) can = true;
+        } else {
+          can = window.history.length > 1;
+        }
         backBtn.disabled = !can;
         backBtn.title = can ? 'Go back' : 'No earlier page';
         backBtn.setAttribute('aria-label', backBtn.title);

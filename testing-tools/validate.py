@@ -108,6 +108,13 @@ def page_checks(raw, body, text):
     check(body.find('id="back"') >= 0 and body.find('id="back"') < body.find('id="print"'),
           "back control first")
     check(re.search(r'id="back"[^>]*disabled', body) is not None, "back starts disabled")
+    check("a.setAttribute('href', path + pickQuery() + '&via=1' + hash)" in body,
+          "links carry the arrival marker")
+    check("nav.canGoBack" in body and "window.history.length > 1" in body,
+          "back reads the navigation api with a history fallback")
+    check("/[?&]via=1\\b/.test(window.location.search)" in body,
+          "back reads the arrival marker")
+    check("window.history.back()" in body, "back calls browser history")
     check(body.find('id="print"') < body.find('id="mode"') < body.find('id="dark-theme"')
           < body.find('id="light-theme"'), "bar control order")
     check(re.search(r'id="mode"[^>]*role="switch"', body) is not None, "mode is a switch")

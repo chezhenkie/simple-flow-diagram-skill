@@ -84,7 +84,7 @@ function makeContext(osDark, search, backLen) {
   };
   var window = {
     matchMedia: function () { return mq; },
-    location: { search: search || '', hash: '' },
+    location: { search: search || '', hash: '', protocol: 'http:' },
     history: history,
     handlers: {},
     addEventListener: function (k, fn) { window.handlers[k] = fn; }
@@ -142,7 +142,7 @@ ok(c.darkMenu.children[0].getAttribute('aria-checked') === 'true', 'dark default
 ok(c.darkMenu.children[4].getAttribute('aria-checked') === 'false', 'ayu not marked by default');
 ok(c.lightMenu.children[0].getAttribute('aria-checked') === 'true', 'light default vercel marked');
 ok(c.lightMenu.children[1].getAttribute('aria-checked') === 'false', 'tokyonight not marked by default');
-ok(c.link.getAttribute('href') === 'other-page.html?mode=light&dark=github&light=vercel',
+ok(c.link.getAttribute('href') === 'other-page.html?mode=light&dark=github&light=vercel&via=1',
    'link carries the initial picks');
 ok(c.docLink.getAttribute('href') === 'notes.md', 'non-page links untouched');
 ok(c.back.disabled === true, 'back disabled with no earlier page');
@@ -203,7 +203,7 @@ ok(c.window.history.url === '?mode=light&dark=github&light=vercel',
 c.lightBtn.click();
 c.lightMenu.children[1].click();
 ok(c.root.style.props['--line'] === '#6B7280', 'tokyonight light line applied');
-ok(c.link.getAttribute('href') === 'other-page.html?mode=light&dark=github&light=tokyonight',
+ok(c.link.getAttribute('href') === 'other-page.html?mode=light&dark=github&light=tokyonight&via=1',
    'link follows a theme pick');
 ok(c.window.history.url === '?mode=light&dark=github&light=tokyonight',
    'theme pick rewrites the history entry');
@@ -243,6 +243,33 @@ ok(b.back.disabled === false, 'back enabled with an earlier page');
 b.back.click();
 ok(b.window.history.backCalled === true, 'back calls browser history');
 
+var n = makeContext(false, '?mode=light&dark=github&light=vercel&via=1', 2);
+n.window.navigation = { canGoBack: false };
+n.window.location.protocol = 'file:';
+run(n);
+ok(n.back.disabled === false, 'back enabled by the marker on a local file');
+ok(n.back.title === 'Go back', 'marker title follows the state');
+
+var nl = makeContext(false, '?mode=light&dark=github&light=vercel&via=1', 1);
+nl.window.navigation = { canGoBack: false };
+nl.window.location.protocol = 'file:';
+run(nl);
+ok(nl.back.disabled === true, 'marker ignored in a new tab');
+
+var na = makeContext(false, '', 1);
+na.window.navigation = { canGoBack: true };
+run(na);
+ok(na.back.disabled === false, 'navigation api reports a back entry');
+
+var nx = makeContext(false, '?mode=light&dark=github&light=vercel&via=1', 2);
+nx.window.navigation = { canGoBack: false };
+run(nx);
+ok(nx.back.disabled === true, 'marker ignored outside a local file');
+
+var f = makeContext(false, '', 2);
+run(f);
+ok(f.back.disabled === false, 'history length is the fallback without the navigation api');
+
 var s = makeContext(false, '', 1);
 run(s);
 ok(s.back.disabled === true, 'back disabled before an entry arrives');
@@ -271,17 +298,20 @@ g.mq.set(true);
 ok(g.root.getAttribute('data-theme') === 'light', 'theme pick stops os follow');
 ok(g.root.style.props['--line'] === '#6B7280', 'theme pick survives os change');
 
-var p = makeContext(false, '?mode=dark&dark=ayu&light=cursor');
+var p = makeContext(false, '?mode=dark&dark=ayu&light=cursor&via=1');
 run(p);
 ok(p.root.getAttribute('data-theme') === 'dark', 'link mode read on load');
 ok(p.bg() === '#0B0E14', 'link dark pick applied');
 ok(p.darkMenu.children[4].getAttribute('aria-checked') === 'true', 'link dark pick marked');
 ok(p.lightMenu.children[2].getAttribute('aria-checked') === 'true', 'link light pick marked');
-ok(p.link.getAttribute('href') === 'other-page.html?mode=dark&dark=ayu&light=cursor',
+ok(p.link.getAttribute('href') === 'other-page.html?mode=dark&dark=ayu&light=cursor&via=1',
    'link state carried onward');
 ok(!('change' in p.mq.handlers), 'no os listener when the link carries the mode');
 p.mq.set(false);
 ok(p.root.getAttribute('data-theme') === 'dark', 'link state survives an os change');
+p.darkMenu.children[0].click();
+ok(p.window.history.url === '?mode=dark&dark=github&light=cursor&via=1',
+   'arrival marker survives a theme pick');
 
 if (failures) {
   console.log('harness failures: ' + failures);

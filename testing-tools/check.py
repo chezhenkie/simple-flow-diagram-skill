@@ -278,10 +278,19 @@ check("menuitemradio" in script, "menu rows are menuitemradio")
 check("prefers-color-scheme" in scripts[0] and "prefers-color-scheme" in script, "os preference read")
 check("if (!manual)" in script, "os follow until manual")
 check("setMode(savedMode" in script, "print restores saved mode")
-check("window.history.length > 1" in script
-      and "window.history.back()" in script
+check("a.setAttribute('href', path + pickQuery() + '&via=1' + hash)" in script,
+      "links carry the arrival marker")
+check("pickQuery() + via + window.location.hash" in script
+      and "/[?&]via=1\\b/.test(window.location.search)" in script,
+      "history entry keeps the arrival marker")
+check("var nav = window.navigation" in script and "nav.canGoBack" in script,
+      "back reads the navigation api")
+check("window.location.protocol === 'file:'" in script
+      and "window.history.length > 1" in script,
+      "back keeps the marker for local files")
+check("window.history.back()" in script
       and "addEventListener('pageshow'" in script,
-      "back follows history and greys when empty")
+      "back calls browser history and rechecks when shown")
 
 # Template
 check(tpl.count("<h1") == 1 and tpl.count('<p class="sub">') == 1
