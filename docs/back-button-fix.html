@@ -21,6 +21,10 @@
   white-space:nowrap;
 }
 #tb .tb-btn svg{width:13px;height:13px}
+#tb .tb-btn:disabled{opacity:.4;cursor:default}
+#tb .tb-btn.back{font-weight:300;letter-spacing:.2px;margin-right:auto}
+#tb .tb-btn.back svg{transform:translateY(1px)}
+#tb .brk{display:none}
 #tb .tb-btn.on{background:var(--tb-ink);color:var(--page-bg);border-color:var(--tb-ink)}
 #tb .tb-btn.fold{min-width:68px}
 #tb .tb-btn.fold::after{
@@ -80,6 +84,13 @@
 #tb .sl .v{min-width:14px;text-align:center;font-variant-numeric:tabular-nums}
 #tb .tb-btn:focus-visible,#tb .toggle:focus-visible,#tb .sl input:focus-visible,#tb .menu button:focus-visible{
   outline:2px solid var(--tb-ink);outline-offset:1px;
+}
+@media(max-width:780px){
+  #tb{height:auto;min-height:44px;flex-wrap:wrap;justify-content:flex-start;padding:3px 10px;gap:4px}
+  #tb .s{display:none}
+  #tb .tb-btn span{display:none}
+  #tb .tb-btn.back{margin-right:0}
+  #tb .brk{display:block;flex-basis:100%;height:0}
 }
 @media(prefers-reduced-motion:reduce){
   #tb *{transition:none!important}
@@ -206,7 +217,6 @@ th,td{text-align:left;padding:10px 14px;vertical-align:top}
 th{font-family:var(--font-ui);font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--page-muted);background:var(--card);border-bottom:2px solid var(--accent);font-weight:600;transition:background .25s,color .25s,border-color .25s}
 td{font-size:14.5px;border-bottom:1px solid var(--page-line);color:var(--page-ink);transition:background .25s,border-color .25s,color .25s}
 tr:last-child td{border-bottom:none}
-tr:nth-child(even) td{background:var(--page-bg)}
 .callout{border-left:4px solid var(--accent);background:var(--card);padding:16px 20px;margin:22px 0;font-family:var(--font-serif);font-style:italic;color:var(--page-muted);transition:background .25s,border-color .25s,color .25s}
 .callout strong{font-family:var(--font-ui);font-style:normal}
 ul,ol{margin:0 0 18px;padding-left:26px}
@@ -215,7 +225,7 @@ li::marker{color:var(--accent)}
 code{font-family:var(--font-mono);font-size:13px;background:transparent;color:var(--page-ink);border:1px solid var(--page-line);padding:1px 5px;border-radius:3px;transition:background .25s,color .25s,border-color .25s}
 pre{background:var(--card);color:var(--page-ink);border:1px solid var(--page-line);padding:16px 20px;border-radius:4px;overflow-x:auto;margin:18px 0 24px;font-family:var(--font-mono);font-size:13px;line-height:1.6;transition:background .25s,color .25s,border-color .25s}
 pre code{background:none;color:inherit;border:0;padding:0}
-@media(max-width:620px){.wrap{padding:40px 18px 72px}h1{font-size:28px}}
+@media(max-width:620px){.wrap{padding:66px 18px 72px}h1{font-size:28px}}
 </style>
 <script>(function(){
   var ua=navigator.userAgent;
@@ -238,6 +248,12 @@ pre code{background:none;color:inherit;border:0;padding:0}
 </head>
 <body>
 <div id="tb" role="group" aria-label="Page controls">
+  <button class="tb-btn back" id="back" type="button" disabled aria-label="Go back" title="Go back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M20 12H5M11 6l-6 6 6 6"/>
+    </svg>
+    <span>go back</span>
+  </button>
   <button class="tb-btn" id="print" type="button" aria-pressed="false" aria-label="Print friendly" title="Print friendly">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M6 9V3h12v6"/>
@@ -281,6 +297,7 @@ pre code{background:none;color:inherit;border:0;padding:0}
     <div class="menu" id="light-menu" role="menu" aria-label="Light theme"></div>
   </div>
   <span class="s" aria-hidden="true"></span>
+  <span class="brk" aria-hidden="true"></span>
   <div class="sl">
     <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
       <rect x="1" y="1" width="10" height="10"/>
@@ -539,11 +556,20 @@ pre code{background:none;color:inherit;border:0;padding:0}
       var path=cut<0?href:href.slice(0,cut);
       var hash=href.indexOf('#')<0?'':href.slice(href.indexOf('#'));
       if(!/\.html$/.test(path))continue;
-      a.setAttribute('href',path+pickQuery(state)+hash);
+      a.setAttribute('href',path+pickQuery(state)+'&via=1'+hash);
     }
   }
 
-  return{readParams:readParams,syncLinks:syncLinks};
+  function syncUrl(state){
+    try{
+      if(window.history&&window.history.replaceState){
+        var via=/[?&]via=1\b/.test(window.location.search)?'&via=1':'';
+        window.history.replaceState(null,'',pickQuery(state)+via+window.location.hash);
+      }
+    }catch(e){}
+  }
+
+  return{readParams:readParams,syncLinks:syncLinks,syncUrl:syncUrl};
 })();</script>
 <script>const MenuBar=(function(){
   let printBtn,modeBtn,fontBtn,bri,sat,briOut,satOut;
@@ -770,7 +796,11 @@ pre code{background:none;color:inherit;border:0;padding:0}
     emit();
   }
 
-  return{init,getValues,setValues,setMode,setTheme,setFont,setPrint};
+  function isManual(){
+    return manual;
+  }
+
+  return{init,getValues,setValues,setMode,setTheme,setFont,setPrint,isManual};
 })();</script>
 <script>(function(){
   var params=LinkState.readParams()||{};
@@ -783,8 +813,32 @@ pre code{background:none;color:inherit;border:0;padding:0}
     onChange:function(state){
       ThemeEngine.apply(state);
       LinkState.syncLinks(state);
+      if(MenuBar.isManual())LinkState.syncUrl(state);
     }
   });
+  var backBtn=document.getElementById('back');
+  if(backBtn){
+    var syncBack=function(){
+      var nav=window.navigation;
+      var can;
+      if(nav&&typeof nav.canGoBack==='boolean'){
+        can=nav.canGoBack;
+        // Firefox treats each file:// page as its own origin for the
+        // Navigation API, so a page opened from a local link reports no
+        // back entry. The via marker proves the link and history.length
+        // proves it was not opened in a new tab.
+        if(!can&&window.location.protocol==='file:'&&window.history.length>1&&/[?&]via=1\b/.test(window.location.search))can=true;
+      }else{
+        can=window.history.length>1;
+      }
+      backBtn.disabled=!can;
+      backBtn.title=can?'Go back':'No earlier page';
+      backBtn.setAttribute('aria-label',backBtn.title);
+    };
+    syncBack();
+    if(window.addEventListener)window.addEventListener('pageshow',syncBack);
+    backBtn.addEventListener('click',function(){window.history.back();});
+  }
   LinkState.syncLinks(MenuBar.getValues());
 })();</script>
 </body>
