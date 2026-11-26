@@ -346,7 +346,7 @@ footer          empty, draws the closing rule; text is optional</code></pre>
 <div class="rule"></div>
 <p>A theme is six values: <code>bg</code> page, <code>card</code> card and tag fill, <code>ink</code> page text and card titles, <code>muted</code> descriptions, captions, connectors, footer and toolbar ink, <code>line</code> card and tag borders and toolbar lines, <code>accent</code> pill outline, focus border and action arrow.</p>
 <p>Nine themes ship in the template: five dark and four light. Dark: <code>github</code>, <code>harbor</code>, <code>solarized</code>, <code>oledblack</code>, <code>ayu</code>. Light: <code>vercel</code>, <code>tokyonight</code>, <code>cursor</code>, <code>orng</code>. Light opens on <code>vercel</code>, dark on <code>github</code>.</p>
-<p>The 1.4.0 palette pass raised the weak line and accent values. Four mark pairs keep a small shortfall under deuteranopia and are accepted deviations: vercel accent on page 2.91:1, tokyonight accent on card 2.97:1, tokyonight checked label 4.31:1 and orng checked label 4.00:1. Solarized and vercel accents sit between their original and fully passing values; tokyonight and orng accents are unchanged. The shortfalls affect emphasis and a menu label; the focus card still reads by 2 px width, the line marks clear 3:1 and the labels are text. They stay because raising them to the floor would drift the colors too far outside their fixed schemes and disrupt the overall color balance of the theme. Do not retune these tokens without an explicit request.</p>
+<p>Four mark pairs keep a small shortfall under deuteranopia and are accepted deviations: vercel accent on page 2.91:1, tokyonight accent on card 2.97:1, tokyonight checked label 4.31:1 and orng checked label 4.00:1. The focus card still reads by 2 px width, the line marks clear 3:1 and the labels are text. Do not retune these tokens without an explicit request.</p>
 <ul>
 <li>The agent does not pick, mix or author colors. The theme script in <code>template.html</code> writes the six values as CSS custom properties.</li>
 <li>A diagram carries no colors of its own: no class on a section, no per-section token block, no inline <code>fill</code> or <code>stroke</code> with a color value.</li>
@@ -482,7 +482,7 @@ viewBox height  tag y + 32, or last card top + 102 without a tag</code></pre>
 <li>Note: the rule that drives the diagram, not a walkthrough.</li>
 <li>Tag: the invariant or verdict shape in one line, as in <code>one run ends in one verdict: finished, failed rc, or stopped by escape</code>.</li>
 <li>Footer: what the paths share, or the one guarantee that holds across them.</li>
-<li>Plain technical English. No sales words, slogans, &quot;not X but Y&quot; contrasts or meta commentary. Keys and literal input render in straight single quotes: &#39;s&#39;, &#39;0&#39;, &#39;ready&#39;.</li>
+<li>The copy follows the writing rules in SKILL.md; keys and literal input render in straight single quotes: &#39;s&#39;, &#39;0&#39;, &#39;ready&#39;.</li>
 </ul>
 <h2><span class="num">10</span>10. Diagram body</h2>
 <div class="rule"></div>
@@ -596,7 +596,7 @@ viewBox height  tag y + 32, or last card top + 102 without a tag</code></pre>
 </ul>
 <h3>Embedding a page</h3>
 <p>A finished diagram page can sit inside another HTML page, toolbar and theme included, as one iframe with no second copy. Place the line at the end of the host content, just before <code>&lt;/main&gt;</code>:</p>
-<pre><code class="language-html">&lt;iframe src=&quot;sample-one-diagram.html&quot; title=&quot;DNS lookup flow&quot; style=&quot;width:100%;height:1040px;border:1px solid #9a9a9a;margin-top:18px&quot;&gt;&lt;/iframe&gt;</code></pre>
+<pre><code class="language-html">&lt;iframe src=&quot;sample-one-diagram.html&quot; title=&quot;DNS lookup flow&quot; style=&quot;width:100%;height:1020px;border:1px solid #9a9a9a;margin-top:18px&quot;&gt;&lt;/iframe&gt;</code></pre>
 <ul>
 <li>The embedded page sits in the host&#39;s folder or below it, because a page opened from <code>file://</code> frames only its own tree. <code>title</code> names it for a screen reader.</li>
 <li>Height comes from the viewBox, not from the eye: <code>330 + (iframe width - 42) * H / 1040</code>, rounded up to the next 20, where <code>H</code> is the viewBox height. The 330 is the page chrome outside the svg: main padding, title, subtitle, section head and note, with room for an optional footer. An 808-high diagram in a 926 px column lands on 1020.</li>

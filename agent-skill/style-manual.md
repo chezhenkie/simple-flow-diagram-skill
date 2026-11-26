@@ -30,7 +30,7 @@ A theme is six values: `bg` page, `card` card and tag fill, `ink` page text and 
 
 Nine themes ship in the template: five dark and four light. Dark: `github`, `harbor`, `solarized`, `oledblack`, `ayu`. Light: `vercel`, `tokyonight`, `cursor`, `orng`. Light opens on `vercel`, dark on `github`.
 
-The 1.4.0 palette pass raised the weak line and accent values. Four mark pairs keep a small shortfall under deuteranopia and are accepted deviations: vercel accent on page 2.91:1, tokyonight accent on card 2.97:1, tokyonight checked label 4.31:1 and orng checked label 4.00:1. Solarized and vercel accents sit between their original and fully passing values; tokyonight and orng accents are unchanged. The shortfalls affect emphasis and a menu label; the focus card still reads by 2 px width, the line marks clear 3:1 and the labels are text. They stay because raising them to the floor would drift the colors too far outside their fixed schemes and disrupt the overall color balance of the theme. Do not retune these tokens without an explicit request.
+Four mark pairs keep a small shortfall under deuteranopia and are accepted deviations: vercel accent on page 2.91:1, tokyonight accent on card 2.97:1, tokyonight checked label 4.31:1 and orng checked label 4.00:1. The focus card still reads by 2 px width, the line marks clear 3:1 and the labels are text. Do not retune these tokens without an explicit request.
 
 - The agent does not pick, mix or author colors. The theme script in `template.html` writes the six values as CSS custom properties.
 - A diagram carries no colors of its own: no class on a section, no per-section token block, no inline `fill` or `stroke` with a color value.
@@ -204,7 +204,7 @@ Two arrows leave the parent bottom at the card centres, 411 and 659, and enter t
 - Note: the rule that drives the diagram, not a walkthrough.
 - Tag: the invariant or verdict shape in one line, as in `one run ends in one verdict: finished, failed rc, or stopped by escape`.
 - Footer: what the paths share, or the one guarantee that holds across them.
-- Plain technical English. No sales words, slogans, "not X but Y" contrasts or meta commentary. Keys and literal input render in straight single quotes: 's', '0', 'ready'.
+- The copy follows the writing rules in SKILL.md; keys and literal input render in straight single quotes: 's', '0', 'ready'.
 
 ## 10. Diagram body
 
@@ -334,7 +334,7 @@ An entry is one link card:
 A finished diagram page can sit inside another HTML page, toolbar and theme included, as one iframe with no second copy. Place the line at the end of the host content, just before `</main>`:
 
 ```html
-<iframe src="sample-one-diagram.html" title="DNS lookup flow" style="width:100%;height:1040px;border:1px solid #9a9a9a;margin-top:18px"></iframe>
+<iframe src="sample-one-diagram.html" title="DNS lookup flow" style="width:100%;height:1020px;border:1px solid #9a9a9a;margin-top:18px"></iframe>
 ```
 
 - The embedded page sits in the host's folder or below it, because a page opened from `file://` frames only its own tree. `title` names it for a screen reader.

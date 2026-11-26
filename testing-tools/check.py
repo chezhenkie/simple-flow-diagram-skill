@@ -571,15 +571,16 @@ check("## Page types" in skill, "skill page types")
 check("manual section 14" in skill and "index.html" in skill and "iframe" in skill,
       "skill index chapter and embed")
 check("no screenshots" in low and "no pdf" in low, "skill no render pass")
-check("by reading" in low and "do not write a checker script" in low, "skill step 7 names the read method")
-check("count, grep, diff or hash" in low and "count, grep, diff or hash" in man.lower()
-      and "a check is a read, not a measurement" in low, "skill and manual ban command checks")
-check("arrows and captions" in low and man.lower().count("arrows and captions") >= 2
-      and "one arrow at x=535" in man.lower(), "skill and manual cover arrows and captions")
-check("a merge back into" in low and "keeps the same pair" in man.lower()
+check("by reading" in low and "manual section 11 holds the check rules" in low,
+      "skill step 7 names the read method")
+check("count, grep, diff or hash" in man.lower()
+      and "a check is a read, not a measurement" in man.lower(), "manual bans command checks")
+check("arrows and captions" in man.lower() and man.lower().count("arrows and captions") >= 2
+      and "one arrow at x=535" in man.lower(), "manual covers arrows and captions")
+check("a merge back into" in man.lower()
       and "a merge back into one 470 card keeps the 411 and 659 pair" in man.lower(),
-      "skill and manual allow a merge")
-check("write three characters under each limit" in low
+      "manual allows a merge")
+check("written three characters under each limit" in low
       and "every line is written three characters under its budget" in man.lower(),
       "skill and manual keep a budget margin")
 check("one repair edit" in low and "one repair edit" in man.lower()
