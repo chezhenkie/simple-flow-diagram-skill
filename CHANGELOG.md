@@ -9,6 +9,7 @@
 ### Changes
 
 * A theme or mode change rewrites the current history entry with the mode and both theme names, so browser Back and a reload keep the pick. The entry keeps the arrival marker. No storage is used.
+* The published docs explain how the back button decides its state: the Navigation API, the arrival marker and the limits of `history.length`.
 
 ## 1.6.1
 

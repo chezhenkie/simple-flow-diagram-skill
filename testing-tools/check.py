@@ -41,8 +41,8 @@ files = ["README.md", "agent-skill/SKILL.md", "agent-skill/template.html",
          "docs/demo.html", "docs/SKILL.html", "docs/style-manual.html",
          "docs/context-performance-report.html", "docs/color-vision-audit-comparison.html",
          "docs/sample-one-diagram.html",
-         "docs/sample-build-release.html",
-         "CHANGELOG.md", "LICENSE",
+         "docs/sample-build-release.html", "docs/back-button-fix.html",
+         "CHANGELOG.md", "LICENSE", "back-button-fix.md",
          "agent-skill/style-manual.md", "testing-tools/check.py", "testing-tools/validate.py",
          "testing-tools/harness.js", "testing-tools/README.md"]
 for f in files:
@@ -366,7 +366,8 @@ check('href="demo.html"' in live and 'href="sample-one-diagram.html"' in live
       and 'href="sample-build-release.html"' in live,
       "pages index page links")
 for doc in ("SKILL.html", "style-manual.html",
-            "color-vision-audit-comparison.html", "context-performance-report.html"):
+            "color-vision-audit-comparison.html", "context-performance-report.html",
+            "back-button-fix.html"):
     check('href="%s"' % doc in live, "pages index document " + doc)
 check(live.count('<nav class="grid" aria-label="sample pages">') == 1
       and live.count('<section aria-labelledby="sample-pages">') == 1
